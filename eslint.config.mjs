@@ -47,6 +47,7 @@ export default [
       // Custom project tweaks
       "react/react-in-jsx-scope": "off",
       "react/prop-types": "off",
+      "no-undef": "off",
       "no-unused-vars": "off",
       "@typescript-eslint/no-unused-vars": [
         "error",

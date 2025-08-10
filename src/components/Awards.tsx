@@ -1,11 +1,14 @@
-import type { Data } from "../types"
-import { Section } from "./Section"
+import { useStore } from "@state/useStore"
 
-export function Awards({ d }: { d: Data }) {
+import { Section } from "@components/Section"
+
+export function Awards() {
+  const { awards } = useStore()
+
   return (
     <Section title="Awards">
       <ul>
-        {d.awards.map((a) => (
+        {awards.map((a) => (
           <li key={a.name + a.year}>
             <strong>{a.name}</strong> — {a.organization} ({a.year})
           </li>

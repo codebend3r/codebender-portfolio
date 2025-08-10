@@ -1,11 +1,14 @@
-import type { Data } from "../types"
-import { Section } from "./Section"
+import { useStore } from "@state/useStore"
 
-export function Languages({ d }: { d: Data }) {
+import { Section } from "@components/Section"
+
+export function Languages() {
+  const { languages } = useStore()
+
   return (
     <Section title="Languages">
       <ul>
-        {d.languages.map((l) => (
+        {languages.map((l) => (
           <li key={l.name}>
             <strong>{l.name}:</strong> {l.proficiency}
           </li>

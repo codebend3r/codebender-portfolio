@@ -1,11 +1,14 @@
-import type { Data } from "../types"
-import { Section } from "./Section"
+import { useStore } from "@state/useStore"
 
-export function WorkExperience({ d }: { d: Data }) {
+import { Section } from "@components/Section"
+
+export function WorkExperience() {
+  const { work_experience } = useStore()
+
   return (
     <Section title="Work Experience">
       <ul className="timeline">
-        {d.work_experience.map((w) => (
+        {work_experience.map((w) => (
           <li key={w.company + w.period}>
             <div className="timeline-item">
               <div className="timeline-header">

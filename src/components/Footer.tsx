@@ -1,10 +1,12 @@
-import type { Data } from "../types"
+import { useStore } from "@state/useStore"
 
-export function Footer({ d }: { d: Data }) {
+export function Footer() {
+  const { name } = useStore()
+
   return (
     <footer className="footer">
       <small>
-        © {new Date().getFullYear()} {d.name}. Built with Vite + React.
+        © {new Date().getFullYear()} {name}. Built with Vite + React.
       </small>
     </footer>
   )
