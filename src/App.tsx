@@ -1,6 +1,7 @@
-import data from './data.json';
-import type { Data } from './types';
 import Logo from './assets/logo.svg';
+import data from './data.json';
+
+import type { Data } from './types';
 
 const d = data as Data;
 

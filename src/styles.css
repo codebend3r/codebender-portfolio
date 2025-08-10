@@ -27,8 +27,7 @@ body {
     Noto Sans,
     'Apple Color Emoji',
     'Segoe UI Emoji';
-  background:
-    radial-gradient(1200px 600px at 10% -10%, rgba(122, 162, 247, 0.15), transparent 50%),
+  background: radial-gradient(1200px 600px at 10% -10%, rgba(122, 162, 247, 0.15), transparent 50%),
     radial-gradient(1000px 500px at 110% 10%, rgba(198, 120, 221, 0.12), transparent 60%), var(--bg);
   color: var(--text);
   line-height: 1.55;
