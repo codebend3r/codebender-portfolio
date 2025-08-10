@@ -1,10 +1,13 @@
-import type { Data } from "../types"
-import { Section } from "./Section"
+import { useStore } from "@state/useStore"
 
-export function Summary({ d }: { d: Data }) {
+import { Section } from "@components/Section"
+
+export function Summary() {
+  const { summary } = useStore()
+
   return (
     <Section title="Summary">
-      <p>{d.summary}</p>
+      <p>{summary}</p>
     </Section>
   )
 }

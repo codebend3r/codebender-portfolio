@@ -1,24 +1,27 @@
-import Logo from "../assets/logo.svg"
-import type { Data } from "../types"
+import { useStore } from "@state/useStore"
 
-export function Header({ d }: { d: Data }) {
+import Logo from "../assets/logo.svg"
+
+export function Header() {
+  const { name, title, contact } = useStore()
+
   return (
     <header className="header">
       <div className="brand">
         <img src={Logo} alt="Logo" className="logo" />
         <div>
-          <h1>{d.name}</h1>
-          <p className="subtitle">{d.title}</p>
+          <h1>{name}</h1>
+          <p className="subtitle">{title}</p>
         </div>
       </div>
       <div className="contact">
-        <a href={`mailto:${d.contact.email}`}>{d.contact.email}</a>
+        <a href={`mailto:${contact.email}`}>{contact.email}</a>
         <span>•</span>
-        <a href={`tel:${d.contact.phone}`}>{d.contact.phone}</a>
+        <a href={`tel:${contact.phone}`}>{contact.phone}</a>
         <span>•</span>
-        <span>{d.contact.location}</span>
+        <span>{contact.location}</span>
         <span>•</span>
-        <a href={d.contact.github} target="_blank" rel="noreferrer">
+        <a href={contact.github} target="_blank" rel="noreferrer">
           GitHub
         </a>
       </div>

@@ -1,11 +1,14 @@
-import type { Data } from "../types"
-import { Section } from "./Section"
+import { useStore } from "@state/useStore"
 
-export function Education({ d }: { d: Data }) {
+import { Section } from "@components/Section"
+
+export function Education() {
+  const { education } = useStore()
+
   return (
     <Section title="Education">
       <ul>
-        {d.education.map((e) => (
+        {education.map((e) => (
           <li key={e.program + e.institution}>
             <strong>{e.program}</strong> — {e.institution}
             {e.details ? ` — ${e.details}` : ""}

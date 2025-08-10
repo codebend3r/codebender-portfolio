@@ -9,29 +9,24 @@ import { WorkExperience } from "@components/WorkExperience"
 
 import "@styles/global.scss"
 
-import data from "./data.json"
-import type { Data } from "./types"
-
-const d = data as Data
-
 export default function App() {
   return (
     <div className="container">
-      <Header d={d} />
+      <Header />
 
       <main>
-        <Summary d={d} />
-        <TechnicalSkills d={d} />
-        <WorkExperience d={d} />
+        <Summary />
+        <TechnicalSkills />
+        <WorkExperience />
 
         <div className="grid-2">
-          <Awards d={d} />
-          <Languages d={d} />
-          <Education d={d} />
+          <Awards />
+          <Languages />
+          <Education />
         </div>
       </main>
 
-      <Footer d={d} />
+      <Footer />
     </div>
   )
 }
