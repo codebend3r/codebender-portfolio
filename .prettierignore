@@ -1,0 +1,31 @@
+# Dependencies
+node_modules
+
+# Build outputs
+dist
+build
+out
+.next
+
+# Coverage
+coverage
+
+# Caches / temp
+.tmp
+.temp
+.eslintcache
+
+# Logs
+*.log
+
+# OS / Editor
+.DS_Store
+.vscode
+
+# Package manager locks (keep formatting stable, skip checking them)
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Other
+*.min.js
