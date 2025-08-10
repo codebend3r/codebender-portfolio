@@ -1,8 +1,8 @@
-import data from './data.json'
-import type { Data } from './types'
-import Logo from './assets/logo.svg'
+import data from './data.json';
+import type { Data } from './types';
+import Logo from './assets/logo.svg';
 
-const d = data as Data
+const d = data as Data;
 
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
@@ -10,7 +10,7 @@ function Section({ title, children }: { title: string; children: React.ReactNode
       <h2>{title}</h2>
       {children}
     </section>
-  )
+  );
 }
 
 export default function App() {
@@ -31,7 +31,9 @@ export default function App() {
           <span>•</span>
           <span>{d.contact.location}</span>
           <span>•</span>
-          <a href={d.contact.github} target="_blank" rel="noreferrer">GitHub</a>
+          <a href={d.contact.github} target="_blank" rel="noreferrer">
+            GitHub
+          </a>
         </div>
       </header>
 
@@ -43,7 +45,9 @@ export default function App() {
         <Section title="Technical Skills">
           <ul className="pill-list">
             {d.technical_skills.map((s) => (
-              <li key={s} className="pill">{s}</li>
+              <li key={s} className="pill">
+                {s}
+              </li>
             ))}
           </ul>
         </Section>
@@ -106,8 +110,10 @@ export default function App() {
       </main>
 
       <footer className="footer">
-        <small>© {new Date().getFullYear()} {d.name}. Built with Vite + React.</small>
+        <small>
+          © {new Date().getFullYear()} {d.name}. Built with Vite + React.
+        </small>
       </footer>
     </div>
-  )
+  );
 }
