@@ -1,6 +1,6 @@
-import Logo from '../assets/logo.svg';
+import Logo from '../assets/logo.svg'
 
-import type { Data } from '../types';
+import type { Data } from '../types'
 
 export function Header({ d }: { d: Data }) {
   return (
@@ -24,5 +24,5 @@ export function Header({ d }: { d: Data }) {
         </a>
       </div>
     </header>
-  );
+  )
 }

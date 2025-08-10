@@ -1,6 +1,6 @@
-import { Section } from './Section';
+import { Section } from './Section'
 
-import type { Data } from '../types';
+import type { Data } from '../types'
 
 export function Education({ d }: { d: Data }) {
   return (
@@ -14,5 +14,5 @@ export function Education({ d }: { d: Data }) {
         ))}
       </ul>
     </Section>
-  );
+  )
 }

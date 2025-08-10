@@ -1,6 +1,6 @@
-import { Section } from './Section';
+import { Section } from './Section'
 
-import type { Data } from '../types';
+import type { Data } from '../types'
 
 export function Languages({ d }: { d: Data }) {
   return (
@@ -13,5 +13,5 @@ export function Languages({ d }: { d: Data }) {
         ))}
       </ul>
     </Section>
-  );
+  )
 }

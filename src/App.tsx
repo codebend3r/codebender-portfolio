@@ -1,17 +1,19 @@
-import { Awards } from '@components/Awards';
-import { Education } from '@components/Education';
-import { Footer } from '@components/Footer';
-import { Header } from '@components/Header';
-import { Languages } from '@components/Languages';
-import { Summary } from '@components/Summary';
-import { TechnicalSkills } from '@components/TechnicalSkills';
-import { WorkExperience } from '@components/WorkExperience';
+import { Awards } from '@components/Awards'
+import { Education } from '@components/Education'
+import { Footer } from '@components/Footer'
+import { Header } from '@components/Header'
+import { Languages } from '@components/Languages'
+import { Summary } from '@components/Summary'
+import { TechnicalSkills } from '@components/TechnicalSkills'
+import { WorkExperience } from '@components/WorkExperience'
 
-import data from './data.json';
+import data from './data.json'
 
-import type { Data } from './types';
+import '@styles/global.scss'
 
-const d = data as Data;
+import type { Data } from './types'
+
+const d = data as Data
 
 export default function App() {
   return (
@@ -32,5 +34,5 @@ export default function App() {
 
       <Footer d={d} />
     </div>
-  );
+  )
 }

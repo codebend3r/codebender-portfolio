@@ -1,6 +1,6 @@
-import { Section } from './Section';
+import { Section } from './Section'
 
-import type { Data } from '../types';
+import type { Data } from '../types'
 
 export function WorkExperience({ d }: { d: Data }) {
   return (
@@ -26,5 +26,5 @@ export function WorkExperience({ d }: { d: Data }) {
         ))}
       </ul>
     </Section>
-  );
+  )
 }

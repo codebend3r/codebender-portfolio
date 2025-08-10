@@ -14,8 +14,11 @@
     "forceConsistentCasingInFileNames": true,
     "baseUrl": "src",
     "paths": {
-      "@components/*": ["components/*"]
+      "@App": ["App.tsx"],
+      "@components/*": ["components/*"],
+      "@styles/*": ["styles/*"]
     }
   },
-  "include": ["src"]
+  "include": ["src"],
+  "references": [{ "path": "./tsconfig.node.json" }]
 }

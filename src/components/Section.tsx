@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 
 export function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
@@ -6,5 +6,5 @@ export function Section({ title, children }: { title: string; children: React.Re
       <h2>{title}</h2>
       {children}
     </section>
-  );
+  )
 }
