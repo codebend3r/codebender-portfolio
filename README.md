@@ -6,12 +6,12 @@
 
 ```bash
 bun install
-bun run dev
+bun dev
 ```
 
 ## Build
 
 ```bash
-bun run build
-bun run preview
+bun build
+bun preview
 ```

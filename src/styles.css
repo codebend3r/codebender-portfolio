@@ -6,6 +6,9 @@
   --accent: #7aa2f7;
   --accent-2: #c678dd;
   --border: #1b2233;
+  /* Added gradient variables for easier tweaking */
+  --glow1: radial-gradient(90vw 55vh at 15% 0%, rgba(122, 162, 247, 0.15), transparent 55%);
+  --glow2: radial-gradient(70vw 50vh at 85% 15%, rgba(198, 120, 221, 0.14), transparent 65%);
 }
 * {
   box-sizing: border-box;
@@ -27,10 +30,21 @@ body {
     Noto Sans,
     'Apple Color Emoji',
     'Segoe UI Emoji';
-  background: radial-gradient(1200px 600px at 10% -10%, rgba(122, 162, 247, 0.15), transparent 50%),
-    radial-gradient(1000px 500px at 110% 10%, rgba(198, 120, 221, 0.12), transparent 60%), var(--bg);
+  /* Keep only solid background so content scrolls over fixed glow layer */
+  background: var(--bg);
   color: var(--text);
   line-height: 1.55;
+}
+/* Fixed, non-scrolling gradient layer (better mobile support than background-attachment: fixed) */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: var(--glow1), var(--glow2), var(--bg);
+  background-repeat: no-repeat;
+  background-size: cover, cover, auto; /* adjust if needed */
 }
 a {
   color: var(--accent);
