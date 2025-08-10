@@ -1,6 +1,10 @@
 export type Language = { name: string; proficiency: string }
 export type Award = { name: string; organization: string; year: number }
-export type Education = { program: string; institution: string; details?: string }
+export type Education = {
+  program: string
+  institution: string
+  details?: string
+}
 export type Experience = {
   role: string
   company: string

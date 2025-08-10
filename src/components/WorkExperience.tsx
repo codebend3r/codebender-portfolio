@@ -1,6 +1,5 @@
-import { Section } from './Section'
-
-import type { Data } from '../types'
+import type { Data } from "../types"
+import { Section } from "./Section"
 
 export function WorkExperience({ d }: { d: Data }) {
   return (

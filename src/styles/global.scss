@@ -6,8 +6,16 @@
   --accent: #7aa2f7;
   --accent-2: #c678dd;
   --border: #1b2233;
-  --glow1: radial-gradient(90vw 55vh at 15% 0%, rgba(122, 162, 247, 0.15), transparent 55%);
-  --glow2: radial-gradient(70vw 50vh at 85% 15%, rgba(198, 120, 221, 0.14), transparent 65%);
+  --glow1: radial-gradient(
+    90vw 55vh at 15% 0%,
+    rgba(122, 162, 247, 0.15),
+    transparent 55%
+  );
+  --glow2: radial-gradient(
+    70vw 50vh at 85% 15%,
+    rgba(198, 120, 221, 0.14),
+    transparent 65%
+  );
 }
 
 * {
@@ -29,13 +37,13 @@ body {
     Roboto,
     Arial,
     Noto Sans,
-    'Apple Color Emoji',
-    'Segoe UI Emoji';
+    "Apple Color Emoji",
+    "Segoe UI Emoji";
   background: var(--bg);
   color: var(--text);
   line-height: 1.55;
   &::before {
-    content: '';
+    content: "";
     position: fixed;
     inset: 0;
     z-index: -1;
@@ -101,7 +109,11 @@ h1 {
 }
 
 .section {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01));
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.02),
+    rgba(255, 255, 255, 0.01)
+  );
   border: 1px solid var(--border);
   border-radius: 16px;
   padding: 20px;
