@@ -1,4 +1,4 @@
-import type { Data } from '../types';
+import type { Data } from '../types'
 
 export function Footer({ d }: { d: Data }) {
   return (
@@ -7,5 +7,5 @@ export function Footer({ d }: { d: Data }) {
         © {new Date().getFullYear()} {d.name}. Built with Vite + React.
       </small>
     </footer>
-  );
+  )
 }

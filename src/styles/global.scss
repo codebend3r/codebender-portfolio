@@ -6,10 +6,10 @@
   --accent: #7aa2f7;
   --accent-2: #c678dd;
   --border: #1b2233;
-  /* Added gradient variables for easier tweaking */
   --glow1: radial-gradient(90vw 55vh at 15% 0%, rgba(122, 162, 247, 0.15), transparent 55%);
   --glow2: radial-gradient(70vw 50vh at 85% 15%, rgba(198, 120, 221, 0.14), transparent 65%);
 }
+
 * {
   box-sizing: border-box;
 }
@@ -18,6 +18,7 @@ body,
 #root {
   height: 100%;
 }
+
 body {
   margin: 0;
   font-family:
@@ -30,34 +31,35 @@ body {
     Noto Sans,
     'Apple Color Emoji',
     'Segoe UI Emoji';
-  /* Keep only solid background so content scrolls over fixed glow layer */
   background: var(--bg);
   color: var(--text);
   line-height: 1.55;
+  &::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background: var(--glow1), var(--glow2), var(--bg);
+    background-repeat: no-repeat;
+    background-size: cover, cover, auto;
+  }
 }
-/* Fixed, non-scrolling gradient layer (better mobile support than background-attachment: fixed) */
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  background: var(--glow1), var(--glow2), var(--bg);
-  background-repeat: no-repeat;
-  background-size: cover, cover, auto; /* adjust if needed */
-}
+
 a {
   color: var(--accent);
   text-decoration: none;
+  &:hover {
+    text-decoration: underline;
+  }
 }
-a:hover {
-  text-decoration: underline;
-}
+
 .container {
   max-width: 1100px;
   margin: 0 auto;
   padding: 32px 20px 60px;
 }
+
 .header {
   display: flex;
   justify-content: space-between;
@@ -67,6 +69,7 @@ a:hover {
   padding-bottom: 20px;
   margin-bottom: 28px;
 }
+
 .brand {
   display: flex;
   align-items: center;
@@ -76,6 +79,7 @@ a:hover {
   width: 56px;
   height: 56px;
 }
+
 h1 {
   font-size: 28px;
   margin: 0;
@@ -87,6 +91,7 @@ h1 {
   color: var(--muted);
   font-weight: 600;
 }
+
 .contact {
   display: flex;
   flex-wrap: wrap;
@@ -94,17 +99,19 @@ h1 {
   align-items: center;
   color: var(--muted);
 }
+
 .section {
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01));
   border: 1px solid var(--border);
   border-radius: 16px;
   padding: 20px;
   margin-bottom: 20px;
+  h2 {
+    margin: 0 0 12px;
+    font-size: 20px;
+  }
 }
-.section h2 {
-  margin: 0 0 12px;
-  font-size: 20px;
-}
+
 .pill-list {
   list-style: none;
   padding: 0;
@@ -121,29 +128,31 @@ h1 {
   font-weight: 600;
   font-size: 14px;
 }
+
 .timeline {
   list-style: none;
   padding: 0;
   margin: 0;
   display: grid;
   gap: 16px;
+  &-item {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 16px;
+  }
+  &-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+  }
+  h3 {
+    margin: 0;
+    font-size: 18px;
+  }
 }
-.timeline-item {
-  background: var(--panel);
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  padding: 16px;
-}
-.timeline-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: 12px;
-}
-.timeline h3 {
-  margin: 0;
-  font-size: 18px;
-}
+
 .muted {
   color: var(--muted);
   margin: 2px 0 0;
@@ -156,11 +165,13 @@ h1 {
 .bullets {
   margin: 10px 0 0;
 }
+
 .grid-2 {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 20px;
 }
+
 .footer {
   margin-top: 28px;
   color: var(--muted);

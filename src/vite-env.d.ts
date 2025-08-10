@@ -2,19 +2,29 @@
 
 // Support importing PNG files.
 declare module '*.png' {
-  const src: string;
-  export default src;
+  const src: string
+  export default src
 }
 
 // Support importing SVG both as a URL and as a React component when using @svgr/rollup.
 declare module '*.svg' {
-  import * as React from 'react';
+  import * as React from 'react'
   export const ReactComponent: React.FunctionComponent<
     React.SVGProps<SVGSVGElement> & { title?: string }
-  >;
-  const src: string;
-  export default src;
+  >
+  const src: string
+  export default src
+}
+
+// Support importing SCSS (global or modules). For global styles, the exported object may be unused.
+declare module '*.scss' {
+  const classes: { readonly [key: string]: string }
+  export default classes
 }
 
 // Silence TS complaint for the rollup plugin (no types published).
-declare module '@svgr/rollup';
+declare module '@svgr/rollup' {
+  import type { Plugin } from 'vite'
+  const svgr: (options?: Record<string, unknown>) => Plugin
+  export default svgr
+}
