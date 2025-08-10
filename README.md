@@ -1,17 +1,17 @@
-# Portfolio — Vite + React + TypeScript
+# CJ Rivas Portfolio
+
+> Build on React + TypeScript + Vite
 
 ## Dev
 
 ```bash
-npm install
-npm run dev
+bun install
+bun run dev
 ```
 
 ## Build
 
 ```bash
-npm run build
-npm run preview
+bun run build
+bun run preview
 ```
-
-Data is in `src/data.json`. Logo SVG in `src/assets/logo.svg`. Styles in `src/styles.css`.
