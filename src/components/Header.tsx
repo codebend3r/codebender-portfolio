@@ -1,6 +1,5 @@
-import Logo from '../assets/logo.svg'
-
-import type { Data } from '../types'
+import Logo from "../assets/logo.svg"
+import type { Data } from "../types"
 
 export function Header({ d }: { d: Data }) {
   return (
