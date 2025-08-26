@@ -1,0 +1,102 @@
+:root {
+  --hero-height: 48vh; /* top portion height */
+  --sky-top: #ff9a66; /* warm orange */
+  --sky-mid: #f1626d; /* rosy */
+  --sky-low: #8b5bbb; /* purple */
+  --sky-deep: #2a3464; /* twilight */
+  --text: #0d0d0f;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  color: var(--text);
+  font-family:
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    Segoe UI,
+    Roboto,
+    Inter,
+    Arial,
+    sans-serif;
+  background: linear-gradient(
+    180deg,
+    var(--sky-top) 0%,
+    var(--sky-mid) 30%,
+    var(--sky-low) 60%,
+    var(--sky-deep) 100%
+  );
+}
+
+/* Top hero region with the star canvas pinned to it only */
+.hero {
+  position: relative;
+  height: var(--hero-height);
+  overflow: clip;
+  /* subtle vignette */
+  mask-image: radial-gradient(120% 80% at 50% 10%, black 70%, transparent 100%);
+}
+
+/* Canvas sits on top but only within the hero region */
+#starfield {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  pointer-events: none;
+}
+
+/* Title stack */
+.hero-content {
+  position: relative;
+  z-index: 1;
+  height: 100%;
+  display: grid;
+  place-content: center;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.92);
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.2);
+}
+
+.hero h1 {
+  margin: 0 0 0.25rem 0;
+  font-size: clamp(2.2rem, 6vw, 4rem);
+  letter-spacing: 0.02em;
+}
+
+.hero p {
+  margin: 0;
+  opacity: 0.85;
+}
+
+/* Content area */
+.content {
+  padding: 6rem 1.25rem 8rem;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.content section + section {
+  margin-top: 4rem;
+}
+
+h2 {
+  margin: 0 0 0.5rem 0;
+}
+
+p {
+  line-height: 1.65;
+  max-width: 65ch;
+}
+
+/* Smooth scrolling feel */
+html {
+  scroll-behavior: smooth;
+}

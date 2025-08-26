@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <title>Parallax Sunset</title>
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <!-- Top hero with fixed canvas overlay -->
+    <header class="hero">
+      <canvas id="starfield" aria-hidden="true"></canvas>
+      <div class="hero-content">
+        <h1>Sunset Sky</h1>
+        <p>Scroll</p>
+      </div>
+    </header>
+
+    <!-- Content so scrolling is observable -->
+    <main class="content">
+      <section>
+        <h2>Section 1</h2>
+        <p>
+          Content placeholder. The canvas only animates in the top region. As
+          you scroll down, stars subtly parallax and fade a bit more in.
+        </p>
+      </section>
+      <section>
+        <h2>Section 2</h2>
+        <p>More content.</p>
+      </section>
+      <section>
+        <h2>Section 3</h2>
+        <p>More content.</p>
+      </section>
+    </main>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
