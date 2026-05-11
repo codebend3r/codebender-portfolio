@@ -12,13 +12,12 @@
     "jsx": "react-jsx",
     "strict": true,
     "forceConsistentCasingInFileNames": true,
-    "baseUrl": "src",
     "paths": {
-      "@App": ["App.tsx"],
-      "@data/*": ["data/*"],
-      "@components/*": ["components/*"],
-      "@state/*": ["state/*"],
-      "@styles/*": ["styles/*"]
+      "@App": ["./src/App.tsx"],
+      "@data/*": ["./src/data/*"],
+      "@components/*": ["./src/components/*"],
+      "@state/*": ["./src/state/*"],
+      "@styles/*": ["./src/styles/*"]
     }
   },
   "include": ["src"],
