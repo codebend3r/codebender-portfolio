@@ -19,7 +19,8 @@
       "@data/*": ["./src/data/*"],
       "@sky": ["./src/sky.ts"],
       "@state/*": ["./src/state/*"],
-      "@styles/*": ["./src/styles/*"]
+      "@styles/*": ["./src/styles/*"],
+      "@weather": ["./src/weather.ts"]
     }
   },
   "include": ["src"],
