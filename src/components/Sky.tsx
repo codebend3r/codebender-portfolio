@@ -2,8 +2,8 @@ import { useMemo } from "react"
 
 import { Starfield } from "@components/Starfield"
 
-import { getCurrentSky } from "../sky"
-import type { Sky as SkyName } from "../sky"
+import { getCurrentSky } from "@sky"
+import type { Sky as SkyName } from "@sky"
 
 type DaylightSky = Exclude<SkyName, "night">
 

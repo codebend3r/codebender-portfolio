@@ -14,8 +14,10 @@
     "forceConsistentCasingInFileNames": true,
     "paths": {
       "@App": ["./src/App.tsx"],
-      "@data/*": ["./src/data/*"],
+      "@assets/*": ["./src/assets/*"],
       "@components/*": ["./src/components/*"],
+      "@data/*": ["./src/data/*"],
+      "@sky": ["./src/sky.ts"],
       "@state/*": ["./src/state/*"],
       "@styles/*": ["./src/styles/*"]
     }
