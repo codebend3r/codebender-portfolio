@@ -176,6 +176,71 @@ a {
   }
 }
 
+.weather {
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.raindrop {
+  position: absolute;
+  top: -10vh;
+  width: 1.5px;
+  height: 70px;
+  background: linear-gradient(
+    to bottom,
+    rgba(174, 200, 255, 0) 0%,
+    rgba(174, 200, 255, 0.55) 50%,
+    rgba(220, 232, 255, 0.85) 100%
+  );
+  border-radius: 1px;
+  transform-origin: top center;
+  animation-name: rain-fall;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  will-change: transform;
+}
+
+@keyframes rain-fall {
+  0% {
+    transform: translate3d(0, -10vh, 0);
+  }
+  100% {
+    transform: translate3d(2vw, 115vh, 0);
+  }
+}
+
+.snowflake {
+  position: absolute;
+  top: -5vh;
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.95) 0%,
+    rgba(255, 255, 255, 0.5) 60%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  border-radius: 50%;
+  filter: blur(0.4px);
+  animation-name: snow-fall;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  will-change: transform;
+}
+
+@keyframes snow-fall {
+  0% {
+    transform: translate3d(0, -5vh, 0);
+  }
+  50% {
+    transform: translate3d(4vw, 55vh, 0);
+  }
+  100% {
+    transform: translate3d(-2vw, 110vh, 0);
+  }
+}
+
 .header {
   display: flex;
   justify-content: space-between;
