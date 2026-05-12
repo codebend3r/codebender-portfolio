@@ -3,14 +3,16 @@
   "contact": {
     "email": "cj.rivas.dev@gmail.com",
     "phone": "647-457-4574",
-    "location": "Toronto",
+    "location": "Mississauga",
     "github": "https://github.com/codebend3r"
   },
   "title": "Senior Frontend Engineer + Architect",
-  "summary": "I have nearly two decades of experience in front-end development and architecture, specializing in several front-end technologies and frameworks, including React. I have successfully managed a team of developers and am passionate about mentoring and knowledge-sharing.",
+  "summary": "Experienced Senior Frontend Engineer + Architect with nearly 20 years in the field, specializing in React and AI technologies. Committed to helping your company innovate through AI-driven development. Led initiatives that enhanced user engagement.",
   "technical_skills": [
-    "JavaScript",
+    "Claude Code",
+    "AI Tooling/LLM",
     "TypeScript",
+    "JavaScript",
     "React",
     "Next.js",
     "Vue.js",
@@ -19,35 +21,29 @@
     "Emotion/Styled Components",
     "SCSS/CSS",
     "Redux/Zustand",
-    "Material UI",
     "Vite/Webpack/Rollup",
     "Storybook",
-    "Agile/Scrum",
     "Jest/Vitest",
     "Cypress/Playwright",
     "Bun/NPM/Yarn",
     "Git (Version Control)",
     "Github Actions",
-    "HTML5",
     "Responsive Design",
-    "Accessibility",
     "E2E Testing",
-    "Bash Shell Scripting",
-    "REST API",
-    "NestJS",
-    "MongoDB",
-    "Redis",
-    "PostgreSQL"
+    "REST API"
   ],
   "work_experience": [
     {
       "role": "Senior Frontend Engineer",
       "company": "The Globe and Mail",
-      "period": "09/2024 - Present",
+      "period": "09/2024 - 05/2026",
       "achievements": [
-        "Worked with React to build components for The Globe and Mail website",
-        "Built out components in Storybook",
-        "Implemented optimizations, unit tests, eslint rules, refactors of front-end code"
+        "Development of interactive components for The Globe and Mail using React and AI tools, boosting user engagement",
+        "Streamlined code reviews with AI tools, enhancing code quality and reducing review time",
+        "Integrated React components with a proprietary CMS, ensuring efficient content management",
+        "Optimized front-end code through unit testing and refactoring, improving maintainability",
+        "Used a design system for React components using Storybook, enhancing team collaboration",
+        "Collaborated with cross-functional teams to deliver high-quality features on time"
       ]
     },
     {
@@ -55,9 +51,11 @@
       "company": "Robots and Pencils",
       "period": "06/2024 - 09/2024",
       "achievements": [
-        "Lead frontend developer for ASU student project and portfolio work",
-        "Reviewed pull requests for ASU-related projects",
-        "Collaborated with the team to devise optimal solutions and refined UI/UX"
+        "Enhanced ASU project performance by implementing new features, ensuring timely delivery",
+        "Conducted pull request reviews, maintaining high code quality and best practices",
+        "Identified and implemented UI/UX solutions for improved interface performance",
+        "Refined features based on user testing feedback, boosting app performance",
+        "Managed the ASU project lifecycle, demonstrating strong technical and project management skills"
       ]
     },
     {
@@ -65,10 +63,10 @@
       "company": "XP Ventures Labs",
       "period": "03/2024 - 05/2024",
       "achievements": [
-        "Converted legacy react app into micro-frontends",
-        "Implemented a CI/CD pipeline for linting, formatting, unit tests, and E2E tests",
-        "Migrated global store from Redux to Zustand",
-        "Reviewed and approved pull requests to improve coding practices and standards"
+        "Converted legacy React JavaScript application into TypeScript micro-frontends",
+        "Migrated global state from Redux to Zustand and refactored components to modern React patterns",
+        "Implemented CI/CD pipeline for automated linting, formatting, unit, and E2E tests",
+        "Enforced TypeScript and React best practices through code reviews and updated standards"
       ]
     },
     {
@@ -76,9 +74,10 @@
       "company": "iPolitics",
       "period": "11/2023 - Present",
       "achievements": [
-        "Developed and maintained two news websites using React, Next.js, Prisma, and Sanity CMS",
-        "Implemented new features including sponsored articles and podcast sections",
-        "Established authorized routes for admin purposes and data analytics"
+        "Built and maintained fullstack news websites for iPolitics and QP Briefing using Next.js, React, TypeScript, Prisma, and Sanity CMS",
+        "Developed fullstack solutions with Prisma ORM for backend APIs and Next.js server components for performant frontend delivery",
+        "Migrated legacy code to modern Next.js architecture with TypeScript and React best practices",
+        "Integrated Sanity.io CMS and Stripe payment gateway with Next.js for dynamic content management and sponsored article monetization"
       ]
     },
     {
@@ -86,12 +85,10 @@
       "company": "Radian",
       "period": "06/2022 - 11/2023",
       "achievements": [
-        "Front-end lead and architect for homegeniusrealestate.com project",
-        "Built new web app with Next.js, Typescript, GraphQL, and Nest.js",
-        "Delivered product to market in under a year",
-        "Developed roadmaps and coding standards",
-        "Created React component design system using Storybook",
-        "Managed apps and libraries in a monorepo with NX and Docker"
+        "Architected and led frontend development of homegeniusrealestate.com from scratch to production using Next.js, TypeScript, GraphQL, and Nest.js",
+        "Delivered complete real estate platform to market in under one year",
+        "Created scalable React design system using Storybook and component-driven development",
+        "Managed NX monorepo with Docker while enforcing standards through code reviews and mentoring"
       ]
     },
     {
@@ -99,11 +96,12 @@
       "company": "Varicent",
       "period": "01/2021 - 06/2022",
       "achievements": [
-        "Migrated from React JavaScript to React TypeScript",
-        "Overhauled webpack configurations and migrated to Vite",
-        "Implemented NX and custom bash scripts for monorepo workflow",
-        "Optimized GitHub workflows",
-        "Prototyped modules and documented company-wide initiatives"
+        "Migrated React JavaScript components to TypeScript across projects, improving performance and maintainability",
+        "Overhauled webpack configuration and migrated to Vite with esbuild for faster builds",
+        "Conducted performance testing and implemented frontend optimizations",
+        "Implemented NX monorepo with custom bash scripts to enhance development workflow",
+        "Optimized GitHub workflows using parallelization and smart caching",
+        "Prototyped experimental modules and components as frontend architect"
       ]
     },
     {
@@ -111,10 +109,11 @@
       "company": "RBC Ventures",
       "period": "08/2019 - 08/2020",
       "achievements": [
-        "Developed new admin app features",
-        "Migrated to a custom React Hooks framework",
-        "Implemented webpack chunks, lazy loading, and caching",
-        "Mentored new team members and updated CI workflow"
+        "Strategized and developed new front-end features for the admin app, enabling efficient management of all users",
+        "Migrated the app from the built-in React framework to a custom framework utilizing React Hooks",
+        "Optimized UI experience and performance by implementing webpack chunks, lazy loading, and caching data in memory",
+        "Mentored new team members and shared knowledge while demoing new features to stakeholders",
+        "Updated and maintained the CI workflow and created custom bash scripts to streamline the development process"
       ]
     },
     {
@@ -123,9 +122,13 @@
       "period": "12/2018 - 08/2019",
       "achievements": [
         "Maintained and updated thestar.com using React",
-        "Led development of new responsive main menu",
-        "Introduced E2E testing and Sentry error monitoring",
-        "Reviewed pull requests and interviewed candidates"
+        "Led the development of a new responsive main menu for thestar.com",
+        "Acted as lead developer, responsible for pull request code review and merging",
+        "Introduced several solutions, including E2E testing integrated with Jenkins, and Sentry.io to monitor errors in real-time",
+        "Identified workflow issues and proposed possible solutions to optimize processes",
+        "Maintained a high-quality code standard to ensure website performance and user experience",
+        "Conducted interviews with several candidates for front-end developer positions to build a strong team",
+        "Worked in an agile environment, focusing on continuous delivery to meet project deadlines and ensure customer satisfaction"
       ]
     },
     {
@@ -133,10 +136,13 @@
       "company": "The Globe and Mail",
       "period": "05/2016 - 04/2018",
       "achievements": [
-        "Developed features using vanilla JavaScript",
-        "Implemented accessibility semantic markup and analytics",
-        "Increased unit test coverage",
-        "Documented UI best practices and presented Git workflow"
+        "Developed and maintained website features using vanilla JavaScript",
+        "Collaborated with the front-end team to build highly performant and responsive components",
+        "Implemented accessibility semantic markup and advanced analytics to enhance user experience",
+        "Participated in code review workflow to ensure high code quality and standards",
+        "Increased unit test code coverage to ensure code stability and reduce bugs",
+        "Consulted and documented UI best practices and code standards to improve development processes",
+        "Delivered a presentation on git workflow to internal team, resulting in increased team efficiency"
       ]
     },
     {
@@ -144,11 +150,13 @@
       "company": "Rogers",
       "period": "11/2014 - 01/2016",
       "achievements": [
-        "Developed Rogers-related application using AngularJS",
-        "Established AngularJS coding conventions",
-        "Designed AngularJS module framework",
-        "Conducted technical interviews",
-        "Built custom node/gulp modules and mentored developers"
+        "Developed a Rogers-related application/website and established AngularJS coding conventions for all developers to follow",
+        "Conducted technical interviews with candidates to assess their skills and expertise in AngularJS, ensuring that only the best candidates were selected for the team",
+        "Designed an AngularJS module framework that facilitated collaboration among multiple teams and was adopted by several developers",
+        "Conducted unit testing of front-end code and expanded Bootstrap's AngularUI directives",
+        "Actively supported and documented front-end solutions, ensuring that all code was thoroughly tested",
+        "Built custom node/gulp modules and provided mentorship to junior developers",
+        "Mentored and engaged in code-pairing with developers to enhance their skills"
       ]
     },
     {
@@ -156,10 +164,12 @@
       "company": "Uptime Software",
       "period": "04/2014 - 11/2014",
       "achievements": [
-        "Responsible for front-end of server monitoring application",
-        "Developed using AngularJS and implemented TDD framework",
-        "Contributed to shell scripts for Bamboo CI",
-        "Consumed proprietary RESTful API for GUI"
+        "Solely responsible for the entire front-end portion of a computer/server monitoring application in a company-wide capacity as the only front-end specialist",
+        "Developed the application using the AngularJS framework",
+        "Implemented a Test-Driven Development (TDD) framework using Jasmine, Karma, and Protractor",
+        "Contributed to the development of shell scripts for continuous integration in Bamboo",
+        "Consumed a proprietary RESTful API layer to build out the graphical user interface (GUI)",
+        "Carried out all front-end duties, including building Gulp tasks"
       ]
     }
   ],
@@ -178,18 +188,17 @@
   "languages": [
     {
       "name": "English",
-      "proficiency": "100/100"
+      "proficiency": "Native or Bilingual Proficiency"
     },
     {
       "name": "Spanish",
-      "proficiency": "100/100"
+      "proficiency": "Native or Bilingual Proficiency"
     }
   ],
   "education": [
     {
       "program": "Digital Media Arts",
-      "institution": "Seneca College of Applied Arts and Technology",
-      "details": "Courses"
+      "institution": "Seneca College of Applied Arts and Technology"
     }
   ]
 }
