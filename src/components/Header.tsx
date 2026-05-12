@@ -1,6 +1,6 @@
 import { useStore } from "@state/useStore"
 
-import Logo from "../assets/logo.svg"
+import Logo from "@assets/logo.svg"
 
 export function Header() {
   const { name, title, contact } = useStore()
