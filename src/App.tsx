@@ -15,7 +15,59 @@ import { WorkExperience } from "@components/WorkExperience"
 
 import { waitForAssets } from "@utils/print-utils"
 
-import "@styles/global.scss"
+import { css } from "@styled-system/css"
+
+import "@styles/index.css"
+
+const hoverButtonStyles = css({
+  display: "grid",
+  width: "100%",
+  position: "sticky",
+  marginLeft: "auto",
+  top: "16px",
+  padding: "16px",
+  zIndex: 10,
+  justifyContent: "end",
+  "@media print": { display: "none" },
+})
+
+const downloadButtonStyles = css({
+  appearance: "none",
+  border: "2px solid token(colors.accent)",
+  alignItems: "center",
+  cursor: "pointer",
+  gap: "8px",
+  background: "bg",
+  color: "accent",
+  padding: "8px 16px",
+  borderRadius: "8px",
+  textDecoration: "none",
+  fontWeight: 600,
+  fontSize: "20px",
+  transition:
+    "background-color 0.2s ease, box-shadow 0.4s ease, opacity 0.2s ease",
+  "&:hover:not(:disabled)": {
+    animation: "glowPulse 0.5s infinite alternate",
+  },
+  "&:disabled": {
+    cursor: "progress",
+    opacity: 0.7,
+  },
+})
+
+const resumeRootStyles = css({
+  position: "relative",
+  zIndex: 1,
+  background: "bg",
+})
+
+const containerStyles = css({
+  position: "relative",
+  zIndex: 1,
+  maxWidth: "1100px",
+  margin: "0 auto",
+  padding: "32px 20px 60px",
+})
 
 export default function App() {
   const resumeRef = useRef<HTMLDivElement>(null)
@@ -66,9 +118,9 @@ export default function App() {
     <>
       <Sky />
       <Weather />
-      <div className="hover-button no-print">
+      <div className={hoverButtonStyles}>
         <button
-          className="download-button"
+          className={downloadButtonStyles}
           onClick={onDownload}
           disabled={isGenerating}
           aria-busy={isGenerating}
@@ -76,8 +128,8 @@ export default function App() {
           {isGenerating ? "Generating…" : "Download PDF"}
         </button>
       </div>
-      <div id="resume-root" ref={resumeRef}>
-        <div className="container">
+      <div id="resume-root" className={resumeRootStyles} ref={resumeRef}>
+        <div className={containerStyles}>
           <Header />
 
           <main>
@@ -85,7 +137,7 @@ export default function App() {
             <TechnicalSkills />
             <WorkExperience />
 
-            <div className="grid-2">
+            <div>
               <Awards />
               <Languages />
               <Education />

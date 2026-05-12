@@ -17,6 +17,7 @@ const config = {
     "^@pages/(.*)$",
     "^@sky$",
     "^@utils/(.*)$",
+    "^@styled-system/(.*)$",
     "^@styles/(.*)$",
     "^types$",
     "^[./]",
