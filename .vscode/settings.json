@@ -1,11 +1,11 @@
 {
   "git.ignoreLimitWarning": true,
-  "editor.formatOnSave": true,
+  "editor.formatOnSave": false,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.codeActionsOnSave": {
     "source.organizeImports": "never",
     "source.sortImports": "never",
-    "source.fixAll": "always",
+    "source.fixAll": "never",
     "source.addMissingImports": "never"
   },
   "javascript.preferences.importModuleSpecifierEnding": "minimal",
@@ -18,5 +18,10 @@
     "javascriptreact",
     "typescript",
     "typescriptreact"
+  ],
+  "cSpell.words": [
+    "darkvar",
+    "onclone",
+    "pagebreak"
   ],
 }
