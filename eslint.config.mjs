@@ -9,7 +9,15 @@ import globals from "globals"
 
 export default [
   // Ignore patterns (flat config replacement for .eslintignore)
-  { ignores: ["dist/**", "node_modules/**", "coverage/**", "*.log"] },
+  {
+    ignores: [
+      "dist/**",
+      "node_modules/**",
+      "coverage/**",
+      "styled-system/**",
+      "*.log",
+    ],
+  },
 
   // Base config applied to all JS/TS/React source files
   {

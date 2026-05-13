@@ -17,12 +17,6 @@ declare module "*.svg" {
   export default src
 }
 
-// Support importing SCSS (global or modules). For global styles, the exported object may be unused.
-declare module "*.scss" {
-  const classes: { readonly [key: string]: string }
-  export default classes
-}
-
 // Silence TS complaint for the rollup plugin (no types published).
 declare module "@svgr/rollup" {
   import type { Plugin } from "vite"
