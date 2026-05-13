@@ -1,0 +1,38 @@
+import { render, screen, within } from "@testing-library/react"
+import { describe, expect, it } from "vitest"
+
+import { WorkExperience } from "@components/WorkExperience"
+
+import resume from "@data/resume.json"
+
+describe("WorkExperience", () => {
+  it("renders inside a Work Experience section", () => {
+    render(<WorkExperience />)
+    expect(
+      screen.getByRole("heading", { level: 2, name: "Work Experience" })
+    ).toBeInTheDocument()
+  })
+
+  it("renders one entry per work_experience item", () => {
+    render(<WorkExperience />)
+    for (const job of resume.work_experience) {
+      const role = screen.getAllByRole("heading", { level: 3, name: job.role })
+      expect(role.length).toBeGreaterThanOrEqual(1)
+      expect(screen.getAllByText(job.company).length).toBeGreaterThanOrEqual(1)
+      expect(screen.getByText(job.period)).toBeInTheDocument()
+    }
+  })
+
+  it("renders all achievements for the first role", () => {
+    render(<WorkExperience />)
+    const first = resume.work_experience[0]
+    const headings = screen.getAllByRole("heading", {
+      level: 3,
+      name: first.role,
+    })
+    const card = headings[0].closest("li")!
+    for (const line of first.achievements) {
+      expect(within(card).getByText(line)).toBeInTheDocument()
+    }
+  })
+})

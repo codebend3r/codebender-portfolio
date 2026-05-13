@@ -15,7 +15,10 @@
     "prepare": "panda codegen --clean && husky",
     "panda:codegen": "panda codegen --clean",
     "ts:check": "panda codegen --clean && tsc && npx tsc --version",
-    "system-check": "run-s prettier:check lint build"
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "system-check": "run-s prettier:check lint test build"
   },
   "dependencies": {
     "html2pdf.js": "0.10.3",
@@ -26,6 +29,10 @@
   "devDependencies": {
     "@eslint/js": "9.39.4",
     "@pandacss/dev": "1.11.1",
+    "@testing-library/dom": "10.4.1",
+    "@testing-library/jest-dom": "6.9.1",
+    "@testing-library/react": "16.3.2",
+    "@testing-library/user-event": "14.6.1",
     "@trivago/prettier-plugin-sort-imports": "6.0.2",
     "@types/html2pdf.js": "0.10.0",
     "@types/node": "25.7.0",
@@ -34,6 +41,7 @@
     "@typescript-eslint/eslint-plugin": "8.59.3",
     "@typescript-eslint/parser": "8.59.3",
     "@vitejs/plugin-react": "6.0.1",
+    "@vitest/coverage-v8": "4.1.6",
     "eslint": "9.39.4",
     "eslint-import-resolver-typescript": "4.4.4",
     "eslint-plugin-import": "2.32.0",
@@ -42,11 +50,13 @@
     "eslint-plugin-react-hooks": "7.1.1",
     "globals": "17.6.0",
     "husky": "9.1.7",
+    "jsdom": "29.1.1",
     "npm-run-all": "4.1.5",
     "postcss": "8.5.14",
     "prettier": "3.8.3",
     "typescript": "6.0.3",
-    "vite": "8.0.12"
+    "vite": "8.0.12",
+    "vitest": "4.1.6"
   },
   "packageManager": "bun@1.1.22"
 }
