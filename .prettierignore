@@ -24,6 +24,7 @@ styled-system
 # OS / Editor
 .DS_Store
 .vscode
+.claude
 
 # Package manager locks (keep formatting stable, skip checking them)
 package-lock.json
