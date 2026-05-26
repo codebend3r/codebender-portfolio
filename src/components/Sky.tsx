@@ -40,7 +40,7 @@ const CLOUD_LAYERS: Record<DaylightSky, CloudLayerConfig[]> = {
   day: [
     {
       speed: 0.06,
-      count: 12,
+      count: 7,
       scaleRange: [0.55, 0.95],
       opacityRange: [0.4, 0.7],
       driftRange: [160, 240],
@@ -48,7 +48,7 @@ const CLOUD_LAYERS: Record<DaylightSky, CloudLayerConfig[]> = {
     },
     {
       speed: 0.14,
-      count: 10,
+      count: 5,
       scaleRange: [0.9, 1.5],
       opacityRange: [0.7, 1],
       driftRange: [110, 180],
