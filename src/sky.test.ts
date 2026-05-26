@@ -69,7 +69,7 @@ describe("applySky", () => {
     setSearch("sky=day")
     applySky()
     const root = document.documentElement
-    expect(root.style.getPropertyValue("--bg")).toBe("#0a1828")
+    expect(root.style.getPropertyValue("--bg")).toBe("#1c4a82")
     expect(root.style.getPropertyValue("--glow1")).toContain("radial-gradient")
     expect(root.style.getPropertyValue("--glow2")).toContain("radial-gradient")
   })
@@ -78,7 +78,16 @@ describe("applySky", () => {
     setSearch("sky=night")
     applySky()
     expect(document.documentElement.style.getPropertyValue("--bg")).toBe(
-      "#0b0e14"
+      "#070b1a"
     )
+  })
+
+  it.each([
+    ["dawn", "#2a1638"],
+    ["dusk", "#3a1422"],
+  ] as const)("applies the %s palette bg", (sky, bg) => {
+    setSearch(`sky=${sky}`)
+    applySky()
+    expect(document.documentElement.style.getPropertyValue("--bg")).toBe(bg)
   })
 })

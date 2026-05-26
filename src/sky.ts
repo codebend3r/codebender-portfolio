@@ -8,32 +8,32 @@ type Palette = {
 
 const PALETTES: Record<Sky, Palette> = {
   night: {
-    bg: "#0b0e14",
+    bg: "#070b1a",
     glow1:
-      "radial-gradient(90vw 55vh at 15% 0%, rgba(122, 162, 247, 0.15), transparent 55%)",
+      "radial-gradient(90vw 55vh at 15% 0%, rgba(122, 162, 247, 0.28), transparent 60%)",
     glow2:
-      "radial-gradient(70vw 50vh at 85% 15%, rgba(198, 120, 221, 0.14), transparent 65%)",
+      "radial-gradient(70vw 50vh at 85% 15%, rgba(198, 120, 221, 0.24), transparent 65%)",
   },
   dawn: {
-    bg: "#150d1f",
+    bg: "#2a1638",
     glow1:
-      "radial-gradient(90vw 55vh at 15% 100%, rgba(255, 154, 158, 0.20), transparent 55%)",
+      "radial-gradient(95vw 65vh at 15% 100%, rgba(255, 154, 158, 0.45), transparent 60%)",
     glow2:
-      "radial-gradient(70vw 60vh at 85% 100%, rgba(255, 195, 113, 0.18), transparent 65%)",
+      "radial-gradient(75vw 70vh at 85% 100%, rgba(255, 195, 113, 0.38), transparent 65%)",
   },
   day: {
-    bg: "#0a1828",
+    bg: "#1c4a82",
     glow1:
-      "radial-gradient(90vw 55vh at 15% 0%, rgba(95, 168, 255, 0.22), transparent 55%)",
+      "radial-gradient(120vw 70vh at 50% -10%, rgba(180, 220, 255, 0.55), transparent 65%)",
     glow2:
-      "radial-gradient(70vw 50vh at 85% 15%, rgba(159, 211, 255, 0.18), transparent 65%)",
+      "radial-gradient(70vw 50vh at 85% 12%, rgba(255, 235, 170, 0.32), transparent 70%)",
   },
   dusk: {
-    bg: "#1a0f1a",
+    bg: "#3a1422",
     glow1:
-      "radial-gradient(90vw 55vh at 15% 100%, rgba(255, 122, 89, 0.22), transparent 55%)",
+      "radial-gradient(95vw 65vh at 15% 100%, rgba(255, 122, 89, 0.50), transparent 60%)",
     glow2:
-      "radial-gradient(70vw 60vh at 85% 100%, rgba(186, 85, 211, 0.20), transparent 65%)",
+      "radial-gradient(75vw 70vh at 85% 100%, rgba(186, 85, 211, 0.40), transparent 65%)",
   },
 }
 
