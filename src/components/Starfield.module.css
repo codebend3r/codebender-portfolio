@@ -1,0 +1,17 @@
+.starfield {
+  position: absolute;
+  inset: 0;
+}
+
+.layer {
+  position: absolute;
+  inset: 0;
+  will-change: transform;
+}
+
+.star {
+  position: absolute;
+  background: var(--text);
+  border-radius: 50%;
+  box-shadow: 0 0 4px rgba(230, 235, 245, 0.5);
+}

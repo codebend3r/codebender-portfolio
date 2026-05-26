@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef } from "react"
 
-import { css } from "@styled-system/css"
+import styles from "./Starfield.module.css"
 
 type Star = {
   x: number
@@ -40,24 +40,6 @@ const LAYERS: LayerConfig[] = [
     rangeY: 4000,
   },
 ]
-
-const starfieldStyles = css({
-  position: "absolute",
-  inset: 0,
-})
-
-const starfieldLayerStyles = css({
-  position: "absolute",
-  inset: 0,
-  willChange: "transform",
-})
-
-const starStyles = css({
-  position: "absolute",
-  background: "text",
-  borderRadius: "50%",
-  boxShadow: "0 0 4px rgba(230, 235, 245, 0.5)",
-})
 
 function makeStars(config: LayerConfig): Star[] {
   const [minSize, maxSize] = config.sizeRange
@@ -111,19 +93,19 @@ export function Starfield() {
   }, [layers])
 
   return (
-    <div className={starfieldStyles} aria-hidden="true">
+    <div className={styles.starfield} aria-hidden="true">
       {layers.map(({ stars }, idx) => (
         <div
           key={idx}
           ref={(el) => {
             layerRefs.current[idx] = el
           }}
-          className={starfieldLayerStyles}
+          className={styles.layer}
         >
           {stars.map((star, i) => (
             <span
               key={i}
-              className={starStyles}
+              className={styles.star}
               style={{
                 left: `${star.x}%`,
                 top: `${star.y}px`,
