@@ -217,10 +217,8 @@ function CloudShape({
     >
       <defs>
         <filter id={filterId}>
-          <feGaussianBlur in="SourceGraphic" stdDeviation="4" />
-          <feColorMatrix
-            values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 20 -10"
-          />
+          <feGaussianBlur in="SourceGraphic" stdDeviation="6" />
+          <feColorMatrix values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 20 -10" />
         </filter>
       </defs>
       <g filter={`url(#${filterId})`}>
