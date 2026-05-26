@@ -39,13 +39,13 @@ Pulled from a scan of `src/`:
 
 ## Decisions
 
-| Decision | Choice | Rationale |
-|---|---|---|
-| Module flavor | Plain CSS Modules (`.module.css`) | Vite supports natively; nesting is native CSS now; no extra devDep |
-| Token storage | CSS custom properties on `:root` in `src/styles/tokens.css` | Composes with existing dynamic CSS vars; one-click resolved values in DevTools |
-| Variant strategy (Sky's `cva`) | Three sibling classes composed with a base | Only three variants in one site; no need for `clsx` |
-| File layout | Modules colocated with components (`Header.tsx` + `Header.module.css`) | Standard React convention; navigation is trivial |
-| Migration staging | Single PR, multiple commits | Codebase is small (9 files); coexistence period adds no value |
+| Decision                       | Choice                                                                 | Rationale                                                                      |
+| ------------------------------ | ---------------------------------------------------------------------- | ------------------------------------------------------------------------------ |
+| Module flavor                  | Plain CSS Modules (`.module.css`)                                      | Vite supports natively; nesting is native CSS now; no extra devDep             |
+| Token storage                  | CSS custom properties on `:root` in `src/styles/tokens.css`            | Composes with existing dynamic CSS vars; one-click resolved values in DevTools |
+| Variant strategy (Sky's `cva`) | Three sibling classes composed with a base                             | Only three variants in one site; no need for `clsx`                            |
+| File layout                    | Modules colocated with components (`Header.tsx` + `Header.module.css`) | Standard React convention; navigation is trivial                               |
+| Migration staging              | Single PR, multiple commits                                            | Codebase is small (9 files); coexistence period adds no value                  |
 
 ## Architecture
 
@@ -104,28 +104,50 @@ Verbatim port of the four keyframes from `panda.config.ts`. `--cloud-drift` cont
 Verbatim port of `defineGlobalStyles`:
 
 ```css
-* { box-sizing: border-box; }
-html, body, #root { height: 100%; }
+* {
+  box-sizing: border-box;
+}
+html,
+body,
+#root {
+  height: 100%;
+}
 body {
   margin: 0;
-  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
+  font-family:
+    Inter,
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    Roboto,
+    Arial,
+    "Noto Sans",
+    "Apple Color Emoji",
+    "Segoe UI Emoji";
   background: var(--bg);
   color: var(--text);
   line-height: 1.55;
 }
-a { color: var(--accent); text-decoration: none; }
-a:hover { text-decoration: underline; }
+a {
+  color: var(--accent);
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
 @media print {
-  .no-print { display: none !important; }
+  .no-print {
+    display: none !important;
+  }
 }
 ```
 
 ### Entry import order — `src/Entry.tsx`
 
 ```ts
-import "@styles/tokens.css"
-import "@styles/keyframes.css"
 import "@styles/global.css"
+import "@styles/keyframes.css"
+import "@styles/tokens.css"
 ```
 
 The current `import "@styles/index.css"` in `App.tsx` is removed.
@@ -134,6 +156,7 @@ The current `import "@styles/index.css"` in `App.tsx` is removed.
 
 ```tsx
 import styles from "./Header.module.css"
+
 export function Header() {
   return <header className={styles.root}>…</header>
 }
@@ -144,14 +167,27 @@ export function Header() {
 ### Sky variant pattern
 
 ```css
-.sun { position: absolute; border-radius: 50%; }
-.sunDay  { /* day-specific position/size/background/box-shadow */ }
-.sunDawn { /* dawn-specific … */ }
-.sunDusk { /* dusk-specific … */ }
+.sun {
+  position: absolute;
+  border-radius: 50%;
+}
+.sunDay {
+  /* day-specific position/size/background/box-shadow */
+}
+.sunDawn {
+  /* dawn-specific … */
+}
+.sunDusk {
+  /* dusk-specific … */
+}
 ```
 
 ```tsx
-const kindClass = { day: styles.sunDay, dawn: styles.sunDawn, dusk: styles.sunDusk }[kind]
+const kindClass = {
+  day: styles.sunDay,
+  dawn: styles.sunDawn,
+  dusk: styles.sunDusk,
+}[kind]
 return <div className={`${styles.sun} ${kindClass}`} />
 ```
 

@@ -2,7 +2,3 @@ node_modules
 dist
 # Local Netlify folder
 .netlify
-
-## Panda
-styled-system
-styled-system-studio

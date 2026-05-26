@@ -17,8 +17,6 @@ import { waitForAssets } from "@utils/print-utils"
 
 import styles from "./App.module.css"
 
-import "@styles/index.css"
-
 export default function App() {
   const resumeRef = useRef<HTMLDivElement>(null)
   const [isGenerating, setIsGenerating] = useState(false)

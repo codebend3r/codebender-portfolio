@@ -5,9 +5,9 @@ import ReactDOM from "react-dom/client"
 
 import { applySky } from "@sky"
 
-import "@styles/tokens.css"
-import "@styles/keyframes.css"
 import "@styles/global.css"
+import "@styles/keyframes.css"
+import "@styles/tokens.css"
 
 applySky()
 

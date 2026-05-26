@@ -24,7 +24,11 @@ export function TechnicalSkills() {
               aria-label={`${s}: ${description}`}
             >
               {s}
-              <span data-skill-tooltip role="tooltip" className={styles.tooltip}>
+              <span
+                data-skill-tooltip
+                role="tooltip"
+                className={styles.tooltip}
+              >
                 {description}
               </span>
             </li>
