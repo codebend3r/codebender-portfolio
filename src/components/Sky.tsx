@@ -189,7 +189,7 @@ function makeClouds(config: CloudLayerConfig): Cloud[] {
     const direction = Math.random() < 0.5 ? -1 : 1
     clouds.push({
       x: Math.random() * 90,
-      y: Math.random() * 45,
+      y: Math.random() * 90,
       scale: minScale + Math.random() * (maxScale - minScale),
       opacity: minOpacity + Math.random() * (maxOpacity - minOpacity),
       flip: Math.random() < 0.5,
