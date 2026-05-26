@@ -1,38 +1,31 @@
 .panel {
-  position: fixed;
-  top: 16px;
-  left: 16px;
-  z-index: 10;
   display: flex;
-  flex-direction: column;
-  gap: 4px;
-  padding: 8px 12px;
-  border: 2px solid var(--accent);
-  border-radius: 8px;
-  background: var(--bg);
-  color: var(--text);
+  align-items: center;
+  gap: 12px;
   font-weight: 600;
   font-size: 14px;
   line-height: 1.2;
+  color: var(--text);
 }
 
 .weather {
-  font-size: 16px;
+  font-size: 15px;
 }
 
 .date {
   color: var(--muted);
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 500;
 }
 
 .time {
-  font-size: 16px;
+  font-size: 15px;
   letter-spacing: 0.5px;
 }
 
-@media print {
+@media (max-width: 700px) {
   .panel {
-    display: none;
+    flex-wrap: wrap;
+    gap: 6px 12px;
   }
 }

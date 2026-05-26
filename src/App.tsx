@@ -2,16 +2,15 @@ import { useCallback, useRef, useState } from "react"
 
 import html2pdf from "html2pdf.js"
 
+import { AppHeader } from "@components/AppHeader"
 import { Awards } from "@components/Awards"
 import { Education } from "@components/Education"
 import { Footer } from "@components/Footer"
-import { Header } from "@components/Header"
 import { Languages } from "@components/Languages"
 import { Sky } from "@components/Sky"
 import { Summary } from "@components/Summary"
 import { TechnicalSkills } from "@components/TechnicalSkills"
 import { Weather } from "@components/Weather"
-import { WeatherClock } from "@components/WeatherClock"
 import { WorkExperience } from "@components/WorkExperience"
 
 import { waitForAssets } from "@utils/print-utils"
@@ -67,20 +66,9 @@ export default function App() {
     <>
       <Sky />
       <Weather />
-      <WeatherClock />
-      <div className={styles.hoverButton}>
-        <button
-          className={styles.downloadButton}
-          onClick={onDownload}
-          disabled={isGenerating}
-          aria-busy={isGenerating}
-        >
-          {isGenerating ? "Generating…" : "Download PDF"}
-        </button>
-      </div>
       <div id="resume-root" className={styles.resumeRoot} ref={resumeRef}>
         <div className={styles.container}>
-          <Header />
+          <AppHeader onDownload={onDownload} isGenerating={isGenerating} />
 
           <main>
             <Summary />

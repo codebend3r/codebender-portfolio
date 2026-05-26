@@ -38,9 +38,7 @@ describe("WeatherClock", () => {
     mockedFetch.mockResolvedValue({ condition: "cloudy", temperature: 18.4 })
     render(<WeatherClock />)
 
-    await waitFor(() =>
-      expect(screen.getByText(/18°C/)).toBeInTheDocument()
-    )
+    await waitFor(() => expect(screen.getByText(/18°C/)).toBeInTheDocument())
     expect(screen.getByText(/☁️/)).toBeInTheDocument()
   })
 

@@ -32,6 +32,10 @@ vi.mock("@components/Weather", () => ({
   Weather: () => <div data-testid="weather-mock" />,
 }))
 
+vi.mock("@components/WeatherClock", () => ({
+  WeatherClock: () => <div data-testid="weather-clock-mock" />,
+}))
+
 vi.mock("@utils/print-utils", () => ({
   waitForAssets: vi.fn().mockResolvedValue(undefined),
 }))
@@ -52,6 +56,7 @@ describe("App", () => {
     render(<App />)
     expect(screen.getByTestId("sky-mock")).toBeInTheDocument()
     expect(screen.getByTestId("weather-mock")).toBeInTheDocument()
+    expect(screen.getByTestId("weather-clock-mock")).toBeInTheDocument()
     expect(
       screen.getByRole("heading", { level: 1, name: resume.name })
     ).toBeInTheDocument()

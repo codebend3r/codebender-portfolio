@@ -48,15 +48,15 @@ Returns `null` on geolocation denial, network failure, or missing fields. The ne
 
 `weathercode` → `WeatherCondition` mapping (WMO codes per Open-Meteo docs):
 
-| Code | Condition |
-|---|---|
-| 0 | clear |
-| 1, 2, 3 | cloudy |
-| 45, 48 | cloudy (fog → cloudy bucket) |
-| 51–67, 80–82 | rain |
-| 71–77, 85–86 | snow |
-| 95, 96, 99 | storm |
-| anything else | unknown |
+| Code          | Condition                    |
+| ------------- | ---------------------------- |
+| 0             | clear                        |
+| 1, 2, 3       | cloudy                       |
+| 45, 48        | cloudy (fog → cloudy bucket) |
+| 51–67, 80–82  | rain                         |
+| 71–77, 85–86  | snow                         |
+| 95, 96, 99    | storm                        |
+| anything else | unknown                      |
 
 ### Component — `src/components/WeatherClock.tsx`
 

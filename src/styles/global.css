@@ -20,10 +20,7 @@ body {
     "Noto Sans",
     "Apple Color Emoji",
     "Segoe UI Emoji";
-  background:
-    var(--glow1),
-    var(--glow2),
-    var(--bg);
+  background: var(--glow1), var(--glow2), var(--bg);
   background-attachment: fixed;
   color: var(--text);
   line-height: 1.55;

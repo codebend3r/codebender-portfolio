@@ -3,15 +3,6 @@
   justify-content: space-between;
   align-items: center;
   gap: 20px;
-  background: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0.04),
-    rgba(255, 255, 255, 0.02)
-  );
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 20px;
-  margin-bottom: 20px;
 }
 
 @media (max-width: 700px) {
