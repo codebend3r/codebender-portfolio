@@ -36,6 +36,7 @@
 
 .downloadButton {
   appearance: none;
+  display: inline-flex;
   border: 2px solid var(--accent);
   align-items: center;
   cursor: pointer;
@@ -51,6 +52,10 @@
     background-color 0.2s ease,
     box-shadow 0.4s ease,
     opacity 0.2s ease;
+}
+
+.downloadIcon {
+  flex-shrink: 0;
 }
 
 .downloadButton:hover:not(:disabled) {

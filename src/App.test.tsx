@@ -76,7 +76,7 @@ describe("App", () => {
 
   it("renders an enabled download button by default", () => {
     render(<App />)
-    const button = screen.getByRole("button", { name: "Download PDF" })
+    const button = screen.getByRole("button", { name: "Download CV" })
     expect(button).toBeEnabled()
     expect(button).toHaveAttribute("aria-busy", "false")
   })
@@ -84,7 +84,7 @@ describe("App", () => {
   it("invokes html2pdf when the download button is clicked", async () => {
     const user = userEvent.setup()
     render(<App />)
-    await user.click(screen.getByRole("button", { name: "Download PDF" }))
+    await user.click(screen.getByRole("button", { name: "Download CV" }))
     await waitFor(() => expect(html2pdfSave).toHaveBeenCalledTimes(1))
     expect(html2pdfFactory).toHaveBeenCalledTimes(1)
     expect(html2pdfSet).toHaveBeenCalledTimes(1)
@@ -102,7 +102,7 @@ describe("App", () => {
 
     const user = userEvent.setup()
     render(<App />)
-    const button = screen.getByRole("button", { name: "Download PDF" })
+    const button = screen.getByRole("button", { name: "Download CV" })
     await user.click(button)
 
     await waitFor(() => {
@@ -111,7 +111,7 @@ describe("App", () => {
 
     resolveSave()
     await waitFor(() => {
-      expect(screen.getByRole("button", { name: "Download PDF" })).toBeEnabled()
+      expect(screen.getByRole("button", { name: "Download CV" })).toBeEnabled()
     })
   })
 
@@ -122,10 +122,10 @@ describe("App", () => {
 
     const user = userEvent.setup()
     render(<App />)
-    await user.click(screen.getByRole("button", { name: "Download PDF" }))
+    await user.click(screen.getByRole("button", { name: "Download CV" }))
     await waitFor(() => expect(consoleError).toHaveBeenCalled())
     expect(consoleError.mock.calls[0][0]).toBe("PDF generation failed:")
-    expect(screen.getByRole("button", { name: "Download PDF" })).toBeEnabled()
+    expect(screen.getByRole("button", { name: "Download CV" })).toBeEnabled()
 
     consoleError.mockRestore()
   })
