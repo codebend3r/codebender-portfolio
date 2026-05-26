@@ -21,6 +21,10 @@
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   border-bottom: 1px solid var(--border);
+  --header-h1-size: 28px;
+  --header-logo-size: 56px;
+  --header-brand-gap: 16px;
+  --header-meta-size: 16px;
 }
 
 .inner {
@@ -44,14 +48,21 @@
   transition: padding-bottom 0.25s ease;
 }
 
+.bar[data-stuck="true"] {
+  --header-h1-size: 20px;
+  --header-logo-size: 36px;
+  --header-brand-gap: 10px;
+  --header-meta-size: 13px;
+}
+
 .bar[data-stuck="true"] .inner {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  gap: 8px;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  gap: 6px;
 }
 
 .bar[data-stuck="true"] .utility {
-  padding-bottom: 6px;
+  padding-bottom: 4px;
 }
 
 .downloadButton {

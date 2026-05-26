@@ -15,25 +15,32 @@
 .brand {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: var(--header-brand-gap, 16px);
+  transition: gap 0.25s ease;
 }
 
 .brand h1 {
-  font-size: 28px;
+  font-size: var(--header-h1-size, 28px);
   margin: 0;
   font-weight: 800;
   letter-spacing: 0.2px;
+  transition: font-size 0.25s ease;
 }
 
 .logo {
-  width: 56px;
-  height: 56px;
+  width: var(--header-logo-size, 56px);
+  height: var(--header-logo-size, 56px);
+  transition:
+    width 0.25s ease,
+    height 0.25s ease;
 }
 
 .subtitle {
   margin: 2px 0 0;
   color: var(--muted);
   font-weight: 600;
+  font-size: var(--header-meta-size, 16px);
+  transition: font-size 0.25s ease;
 }
 
 .contact {
@@ -42,4 +49,6 @@
   gap: 8px;
   align-items: center;
   color: var(--muted);
+  font-size: var(--header-meta-size, 16px);
+  transition: font-size 0.25s ease;
 }
