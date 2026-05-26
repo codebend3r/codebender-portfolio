@@ -1,0 +1,44 @@
+@keyframes cloudDrift {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(var(--cloud-drift, 0), 0, 0);
+  }
+}
+
+@keyframes rainFall {
+  0% {
+    transform: translate3d(0, -10vh, 0);
+  }
+  100% {
+    transform: translate3d(2vw, 115vh, 0);
+  }
+}
+
+@keyframes snowFall {
+  0% {
+    transform: translate3d(0, -5vh, 0);
+  }
+  50% {
+    transform: translate3d(4vw, 55vh, 0);
+  }
+  100% {
+    transform: translate3d(-2vw, 110vh, 0);
+  }
+}
+
+@keyframes glowPulse {
+  0% {
+    box-shadow:
+      0 0 5px var(--accent),
+      0 0 10px var(--accent),
+      0 0 15px var(--accent);
+  }
+  100% {
+    box-shadow:
+      0 0 15px var(--accent2),
+      0 0 30px var(--accent2),
+      0 0 45px var(--accent2);
+  }
+}
