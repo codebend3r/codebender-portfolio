@@ -3,7 +3,7 @@ import { useEffect, useMemo, useState } from "react"
 import { fetchWeather, getWeatherOverride } from "@weather"
 import type { Weather as WeatherKind } from "@weather"
 
-import { css } from "@styled-system/css"
+import styles from "./Weather.module.css"
 
 type Drop = {
   left: number
@@ -15,42 +15,6 @@ type Drop = {
 
 const RAIN_COUNT = 140
 const SNOW_COUNT = 90
-
-const weatherStyles = css({
-  position: "fixed",
-  inset: 0,
-  zIndex: 2,
-  pointerEvents: "none",
-  overflow: "hidden",
-})
-
-const raindropStyles = css({
-  position: "absolute",
-  top: "-10vh",
-  width: "1.5px",
-  height: "70px",
-  background:
-    "linear-gradient(to bottom, rgba(174, 200, 255, 0) 0%, rgba(174, 200, 255, 0.55) 50%, rgba(220, 232, 255, 0.85) 100%)",
-  borderRadius: "1px",
-  transformOrigin: "top center",
-  animationName: "rainFall",
-  animationTimingFunction: "linear",
-  animationIterationCount: "infinite",
-  willChange: "transform",
-})
-
-const snowflakeStyles = css({
-  position: "absolute",
-  top: "-5vh",
-  background:
-    "radial-gradient(circle, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.5) 60%, rgba(255, 255, 255, 0) 100%)",
-  borderRadius: "50%",
-  filter: "blur(0.4px)",
-  animationName: "snowFall",
-  animationTimingFunction: "linear",
-  animationIterationCount: "infinite",
-  willChange: "transform",
-})
 
 function makeDrops(count: number, durationRange: [number, number]): Drop[] {
   const [minDur, maxDur] = durationRange
@@ -70,11 +34,11 @@ function makeDrops(count: number, durationRange: [number, number]): Drop[] {
 function Rain() {
   const drops = useMemo(() => makeDrops(RAIN_COUNT, [0.45, 1.1]), [])
   return (
-    <div className={weatherStyles} aria-hidden="true">
+    <div className={styles.weather} aria-hidden="true">
       {drops.map((d, i) => (
         <span
           key={i}
-          className={raindropStyles}
+          className={styles.raindrop}
           style={{
             left: `${d.left}%`,
             animationDelay: `${d.delay}s`,
@@ -91,11 +55,11 @@ function Rain() {
 function Snow() {
   const flakes = useMemo(() => makeDrops(SNOW_COUNT, [6, 14]), [])
   return (
-    <div className={weatherStyles} aria-hidden="true">
+    <div className={styles.weather} aria-hidden="true">
       {flakes.map((f, i) => (
         <span
           key={i}
-          className={snowflakeStyles}
+          className={styles.snowflake}
           style={{
             left: `${f.left}%`,
             animationDelay: `${f.delay}s`,
