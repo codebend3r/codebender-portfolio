@@ -16,10 +16,77 @@ type Cloud = {
   scale: number
   opacity: number
   flip: boolean
+  shape: number
   driftAmount: number
   driftDuration: number
   driftDelay: number
 }
+
+type Circle = { cx: number; cy: number; r: number }
+
+const CLOUD_SHAPES: Circle[][] = [
+  // 1. Classic three-bump
+  [
+    { cx: 50, cy: 70, r: 26 },
+    { cx: 104, cy: 50, r: 42 },
+    { cx: 162, cy: 70, r: 26 },
+  ],
+  // 2. Tall cumulus
+  [
+    { cx: 50, cy: 75, r: 22 },
+    { cx: 104, cy: 45, r: 42 },
+    { cx: 158, cy: 75, r: 22 },
+  ],
+  // 3. Wide stratus (flat, low)
+  [
+    { cx: 25, cy: 75, r: 18 },
+    { cx: 65, cy: 70, r: 22 },
+    { cx: 104, cy: 68, r: 24 },
+    { cx: 144, cy: 70, r: 22 },
+    { cx: 184, cy: 75, r: 18 },
+  ],
+  // 4. Two-puff
+  [
+    { cx: 70, cy: 60, r: 35 },
+    { cx: 140, cy: 65, r: 30 },
+  ],
+  // 5. Big puff with smaller companion
+  [
+    { cx: 80, cy: 55, r: 42 },
+    { cx: 145, cy: 75, r: 20 },
+  ],
+  // 6. Multi-lobe row
+  [
+    { cx: 30, cy: 70, r: 18 },
+    { cx: 70, cy: 60, r: 22 },
+    { cx: 110, cy: 55, r: 24 },
+    { cx: 145, cy: 60, r: 22 },
+    { cx: 180, cy: 70, r: 18 },
+  ],
+  // 7. Single round blob
+  [{ cx: 104, cy: 55, r: 45 }],
+  // 8. Asymmetric, taller right
+  [
+    { cx: 55, cy: 75, r: 20 },
+    { cx: 100, cy: 60, r: 28 },
+    { cx: 150, cy: 42, r: 36 },
+  ],
+  // 9. Lumpy three-tier
+  [
+    { cx: 50, cy: 65, r: 30 },
+    { cx: 110, cy: 75, r: 18 },
+    { cx: 155, cy: 55, r: 32 },
+  ],
+  // 10. Wispy elongated
+  [
+    { cx: 25, cy: 75, r: 14 },
+    { cx: 55, cy: 72, r: 18 },
+    { cx: 90, cy: 70, r: 16 },
+    { cx: 125, cy: 68, r: 18 },
+    { cx: 160, cy: 70, r: 14 },
+    { cx: 190, cy: 75, r: 12 },
+  ],
+]
 
 type CloudLayerConfig = {
   speed: number
@@ -112,6 +179,7 @@ function makeClouds(config: CloudLayerConfig): Cloud[] {
       scale: minScale + Math.random() * (maxScale - minScale),
       opacity: minOpacity + Math.random() * (maxOpacity - minOpacity),
       flip: Math.random() < 0.5,
+      shape: Math.floor(Math.random() * CLOUD_SHAPES.length),
       driftAmount: direction * config.driftAmount,
       driftDuration: minDur + Math.random() * (maxDur - minDur),
       driftDelay: -Math.random() * maxDur,
@@ -128,7 +196,16 @@ function Sun({ kind }: { kind: DaylightSky }) {
   return <div className={`${styles.sun} ${SUN_VARIANT[kind]}`} />
 }
 
-function CloudShape({ tint, flip }: { tint: string; flip: boolean }) {
+function CloudShape({
+  tint,
+  flip,
+  shape,
+}: {
+  tint: string
+  flip: boolean
+  shape: number
+}) {
+  const circles = CLOUD_SHAPES[shape % CLOUD_SHAPES.length]
   return (
     <svg
       viewBox="0 0 208 100"
@@ -137,10 +214,9 @@ function CloudShape({ tint, flip }: { tint: string; flip: boolean }) {
       height="100%"
       style={flip ? { transform: "scaleX(-1)" } : undefined}
     >
-      <path
-        fill={tint}
-        d="M 60 94 c -16 0 -28 -12 -28 -28 c 0 -16 12 -28 28 -28 c 3 -22 22 -38 44 -38 c 22 0 40 16 44 38 c 16 0 28 12 28 28 c 0 16 -12 28 -28 28 z"
-      />
+      {circles.map((c, i) => (
+        <circle key={i} cx={c.cx} cy={c.cy} r={c.r} fill={tint} />
+      ))}
     </svg>
   )
 }
@@ -213,7 +289,7 @@ function Clouds({ kind }: { kind: DaylightSky }) {
                 } as CSSProperties
               }
             >
-              <CloudShape tint={tint} flip={cloud.flip} />
+              <CloudShape tint={tint} flip={cloud.flip} shape={cloud.shape} />
             </div>
           ))}
         </div>
