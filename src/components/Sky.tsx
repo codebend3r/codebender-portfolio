@@ -6,7 +6,7 @@ import { Starfield } from "@components/Starfield"
 import { getCurrentSky } from "@sky"
 import type { Sky as SkyName } from "@sky"
 
-import { css, cva } from "@styled-system/css"
+import styles from "./Sky.module.css"
 
 type DaylightSky = Exclude<SkyName, "night">
 
@@ -34,6 +34,12 @@ const CLOUD_TINT: Record<DaylightSky, string> = {
   day: "rgba(255, 255, 255, 0.85)",
   dawn: "rgba(255, 220, 232, 0.78)",
   dusk: "rgba(255, 198, 178, 0.75)",
+}
+
+const SUN_VARIANT: Record<DaylightSky, string> = {
+  day: styles.sunDay,
+  dawn: styles.sunDawn,
+  dusk: styles.sunDusk,
 }
 
 const CLOUD_LAYERS: Record<DaylightSky, CloudLayerConfig[]> = {
@@ -93,93 +99,6 @@ const CLOUD_LAYERS: Record<DaylightSky, CloudLayerConfig[]> = {
   ],
 }
 
-const skyStageStyles = css({
-  position: "fixed",
-  inset: 0,
-  zIndex: 0,
-  overflow: "hidden",
-  pointerEvents: "none",
-})
-
-const moonStyles = css({
-  position: "absolute",
-  top: "8%",
-  right: "10%",
-  width: "90px",
-  height: "90px",
-  borderRadius: "50%",
-  background: "radial-gradient(circle at 35% 35%, #fdfbf2, #d8d2bf 70%)",
-  boxShadow:
-    "0 0 50px rgba(255, 250, 220, 0.35), 0 0 110px rgba(180, 200, 255, 0.18), inset -12px -10px 28px rgba(70, 70, 95, 0.4)",
-})
-
-const sunStyles = cva({
-  base: {
-    position: "absolute",
-    borderRadius: "50%",
-  },
-  variants: {
-    kind: {
-      day: {
-        top: "10%",
-        right: "12%",
-        width: "110px",
-        height: "110px",
-        background:
-          "radial-gradient(circle, #fff7c2 0%, #ffd35a 60%, #ffae3d 100%)",
-        boxShadow:
-          "0 0 70px rgba(255, 220, 100, 0.6), 0 0 140px rgba(255, 180, 70, 0.35)",
-      },
-      dawn: {
-        top: "62%",
-        left: "12%",
-        width: "140px",
-        height: "140px",
-        background:
-          "radial-gradient(circle, #ffe9c4 0%, #ffb784 55%, #ff7a89 100%)",
-        boxShadow:
-          "0 0 90px rgba(255, 154, 158, 0.55), 0 0 180px rgba(255, 122, 137, 0.3)",
-      },
-      dusk: {
-        top: "64%",
-        right: "12%",
-        width: "140px",
-        height: "140px",
-        background:
-          "radial-gradient(circle, #ffd49b 0%, #ff8a5b 55%, #c84658 100%)",
-        boxShadow:
-          "0 0 90px rgba(255, 122, 89, 0.6), 0 0 180px rgba(186, 85, 211, 0.3)",
-      },
-    },
-  },
-})
-
-const cloudsStyles = css({
-  position: "absolute",
-  inset: 0,
-})
-
-const cloudsLayerStyles = css({
-  position: "absolute",
-  inset: 0,
-  willChange: "transform",
-})
-
-const cloudStyles = css({
-  position: "absolute",
-  filter: "blur(3px)",
-  animationName: "cloudDrift",
-  animationTimingFunction: "ease-in-out",
-  animationIterationCount: "infinite",
-  animationDirection: "alternate",
-  willChange: "transform",
-  "& svg": {
-    display: "block",
-    width: "100%",
-    height: "100%",
-  },
-})
-
 function makeClouds(config: CloudLayerConfig): Cloud[] {
   const [minScale, maxScale] = config.scaleRange
   const [minOpacity, maxOpacity] = config.opacityRange
@@ -202,11 +121,11 @@ function makeClouds(config: CloudLayerConfig): Cloud[] {
 }
 
 function Moon() {
-  return <div className={moonStyles} />
+  return <div className={styles.moon} />
 }
 
 function Sun({ kind }: { kind: DaylightSky }) {
-  return <div className={sunStyles({ kind })} />
+  return <div className={`${styles.sun} ${SUN_VARIANT[kind]}`} />
 }
 
 function CloudShape({ tint, flip }: { tint: string; flip: boolean }) {
@@ -268,19 +187,19 @@ function Clouds({ kind }: { kind: DaylightSky }) {
   }, [layers])
 
   return (
-    <div className={cloudsStyles}>
+    <div className={styles.clouds}>
       {layers.map(({ clouds }, idx) => (
         <div
           key={idx}
           ref={(el) => {
             layerRefs.current[idx] = el
           }}
-          className={cloudsLayerStyles}
+          className={styles.cloudsLayer}
         >
           {clouds.map((cloud, i) => (
             <div
               key={i}
-              className={cloudStyles}
+              className={styles.cloud}
               style={
                 {
                   left: `${cloud.x}%`,
@@ -308,7 +227,7 @@ export function Sky() {
 
   if (sky === "night") {
     return (
-      <div className={skyStageStyles} aria-hidden="true">
+      <div className={styles.skyStage} aria-hidden="true">
         <Starfield />
         <Moon />
       </div>
@@ -316,7 +235,7 @@ export function Sky() {
   }
 
   return (
-    <div className={skyStageStyles} aria-hidden="true">
+    <div className={styles.skyStage} aria-hidden="true">
       <Sun kind={sky} />
       <Clouds kind={sky} />
     </div>
