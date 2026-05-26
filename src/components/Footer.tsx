@@ -1,17 +1,8 @@
-import { css } from "@styled-system/css"
-
-const footerStyles = css({
-  display: "grid",
-  gridTemplateColumns: "1fr",
-  gap: "16px",
-  margin: 0,
-  color: "muted",
-  textAlign: "center",
-})
+import styles from "./Footer.module.css"
 
 export function Footer() {
   return (
-    <footer className={footerStyles}>
+    <footer className={styles.footer}>
       <small>Built with React + Typescript + Vite</small>
       <small>© {new Date().getFullYear()}. Codebender Inc.</small>
     </footer>
