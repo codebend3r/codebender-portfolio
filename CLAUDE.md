@@ -12,9 +12,8 @@ Package manager is **bun** (see `packageManager` in `package.json`). Use `bun <s
 - `bun lint` / `bun lint:fix` — ESLint (flat config)
 - `bun prettier` / `bun prettier:check` — Prettier write / check
 - `bun ts:check` — `tsc` type check (no emit)
-- `bun system-check` — runs `prettier:check`, `lint`, `build` sequentially via `npm-run-all`
-
-No test runner is configured.
+- `bun test` / `bun test:watch` / `bun test:coverage` — Vitest
+- `bun system-check` — runs `prettier:check`, `lint`, `test`, `build` sequentially via `npm-run-all`
 
 ### Git hooks
 
@@ -25,7 +24,7 @@ Husky runs on every commit and push:
 
 ## Architecture
 
-Single-page resume/portfolio. Vite + React 19 + TypeScript, styled with SCSS, state in Zustand.
+Single-page resume/portfolio. Vite + React 19 + TypeScript, styled with plain CSS Modules, state in Zustand.
 
 ### Data flow
 
@@ -39,11 +38,21 @@ When adding a new resume section: extend `resume.json` → add a type to `src/ty
 
 ### Path aliases
 
-Aliases are declared in **two places that must stay in sync**: `vite.config.ts` (runtime resolution) and `tsconfig.json` `paths` (type resolution). Current aliases: `@App`, `@app`, `@data/*`, `@components/*`, `@state/*`, `@styles/*`. Adding a new alias requires editing both files.
+Aliases are declared in **two places that must stay in sync**: `vite.config.ts` (runtime resolution) and `tsconfig.json` `paths` (type resolution). Current aliases: `@App`, `@app`, `@assets/*`, `@components/*`, `@data/*`, `@sky`, `@state/*`, `@styles/*`, `@utils/*`, `@weather`. Adding a new alias requires editing both files.
+
+### Styling
+
+Plain CSS Modules — every component pairs with a colocated `<Name>.module.css` file (e.g. `Header.tsx` ↔ `Header.module.css`). Class names produced by Vite are of the form `<Name>_<local>__<hash>`, which makes DevTools inspection straightforward. Three shared stylesheets in `src/styles/` are imported once from `src/Entry.tsx`:
+
+- `tokens.css` — `:root` CSS custom properties (`--bg`, `--panel`, `--text`, `--muted`, `--accent`, `--accent2`, `--border`, `--cloud-drift`)
+- `keyframes.css` — `cloudDrift`, `rainFall`, `snowFall`, `glowPulse`
+- `global.css` — body/html resets, anchor styling, `@media print` rules
+
+Reference tokens inside modules as `var(--accent)` etc. The previous Panda-CSS toolchain (`panda.config.ts`, `styled-system/`, `postcss.config.cjs`) was removed in favor of this approach — see `docs/superpowers/specs/2026-05-26-css-modules-migration-design.md`.
 
 ### Asset imports
 
-`src/vite-env.d.ts` declares modules for `*.png`, `*.svg`, `*.scss`, and `@svgr/rollup`. SVGs can be imported as a URL (default) or — once `@svgr/rollup` is wired in — as a React component via the `ReactComponent` named export. SCSS imports return a class map for CSS Modules; global stylesheets like `src/styles/global.scss` are imported for side effects only.
+`src/vite-env.d.ts` declares modules for `*.png`, `*.svg`, `*.scss`, and `@svgr/rollup`. SVGs can be imported as a URL (default) or — once `@svgr/rollup` is wired in — as a React component via the `ReactComponent` named export.
 
 ### Code style enforced by tooling
 
