@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef } from "react"
+import { useEffect, useId, useMemo, useRef } from "react"
 import type { CSSProperties } from "react"
 
 import { Starfield } from "@components/Starfield"
@@ -205,6 +205,7 @@ function CloudShape({
   flip: boolean
   shape: number
 }) {
+  const filterId = useId()
   const circles = CLOUD_SHAPES[shape % CLOUD_SHAPES.length]
   return (
     <svg
@@ -214,9 +215,19 @@ function CloudShape({
       height="100%"
       style={flip ? { transform: "scaleX(-1)" } : undefined}
     >
-      {circles.map((c, i) => (
-        <circle key={i} cx={c.cx} cy={c.cy} r={c.r} fill={tint} />
-      ))}
+      <defs>
+        <filter id={filterId}>
+          <feGaussianBlur in="SourceGraphic" stdDeviation="4" />
+          <feColorMatrix
+            values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 20 -10"
+          />
+        </filter>
+      </defs>
+      <g filter={`url(#${filterId})`}>
+        {circles.map((c, i) => (
+          <circle key={i} cx={c.cx} cy={c.cy} r={c.r} fill={tint} />
+        ))}
+      </g>
     </svg>
   )
 }
