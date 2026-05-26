@@ -36,24 +36,62 @@ const CLOUD_TINT: Record<DaylightSky, string> = {
   dusk: "rgba(255, 198, 178, 0.75)",
 }
 
-const CLOUD_LAYERS: CloudLayerConfig[] = [
-  {
-    speed: 0.06,
-    count: 5,
-    scaleRange: [0.55, 0.95],
-    opacityRange: [0.4, 0.7],
-    driftRange: [160, 240],
-    driftAmount: 5,
-  },
-  {
-    speed: 0.14,
-    count: 4,
-    scaleRange: [0.9, 1.5],
-    opacityRange: [0.7, 1],
-    driftRange: [110, 180],
-    driftAmount: 7,
-  },
-]
+const CLOUD_LAYERS: Record<DaylightSky, CloudLayerConfig[]> = {
+  day: [
+    {
+      speed: 0.06,
+      count: 12,
+      scaleRange: [0.55, 0.95],
+      opacityRange: [0.4, 0.7],
+      driftRange: [160, 240],
+      driftAmount: 5,
+    },
+    {
+      speed: 0.14,
+      count: 10,
+      scaleRange: [0.9, 1.5],
+      opacityRange: [0.7, 1],
+      driftRange: [110, 180],
+      driftAmount: 7,
+    },
+  ],
+  dawn: [
+    {
+      speed: 0.06,
+      count: 5,
+      scaleRange: [0.55, 0.95],
+      opacityRange: [0.4, 0.7],
+      driftRange: [160, 240],
+      driftAmount: 5,
+    },
+    {
+      speed: 0.14,
+      count: 4,
+      scaleRange: [0.9, 1.5],
+      opacityRange: [0.7, 1],
+      driftRange: [110, 180],
+      driftAmount: 7,
+    },
+  ],
+  dusk: [
+    {
+      speed: 0.06,
+      count: 5,
+      scaleRange: [0.55, 0.95],
+      opacityRange: [0.4, 0.7],
+      driftRange: [160, 240],
+      driftAmount: 5,
+    },
+    {
+      speed: 0.14,
+      count: 4,
+      scaleRange: [0.9, 1.5],
+      opacityRange: [0.7, 1],
+      driftRange: [110, 180],
+      driftAmount: 7,
+    },
+  ],
+}
 
 const skyStageStyles = css({
   position: "fixed",
@@ -191,8 +229,11 @@ function CloudShape({ tint, flip }: { tint: string; flip: boolean }) {
 function Clouds({ kind }: { kind: DaylightSky }) {
   const layers = useMemo(
     () =>
-      CLOUD_LAYERS.map((config) => ({ config, clouds: makeClouds(config) })),
-    []
+      CLOUD_LAYERS[kind].map((config) => ({
+        config,
+        clouds: makeClouds(config),
+      })),
+    [kind]
   )
   const layerRefs = useRef<(HTMLDivElement | null)[]>([])
   const tint = CLOUD_TINT[kind]
