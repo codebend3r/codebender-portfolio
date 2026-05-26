@@ -28,6 +28,9 @@ function manualChunks(id) {
 
 export default defineConfig({
   plugins: [react()],
+  server: {
+    port: 4242,
+  },
   resolve: {
     alias: {
       "@App": path.resolve(__dirname, "src/App.tsx"),
