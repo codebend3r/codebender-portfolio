@@ -11,6 +11,7 @@ import { Sky } from "@components/Sky"
 import { Summary } from "@components/Summary"
 import { TechnicalSkills } from "@components/TechnicalSkills"
 import { Weather } from "@components/Weather"
+import { WeatherClock } from "@components/WeatherClock"
 import { WorkExperience } from "@components/WorkExperience"
 
 import { waitForAssets } from "@utils/print-utils"
@@ -66,6 +67,7 @@ export default function App() {
     <>
       <Sky />
       <Weather />
+      <WeatherClock />
       <div className={styles.hoverButton}>
         <button
           className={styles.downloadButton}
