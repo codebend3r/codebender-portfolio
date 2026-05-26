@@ -58,7 +58,6 @@ const downloadButtonStyles = css({
 const resumeRootStyles = css({
   position: "relative",
   zIndex: 1,
-  background: "bg",
 })
 
 const containerStyles = css({
