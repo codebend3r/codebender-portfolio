@@ -1,0 +1,41 @@
+.timeline {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 16px;
+}
+
+.item {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 16px;
+}
+
+.item h3 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.muted {
+  color: var(--muted);
+  margin: 2px 0 0;
+}
+
+.period {
+  color: var(--accent2);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.bullets {
+  margin: 10px 0 0;
+}
