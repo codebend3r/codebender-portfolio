@@ -29,4 +29,13 @@ describe("Footer", () => {
     render(<Footer />)
     expect(screen.getByRole("contentinfo")).toBeInTheDocument()
   })
+
+  it("renders the author credit with a github link", () => {
+    render(<Footer />)
+    const link = screen.getByRole("link", { name: /github\.com\/codebend3r/ })
+    expect(link).toHaveAttribute("href", "https://github.com/codebend3r")
+    expect(link).toHaveAttribute("target", "_blank")
+    expect(link).toHaveAttribute("rel", "noopener noreferrer")
+    expect(screen.getByText(/CJ Rivas/)).toBeInTheDocument()
+  })
 })
