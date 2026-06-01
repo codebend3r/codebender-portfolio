@@ -263,4 +263,38 @@ describe("fetchWeatherDetails", () => {
     await expect(fetchWeatherDetails()).resolves.toBeNull()
     expect(fetchMock).not.toHaveBeenCalled()
   })
+
+  it("shares a single geolocation request between concurrent callers", async () => {
+    const getCurrentPosition = vi.fn(
+      (success: (pos: GeolocationPosition) => void) => {
+        success({
+          coords: {
+            latitude: 43.59,
+            longitude: -79.64,
+            accuracy: 1,
+            altitude: null,
+            altitudeAccuracy: null,
+            heading: null,
+            speed: null,
+            toJSON: () => ({}),
+          } as GeolocationCoordinates,
+          timestamp: Date.now(),
+          toJSON: () => ({}),
+        } as GeolocationPosition)
+      }
+    )
+    Object.defineProperty(navigator, "geolocation", {
+      configurable: true,
+      value: { getCurrentPosition },
+    })
+    fetchMock.mockResolvedValue({
+      ok: true,
+      json: async () => ({
+        current_weather: { weathercode: 1, temperature: 10 },
+      }),
+    })
+
+    await Promise.all([fetchWeather(), fetchWeatherDetails()])
+    expect(getCurrentPosition).toHaveBeenCalledTimes(1)
+  })
 })

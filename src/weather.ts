@@ -42,8 +42,11 @@ export function getWeatherOverride(): Weather | null {
   return null
 }
 
+let inFlightPosition: Promise<GeolocationPosition> | null = null
+
 function requestPosition(): Promise<GeolocationPosition> {
-  return new Promise((resolve, reject) => {
+  if (inFlightPosition) return inFlightPosition
+  inFlightPosition = new Promise<GeolocationPosition>((resolve, reject) => {
     if (!("geolocation" in navigator)) {
       reject(new Error("geolocation unavailable"))
       return
@@ -52,7 +55,10 @@ function requestPosition(): Promise<GeolocationPosition> {
       timeout: 8000,
       maximumAge: 10 * 60 * 1000,
     })
+  }).finally(() => {
+    inFlightPosition = null
   })
+  return inFlightPosition
 }
 
 function buildForecastUrl(coords: GeolocationCoordinates): string {
