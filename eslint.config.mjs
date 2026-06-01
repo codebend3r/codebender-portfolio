@@ -14,7 +14,6 @@ export default [
       "dist/**",
       "node_modules/**",
       "coverage/**",
-      "styled-system/**",
       "*.log",
     ],
   },
