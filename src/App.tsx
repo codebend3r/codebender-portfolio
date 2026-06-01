@@ -1,7 +1,5 @@
 import { useCallback, useRef, useState } from "react"
 
-import html2pdf from "html2pdf.js"
-
 import { AppHeader } from "@components/AppHeader"
 import { Awards } from "@components/Awards"
 import { Education } from "@components/Education"
@@ -27,6 +25,7 @@ export default function App() {
 
     setIsGenerating(true)
     try {
+      const { default: html2pdf } = await import("html2pdf.js")
       await waitForAssets(el)
 
       const widthPx = Math.max(el.scrollWidth, el.clientWidth)

@@ -47,6 +47,10 @@ export default defineConfig({
   },
   build: {
     chunkSizeWarningLimit: 2000,
+    modulePreload: {
+      resolveDependencies: (_filename, deps) =>
+        deps.filter((d) => !d.includes("html2pdf")),
+    },
     rollupOptions: {
       output: {
         manualChunks,
