@@ -71,7 +71,6 @@
 
 .cloud {
   position: absolute;
-  filter: blur(3px);
   animation-name: cloudDrift;
   animation-timing-function: ease-in-out;
   animation-iteration-count: infinite;
@@ -79,8 +78,10 @@
   will-change: transform;
 }
 
-.cloud svg {
-  display: block;
+.cloudSprite {
   width: 100%;
   height: 100%;
+  background-repeat: no-repeat;
+  background-size: 300% 300%;
+  image-rendering: pixelated;
 }

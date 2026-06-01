@@ -28,8 +28,8 @@
 }
 
 .logo {
-  width: var(--header-logo-size, 56px);
-  height: var(--header-logo-size, 56px);
+  width: var(--header-logo-size, 72px);
+  height: var(--header-logo-size, 72px);
   transition:
     width 0.25s ease,
     height 0.25s ease;
