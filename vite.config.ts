@@ -2,12 +2,12 @@ import react from "@vitejs/plugin-react"
 import path from "node:path"
 import { defineConfig } from "vite"
 
-function manualChunks(id) {
+function manualChunks(id: string) {
   if (id.includes("node_modules")) {
-    if (id.includes("react")) {
-      return "react"
-    } else if (id.includes("react-dom")) {
+    if (id.includes("react-dom")) {
       return "react-dom"
+    } else if (id.includes("react")) {
+      return "react"
     } else if (id.includes("core-js")) {
       return "core-js"
     } else if (id.includes("zustand")) {
