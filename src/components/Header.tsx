@@ -23,7 +23,7 @@ export function Header() {
         <span>•</span>
         <span>{contact.location}</span>
         <span>•</span>
-        <a href={contact.github} target="_blank" rel="noreferrer">
+        <a href={contact.github} target="_blank" rel="noopener noreferrer">
           GitHub
         </a>
       </div>

@@ -40,7 +40,7 @@ describe("Header", () => {
     const link = screen.getByRole("link", { name: "GitHub" })
     expect(link).toHaveAttribute("href", resume.contact.github)
     expect(link).toHaveAttribute("target", "_blank")
-    expect(link).toHaveAttribute("rel", "noreferrer")
+    expect(link).toHaveAttribute("rel", "noopener noreferrer")
   })
 
   it("renders the logo with alt text", () => {
