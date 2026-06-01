@@ -28,6 +28,17 @@
   }
 }
 
+@keyframes sunGlowPulse {
+  0% {
+    filter: drop-shadow(0 0 8px var(--sun-glow))
+      drop-shadow(0 0 18px var(--sun-glow));
+  }
+  100% {
+    filter: drop-shadow(0 0 20px var(--sun-glow))
+      drop-shadow(0 0 44px var(--sun-glow));
+  }
+}
+
 @keyframes glowPulse {
   0% {
     box-shadow:

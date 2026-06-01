@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef } from "react"
 import type { CSSProperties } from "react"
 
 import cloudsSprite from "@assets/clouds.png"
+import sunSprite from "@assets/sun.png"
 
 import { Starfield } from "@components/Starfield"
 
@@ -40,6 +41,12 @@ const SUN_VARIANT: Record<DaylightSky, string> = {
   day: styles.sunDay,
   dawn: styles.sunDawn,
   dusk: styles.sunDusk,
+}
+
+const SUN_SPRITE_INDEX: Record<DaylightSky, number> = {
+  day: 1,
+  dawn: 8,
+  dusk: 5,
 }
 
 const CLOUD_LAYERS: Record<DaylightSky, CloudLayerConfig[]> = {
@@ -126,7 +133,18 @@ function Moon() {
 }
 
 function Sun({ kind }: { kind: DaylightSky }) {
-  return <div className={`${styles.sun} ${SUN_VARIANT[kind]}`} />
+  const pos = spritePosition(SUN_SPRITE_INDEX[kind])
+  return (
+    <div className={`${styles.sun} ${SUN_VARIANT[kind]}`}>
+      <div
+        className={styles.sunSprite}
+        style={{
+          backgroundImage: `url(${sunSprite})`,
+          backgroundPosition: `${pos.x} ${pos.y}`,
+        }}
+      />
+    </div>
+  )
 }
 
 function spritePosition(shape: number): { x: string; y: string } {
