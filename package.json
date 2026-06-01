@@ -13,7 +13,7 @@
     "pre-push": "bash bin/pre-push.sh",
     "preview": "vite preview",
     "prepare": "husky",
-    "ts:check": "tsc && npx tsc --version",
+    "ts:check": "tsc",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
