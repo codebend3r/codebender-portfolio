@@ -17,7 +17,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
-    "system-check": "run-s prettier:check lint test build"
+    "system-check": "run-s prettier:check ts:check lint test build"
   },
   "dependencies": {
     "html2pdf.js": "0.10.3",
