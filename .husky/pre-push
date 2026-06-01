@@ -3,4 +3,5 @@ set -e
 
 echo "Running pre-push checks..."
 
+bun run build
 bun pre-push

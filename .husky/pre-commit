@@ -6,4 +6,3 @@ echo "Running pre-commit checks..."
 bun ts:check
 bun prettier
 bun lint
-bun run build
