@@ -9,25 +9,25 @@
   "title": "Senior Frontend Engineer + Architect",
   "summary": "Experienced Senior Frontend Engineer + Architect with nearly 20 years in the field, specializing in React and AI technologies. Committed to helping your company innovate through AI-driven development. Led initiatives that enhanced user engagement.",
   "technical_skills": [
-    "Claude Code",
     "AI Tooling/LLM",
+    "Claude/Codex/Cursor",
     "TypeScript",
     "JavaScript",
     "React",
     "Next.js",
     "Vue.js",
     "Node.js",
-    "FE System Design",
+    "Design Systems",
     "Emotion/Styled Components",
     "SCSS/CSS",
     "Redux/Zustand",
     "Vite/Webpack/Rollup",
     "Storybook",
     "Jest/Vitest",
-    "Cypress/Playwright",
+    "Playwright",
     "Bun/NPM/Yarn",
-    "Git (Version Control)",
-    "Github Actions",
+    "Git",
+    "CI/CD",
     "Responsive Design",
     "E2E Testing",
     "REST API"
@@ -38,12 +38,22 @@
       "company": "The Globe and Mail",
       "period": "09/2024 - 05/2026",
       "achievements": [
-        "Development of interactive components for The Globe and Mail using React and AI tools, boosting user engagement",
-        "Streamlined code reviews with AI tools, enhancing code quality and reducing review time",
-        "Integrated React components with a proprietary CMS, ensuring efficient content management",
-        "Optimized front-end code through unit testing and refactoring, improving maintainability",
-        "Used a design system for React components using Storybook, enhancing team collaboration",
-        "Collaborated with cross-functional teams to deliver high-quality features on time"
+        "Development of interactive components for The Globe and Mail using React and AI tools, boosting user engagement.",
+        "Streamlined code reviews with AI tools, enhancing code quality and reducing review time.",
+        "Integrated React components with a proprietary CMS, ensuring efficient content management.",
+        "Optimized front-end code through unit testing and refactoring, improving maintainability.",
+        "Used a design system for React components using Storybook, enhancing team collaboration.",
+        "Collaborated with cross-functional teams to deliver high-quality features on time."
+      ]
+    },
+    {
+      "role": "Fullstack Engineer",
+      "company": "iPolitics",
+      "period": "11/2023 - Present",
+      "achievements": [
+        "Sole full-stack developer for two news websites (iPolitics, QP Briefing) built with Next.js, React, Prisma, and Sanity CMS; managed server-side development, CI/CD pipelines, and site infrastructure.",
+        "Implemented sponsored articles, podcast section, and authorized admin routes with data analytics to boost user engagement and -management efficiency.",
+        "Debugged and resolved Sanity.io CMS issues while maintaining all backend services and features as a team of one."
       ]
     },
     {
@@ -51,11 +61,11 @@
       "company": "Robots and Pencils",
       "period": "06/2024 - 09/2024",
       "achievements": [
-        "Enhanced ASU project performance by implementing new features, ensuring timely delivery",
-        "Conducted pull request reviews, maintaining high code quality and best practices",
-        "Identified and implemented UI/UX solutions for improved interface performance",
-        "Refined features based on user testing feedback, boosting app performance",
-        "Managed the ASU project lifecycle, demonstrating strong technical and project management skills"
+        "Enhanced ASU project performance by implementing new features, ensuring timely delivery.",
+        "Conducted pull request reviews, maintaining high code quality and best practices.",
+        "Identified and implemented UI/UX solutions for improved interface performance.",
+        "Refined features based on user testing feedback, boosting app performance.",
+        "Managed the ASU project lifecycle, demonstrating strong technical and project management skills."
       ]
     },
     {
@@ -63,21 +73,12 @@
       "company": "XP Ventures Labs",
       "period": "03/2024 - 05/2024",
       "achievements": [
-        "Converted legacy React JavaScript application into TypeScript micro-frontends",
-        "Migrated global state from Redux to Zustand and refactored components to modern React patterns",
-        "Implemented CI/CD pipeline for automated linting, formatting, unit, and E2E tests",
-        "Enforced TypeScript and React best practices through code reviews and updated standards"
-      ]
-    },
-    {
-      "role": "Fullstack Developer",
-      "company": "iPolitics",
-      "period": "11/2023 - Present",
-      "achievements": [
-        "Built and maintained fullstack news websites for iPolitics and QP Briefing using Next.js, React, TypeScript, Prisma, and Sanity CMS",
-        "Developed fullstack solutions with Prisma ORM for backend APIs and Next.js server components for performant frontend delivery",
-        "Migrated legacy code to modern Next.js architecture with TypeScript and React best practices",
-        "Integrated Sanity.io CMS and Stripe payment gateway with Next.js for dynamic content management and sponsored article monetization"
+        "Led conversion of legacy React JavaScript application to TypeScript micro-frontends, modernizing architecture and improving.",
+        "Migrated global state from Redux to Zustand and refactored components to modern React patterns, enhancing performance and reducing complexity.",
+        "Designed and implemented CI/CD pipeline with automated linting, formatting, unit, and E2E tests, accelerating development cycles.",
+        "Championed TypeScript and React best practices through code reviews and updated team standards, elevating code quality.",
+        "Architected modular micro-frontend structure enabling independent deployments and team collaboration.",
+        "Reduced technical debt and optimized frontend tooling for improved developer experience and long-term maintainability."
       ]
     },
     {
@@ -85,10 +86,14 @@
       "company": "Radian",
       "period": "06/2022 - 11/2023",
       "achievements": [
-        "Architected and led frontend development of homegeniusrealestate.com from scratch to production using Next.js, TypeScript, GraphQL, and Nest.js",
-        "Delivered complete real estate platform to market in under one year",
-        "Created scalable React design system using Storybook and component-driven development",
-        "Managed NX monorepo with Docker while enforcing standards through code reviews and mentoring"
+        "Served as Front-End Lead Architect for homegeniusrealestate.com (React/TypeScript).",
+        "Architected and led full frontend development from scratch to production using Next.js, TypeScript, GraphQL, and Nest.js.",
+        "Delivered complete real estate platform to market in under one year.",
+        "Designed scalable React design system with Storybook for component-driven development.",
+        "Managed NX monorepo with Docker; enforced standards through code reviews and mentoring.",
+        "Collaborated with cross-functional teams on advanced search, interactive maps, and user dashboards.",
+        "Optimized performance via code splitting, lazy loading, and GraphQL, achieving superior Core Web Vitals.",
+        "Reduced technical debt and established frontend best practices for faster development and long-term maintainability."
       ]
     },
     {
@@ -96,12 +101,12 @@
       "company": "Varicent",
       "period": "01/2021 - 06/2022",
       "achievements": [
-        "Migrated React JavaScript components to TypeScript across projects, improving performance and maintainability",
-        "Overhauled webpack configuration and migrated to Vite with esbuild for faster builds",
-        "Conducted performance testing and implemented frontend optimizations",
-        "Implemented NX monorepo with custom bash scripts to enhance development workflow",
-        "Optimized GitHub workflows using parallelization and smart caching",
-        "Prototyped experimental modules and components as frontend architect"
+        "As Frontend Architect collaborating directly with the CTO, migrated React JavaScript components to TypeScript across projects, boosting performance and maintainability.",
+        "Overhauled webpack configuration and migrated to Vite + esbuild for significantly faster builds.",
+        "Conducted performance testing and implemented key frontend optimizations.",
+        "Implemented NX monorepo with custom bash scripts, enhancing development workflow.",
+        "Optimized GitHub workflows via parallelization and smart caching.",
+        "Prototyped experimental modules and components as Frontend Architect."
       ]
     },
     {
@@ -124,7 +129,7 @@
         "Maintained and updated thestar.com using React",
         "Led the development of a new responsive main menu for thestar.com",
         "Acted as lead developer, responsible for pull request code review and merging",
-        "Introduced several solutions, including E2E testing integrated with Jenkins, and Sentry.io to monitor errors in real-time",
+        "Introduced several solutions, including E2E testing, integrated with Jenkins, and Sentry.io to monitor errors in real-time",
         "Identified workflow issues and proposed possible solutions to optimize processes",
         "Maintained a high-quality code standard to ensure website performance and user experience",
         "Conducted interviews with several candidates for front-end developer positions to build a strong team",
@@ -136,7 +141,7 @@
       "company": "The Globe and Mail",
       "period": "05/2016 - 04/2018",
       "achievements": [
-        "Developed and maintained website features using vanilla JavaScript",
+        "Developed and maintained website features using vanilla javascript",
         "Collaborated with the front-end team to build highly performant and responsive components",
         "Implemented accessibility semantic markup and advanced analytics to enhance user experience",
         "Participated in code review workflow to ensure high code quality and standards",
@@ -154,6 +159,7 @@
         "Conducted technical interviews with candidates to assess their skills and expertise in AngularJS, ensuring that only the best candidates were selected for the team",
         "Designed an AngularJS module framework that facilitated collaboration among multiple teams and was adopted by several developers",
         "Conducted unit testing of front-end code and expanded Bootstrap's AngularUI directives",
+        "Conducted interviews to fill developer positions",
         "Actively supported and documented front-end solutions, ensuring that all code was thoroughly tested",
         "Built custom node/gulp modules and provided mentorship to junior developers",
         "Mentored and engaged in code-pairing with developers to enhance their skills"
