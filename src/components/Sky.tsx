@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef } from "react"
 import type { CSSProperties } from "react"
 
 import cloudsSprite from "@assets/clouds.png"
+import moonSprite from "@assets/moon.png"
 import sunSprite from "@assets/sun.png"
 
 import { Starfield } from "@components/Starfield"
@@ -48,6 +49,8 @@ const SUN_SPRITE_INDEX: Record<DaylightSky, number> = {
   dawn: 8,
   dusk: 5,
 }
+
+const MOON_SPRITE_INDEX = 4
 
 const CLOUD_LAYERS: Record<DaylightSky, CloudLayerConfig[]> = {
   day: [
@@ -129,7 +132,18 @@ function makeClouds(config: CloudLayerConfig): Cloud[] {
 }
 
 function Moon() {
-  return <div className={styles.moon} />
+  const pos = spritePosition(MOON_SPRITE_INDEX)
+  return (
+    <div className={styles.moon}>
+      <div
+        className={styles.moonSprite}
+        style={{
+          backgroundImage: `url(${moonSprite})`,
+          backgroundPosition: `${pos.x} ${pos.y}`,
+        }}
+      />
+    </div>
+  )
 }
 
 function Sun({ kind }: { kind: DaylightSky }) {
