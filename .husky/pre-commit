@@ -3,7 +3,7 @@ set -e
 
 echo "Running pre-commit checks..."
 
-bun ts:check
-bun prettier:check
-bun lint
+bun prettier:check && \
+bun ts:check && \
+bun lint && \
 bun run test
