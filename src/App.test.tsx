@@ -115,6 +115,32 @@ describe("App", () => {
     })
   })
 
+  it("ignores a second click while a PDF generation is in flight", async () => {
+    let resolveSave: () => void = () => {}
+    html2pdfSave.mockImplementationOnce(
+      () =>
+        new Promise<void>((resolve) => {
+          resolveSave = resolve
+        })
+    )
+
+    const user = userEvent.setup()
+    render(<App />)
+    const button = screen.getByRole("button", { name: "Download CV" })
+    await user.click(button)
+    await waitFor(() => {
+      expect(screen.getByRole("button", { name: "Generating…" })).toBeDisabled()
+    })
+
+    await user.click(screen.getByRole("button", { name: "Generating…" }))
+    expect(html2pdfFactory).toHaveBeenCalledTimes(1)
+
+    resolveSave()
+    await waitFor(() => {
+      expect(screen.getByRole("button", { name: "Download CV" })).toBeEnabled()
+    })
+  })
+
   it("logs and recovers when PDF generation fails", async () => {
     const error = new Error("nope")
     html2pdfSave.mockRejectedValueOnce(error)

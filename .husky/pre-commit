@@ -4,5 +4,7 @@ set -e
 echo "Running pre-commit checks..."
 
 bun ts:check
-bun prettier
+bun prettier:check
 bun lint
+bun run test
+bun run build
