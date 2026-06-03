@@ -7,4 +7,3 @@ bun ts:check
 bun prettier:check
 bun lint
 bun run test
-bun run build

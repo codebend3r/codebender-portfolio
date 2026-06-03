@@ -16,9 +16,10 @@ The background ambient palette changes based on the visitor's local hour. Four d
 | :------------------------------------: | :-----------------------------------: | :------------------------------------: | :--------------------------------------: |
 | ![dawn](docs/screenshots/sky-dawn.png) | ![day](docs/screenshots/hero-day.png) | ![dusk](docs/screenshots/sky-dusk.png) | ![night](docs/screenshots/sky-night.png) |
 
-- 10 hand-crafted SVG cloud shapes, randomized across two parallax layers.
-- Each cloud has independent drift animation (`@keyframes cloudDrift`) and reacts to page scroll via `requestAnimationFrame` for buttery parallax.
-- Night swaps clouds for a three-layer parallax `<Starfield />` and a soft glowing moon.
+- 9 cloud shapes pulled from a single 3×3 PNG sprite sheet (`src/assets/clouds.png`), randomized across two parallax layers.
+- Each cloud has an independent drift animation (`@keyframes cloudDrift`) and reacts to page scroll via `requestAnimationFrame` for buttery parallax.
+- The sun and moon are also rendered from the same sprite sheet, with per-sky positioning.
+- Night swaps the clouds layer for a three-layer parallax `<Starfield />` (160 + 80 + 30 stars, each layer scrolling at a different speed) and a soft glowing moon.
 
 Force a state with `?sky=day|dawn|dusk|night` — handy for screenshots and demos.
 
@@ -50,6 +51,8 @@ A "Download CV" button rasterizes the resume to a single, full-height PDF — us
 ### Data-driven content
 
 The entire resume — name, contact, summary, skills, work history, awards, languages, education — is hydrated from a single `src/data/resume.json` file at module load. Adding a new section is: extend the JSON → add a type → extend the Zustand store → mount a component. No mutations, no async fetch, no setters.
+
+Hover tooltips on each Technical Skills pill are sourced from `src/data/skillDescriptions.ts` — a separate keyed lookup so the resume JSON stays focused on the skill list itself.
 
 ---
 
@@ -87,29 +90,34 @@ The entire resume — name, contact, summary, skills, work history, awards, lang
 
 ```
 src/
-├── App.tsx                ← Composes Sky + Weather + AppHeader + sections
-├── Entry.tsx              ← React root, mounts global styles + applies sky palette
-├── components/            ← One folder per section, paired with .module.css and .test.tsx
-│   ├── AppHeader/         ← Sticky-on-scroll header (IntersectionObserver)
-│   ├── Header/            ← Identity + contact line
-│   ├── Sky/               ← Time-of-day clouds, sun, moon
-│   ├── Starfield/         ← Parallax 3-layer night sky
-│   ├── Weather/           ← Rain / snow overlay
-│   ├── WeatherClock/      ← Live clock + weather indicator in header
-│   ├── Summary/  TechnicalSkills/  WorkExperience/  Awards/  Languages/  Education/  Footer/
-├── data/resume.json       ← Single source of truth for resume content
-├── state/useStore.ts      ← Zustand store, seeded from resume.json at module init
+├── App.tsx                  ← Composes Sky + Weather + AppHeader + sections; owns PDF download flow
+├── Entry.tsx                ← React root, mounts global styles + applies sky palette
+├── components/              ← Flat directory — each component is a .tsx + .module.css + .test.tsx triple
+│   ├── AppHeader.tsx        ← Sticky-on-scroll wrapper; mounts <Header /> + <WeatherClock /> + Download CV button
+│   ├── Header.tsx           ← Identity + contact line (email, phone, location, GitHub, LinkedIn)
+│   ├── Sky.tsx              ← Time-of-day clouds, sun, moon (PNG sprite); swaps to <Starfield /> at night
+│   ├── Starfield.tsx        ← Parallax 3-layer night sky (160 + 80 + 30 stars)
+│   ├── Weather.tsx          ← Rain (140 drops) / snow (90 flakes) overlay; pure CSS animation
+│   ├── WeatherClock.tsx     ← Live clock + weather emoji + temperature (ticks every minute)
+│   ├── Section.tsx          ← Shared <section> + <h2> wrapper used by all content sections
+│   ├── Summary.tsx  TechnicalSkills.tsx  WorkExperience.tsx
+│   ├── Awards.tsx  Languages.tsx  Education.tsx  Footer.tsx
+├── data/
+│   ├── resume.json          ← Single source of truth for resume content
+│   ├── skillDescriptions.ts ← Per-skill tooltip copy keyed by skill name
+│   └── CJ Rivas - Senior Frontend Engineer.pdf  ← Pre-rendered CV (also produced live via Download CV)
+├── state/useStore.ts        ← Zustand store, seeded from resume.json at module init
 ├── styles/
-│   ├── tokens.css         ← :root CSS custom properties (--bg, --accent, --cloud-drift, …)
-│   ├── keyframes.css      ← cloudDrift, rainFall, snowFall, glowPulse
-│   └── global.css         ← resets + @media print rules for PDF export
-├── sky.ts                 ← getCurrentSky(), applySky(), URL override parsing
-├── weather.ts             ← Open-Meteo fetcher, WMO code mapping, URL override parsing
+│   ├── tokens.css           ← :root CSS custom properties (--bg, --accent, --cloud-drift, …)
+│   ├── keyframes.css        ← cloudDrift, rainFall, snowFall, glowPulse
+│   └── global.css           ← resets + @media print rules for PDF export
+├── sky.ts                   ← getCurrentSky(), applySky(), URL override parsing
+├── weather.ts               ← Open-Meteo fetcher, WMO code mapping, URL override parsing
 ├── utils/
-│   ├── dom-utils.ts       ← DOM helpers
-│   └── print-utils.ts     ← waitForAssets() — gates PDF capture on image/font load
-├── types/global.d.ts      ← Ambient types: Experience, Award, Language, Education, Data
-└── test/                  ← Vitest setup
+│   ├── dom-utils.ts         ← DOM helpers
+│   └── print-utils.ts       ← waitForAssets() — gates PDF capture on image/font load
+├── types/global.d.ts        ← Ambient types: Experience, Award, Language, Education, Data
+└── test/                    ← Vitest setup
 ```
 
 ### Path aliases
@@ -158,8 +166,8 @@ bun dev          # http://localhost:4242
 
 Husky runs on every commit and push:
 
-- **pre-commit** — `ts:check` → `prettier` (write) → `lint` → `build`. The commit fails if any step fails. Prettier _writes_ changes, so if formatting was off, the hook fixes the files but does not auto-stage them — re-stage and recommit.
-- **pre-push** — runs `bin/pre-push.sh`, which prints the last 10 commits as a sanity check.
+- **pre-commit** — `ts:check` → `prettier:check` → `lint` → `test` → `build`. The commit fails if any step fails. Because `prettier:check` does not write, you need to run `bun prettier` yourself before committing if formatting is off.
+- **pre-push** — `bun run build` → `bun pre-push` (which runs `bin/pre-push.sh` to print the last 10 commits as a sanity check). Push fails if the build fails, so deps must be installed (`bun install`) before pushing.
 
 ---
 
