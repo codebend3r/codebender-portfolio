@@ -167,7 +167,7 @@ bun dev          # http://localhost:4242
 Husky runs on every commit and push:
 
 - **pre-commit** — `ts:check` → `prettier:check` → `lint` → `test` → `build`. The commit fails if any step fails. Because `prettier:check` does not write, you need to run `bun prettier` yourself before committing if formatting is off.
-- **pre-push** — `bun run build` → `bun pre-push` (which runs `bin/pre-push.sh` to print the last 10 commits as a sanity check). Push fails if the build fails, so deps must be installed (`bun install`) before pushing.
+- **pre-push** — `bun run build`, then prints the last 10 commits as a sanity check. Push fails if the build fails, so deps must be installed (`bun install`) before pushing.
 
 ---
 

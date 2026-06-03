@@ -10,7 +10,6 @@
     "lint:fix": "eslint . --fix",
     "prettier": "prettier --write .",
     "prettier:check": "prettier --check .",
-    "pre-push": "bash bin/pre-push.sh",
     "preview": "vite preview",
     "prepare": "husky",
     "ts:check": "tsc",

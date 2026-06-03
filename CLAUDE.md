@@ -20,7 +20,7 @@ Package manager is **bun** (see `packageManager` in `package.json`). Use `bun <s
 Husky runs on every commit and push:
 
 - **pre-commit** (`.husky/pre-commit`): `ts:check` → `prettier` (write) → `lint` → `build`. The commit will fail if any step fails. Note that `prettier` _writes_ changes — if formatting was off, the hook fixes the files but does not auto-stage them, so re-stage and recommit.
-- **pre-push** (`.husky/pre-push`): `bun run build`, then `bun pre-push` (which runs `bin/pre-push.sh` to print the last 10 commits). The push will fail if the build fails, so deps must be installed (`bun install`) before pushing.
+- **pre-push** (`.husky/pre-push`): `bun run build`, then prints the last 10 commits. The push will fail if the build fails, so deps must be installed (`bun install`) before pushing.
 
 ## Architecture
 

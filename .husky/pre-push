@@ -4,4 +4,9 @@ set -e
 echo "Running pre-push checks..."
 
 bun run build
-bun pre-push
+
+git fetch -p
+
+git --no-pager log --decorate --oneline -n 10
+
+echo "pushed successfully"

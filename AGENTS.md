@@ -21,7 +21,7 @@ No test runner is configured.
 Husky runs on every commit and push:
 
 - **pre-commit** (`.husky/pre-commit`): `ts:check` → `prettier` (write) → `lint` → `build`. The commit will fail if any step fails. Note that `prettier` _writes_ changes — if formatting was off, the hook fixes the files but does not auto-stage them, so re-stage and recommit.
-- **pre-push** (`.husky/pre-push`): runs `bin/pre-push.sh` which prints the last 10 commits.
+- **pre-push** (`.husky/pre-push`): `bun run build`, then prints the last 10 commits.
 
 ## Architecture
 
