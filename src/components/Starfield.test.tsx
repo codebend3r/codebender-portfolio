@@ -42,4 +42,16 @@ describe("Starfield", () => {
     )
     expect(unsubscribed).toBe(true)
   })
+
+  it("coalesces back-to-back scrolls into a single `requestAnimationFrame`", () => {
+    const rafSpy = vi
+      .spyOn(window, "requestAnimationFrame")
+      .mockReturnValue(1 as unknown as number)
+    render(<Starfield />)
+    window.dispatchEvent(new Event("scroll"))
+    window.dispatchEvent(new Event("scroll"))
+    window.dispatchEvent(new Event("scroll"))
+    expect(rafSpy).toHaveBeenCalledTimes(1)
+    rafSpy.mockRestore()
+  })
 })
