@@ -142,6 +142,13 @@ describe("fetchWeather", () => {
     })
     await expect(fetchWeather()).resolves.toBe("none")
   })
+
+  it("returns 'none' when navigator has no `geolocation` property at all", async () => {
+    delete (navigator as { geolocation?: unknown }).geolocation
+    expect("geolocation" in navigator).toBe(false)
+    await expect(fetchWeather()).resolves.toBe("none")
+    expect(fetchMock).not.toHaveBeenCalled()
+  })
 })
 
 describe("conditionFromCode", () => {
