@@ -151,6 +151,17 @@
       ]
     },
     {
+      "role": "Senior Frontend Engineer",
+      "company": "theScore, Inc.",
+      "period": "01/2016 - 05/2016",
+      "achievements": [
+        "Developed a fantasy sports application using Ember.js, delivering interactive features for end users.",
+        "Collaborated within an agile team environment, contributing to iterative development and sprint planning.",
+        "Conducted code reviews on pull requests and supported continuous integration workflows to uphold code quality.",
+        "Expanded backend proficiency by self-studying Ruby on Rails, broadening full-stack capabilities."
+      ]
+    },
+    {
       "role": "Frontend Team Lead",
       "company": "Rogers",
       "period": "11/2014 - 01/2016",
