@@ -1,11 +1,18 @@
+import { useStore } from "@state/useStore"
 import { render, screen } from "@testing-library/react"
-import { describe, expect, it } from "vitest"
+import { afterEach, describe, expect, it } from "vitest"
 
 import { Education } from "@components/Education"
 
 import resume from "@data/resume.json"
 
 describe("Education", () => {
+  const originalEducation = useStore.getState().education
+
+  afterEach(() => {
+    useStore.setState({ education: originalEducation })
+  })
+
   it("renders inside an Education section", () => {
     render(<Education />)
     expect(
@@ -29,5 +36,21 @@ describe("Education", () => {
         expect(item.textContent).toContain(entry.details)
       }
     }
+  })
+
+  it("appends ` — <details>` when the entry has a `details` field", () => {
+    useStore.setState({
+      education: [
+        {
+          program: "Test Program",
+          institution: "Test Institution",
+          details: "Honours Diploma",
+        },
+      ],
+    })
+    render(<Education />)
+    const item = screen.getByRole("listitem")
+    expect(item.textContent).toContain("Honours Diploma")
+    expect(item.textContent).toMatch(/Test Institution — Honours Diploma/)
   })
 })
