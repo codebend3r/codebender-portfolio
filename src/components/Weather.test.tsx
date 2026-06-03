@@ -1,5 +1,6 @@
-import { render, waitFor } from "@testing-library/react"
+import { act, render, waitFor } from "@testing-library/react"
 import { fetchWeather, getWeatherOverride } from "@weather"
+import type { Weather as WeatherKind } from "@weather"
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 
 import { Weather } from "@components/Weather"
@@ -57,5 +58,22 @@ describe("Weather", () => {
     expect(layer).not.toBeNull()
     expect(layer?.children.length).toBe(90)
     expect(mockedFetch).not.toHaveBeenCalled()
+  })
+
+  it("ignores `fetchWeather` resolution after unmount", async () => {
+    let resolveFetch: (value: WeatherKind) => void = () => {}
+    mockedFetch.mockImplementationOnce(
+      () =>
+        new Promise<WeatherKind>((resolve) => {
+          resolveFetch = resolve
+        })
+    )
+    const { container, unmount } = render(<Weather />)
+    await waitFor(() => expect(mockedFetch).toHaveBeenCalled())
+    unmount()
+    await act(async () => {
+      resolveFetch("rain")
+    })
+    expect(container.firstChild).toBeNull()
   })
 })
