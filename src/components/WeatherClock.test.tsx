@@ -1,5 +1,6 @@
 import { act, render, screen, waitFor } from "@testing-library/react"
 import { fetchWeatherDetails } from "@weather"
+import type { WeatherDetails } from "@weather"
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 
 import { WeatherClock } from "@components/WeatherClock"
@@ -53,5 +54,22 @@ describe("WeatherClock", () => {
     })
 
     expect(screen.getByText(/1:43/)).toBeInTheDocument()
+  })
+
+  it("ignores `fetchWeatherDetails` resolution after unmount", async () => {
+    let resolveFetch: (value: WeatherDetails | null) => void = () => {}
+    mockedFetch.mockImplementationOnce(
+      () =>
+        new Promise<WeatherDetails | null>((resolve) => {
+          resolveFetch = resolve
+        })
+    )
+    const { unmount } = render(<WeatherClock />)
+    await waitFor(() => expect(mockedFetch).toHaveBeenCalled())
+    unmount()
+    await act(async () => {
+      resolveFetch({ condition: "cloudy", temperature: 18.4 })
+    })
+    expect(screen.queryByText(/18°C/)).toBeNull()
   })
 })
