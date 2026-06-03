@@ -28,6 +28,7 @@ describe("useStore", () => {
       phone: expect.any(String),
       location: expect.any(String),
       github: expect.stringMatching(/^https?:\/\//),
+      linkedin: expect.stringMatching(/^https?:\/\//),
     })
   })
 })

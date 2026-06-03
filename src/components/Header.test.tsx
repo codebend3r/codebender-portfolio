@@ -43,6 +43,14 @@ describe("Header", () => {
     expect(link).toHaveAttribute("rel", "noopener noreferrer")
   })
 
+  it("renders a LinkedIn link that opens in a new tab safely", () => {
+    render(<Header />)
+    const link = screen.getByRole("link", { name: "LinkedIn" })
+    expect(link).toHaveAttribute("href", resume.contact.linkedin)
+    expect(link).toHaveAttribute("target", "_blank")
+    expect(link).toHaveAttribute("rel", "noopener noreferrer")
+  })
+
   it("renders the logo with alt text", () => {
     render(<Header />)
     expect(screen.getByAltText("Logo")).toBeInTheDocument()

@@ -26,6 +26,10 @@ export function Header() {
         <a href={contact.github} target="_blank" rel="noopener noreferrer">
           GitHub
         </a>
+        <span>•</span>
+        <a href={contact.linkedin} target="_blank" rel="noopener noreferrer">
+          LinkedIn
+        </a>
       </div>
     </header>
   )

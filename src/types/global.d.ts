@@ -17,7 +17,13 @@ type Experience = {
 
 type Data = {
   name: string
-  contact: { email: string; phone: string; location: string; github: string }
+  contact: {
+    email: string
+    phone: string
+    location: string
+    github: string
+    linkedin: string
+  }
   title: string
   summary: string
   technical_skills: string[]
