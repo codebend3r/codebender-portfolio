@@ -49,4 +49,17 @@ describe("Sky", () => {
     const root = container.firstElementChild as HTMLElement
     expect(root.children).toHaveLength(2)
   })
+
+  it("coalesces back-to-back cloud-parallax scrolls into a single `requestAnimationFrame`", () => {
+    mockedGetCurrentSky.mockReturnValue("day")
+    const rafSpy = vi
+      .spyOn(window, "requestAnimationFrame")
+      .mockReturnValue(1 as unknown as number)
+    render(<Sky />)
+    window.dispatchEvent(new Event("scroll"))
+    window.dispatchEvent(new Event("scroll"))
+    window.dispatchEvent(new Event("scroll"))
+    expect(rafSpy).toHaveBeenCalledTimes(1)
+    rafSpy.mockRestore()
+  })
 })
