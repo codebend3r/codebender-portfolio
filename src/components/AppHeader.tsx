@@ -1,9 +1,8 @@
 import { useEffect, useRef, useState } from "react"
 
+import styles from "@components/AppHeader.module.css"
 import { Header } from "@components/Header"
 import { WeatherClock } from "@components/WeatherClock"
-
-import styles from "./AppHeader.module.css"
 
 type Props = {
   onDownload: () => void

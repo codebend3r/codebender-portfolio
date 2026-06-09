@@ -3,7 +3,7 @@ import { useEffect, useMemo, useState } from "react"
 import { fetchWeather, getWeatherOverride } from "@weather"
 import type { Weather as WeatherKind } from "@weather"
 
-import styles from "./Weather.module.css"
+import styles from "@components/Weather.module.css"
 
 type Drop = {
   left: number

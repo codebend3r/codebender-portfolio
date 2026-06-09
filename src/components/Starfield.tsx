@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef } from "react"
 
-import styles from "./Starfield.module.css"
+import styles from "@components/Starfield.module.css"
 
 type Star = {
   x: number

@@ -5,12 +5,11 @@ import cloudsSprite from "@assets/clouds.png"
 import moonSprite from "@assets/moon.png"
 import sunSprite from "@assets/sun.png"
 
+import styles from "@components/Sky.module.css"
 import { Starfield } from "@components/Starfield"
 
 import { getCurrentSky } from "@sky"
 import type { Sky as SkyName } from "@sky"
-
-import styles from "./Sky.module.css"
 
 type DaylightSky = Exclude<SkyName, "night">
 

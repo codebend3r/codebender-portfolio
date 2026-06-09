@@ -9,4 +9,14 @@
   --cloud-drift: 0vw;
   --glow1: none;
   --glow2: none;
+  --font-display:
+    "Space Grotesk", system-ui, -apple-system, "Segoe UI", Roboto, Arial,
+    sans-serif;
+  --font-mono:
+    "Space Mono", ui-monospace, SFMono-Regular, Menlo, Consolas,
+    "Liberation Mono", monospace;
+  --font-body:
+    "Space Grotesk", system-ui, -apple-system, "Segoe UI", Roboto, Arial,
+    "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji", sans-serif;
+  --font-role: "Instrument Serif", Georgia, "Times New Roman", serif;
 }

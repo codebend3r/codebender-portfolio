@@ -34,7 +34,7 @@ export default defineConfig({
   resolve: {
     alias: {
       "@App": path.resolve(__dirname, "src/App.tsx"),
-      "@app": path.resolve(__dirname, "src/App.tsx"),
+      "@app": path.resolve(__dirname, "src"),
       "@assets": path.resolve(__dirname, "src/assets"),
       "@components": path.resolve(__dirname, "src/components"),
       "@data": path.resolve(__dirname, "src/data"),

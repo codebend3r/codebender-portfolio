@@ -2,7 +2,7 @@ import { useStore } from "@state/useStore"
 
 import Logo from "@assets/robot-logo.png"
 
-import styles from "./Header.module.css"
+import styles from "@components/Header.module.css"
 
 export function Header() {
   const { name, title, contact } = useStore()

@@ -3,7 +3,7 @@ import { useEffect, useState } from "react"
 import { fetchWeatherDetails } from "@weather"
 import type { WeatherCondition, WeatherDetails } from "@weather"
 
-import styles from "./WeatherClock.module.css"
+import styles from "@components/WeatherClock.module.css"
 
 const CONDITION_ICON: Record<WeatherCondition, string> = {
   clear: "☀️",

@@ -1,8 +1,7 @@
 import { useStore } from "@state/useStore"
 
 import { Section } from "@components/Section"
-
-import styles from "./WorkExperience.module.css"
+import styles from "@components/WorkExperience.module.css"
 
 export function WorkExperience() {
   const { work_experience } = useStore()

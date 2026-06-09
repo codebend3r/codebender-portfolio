@@ -1,6 +1,6 @@
 import React from "react"
 
-import styles from "./Section.module.css"
+import styles from "@components/Section.module.css"
 
 export function Section({
   title,

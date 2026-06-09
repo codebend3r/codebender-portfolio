@@ -15,7 +15,17 @@
 
 .item h3 {
   margin: 0;
-  font-size: 18px;
+  font-family: var(--font-role);
+  font-style: italic;
+  font-weight: 400;
+  font-size: 28px;
+  line-height: 1.1;
+  letter-spacing: 0.2px;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
 }
 
 .header {
@@ -32,6 +42,7 @@
 
 .period {
   color: var(--accent2);
+  font-family: var(--font-mono);
   font-weight: 700;
   white-space: nowrap;
 }
@@ -52,8 +63,8 @@
   }
 
   .item h3 {
-    font-size: 16px;
-    line-height: 1.25;
+    font-size: 22px;
+    line-height: 1.15;
   }
 
   .header {
@@ -69,5 +80,13 @@
 
   .bullets {
     padding-left: 18px;
+  }
+}
+
+@media print {
+  .item h3 {
+    background: none;
+    -webkit-text-fill-color: initial;
+    color: var(--accent2);
   }
 }

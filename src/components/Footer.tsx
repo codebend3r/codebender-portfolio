@@ -1,6 +1,6 @@
 import { useStore } from "@state/useStore"
 
-import styles from "./Footer.module.css"
+import styles from "@components/Footer.module.css"
 
 export function Footer() {
   const name = useStore((s) => s.name)
