@@ -2,7 +2,7 @@
   position: relative;
   z-index: 1;
   max-width: 100%;
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 .container {

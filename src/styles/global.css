@@ -11,7 +11,7 @@ body,
 html,
 body {
   max-width: 100%;
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 html {
@@ -58,6 +58,10 @@ svg {
   body {
     font-size: 14px;
     line-height: 1.5;
+  }
+
+  ul {
+    padding: 0 0 0 32px;
   }
 }
 
