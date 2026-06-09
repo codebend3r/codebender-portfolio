@@ -39,11 +39,11 @@
       "company": "The Globe and Mail",
       "period": "09/2024 - 05/2026",
       "achievements": [
-        "Development of interactive components for The Globe and Mail using React and AI tools, boosting user engagement.",
+        "Developed interactive components for The Globe and Mail using React and AI tools, boosting user engagement.",
         "Streamlined code reviews with AI tools, enhancing code quality and reducing review time.",
         "Integrated React components with a proprietary CMS, ensuring efficient content management.",
         "Optimized front-end code through unit testing and refactoring, improving maintainability.",
-        "Used a design system for React components using Storybook, enhancing team collaboration.",
+        "Built a design system for React components with Storybook, enhancing team collaboration.",
         "Collaborated with cross-functional teams to deliver high-quality features on time."
       ]
     },
@@ -52,9 +52,14 @@
       "company": "iPolitics",
       "period": "11/2023 - Present",
       "achievements": [
-        "Sole full-stack developer for two news websites (iPolitics, QP Briefing) built with Next.js, React, Prisma, and Sanity CMS; managed server-side development, CI/CD pipelines, and site infrastructure.",
-        "Implemented sponsored articles, podcast section, and authorized admin routes with data analytics to boost user engagement and -management efficiency.",
-        "Debugged and resolved Sanity.io CMS issues while maintaining all backend services and features as a team of one."
+        "Sole full-stack developer for two news sites (iPolitics, QP Briefing) built on Next.js, React, Prisma, and Sanity CMS; owned backend, CI/CD, and infrastructure.",
+        "Shipped sponsored articles, a podcast section, and auth-gated admin routes with analytics to drive engagement.",
+        "Resolved Sanity.io CMS issues and maintained all backend services.",
+        "Led tiered TypeScript migration of both codebases (utilities, hooks, components, API routes), locking behavior with Vitest tests before each pass.",
+        "Migrated styling across two generations (styled-jsx to Emotion to CSS Modules + SCSS), landing on a design system with light/dark theming.",
+        "Replaced SWR with @tanstack/react-query + Axios and reorganized hooks and fetchers by resource.",
+        "Hardened dev workflow with Husky hooks, a unified system-check command (Prettier, ESLint, Vitest, ts:check, build), and modernized PR CI.",
+        "Upgraded the stack across major versions (Next.js 15, React 19, Node 18 to 24, Prisma), patched Axios security vulnerabilities, and authored SECURITY.md."
       ]
     },
     {
@@ -74,7 +79,7 @@
       "company": "XP Ventures Labs",
       "period": "03/2024 - 05/2024",
       "achievements": [
-        "Led conversion of legacy React JavaScript application to TypeScript micro-frontends, modernizing architecture and improving.",
+        "Led conversion of legacy React JavaScript application to TypeScript micro-frontends, modernizing architecture and improving maintainability.",
         "Migrated global state from Redux to Zustand and refactored components to modern React patterns, enhancing performance and reducing complexity.",
         "Designed and implemented CI/CD pipeline with automated linting, formatting, unit, and E2E tests, accelerating development cycles.",
         "Championed TypeScript and React best practices through code reviews and updated team standards, elevating code quality.",
@@ -137,11 +142,11 @@
       "company": "RBC Ventures",
       "period": "08/2019 - 08/2020",
       "achievements": [
-        "Strategized and developed new front-end features for the admin app, enabling efficient management of all users",
-        "Migrated the app from the built-in React framework to a custom framework utilizing React Hooks",
-        "Optimized UI experience and performance by implementing webpack chunks, lazy loading, and caching data in memory",
-        "Mentored new team members and shared knowledge while demoing new features to stakeholders",
-        "Updated and maintained the CI workflow and created custom bash scripts to streamline the development process"
+        "Strategized and developed new front-end features for the admin app, enabling efficient management of all users.",
+        "Migrated the app from the built-in React framework to a custom framework utilizing React Hooks.",
+        "Optimized UI experience and performance by implementing webpack chunks, lazy loading, and caching data in memory.",
+        "Mentored new team members and shared knowledge while demoing new features to stakeholders.",
+        "Updated and maintained the CI workflow and created custom bash scripts to streamline the development process."
       ]
     },
     {
@@ -149,14 +154,14 @@
       "company": "Toronto Star",
       "period": "12/2018 - 08/2019",
       "achievements": [
-        "Maintained and updated thestar.com using React",
-        "Led the development of a new responsive main menu for thestar.com",
-        "Acted as lead developer, responsible for pull request code review and merging",
-        "Introduced several solutions, including E2E testing, integrated with Jenkins, and Sentry.io to monitor errors in real-time",
-        "Identified workflow issues and proposed possible solutions to optimize processes",
-        "Maintained a high-quality code standard to ensure website performance and user experience",
-        "Conducted interviews with several candidates for front-end developer positions to build a strong team",
-        "Worked in an agile environment, focusing on continuous delivery to meet project deadlines and ensure customer satisfaction"
+        "Maintained and updated thestar.com using React.",
+        "Led the development of a new responsive main menu for thestar.com.",
+        "Acted as lead developer, responsible for pull request code review and merging.",
+        "Introduced several solutions, including E2E testing, integrated with Jenkins, and Sentry.io to monitor errors in real-time.",
+        "Identified workflow issues and proposed possible solutions to optimize processes.",
+        "Maintained a high-quality code standard to ensure website performance and user experience.",
+        "Conducted interviews with several candidates for front-end developer positions to build a strong team.",
+        "Worked in an agile environment, focusing on continuous delivery to meet project deadlines and ensure customer satisfaction."
       ]
     },
     {
@@ -164,13 +169,13 @@
       "company": "The Globe and Mail",
       "period": "05/2016 - 04/2018",
       "achievements": [
-        "Developed and maintained website features using vanilla javascript",
-        "Collaborated with the front-end team to build highly performant and responsive components",
-        "Implemented accessibility semantic markup and advanced analytics to enhance user experience",
-        "Participated in code review workflow to ensure high code quality and standards",
-        "Increased unit test code coverage to ensure code stability and reduce bugs",
-        "Consulted and documented UI best practices and code standards to improve development processes",
-        "Delivered a presentation on git workflow to internal team, resulting in increased team efficiency"
+        "Developed and maintained website features using vanilla JavaScript.",
+        "Collaborated with the front-end team to build highly performant and responsive components.",
+        "Implemented accessibility semantic markup and advanced analytics to enhance user experience.",
+        "Participated in code review workflow to ensure high code quality and standards.",
+        "Increased unit test code coverage to ensure code stability and reduce bugs.",
+        "Consulted and documented UI best practices and code standards to improve development processes.",
+        "Delivered a presentation on Git workflow to the internal team, resulting in increased team efficiency."
       ]
     },
     {
@@ -189,14 +194,13 @@
       "company": "Rogers",
       "period": "11/2014 - 01/2016",
       "achievements": [
-        "Developed a Rogers-related application/website and established AngularJS coding conventions for all developers to follow",
-        "Conducted technical interviews with candidates to assess their skills and expertise in AngularJS, ensuring that only the best candidates were selected for the team",
-        "Designed an AngularJS module framework that facilitated collaboration among multiple teams and was adopted by several developers",
-        "Conducted unit testing of front-end code and expanded Bootstrap's AngularUI directives",
-        "Conducted interviews to fill developer positions",
-        "Actively supported and documented front-end solutions, ensuring that all code was thoroughly tested",
-        "Built custom node/gulp modules and provided mentorship to junior developers",
-        "Mentored and engaged in code-pairing with developers to enhance their skills"
+        "Developed a Rogers-related application/website and established AngularJS coding conventions for all developers to follow.",
+        "Conducted technical interviews with candidates to assess their skills and expertise in AngularJS, ensuring that only the best candidates were selected for the team.",
+        "Designed an AngularJS module framework that facilitated collaboration among multiple teams and was adopted by several developers.",
+        "Conducted unit testing of front-end code and expanded Bootstrap's AngularUI directives.",
+        "Actively supported and documented front-end solutions, ensuring that all code was thoroughly tested.",
+        "Built custom Node/Gulp modules and provided mentorship to junior developers.",
+        "Mentored and engaged in code-pairing with developers to enhance their skills."
       ]
     },
     {
@@ -204,12 +208,12 @@
       "company": "Uptime Software",
       "period": "04/2014 - 11/2014",
       "achievements": [
-        "Solely responsible for the entire front-end portion of a computer/server monitoring application in a company-wide capacity as the only front-end specialist",
-        "Developed the application using the AngularJS framework",
-        "Implemented a Test-Driven Development (TDD) framework using Jasmine, Karma, and Protractor",
-        "Contributed to the development of shell scripts for continuous integration in Bamboo",
-        "Consumed a proprietary RESTful API layer to build out the graphical user interface (GUI)",
-        "Carried out all front-end duties, including building Gulp tasks"
+        "Served as the sole front-end specialist responsible for the entire front-end of a company-wide computer and server monitoring application.",
+        "Developed the application using the AngularJS framework.",
+        "Implemented a Test-Driven Development (TDD) framework using Jasmine, Karma, and Protractor.",
+        "Contributed to the development of shell scripts for continuous integration in Bamboo.",
+        "Consumed a proprietary RESTful API layer to build out the graphical user interface (GUI).",
+        "Carried out all front-end duties, including building Gulp tasks."
       ]
     },
     {
