@@ -1,7 +1,8 @@
-import { useStore } from "@state/useStore"
 import { describe, expect, it } from "vitest"
 
 import resume from "@data/resume.json"
+
+import { useStore } from "@state/useStore"
 
 describe("useStore", () => {
   it("seeds every top-level field from resume.json", () => {

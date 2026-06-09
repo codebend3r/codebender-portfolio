@@ -11,6 +11,7 @@ export default defineConfig({
       "@assets": path.resolve(__dirname, "src/assets"),
       "@components": path.resolve(__dirname, "src/components"),
       "@data": path.resolve(__dirname, "src/data"),
+      "@pdf": path.resolve(__dirname, "src/pdf"),
       "@sky": path.resolve(__dirname, "src/sky.ts"),
       "@state": path.resolve(__dirname, "src/state"),
       "@styles": path.resolve(__dirname, "src/styles"),

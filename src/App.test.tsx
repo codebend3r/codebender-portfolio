@@ -5,23 +5,14 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 
 import resume from "@data/resume.json"
 
-const { html2pdfSave, html2pdfFrom, html2pdfSet, html2pdfFactory } = vi.hoisted(
-  () => {
-    const save = vi.fn().mockResolvedValue(undefined)
-    const from = vi.fn(() => ({ save }))
-    const set = vi.fn(() => ({ from }))
-    const factory = vi.fn(() => ({ set }))
-    return {
-      html2pdfSave: save,
-      html2pdfFrom: from,
-      html2pdfSet: set,
-      html2pdfFactory: factory,
-    }
-  }
-)
+const { generateResumePdfMock, downloadBlobMock } = vi.hoisted(() => ({
+  generateResumePdfMock: vi.fn().mockResolvedValue(new Blob()),
+  downloadBlobMock: vi.fn(),
+}))
 
-vi.mock("html2pdf.js", () => ({
-  default: html2pdfFactory,
+vi.mock("@pdf", () => ({
+  generateResumePdf: generateResumePdfMock,
+  downloadBlob: downloadBlobMock,
 }))
 
 vi.mock("@components/Sky", () => ({
@@ -36,16 +27,11 @@ vi.mock("@components/WeatherClock", () => ({
   WeatherClock: () => <div data-testid="weather-clock-mock" />,
 }))
 
-vi.mock("@utils/print-utils", () => ({
-  waitForAssets: vi.fn().mockResolvedValue(undefined),
-}))
-
 describe("App", () => {
   beforeEach(() => {
-    html2pdfFactory.mockClear()
-    html2pdfSet.mockClear()
-    html2pdfFrom.mockClear()
-    html2pdfSave.mockClear()
+    generateResumePdfMock.mockClear()
+    generateResumePdfMock.mockResolvedValue(new Blob())
+    downloadBlobMock.mockClear()
   })
 
   afterEach(() => {
@@ -96,22 +82,23 @@ describe("App", () => {
     expect(button).toHaveAttribute("aria-busy", "false")
   })
 
-  it("invokes html2pdf when the download button is clicked", async () => {
+  it("generates a PDF and triggers a download when clicked", async () => {
     const user = userEvent.setup()
     render(<App />)
     await user.click(screen.getByRole("button", { name: "Download CV" }))
-    await waitFor(() => expect(html2pdfSave).toHaveBeenCalledTimes(1))
-    expect(html2pdfFactory).toHaveBeenCalledTimes(1)
-    expect(html2pdfSet).toHaveBeenCalledTimes(1)
-    expect(html2pdfFrom).toHaveBeenCalledTimes(1)
+    await waitFor(() => expect(generateResumePdfMock).toHaveBeenCalledTimes(1))
+    expect(downloadBlobMock).toHaveBeenCalledTimes(1)
+    expect(downloadBlobMock.mock.calls[0][1]).toBe(
+      "cj_rivas_senior_frontend_engineer.pdf"
+    )
   })
 
   it("shows a generating state while the PDF is being produced", async () => {
-    let resolveSave: () => void = () => {}
-    html2pdfSave.mockImplementationOnce(
+    let resolveGenerate: (blob: Blob) => void = () => {}
+    generateResumePdfMock.mockImplementationOnce(
       () =>
-        new Promise<void>((resolve) => {
-          resolveSave = resolve
+        new Promise<Blob>((resolve) => {
+          resolveGenerate = resolve
         })
     )
 
@@ -124,18 +111,18 @@ describe("App", () => {
       expect(screen.getByRole("button", { name: "Generating…" })).toBeDisabled()
     })
 
-    resolveSave()
+    resolveGenerate(new Blob())
     await waitFor(() => {
       expect(screen.getByRole("button", { name: "Download CV" })).toBeEnabled()
     })
   })
 
   it("ignores a second click while a PDF generation is in flight", async () => {
-    let resolveSave: () => void = () => {}
-    html2pdfSave.mockImplementationOnce(
+    let resolveGenerate: (blob: Blob) => void = () => {}
+    generateResumePdfMock.mockImplementationOnce(
       () =>
-        new Promise<void>((resolve) => {
-          resolveSave = resolve
+        new Promise<Blob>((resolve) => {
+          resolveGenerate = resolve
         })
     )
 
@@ -148,9 +135,9 @@ describe("App", () => {
     })
 
     await user.click(screen.getByRole("button", { name: "Generating…" }))
-    expect(html2pdfFactory).toHaveBeenCalledTimes(1)
+    expect(generateResumePdfMock).toHaveBeenCalledTimes(1)
 
-    resolveSave()
+    resolveGenerate(new Blob())
     await waitFor(() => {
       expect(screen.getByRole("button", { name: "Download CV" })).toBeEnabled()
     })
@@ -158,7 +145,7 @@ describe("App", () => {
 
   it("logs and recovers when PDF generation fails", async () => {
     const error = new Error("nope")
-    html2pdfSave.mockRejectedValueOnce(error)
+    generateResumePdfMock.mockRejectedValueOnce(error)
     const consoleError = vi.spyOn(console, "error").mockImplementation(() => {})
 
     const user = userEvent.setup()
@@ -167,6 +154,7 @@ describe("App", () => {
     await waitFor(() => expect(consoleError).toHaveBeenCalled())
     expect(consoleError.mock.calls[0][0]).toBe("PDF generation failed:")
     expect(screen.getByRole("button", { name: "Download CV" })).toBeEnabled()
+    expect(downloadBlobMock).not.toHaveBeenCalled()
 
     consoleError.mockRestore()
   })

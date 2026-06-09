@@ -4,7 +4,13 @@ import { defineConfig } from "vite"
 
 function manualChunks(id: string) {
   if (id.includes("node_modules")) {
-    if (id.includes("react-dom")) {
+    if (
+      id.includes("@react-pdf") ||
+      id.includes("fontkit") ||
+      id.includes("@fontsource")
+    ) {
+      return "react-pdf"
+    } else if (id.includes("react-dom")) {
       return "react-dom"
     } else if (id.includes("react")) {
       return "react"
@@ -12,12 +18,6 @@ function manualChunks(id: string) {
       return "core-js"
     } else if (id.includes("zustand")) {
       return "zustand"
-    } else if (
-      id.includes("html2pdf") ||
-      id.includes("html2canvas") ||
-      id.includes("jspdf")
-    ) {
-      return "html2pdf"
     } else {
       return "vendor"
     }
@@ -38,6 +38,7 @@ export default defineConfig({
       "@assets": path.resolve(__dirname, "src/assets"),
       "@components": path.resolve(__dirname, "src/components"),
       "@data": path.resolve(__dirname, "src/data"),
+      "@pdf": path.resolve(__dirname, "src/pdf"),
       "@sky": path.resolve(__dirname, "src/sky.ts"),
       "@state": path.resolve(__dirname, "src/state"),
       "@styles": path.resolve(__dirname, "src/styles"),
@@ -49,7 +50,7 @@ export default defineConfig({
     chunkSizeWarningLimit: 2000,
     modulePreload: {
       resolveDependencies: (_filename, deps) =>
-        deps.filter((d) => !d.includes("html2pdf")),
+        deps.filter((d) => !d.includes("react-pdf")),
     },
     rollupOptions: {
       output: {
