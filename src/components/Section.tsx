@@ -4,13 +4,24 @@ import styles from "@components/Section.module.css"
 
 export function Section({
   title,
+  index,
+  eyebrow,
   children,
 }: {
   title: string
+  index?: number
+  eyebrow?: string
   children: React.ReactNode
 }) {
+  const hasChip = index !== undefined && eyebrow !== undefined
   return (
     <section className={styles.section}>
+      {hasChip && (
+        <span className={styles.chip}>
+          <span className={styles.chipDot} aria-hidden />
+          {String(index).padStart(2, "0")} · {eyebrow}
+        </span>
+      )}
       <h2>{title}</h2>
       {children}
     </section>
