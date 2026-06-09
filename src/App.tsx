@@ -69,12 +69,12 @@ export default function App() {
         <div className={styles.container}>
           <AppHeader onDownload={onDownload} isGenerating={isGenerating} />
 
-          <main>
+          <main className={styles.main}>
             <Summary />
             <TechnicalSkills />
             <WorkExperience />
 
-            <div>
+            <div className={styles.subgrid}>
               <Awards />
               <Languages />
               <Education />

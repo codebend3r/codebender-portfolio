@@ -50,6 +50,22 @@ Plain CSS Modules — every component pairs with a colocated `<Name>.module.css`
 
 Reference tokens inside modules as `var(--accent)` etc. The previous Panda-CSS toolchain (`panda.config.ts`, `styled-system/`, `postcss.config.cjs`) was removed in favor of this approach — see `docs/superpowers/specs/2026-05-26-css-modules-migration-design.md`.
 
+#### Spacing convention: no margins, use grid + gap
+
+Do **not** use CSS `margin` (any of `margin`, `margin-top`, `margin-bottom`, `margin-left`, `margin-right`, `margin-block`, `margin-inline`) to space elements. Instead, make the parent a grid container and use `gap` to separate its children:
+
+```css
+.parent {
+  display: grid;
+  grid-template-columns: 1fr; /* or whatever column spec the layout needs */
+  gap: 20px;
+}
+```
+
+This applies to sibling separation (e.g. stacked sections inside `<main>`) **and** internal separation between a heading and its content inside a panel: make the container a grid with `gap` and zero the heading's margin. Spacing then lives in one place (the parent), so adjustments don't require touching every child.
+
+Narrow exceptions: `margin: 0 auto` for centering a fixed-width container horizontally, and `margin: 0` resets are fine. Everything else: gap on a parent.
+
 ### Asset imports
 
 `src/vite-env.d.ts` declares modules for `*.png`, `*.svg`, `*.scss`, and `@svgr/rollup`. SVGs can be imported as a URL (default) or — once `@svgr/rollup` is wired in — as a React component via the `ReactComponent` named export.

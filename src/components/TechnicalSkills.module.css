@@ -74,3 +74,18 @@
   border: 6px solid transparent;
   border-top-color: var(--accent);
 }
+
+@media (max-width: 700px) {
+  .pillList {
+    gap: 8px;
+  }
+
+  .pill {
+    padding: 6px 10px;
+    font-size: 13px;
+  }
+
+  .tooltip {
+    width: min(240px, 70vw);
+  }
+}

@@ -7,10 +7,24 @@
   border: 1px solid var(--border);
   border-radius: 16px;
   padding: 20px;
-  margin-bottom: 20px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
 }
 
 .section h2 {
-  margin: 0 0 12px;
+  margin: 0;
   font-size: 20px;
+}
+
+@media (max-width: 700px) {
+  .section {
+    padding: 14px;
+    border-radius: 12px;
+    gap: 10px;
+  }
+
+  .section h2 {
+    font-size: 17px;
+  }
 }
