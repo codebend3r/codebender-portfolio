@@ -13,10 +13,10 @@
 }
 
 .brand h1 {
-  font-family: var(--font-display);
+  font-family: var(--font-role);
   font-size: var(--header-h1-size, 28px);
   margin: 0;
-  font-weight: 700;
+  font-weight: 800;
   letter-spacing: 0.2px;
   transition: font-size 0.25s ease;
 }

@@ -21,7 +21,7 @@
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   border-bottom: 1px solid var(--border);
-  --header-h1-size: 28px;
+  --header-h1-size: 32px;
   --header-logo-size: 72px;
   --header-brand-gap: 16px;
   --header-meta-size: 16px;
@@ -51,7 +51,7 @@
 }
 
 .bar[data-stuck="true"] {
-  --header-h1-size: 20px;
+  --header-h1-size: 24px;
   --header-logo-size: 48px;
   --header-brand-gap: 10px;
   --header-meta-size: 13px;
@@ -102,7 +102,7 @@
 
 @media (max-width: 700px) {
   .bar {
-    --header-h1-size: 22px;
+    --header-h1-size: 26px;
     --header-logo-size: 56px;
     --header-brand-gap: 12px;
     --header-meta-size: 13px;
@@ -110,7 +110,7 @@
   }
 
   .bar[data-stuck="true"] {
-    --header-h1-size: 18px;
+    --header-h1-size: 22px;
     --header-logo-size: 40px;
     --header-brand-gap: 8px;
     --header-meta-size: 12px;
@@ -140,7 +140,7 @@
 
 @media (max-width: 420px) {
   .bar {
-    --header-h1-size: 20px;
+    --header-h1-size: 24px;
     --header-logo-size: 48px;
   }
 }
