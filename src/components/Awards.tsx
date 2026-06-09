@@ -2,11 +2,17 @@ import { useStore } from "@state/useStore"
 
 import { Section } from "@components/Section"
 
-export function Awards() {
+export function Awards({
+  index,
+  eyebrow,
+}: {
+  index?: number
+  eyebrow?: string
+}) {
   const { awards } = useStore()
 
   return (
-    <Section title="Awards">
+    <Section title="Awards" index={index} eyebrow={eyebrow}>
       <ul>
         {awards.map((a) => (
           <li key={a.name + a.year}>

@@ -8,11 +8,17 @@ import { skillDescriptions } from "@data/skillDescriptions"
 const fallbackDescription =
   "A core technology used across modern frontend engineering."
 
-export function TechnicalSkills() {
+export function TechnicalSkills({
+  index,
+  eyebrow,
+}: {
+  index?: number
+  eyebrow?: string
+}) {
   const { technical_skills } = useStore()
 
   return (
-    <Section title="Technical Skills">
+    <Section title="Technical Skills" index={index} eyebrow={eyebrow}>
       <ul className={styles.pillList}>
         {technical_skills.map((s) => {
           const description = skillDescriptions[s] ?? fallbackDescription

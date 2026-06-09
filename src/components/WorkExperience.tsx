@@ -3,11 +3,17 @@ import { useStore } from "@state/useStore"
 import { Section } from "@components/Section"
 import styles from "@components/WorkExperience.module.css"
 
-export function WorkExperience() {
+export function WorkExperience({
+  index,
+  eyebrow,
+}: {
+  index?: number
+  eyebrow?: string
+}) {
   const { work_experience } = useStore()
 
   return (
-    <Section title="Work Experience">
+    <Section title="Work Experience" index={index} eyebrow={eyebrow}>
       <ul className={styles.timeline}>
         {work_experience.map((w) => (
           <li key={w.company + w.period}>

@@ -72,6 +72,19 @@ describe("App", () => {
         screen.getByRole("heading", { level: 2, name: title })
       ).toBeInTheDocument()
     }
+
+    for (const chip of [
+      "01 · Stack",
+      "02 · Experience",
+      "03 · Recognition",
+      "04 · Languages",
+      "05 · Education",
+    ]) {
+      expect(screen.getByText(chip)).toBeInTheDocument()
+    }
+
+    expect(screen.queryByText(/^00 ·/)).not.toBeInTheDocument()
+    expect(screen.queryByText(/· Summary$/)).not.toBeInTheDocument()
   })
 
   it("renders an enabled download button by default", () => {

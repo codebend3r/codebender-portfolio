@@ -71,13 +71,13 @@ export default function App() {
 
           <main className={styles.main}>
             <Summary />
-            <TechnicalSkills />
-            <WorkExperience />
+            <TechnicalSkills index={1} eyebrow="Stack" />
+            <WorkExperience index={2} eyebrow="Experience" />
 
             <div className={styles.subgrid}>
-              <Awards />
-              <Languages />
-              <Education />
+              <Awards index={3} eyebrow="Recognition" />
+              <Languages index={4} eyebrow="Languages" />
+              <Education index={5} eyebrow="Education" />
             </div>
           </main>
 
