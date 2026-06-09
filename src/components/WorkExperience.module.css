@@ -3,7 +3,7 @@
   padding: 0;
   margin: 0;
   display: grid;
-  gap: 16px;
+  gap: 32px;
 }
 
 .item {
@@ -13,8 +13,7 @@
   padding: 0;
   display: grid;
   grid-template-columns: 3px 1fr;
-  column-gap: 14px;
-  row-gap: 0;
+  gap: 14px;
 }
 
 .item::before {
@@ -61,8 +60,8 @@
 }
 
 .bullets {
-  margin: 10px 0 0;
-  padding-left: 22px;
+  margin: 0;
+  padding: 0;
 }
 
 @media (max-width: 700px) {

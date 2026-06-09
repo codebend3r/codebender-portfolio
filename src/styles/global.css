@@ -43,6 +43,12 @@ a:hover {
   text-decoration: underline;
 }
 
+ul {
+  padding: 0 0 0 16px;
+  margin: 0;
+  list-style-type: circle;
+}
+
 img,
 svg {
   max-width: 100%;
