@@ -35,4 +35,9 @@ describe("WorkExperience", () => {
       expect(within(card).getByText(line)).toBeInTheDocument()
     }
   })
+
+  it("renders a numbered eyebrow chip when index and eyebrow are passed", () => {
+    render(<WorkExperience index={2} eyebrow="Experience" />)
+    expect(screen.getByText("02 · Experience")).toBeInTheDocument()
+  })
 })

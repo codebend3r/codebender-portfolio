@@ -22,4 +22,22 @@ describe("Section", () => {
     )
     expect(screen.getByTestId("child")).toHaveTextContent("payload")
   })
+
+  it("renders a numbered eyebrow chip when given index and eyebrow", () => {
+    render(
+      <Section title="Stack" index={1} eyebrow="Stack">
+        <p>body</p>
+      </Section>
+    )
+    expect(screen.getByText("01 · Stack")).toBeInTheDocument()
+  })
+
+  it("does not render an eyebrow chip when index or eyebrow is missing", () => {
+    render(
+      <Section title="Summary">
+        <p>body</p>
+      </Section>
+    )
+    expect(screen.queryByText(/^\d{2} ·/)).not.toBeInTheDocument()
+  })
 })

@@ -2,11 +2,17 @@ import { useStore } from "@state/useStore"
 
 import { Section } from "@components/Section"
 
-export function Languages() {
+export function Languages({
+  index,
+  eyebrow,
+}: {
+  index?: number
+  eyebrow?: string
+}) {
   const { languages } = useStore()
 
   return (
-    <Section title="Languages">
+    <Section title="Languages" index={index} eyebrow={eyebrow}>
       <ul>
         {languages.map((l) => (
           <li key={l.name}>

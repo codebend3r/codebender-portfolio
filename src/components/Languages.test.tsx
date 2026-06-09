@@ -27,4 +27,9 @@ describe("Languages", () => {
       expect(item.textContent).toContain(lang.proficiency)
     }
   })
+
+  it("renders a numbered eyebrow chip when index and eyebrow are passed", () => {
+    render(<Languages index={4} eyebrow="Languages" />)
+    expect(screen.getByText("04 · Languages")).toBeInTheDocument()
+  })
 })

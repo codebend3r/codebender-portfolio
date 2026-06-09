@@ -8,8 +8,13 @@ export function Footer() {
   const githubLabel = github.replace(/^https?:\/\//, "")
   return (
     <footer className={styles.footer}>
-      <small>Built with React + Typescript + Vite</small>
-      <small>© {new Date().getFullYear()}. Codebender Inc.</small>
+      <small className={styles.stack}>
+        Built with React + Typescript + Vite
+      </small>
+      <small className={styles.year}>
+        {" "}
+        © {new Date().getFullYear()}. Codebender Inc.
+      </small>
       <small className={styles.credit}>
         {name} ·{" "}
         <a href={github} target="_blank" rel="noopener noreferrer">

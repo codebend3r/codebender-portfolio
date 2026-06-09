@@ -4,3 +4,6 @@ coverage
 package-lock.json
 # Local Netlify folder
 .netlify
+
+# Brainstorming mockups (visual companion)
+.superpowers

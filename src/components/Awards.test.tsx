@@ -27,4 +27,9 @@ describe("Awards", () => {
     render(<Awards />)
     expect(screen.getAllByRole("listitem")).toHaveLength(resume.awards.length)
   })
+
+  it("renders a numbered eyebrow chip when index and eyebrow are passed", () => {
+    render(<Awards index={3} eyebrow="Recognition" />)
+    expect(screen.getByText("03 · Recognition")).toBeInTheDocument()
+  })
 })
