@@ -22,7 +22,7 @@ export function Section({
           {String(index).padStart(2, "0")} · {eyebrow}
         </span>
       )}
-      <h2>{title}</h2>
+      <h2 className={styles.srTitle}>{title}</h2>
       {children}
     </section>
   )
