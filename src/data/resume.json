@@ -111,6 +111,28 @@
       ]
     },
     {
+      "role": "Senior Frontend Engineer",
+      "company": "Myplanet",
+      "period": "12/2020 - 02/2021",
+      "achievements": [
+        "Developed an internal TypeScript toolset that streamlined website and application production by automating repetitive front-end tasks.",
+        "Built a suite of reusable React component libraries to accelerate delivery across product teams.",
+        "Maintained a Lerna-managed monorepo to coordinate versioning and dependency management across packages.",
+        "Curated a Storybook-driven design system, organizing themes and themeable components to ensure visual consistency at scale."
+      ]
+    },
+    {
+      "role": "Senior Frontend Engineer",
+      "company": "RBC Capital Markets",
+      "period": "08/2020 - 12/2020",
+      "achievements": [
+        "Engineered a real-time stock trading application leveraging React Hooks, TypeScript, and RxJS to deliver reactive market data streams.",
+        "Authored comprehensive unit test coverage across React components to safeguard performance, stability, and reliability.",
+        "Established code quality standards by integrating ESLint and Prettier into the development workflow.",
+        "Strengthened the DevOps pipeline with additional automated checks, accelerating build times and improving deployment confidence."
+      ]
+    },
+    {
       "role": "Lead Frontend Engineer",
       "company": "RBC Ventures",
       "period": "08/2019 - 08/2020",
@@ -188,6 +210,34 @@
         "Contributed to the development of shell scripts for continuous integration in Bamboo",
         "Consumed a proprietary RESTful API layer to build out the graphical user interface (GUI)",
         "Carried out all front-end duties, including building Gulp tasks"
+      ]
+    },
+    {
+      "role": "Intermediate Frontend Developer",
+      "company": "Kobo Inc.",
+      "period": "02/2012 - 03/2014",
+      "achievements": [
+        "Contributed to the development of Kobo's Instant Reader web application, built on the SproutCore JavaScript framework.",
+        "Diagnosed and resolved front-end defects while delivering new features across the reading experience.",
+        "Partnered with the design and UX team to implement responsive layouts that performed consistently across all supported platforms.",
+        "Maintained and iterated on kobobooks.com, shipping site-wide improvements and ongoing enhancements.",
+        "Collaborated cross-functionally with adjacent teams to investigate issues and research new feature opportunities.",
+        "Worked in lockstep with back-end engineers to deliver full-scale features for the main customer-facing website."
+      ]
+    },
+    {
+      "role": "Senior Flash Developer + Team Lead",
+      "company": "Research Now",
+      "period": "07/2008 - 09/2011",
+      "achievements": [
+        "Architected a global Flash framework that powered Research Now's custom survey tooling across international markets.",
+        "Engaged directly with clients to gather requirements and scope custom development engagements.",
+        "Owned the architecture and visual design of all Flash and Flex applications.",
+        "Led the North American Flash team and mentored a senior Flash developer across the majority of project deliveries.",
+        "Built custom interactive survey applications tailored to client research objectives.",
+        "Authored a proprietary ActionScript 3 library grounded in object-oriented principles to standardize internal development.",
+        "Refactored core classes and components to maximize reusability across the project portfolio.",
+        "Delivered a Flex-based real-time survey reporting application that surfaced live respondent insights."
       ]
     }
   ],
