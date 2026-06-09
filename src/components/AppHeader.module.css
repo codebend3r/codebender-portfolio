@@ -27,6 +27,14 @@
   --header-meta-size: 16px;
 }
 
+@media (hover: none) {
+  .bar {
+    background: rgba(11, 14, 20, 0.96);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+}
+
 .inner {
   width: 100%;
   padding: 16px 24px;
