@@ -6,6 +6,12 @@
   --accent: #7aa2f7;
   --accent2: #c678dd;
   --border: #1b2233;
+  --panel-overlay: linear-gradient(
+    180deg,
+    rgba(17, 22, 34, 0.78),
+    rgba(11, 14, 20, 0.82)
+  );
+  --panel-edge: rgba(122, 162, 247, 0.22);
   --cloud-drift: 0vw;
   --glow1: none;
   --glow2: none;
