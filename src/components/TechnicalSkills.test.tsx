@@ -25,4 +25,9 @@ describe("TechnicalSkills", () => {
       expect(screen.getByText(skill)).toBeInTheDocument()
     }
   })
+
+  it("renders a numbered eyebrow chip when index and eyebrow are passed", () => {
+    render(<TechnicalSkills index={1} eyebrow="Stack" />)
+    expect(screen.getByText("01 · Stack")).toBeInTheDocument()
+  })
 })

@@ -53,4 +53,9 @@ describe("Education", () => {
     expect(item.textContent).toContain("Honours Diploma")
     expect(item.textContent).toMatch(/Test Institution — Honours Diploma/)
   })
+
+  it("renders a numbered eyebrow chip when index and eyebrow are passed", () => {
+    render(<Education index={5} eyebrow="Education" />)
+    expect(screen.getByText("05 · Education")).toBeInTheDocument()
+  })
 })
