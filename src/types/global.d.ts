@@ -15,6 +15,17 @@ type Experience = {
   achievements: string[]
 }
 
+type Showcase = {
+  name: string
+  domain: string
+  url: string
+  role: string
+  period: string
+  description: string
+  image: string
+  tags: string[]
+}
+
 type Data = {
   name: string
   contact: {
@@ -31,4 +42,5 @@ type Data = {
   awards: Award[]
   languages: Language[]
   education: Education[]
+  showcase: Showcase[]
 }

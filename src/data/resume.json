@@ -272,5 +272,47 @@
       "program": "Digital Media Arts",
       "institution": "Seneca College of Applied Arts and Technology"
     }
+  ],
+  "showcase": [
+    {
+      "name": "QP Briefing",
+      "domain": "qpbriefing.com",
+      "url": "https://www.qpbriefing.com",
+      "role": "Fullstack Engineer",
+      "period": "2023 - Present",
+      "description": "Sole full-stack developer for the QP Briefing news site on Next.js, React, Prisma, and Sanity CMS; owned the backend, CI/CD, and infrastructure.",
+      "image": "/showcase/qp-briefing.png",
+      "tags": ["Next.js", "React", "Prisma", "Sanity"]
+    },
+    {
+      "name": "homegenius Real Estate",
+      "domain": "homegeniusrealestate.com",
+      "url": "https://homegeniusrealestate.com",
+      "role": "Senior Frontend Engineer + Architect",
+      "period": "2022 - 2023",
+      "description": "Front-end lead architect who built the real estate platform from scratch to production in under a year with Next.js, TypeScript, GraphQL, and Nest.js, backed by a Storybook design system.",
+      "image": "/showcase/homegenius.png",
+      "tags": ["Next.js", "TypeScript", "GraphQL", "Storybook"]
+    },
+    {
+      "name": "The Globe and Mail",
+      "domain": "theglobeandmail.com",
+      "url": "https://www.theglobeandmail.com",
+      "role": "Senior Frontend Engineer",
+      "period": "2024 - 2026",
+      "description": "Built interactive React components and a Storybook design system integrated with a proprietary CMS, boosting reader engagement.",
+      "image": "/showcase/globe-and-mail.png",
+      "tags": ["React", "Storybook", "Design System"]
+    },
+    {
+      "name": "Toronto Star",
+      "domain": "thestar.com",
+      "url": "https://www.thestar.com",
+      "role": "Frontend Team Lead",
+      "period": "2018 - 2019",
+      "description": "Frontend team lead on thestar.com who led a new responsive main menu in React and owned code review, E2E testing, and Sentry error monitoring.",
+      "image": "/showcase/toronto-star.png",
+      "tags": ["React", "E2E Testing", "Sentry"]
+    }
   ]
 }

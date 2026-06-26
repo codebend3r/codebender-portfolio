@@ -5,6 +5,7 @@ import { Awards } from "@components/Awards"
 import { Education } from "@components/Education"
 import { Footer } from "@components/Footer"
 import { Languages } from "@components/Languages"
+import { Showcase } from "@components/Showcase"
 import { Sky } from "@components/Sky"
 import { Summary } from "@components/Summary"
 import { TechnicalSkills } from "@components/TechnicalSkills"
@@ -73,11 +74,12 @@ export default function App() {
             <Summary />
             <TechnicalSkills index={1} eyebrow="Stack" />
             <WorkExperience index={2} eyebrow="Experience" />
+            <Showcase index={3} eyebrow="Selected Work" />
 
             <div className={styles.subgrid}>
-              <Awards index={3} eyebrow="Recognition" />
-              <Languages index={4} eyebrow="Languages" />
-              <Education index={5} eyebrow="Education" />
+              <Awards index={4} eyebrow="Recognition" />
+              <Languages index={5} eyebrow="Languages" />
+              <Education index={6} eyebrow="Education" />
             </div>
           </main>
 
