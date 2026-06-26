@@ -313,6 +313,26 @@
       "description": "Frontend team lead on thestar.com who led a new responsive main menu in React and owned code review, E2E testing, and Sentry error monitoring.",
       "image": "/showcase/toronto-star.png",
       "tags": ["React", "E2E Testing", "Sentry"]
+    },
+    {
+      "name": "The Known World",
+      "domain": "theknownworld.netlify.app",
+      "url": "https://theknownworld.netlify.app",
+      "role": "Creator (Side Project)",
+      "period": "2026",
+      "description": "An interactive atlas of George R. R. Martin's world of Ice and Fire, with a pannable SVG map, a timeline, and the rolls of the great houses. Statically generated with Next.js from Zod-validated markdown.",
+      "image": "/showcase/the-known-world.png",
+      "tags": ["Next.js", "React", "TypeScript", "Zod"]
+    },
+    {
+      "name": "Kasane",
+      "domain": "kasane-guide.netlify.app",
+      "url": "https://kasane-guide.netlify.app",
+      "role": "Creator (Side Project)",
+      "period": "2026",
+      "description": "A cross-platform guide that maps which anime episodes cover which manga chapters and back. Built once with Expo and React Native for web, iOS, Android, and desktop, sourcing series data from the AniList GraphQL API.",
+      "image": "/showcase/kasane.png",
+      "tags": ["Expo", "React Native", "GraphQL", "Zustand"]
     }
   ]
 }

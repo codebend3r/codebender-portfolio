@@ -11,12 +11,20 @@ const PORT = 9333
 const WIDTH = 1440
 const HEIGHT = 900
 
-const TARGETS = [
+const ALL_TARGETS = [
   { slug: "qp-briefing", url: "https://www.qpbriefing.com" },
   { slug: "homegenius", url: "https://homegeniusrealestate.com" },
   { slug: "globe-and-mail", url: "https://www.theglobeandmail.com" },
   { slug: "toronto-star", url: "https://www.thestar.com" },
+  { slug: "the-known-world", url: "https://theknownworld.netlify.app" },
+  { slug: "kasane", url: "https://kasane-guide.netlify.app" },
 ]
+
+// Optional slug args capture only a subset, e.g. `node scripts/capture-showcase.mjs kasane`.
+const only = process.argv.slice(2)
+const TARGETS = only.length
+  ? ALL_TARGETS.filter((t) => only.includes(t.slug))
+  : ALL_TARGETS
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..")
 const outDir = join(root, "public", "showcase")

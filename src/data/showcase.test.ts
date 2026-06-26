@@ -3,8 +3,8 @@ import { describe, expect, it } from "vitest"
 import resume from "@data/resume.json"
 
 describe("resume.json showcase data", () => {
-  it("has four showcase entries", () => {
-    expect(resume.showcase).toHaveLength(4)
+  it("has six showcase entries", () => {
+    expect(resume.showcase).toHaveLength(6)
   })
 
   it("each entry has the required fields populated", () => {
