@@ -16,7 +16,10 @@ const ALL_TARGETS = [
   { slug: "homegenius", url: "https://homegeniusrealestate.com" },
   { slug: "globe-and-mail", url: "https://www.theglobeandmail.com" },
   { slug: "toronto-star", url: "https://www.thestar.com" },
-  { slug: "the-known-world", url: "https://theknownworld.netlify.app" },
+  {
+    slug: "the-known-world",
+    url: "https://theknownworld.netlify.app/characters/brynden-rivers/",
+  },
   { slug: "kasane", url: "https://kasane-guide.netlify.app" },
 ]
 
