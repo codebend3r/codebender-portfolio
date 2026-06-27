@@ -20,7 +20,7 @@ const ALL_TARGETS = [
     slug: "the-known-world",
     url: "https://theknownworld.netlify.app/characters/brynden-rivers/",
   },
-  { slug: "kasane", url: "https://kasane-guide.netlify.app" },
+  { slug: "kasane", url: "https://kasane-guide.netlify.app/series/101517" },
 ]
 
 // Optional slug args capture only a subset, e.g. `node scripts/capture-showcase.mjs kasane`.
