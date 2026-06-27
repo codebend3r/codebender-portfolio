@@ -1,3 +1,30 @@
+/* Registered so the sizes interpolate smoothly when scroll-driven. */
+@property --header-h1-size {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 32px;
+}
+@property --header-logo-size {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 72px;
+}
+@property --header-brand-gap {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 16px;
+}
+@property --header-meta-size {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 16px;
+}
+@property --header-pad-y {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 16px;
+}
+
 .bar {
   position: sticky;
   top: 0;
@@ -16,6 +43,33 @@
   --header-logo-size: 72px;
   --header-brand-gap: 16px;
   --header-meta-size: 16px;
+  --header-pad-y: 16px;
+}
+
+/* Shrink the sticky header once the page is scrolled ~100px. Driven by the
+   scroll position itself, so it tracks the scrollbar with no JS and no jank.
+   Browsers without scroll-driven animations keep the full, stable header. */
+@keyframes shrinkHeader {
+  to {
+    --header-h1-size: 24px;
+    --header-logo-size: 48px;
+    --header-brand-gap: 10px;
+    --header-meta-size: 13px;
+    --header-pad-y: 8px;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) and (min-width: 701px) {
+  @supports (animation-timeline: scroll()) {
+    .bar {
+      animation-name: shrinkHeader;
+      animation-duration: auto;
+      animation-timing-function: linear;
+      animation-fill-mode: both;
+      animation-timeline: scroll(root);
+      animation-range: 100px 150px;
+    }
+  }
 }
 
 @media (hover: none) {
@@ -29,7 +83,7 @@
 .inner {
   max-width: 1100px;
   margin: 0 auto;
-  padding: 16px 20px;
+  padding: var(--header-pad-y) 20px;
   padding-left: max(20px, env(safe-area-inset-left));
   padding-right: max(20px, env(safe-area-inset-right));
   display: flex;
