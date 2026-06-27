@@ -69,9 +69,9 @@ export default function App() {
       <Weather />
       <SectionNav />
       <div id="resume-root" className={styles.resumeRoot} ref={resumeRef}>
-        <div className={styles.container}>
-          <AppHeader onDownload={onDownload} isGenerating={isGenerating} />
+        <AppHeader onDownload={onDownload} isGenerating={isGenerating} />
 
+        <div className={styles.container}>
           <main className={styles.main}>
             <Summary />
             <TechnicalSkills index={1} eyebrow="Stack" />
