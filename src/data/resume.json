@@ -297,7 +297,7 @@
     {
       "name": "The Globe and Mail",
       "domain": "theglobeandmail.com",
-      "url": "https://www.theglobeandmail.com",
+      "url": "https://www.theglobeandmail.com/news-assistant/",
       "role": "Senior Frontend Engineer",
       "period": "2024 - 2026",
       "description": "Built interactive React components and a Storybook design system integrated with a proprietary CMS, boosting reader engagement.",
