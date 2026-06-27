@@ -5,6 +5,7 @@ import { Awards } from "@components/Awards"
 import { Education } from "@components/Education"
 import { Footer } from "@components/Footer"
 import { Languages } from "@components/Languages"
+import { SectionNav } from "@components/SectionNav"
 import { Showcase } from "@components/Showcase"
 import { Sky } from "@components/Sky"
 import { Summary } from "@components/Summary"
@@ -66,6 +67,7 @@ export default function App() {
     <>
       <Sky />
       <Weather />
+      <SectionNav />
       <div id="resume-root" className={styles.resumeRoot} ref={resumeRef}>
         <div className={styles.container}>
           <AppHeader onDownload={onDownload} isGenerating={isGenerating} />

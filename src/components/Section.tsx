@@ -14,8 +14,9 @@ export function Section({
   children: React.ReactNode
 }) {
   const hasChip = index !== undefined && eyebrow !== undefined
+  const id = title.toLowerCase().replace(/\s+/g, "-")
   return (
-    <section className={styles.section}>
+    <section id={id} className={styles.section}>
       {hasChip && (
         <span className={styles.chip}>
           <span className={styles.chipDot} aria-hidden />

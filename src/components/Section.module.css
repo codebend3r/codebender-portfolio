@@ -1,4 +1,5 @@
 .section {
+  scroll-margin-top: 130px;
   background: var(--panel-overlay);
   border: 1px solid var(--panel-edge);
   border-radius: 16px;
