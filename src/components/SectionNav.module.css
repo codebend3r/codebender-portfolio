@@ -1,0 +1,121 @@
+.nav {
+  position: fixed;
+  top: 50%;
+  right: max(16px, env(safe-area-inset-right));
+  transform: translateY(-50%);
+  z-index: 4;
+}
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 4px;
+  /* hairline rail connecting the markers */
+  background: linear-gradient(var(--border), var(--border)) right 10px top 0 /
+    1px 100% no-repeat;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  height: 26px;
+  padding-right: 4px;
+  text-decoration: none;
+  color: var(--muted);
+  border-radius: 6px;
+}
+
+.label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--muted);
+  opacity: 0;
+  transform: translateX(6px);
+  transition:
+    opacity 0.22s ease,
+    transform 0.22s ease;
+  padding: 2px 7px;
+  border-radius: 999px;
+  background: rgba(11, 14, 20, 0.7);
+  border: 1px solid transparent;
+}
+
+.num {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  width: 22px;
+  text-align: center;
+  color: var(--muted);
+  transition: color 0.2s ease;
+}
+
+.dot {
+  width: 22px;
+  display: inline-flex;
+  justify-content: center;
+}
+
+.dot::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--muted);
+  transition:
+    background 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+/* reveal labels when hovering the rail or focusing an item */
+.nav:hover .label,
+.item:focus-visible .label {
+  opacity: 1;
+  transform: none;
+}
+
+.item:focus-visible {
+  outline: none;
+}
+
+.item:focus-visible .label {
+  border-color: var(--accent);
+}
+
+/* active section */
+.item[aria-current="true"] .num {
+  color: var(--accent);
+}
+
+.item[aria-current="true"] .dot::before {
+  background: var(--accent);
+  box-shadow: 0 0 8px var(--accent);
+}
+
+.item[aria-current="true"] .label {
+  color: var(--text);
+}
+
+.item:hover .num,
+.item:hover .label {
+  color: var(--text);
+}
+
+@media (max-width: 920px) {
+  .nav {
+    display: none;
+  }
+}
+
+@media print {
+  .nav {
+    display: none;
+  }
+}
