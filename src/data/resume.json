@@ -282,17 +282,35 @@
       "period": "2023 - Present",
       "description": "Sole full-stack developer for the QP Briefing news site on Next.js, React, Prisma, and Sanity CMS; owned the backend, CI/CD, and infrastructure.",
       "image": "/showcase/qp-briefing.png",
-      "tags": ["Next.js", "React", "Prisma", "Sanity"]
+      "tags": [
+        "Next.js",
+        "React",
+        "Typescript",
+        "Zustand",
+        "Vitest",
+        "Prisma",
+        "CMS",
+        "Sanity"
+      ]
     },
     {
-      "name": "homegenius Real Estate",
+      "name": "Homegenius",
       "domain": "homegeniusrealestate.com",
       "url": "https://homegeniusrealestate.com",
       "role": "Senior Frontend Engineer + Architect",
       "period": "2022 - 2023",
       "description": "Front-end lead architect who built the real estate platform from scratch to production in under a year with Next.js, TypeScript, GraphQL, and Nest.js, backed by a Storybook design system.",
       "image": "/showcase/homegenius.png",
-      "tags": ["Next.js", "TypeScript", "GraphQL", "Storybook"]
+      "tags": [
+        "Next.js",
+        "TypeScript",
+        "Zustand",
+        "Jest",
+        "React Testing Library",
+        "GraphQL",
+        "E2E Testing",
+        "Storybook"
+      ]
     },
     {
       "name": "The Globe and Mail",
@@ -302,7 +320,14 @@
       "period": "2024 - 2026",
       "description": "Built interactive React components and a Storybook design system integrated with a proprietary CMS, boosting reader engagement.",
       "image": "/showcase/globe-and-mail.png",
-      "tags": ["React", "Storybook", "Design System"]
+      "tags": [
+        "React",
+        "Typescript",
+        "Zustand",
+        "CMS",
+        "Storybook",
+        "Design System"
+      ]
     },
     {
       "name": "Toronto Star",
@@ -312,7 +337,14 @@
       "period": "2018 - 2019",
       "description": "Frontend team lead on thestar.com who led a new responsive main menu in React and owned code review, E2E testing, and Sentry error monitoring.",
       "image": "/showcase/toronto-star.png",
-      "tags": ["React", "E2E Testing", "Sentry"]
+      "tags": [
+        "React",
+        "Javascript",
+        "Unit Testing",
+        "Redux",
+        "E2E Testing",
+        "Design System"
+      ]
     },
     {
       "name": "The Known World",
@@ -332,7 +364,7 @@
       "period": "2026",
       "description": "A cross-platform guide that maps which anime episodes cover which manga chapters and back. Built once with Expo and React Native for web, iOS, Android, and desktop, sourcing series data from the AniList GraphQL API.",
       "image": "/showcase/kasane.png",
-      "tags": ["Expo", "React Native", "GraphQL", "Zustand"]
+      "tags": ["Expo", "TypeScript", "React Native", "GraphQL", "Zustand"]
     }
   ]
 }
