@@ -3,6 +3,8 @@ import styles from "@components/TechnicalSkills.module.css"
 
 import { skillDescriptions } from "@data/skillDescriptions"
 
+import { EditableText } from "@edit/EditableText"
+
 import { useStore } from "@state/useStore"
 
 const fallbackDescription =
@@ -38,17 +40,21 @@ export function TechnicalSkills({
   return (
     <Section title="Technical Skills" index={index} eyebrow={eyebrow}>
       <ul className={styles.pillList}>
-        {technical_skills.map((s) => {
+        {technical_skills.map((s, i) => {
           const description = skillDescriptions[s] ?? fallbackDescription
           return (
             <li
-              key={s}
+              key={i}
               className={styles.pill}
               aria-label={`${s}: ${description}`}
               onMouseEnter={(e) => clampTooltipToViewport(e.currentTarget)}
               onFocus={(e) => clampTooltipToViewport(e.currentTarget)}
             >
-              {s}
+              <EditableText
+                value={s}
+                path={["technical_skills", i]}
+                ariaLabel={`Skill ${i + 1}`}
+              />
               <span
                 data-skill-tooltip
                 role="tooltip"
