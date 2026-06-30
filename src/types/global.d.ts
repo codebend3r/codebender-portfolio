@@ -59,3 +59,11 @@ type ResumeActions = {
 }
 
 type ResumeStore = Data & ResumeActions
+
+type Variation = {
+  id: string
+  name: string
+  createdAt: number
+  updatedAt: number
+  data: Data
+}
