@@ -1,0 +1,14 @@
+.page {
+  display: grid;
+  grid-template-columns: 240px minmax(0, 1fr);
+  gap: 24px;
+  max-width: 1200px;
+  padding: 24px;
+  margin: 0 auto;
+}
+
+@media (max-width: 720px) {
+  .page {
+    grid-template-columns: 1fr;
+  }
+}
