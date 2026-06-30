@@ -46,3 +46,16 @@ type Data = {
 }
 
 type PathKey = string | number
+
+type ResumeActions = {
+  loadData: (data: Data) => void
+  setPath: (path: PathKey[], value: unknown) => void
+  addExperience: () => void
+  removeExperience: (index: number) => void
+  moveExperience: (index: number, dir: -1 | 1) => void
+  addAchievement: (expIndex: number) => void
+  removeAchievement: (expIndex: number, achIndex: number) => void
+  moveAchievement: (expIndex: number, achIndex: number, dir: -1 | 1) => void
+}
+
+type ResumeStore = Data & ResumeActions
