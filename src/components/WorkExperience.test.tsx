@@ -1,9 +1,13 @@
-import { render, screen, within } from "@testing-library/react"
-import { describe, expect, it } from "vitest"
+import { fireEvent, render, screen, within } from "@testing-library/react"
+import { beforeEach, describe, expect, it } from "vitest"
 
 import { WorkExperience } from "@components/WorkExperience"
 
 import resume from "@data/resume.json"
+
+import { EditProvider } from "@edit/EditContext"
+
+import { useStore } from "@state/useStore"
 
 describe("WorkExperience", () => {
   it("renders inside a Work Experience section", () => {
@@ -39,5 +43,46 @@ describe("WorkExperience", () => {
   it("renders a numbered eyebrow chip when index and eyebrow are passed", () => {
     render(<WorkExperience index={2} eyebrow="Experience" />)
     expect(screen.getByText("02 · Experience")).toBeInTheDocument()
+  })
+})
+
+describe("WorkExperience editing", () => {
+  beforeEach(() => {
+    useStore.getState().loadData(structuredClone(resume) as Data)
+  })
+
+  function renderEditing() {
+    return render(
+      <EditProvider editing markDirty={() => {}}>
+        <WorkExperience />
+      </EditProvider>
+    )
+  }
+
+  it("adds an experience when Add experience is clicked", () => {
+    renderEditing()
+    const before = useStore.getState().work_experience.length
+    fireEvent.click(screen.getByRole("button", { name: /add experience/i }))
+    expect(useStore.getState().work_experience.length).toBe(before + 1)
+  })
+
+  it("removes the first experience", () => {
+    renderEditing()
+    const second = useStore.getState().work_experience[1].company
+    fireEvent.click(
+      screen.getAllByRole("button", { name: /remove experience/i })[0]
+    )
+    expect(useStore.getState().work_experience[0].company).toBe(second)
+  })
+
+  it("adds a bullet to the first experience", () => {
+    renderEditing()
+    const before = useStore.getState().work_experience[0].achievements.length
+    fireEvent.click(
+      screen.getAllByRole("button", { name: /add achievement/i })[0]
+    )
+    expect(useStore.getState().work_experience[0].achievements.length).toBe(
+      before + 1
+    )
   })
 })
