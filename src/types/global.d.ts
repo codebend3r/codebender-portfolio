@@ -44,3 +44,5 @@ type Data = {
   education: Education[]
   showcase: Showcase[]
 }
+
+type PathKey = string | number
