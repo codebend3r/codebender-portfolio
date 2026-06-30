@@ -1,0 +1,24 @@
+.field {
+  font: inherit;
+  color: inherit;
+  letter-spacing: inherit;
+  line-height: inherit;
+  width: 100%;
+  background: transparent;
+  border: 1px dashed transparent;
+  border-radius: 4px;
+  padding: 1px 4px;
+  resize: none;
+  overflow: hidden;
+}
+
+.field:hover {
+  border-color: var(--border);
+  background: color-mix(in srgb, var(--panel) 60%, transparent);
+}
+
+.field:focus {
+  outline: none;
+  border-color: var(--accent);
+  background: var(--panel);
+}
