@@ -1,6 +1,7 @@
-import { EditProvider, useEditing } from "@edit/EditContext"
 import { render, screen } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
+
+import { EditProvider, useEditing } from "@edit/EditContext"
 
 function Probe() {
   const { editing } = useEditing()

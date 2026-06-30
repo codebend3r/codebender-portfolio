@@ -565,9 +565,10 @@ Add the `@edit/*` alias now (used by every later task): see Task 13 for the matc
 
 ```tsx
 // src/edit/EditContext.test.tsx
-import { EditProvider, useEditing } from "@edit/EditContext"
 import { render, screen } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
+
+import { EditProvider, useEditing } from "@edit/EditContext"
 
 function Probe() {
   const { editing } = useEditing()
@@ -670,12 +671,13 @@ EOF
 
 ```tsx
 // src/edit/EditableText.test.tsx
-import { EditProvider } from "@edit/EditContext"
-import { EditableText } from "@edit/EditableText"
 import { fireEvent, render, screen } from "@testing-library/react"
 import { beforeEach, describe, expect, it } from "vitest"
 
 import resume from "@data/resume.json"
+
+import { EditProvider } from "@edit/EditContext"
+import { EditableText } from "@edit/EditableText"
 
 import { useStore } from "@state/useStore"
 
@@ -852,9 +854,9 @@ EOF
 - [ ] **Step 1: Edit `Summary.tsx`**
 
 ```tsx
-import { EditableText } from "@edit/EditableText"
-
 import { Section } from "@components/Section"
+
+import { EditableText } from "@edit/EditableText"
 
 import { useStore } from "@state/useStore"
 
@@ -949,9 +951,9 @@ Award `year` (a number) stays plain text to avoid number/string drift; `name` an
 - [ ] **Step 1: Edit `Awards.tsx`**
 
 ```tsx
-import { EditableText } from "@edit/EditableText"
-
 import { Section } from "@components/Section"
+
+import { EditableText } from "@edit/EditableText"
 
 import { useStore } from "@state/useStore"
 
@@ -994,9 +996,9 @@ export function Awards({
 - [ ] **Step 2: Edit `Languages.tsx`**
 
 ```tsx
-import { EditableText } from "@edit/EditableText"
-
 import { Section } from "@components/Section"
+
+import { EditableText } from "@edit/EditableText"
 
 import { useStore } from "@state/useStore"
 
@@ -1040,9 +1042,9 @@ export function Languages({
 The `details` field is optional. Keep it text-only and render `EditableText` for `program` and `institution`; leave the `details` suffix exactly as today (it is rarely present and not in the base data).
 
 ```tsx
-import { EditableText } from "@edit/EditableText"
-
 import { Section } from "@components/Section"
+
+import { EditableText } from "@edit/EditableText"
 
 import { useStore } from "@state/useStore"
 
@@ -1465,11 +1467,11 @@ Expected: FAIL — no "Add experience" button yet.
 - [ ] **Step 3: Implement the component**
 
 ```tsx
-import { useEditing } from "@edit/EditContext"
-import { EditableText } from "@edit/EditableText"
-
 import { Section } from "@components/Section"
 import styles from "@components/WorkExperience.module.css"
+
+import { useEditing } from "@edit/EditContext"
+import { EditableText } from "@edit/EditableText"
 
 import { useStore } from "@state/useStore"
 
@@ -1703,9 +1705,10 @@ Rename and New use `window.prompt` (simple, no modal dependency); guard against 
 
 ```tsx
 // src/edit/VariationsPanel.test.tsx
-import { VariationsPanel } from "@edit/VariationsPanel"
 import { fireEvent, render, screen } from "@testing-library/react"
 import { beforeEach, describe, expect, it, vi } from "vitest"
+
+import { VariationsPanel } from "@edit/VariationsPanel"
 
 import { useVariations } from "@state/useVariations"
 
@@ -2003,11 +2006,12 @@ EOF
 
 ```tsx
 // src/edit/EditResumeApp.test.tsx
-import EditResumeApp from "@edit/EditResumeApp"
 import { render, screen } from "@testing-library/react"
 import { beforeEach, describe, expect, it } from "vitest"
 
 import resume from "@data/resume.json"
+
+import EditResumeApp from "@edit/EditResumeApp"
 
 import { useStore } from "@state/useStore"
 import { useVariations } from "@state/useVariations"
@@ -2057,10 +2061,6 @@ Expected: FAIL — cannot find module `@edit/EditResumeApp`.
 // src/edit/EditResumeApp.tsx
 import { useCallback, useEffect, useState } from "react"
 
-import { EditProvider } from "@edit/EditContext"
-import styles from "@edit/EditResumeApp.module.css"
-import { VariationsPanel } from "@edit/VariationsPanel"
-
 import { Awards } from "@components/Awards"
 import { Education } from "@components/Education"
 import { Header } from "@components/Header"
@@ -2071,6 +2071,10 @@ import { TechnicalSkills } from "@components/TechnicalSkills"
 import { WorkExperience } from "@components/WorkExperience"
 
 import resume from "@data/resume.json"
+
+import { EditProvider } from "@edit/EditContext"
+import styles from "@edit/EditResumeApp.module.css"
+import { VariationsPanel } from "@edit/VariationsPanel"
 
 import { useStore } from "@state/useStore"
 import { useVariations } from "@state/useVariations"
@@ -2278,8 +2282,9 @@ Expected: FAIL — `routeFor` is not exported from `@app/Entry`.
 import React from "react"
 
 import App from "@App"
-import EditResumeApp from "@edit/EditResumeApp"
 import ReactDOM from "react-dom/client"
+
+import EditResumeApp from "@edit/EditResumeApp"
 
 import { applySky } from "@sky"
 

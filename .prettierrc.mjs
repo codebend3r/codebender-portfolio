@@ -12,6 +12,7 @@ const config = {
     "^@axios/(.*)$",
     "^@components/(.*)$",
     "^@data/(.*)$",
+    "^@edit/(.*)$",
     "^@fetcher/(.*)$",
     "^@hooks/(.*)$",
     "^@pages/(.*)$",
