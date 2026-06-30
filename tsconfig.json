@@ -18,6 +18,7 @@
       "@assets/*": ["./src/assets/*"],
       "@components/*": ["./src/components/*"],
       "@data/*": ["./src/data/*"],
+      "@edit/*": ["./src/edit/*"],
       "@pdf": ["./src/pdf"],
       "@pdf/*": ["./src/pdf/*"],
       "@sky": ["./src/sky.ts"],
