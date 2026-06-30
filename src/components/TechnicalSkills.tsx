@@ -1,9 +1,9 @@
-import { useStore } from "@state/useStore"
-
 import { Section } from "@components/Section"
 import styles from "@components/TechnicalSkills.module.css"
 
 import { skillDescriptions } from "@data/skillDescriptions"
+
+import { useStore } from "@state/useStore"
 
 const fallbackDescription =
   "A core technology used across modern frontend engineering."

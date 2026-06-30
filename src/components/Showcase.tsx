@@ -1,7 +1,7 @@
-import { useStore } from "@state/useStore"
-
 import { Section } from "@components/Section"
 import styles from "@components/Showcase.module.css"
+
+import { useStore } from "@state/useStore"
 
 export function Showcase({
   index,

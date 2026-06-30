@@ -378,12 +378,12 @@ Expected: FAIL. The first test fails on the chip assertions because no consumer 
 Replace `src/components/TechnicalSkills.tsx` with:
 
 ```tsx
-import { useStore } from "@state/useStore"
-
 import { Section } from "@components/Section"
 import styles from "@components/TechnicalSkills.module.css"
 
 import { skillDescriptions } from "@data/skillDescriptions"
+
+import { useStore } from "@state/useStore"
 
 const fallbackDescription =
   "A core technology used across modern frontend engineering."
@@ -454,9 +454,9 @@ Leave the timeline `<ul>` and everything inside it untouched.
 Replace `src/components/Awards.tsx` with:
 
 ```tsx
-import { useStore } from "@state/useStore"
-
 import { Section } from "@components/Section"
+
+import { useStore } from "@state/useStore"
 
 export function Awards({
   index,
@@ -486,9 +486,9 @@ export function Awards({
 Replace `src/components/Languages.tsx` with:
 
 ```tsx
-import { useStore } from "@state/useStore"
-
 import { Section } from "@components/Section"
+
+import { useStore } from "@state/useStore"
 
 export function Languages({
   index,
@@ -518,9 +518,9 @@ export function Languages({
 Replace `src/components/Education.tsx` with:
 
 ```tsx
-import { useStore } from "@state/useStore"
-
 import { Section } from "@components/Section"
+
+import { useStore } from "@state/useStore"
 
 export function Education({
   index,

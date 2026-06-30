@@ -1,6 +1,6 @@
-import { useStore } from "@state/useStore"
-
 import { Section } from "@components/Section"
+
+import { useStore } from "@state/useStore"
 
 export function Education({
   index,

@@ -1,8 +1,8 @@
-import { useStore } from "@state/useStore"
-
 import Logo from "@assets/robot-logo.png"
 
 import styles from "@components/Header.module.css"
+
+import { useStore } from "@state/useStore"
 
 function EmailIcon() {
   return (
