@@ -2,6 +2,9 @@ import Logo from "@assets/robot-logo.png"
 
 import styles from "@components/Header.module.css"
 
+import { useEditing } from "@edit/EditContext"
+import { EditableText } from "@edit/EditableText"
+
 import { useStore } from "@state/useStore"
 
 function EmailIcon() {
@@ -77,39 +80,74 @@ function LinkedInIcon() {
 
 export function Header() {
   const { name, title, contact } = useStore()
+  const { editing } = useEditing()
 
   return (
     <header className={styles.header}>
       <div className={styles.brand}>
         <img src={Logo} alt="Logo" className={styles.logo} />
         <div>
-          <h1>{name}</h1>
-          <p className={styles.subtitle}>{title}</p>
+          <h1>
+            <EditableText value={name} path={["name"]} ariaLabel="Name" />
+          </h1>
+          <p className={styles.subtitle}>
+            <EditableText value={title} path={["title"]} ariaLabel="Title" />
+          </p>
         </div>
       </div>
-      <div className={styles.contact}>
-        <a href={`mailto:${contact.email}`}>
-          <EmailIcon />
-          <span className={styles.label}>{contact.email}</span>
-        </a>
-        <span className={styles.sep}>•</span>
-        <a href={`tel:${contact.phone}`}>
-          <PhoneIcon />
-          <span className={styles.label}>{contact.phone}</span>
-        </a>
-        <span className={styles.sep}>•</span>
-        <span className={styles.location}>{contact.location}</span>
-        <span className={styles.sep}>•</span>
-        <a href={contact.github} target="_blank" rel="noopener noreferrer">
-          <GitHubIcon />
-          <span className={styles.label}>GitHub</span>
-        </a>
-        <span className={styles.sep}>•</span>
-        <a href={contact.linkedin} target="_blank" rel="noopener noreferrer">
-          <LinkedInIcon />
-          <span className={styles.label}>LinkedIn</span>
-        </a>
-      </div>
+      {editing ? (
+        <div className={styles.contact}>
+          <EditableText
+            value={contact.email}
+            path={["contact", "email"]}
+            ariaLabel="Email"
+          />
+          <EditableText
+            value={contact.phone}
+            path={["contact", "phone"]}
+            ariaLabel="Phone"
+          />
+          <EditableText
+            value={contact.location}
+            path={["contact", "location"]}
+            ariaLabel="Location"
+          />
+          <EditableText
+            value={contact.github}
+            path={["contact", "github"]}
+            ariaLabel="GitHub URL"
+          />
+          <EditableText
+            value={contact.linkedin}
+            path={["contact", "linkedin"]}
+            ariaLabel="LinkedIn URL"
+          />
+        </div>
+      ) : (
+        <div className={styles.contact}>
+          <a href={`mailto:${contact.email}`}>
+            <EmailIcon />
+            <span className={styles.label}>{contact.email}</span>
+          </a>
+          <span className={styles.sep}>•</span>
+          <a href={`tel:${contact.phone}`}>
+            <PhoneIcon />
+            <span className={styles.label}>{contact.phone}</span>
+          </a>
+          <span className={styles.sep}>•</span>
+          <span className={styles.location}>{contact.location}</span>
+          <span className={styles.sep}>•</span>
+          <a href={contact.github} target="_blank" rel="noopener noreferrer">
+            <GitHubIcon />
+            <span className={styles.label}>GitHub</span>
+          </a>
+          <span className={styles.sep}>•</span>
+          <a href={contact.linkedin} target="_blank" rel="noopener noreferrer">
+            <LinkedInIcon />
+            <span className={styles.label}>LinkedIn</span>
+          </a>
+        </div>
+      )}
     </header>
   )
 }
