@@ -95,6 +95,18 @@
   transform: scale(1.04);
 }
 
+/* In edit mode, disable decorative card hover so it doesn't shift
+   the cards being edited. Overrides base :hover by specificity. */
+:global(.resume-editing) .card:hover {
+  transform: none;
+  border-color: var(--border);
+  box-shadow: none;
+}
+
+:global(.resume-editing) .card:hover .shot img {
+  transform: none;
+}
+
 .body {
   display: grid;
   gap: 10px;

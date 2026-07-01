@@ -2,9 +2,13 @@
   display: grid;
   grid-template-columns: 240px minmax(0, 1fr);
   gap: 24px;
-  max-width: 1200px;
   padding: 24px;
-  margin: 0 auto;
+}
+
+/* The shared App container caps the resume at 1100px for the public page;
+   the editor should span the full viewport, so lift that cap here. */
+.page .container {
+  max-width: none;
 }
 
 @media (max-width: 720px) {

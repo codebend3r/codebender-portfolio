@@ -112,9 +112,12 @@ function EditSession({
         onNew={onNew}
       />
       <EditProvider editing={editing} markDirty={markDirty}>
-        <div id="resume-root" className={appStyles.resumeRoot}>
+        <div
+          id="resume-root"
+          className={`${appStyles.resumeRoot}${editing ? " resume-editing" : ""}`}
+        >
           <Header />
-          <div className={appStyles.container}>
+          <div className={`${appStyles.container} ${styles.container}`}>
             <main className={appStyles.main}>
               <Summary />
               <TechnicalSkills index={1} eyebrow="Stack" />
