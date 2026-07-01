@@ -51,6 +51,7 @@ export function EditableText({
       className={styles.field}
       value={value}
       aria-label={ariaLabel}
+      size={Math.max(value.length, 4)}
       onChange={(e) => commit(e.target.value)}
     />
   )
