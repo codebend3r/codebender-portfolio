@@ -134,16 +134,16 @@ function Section({
 }
 
 function ExperienceEntry({ entry }: { entry: Experience }) {
+  // wrap={false} keeps the whole entry on one page: when it does not fit
+  // in the remaining space it moves to the next page instead of splitting.
   return (
-    <View style={styles.experience} minPresenceAhead={48}>
+    <View style={styles.experience} wrap={false}>
       <View style={styles.timelineDash} />
-      <View wrap={false}>
-        <View style={styles.experienceHeader}>
-          <Text style={styles.role}>{entry.role}</Text>
-          <Text style={styles.period}>{entry.period}</Text>
-        </View>
-        <Text style={styles.company}>{entry.company}</Text>
+      <View style={styles.experienceHeader}>
+        <Text style={styles.role}>{entry.role}</Text>
+        <Text style={styles.period}>{entry.period}</Text>
       </View>
+      <Text style={styles.company}>{entry.company}</Text>
       {entry.achievements.map((a, i) => (
         <Text key={i} style={styles.achievement}>
           <Text style={styles.bullet}>{"\u2022  "}</Text>

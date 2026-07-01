@@ -95,7 +95,7 @@ export const styles = StyleSheet.create({
   experience: {
     position: "relative",
     paddingLeft: 22,
-    marginBottom: tokens.spacing.sm,
+    marginBottom: tokens.spacing.lg,
   },
   timelineDash: {
     position: "absolute",
