@@ -83,7 +83,13 @@ export function WorkExperience({
                       )
                     }
                   >
-                    <ul className={styles.bullets}>
+                    <ul
+                      className={
+                        editing
+                          ? `${styles.bullets} ${styles.bulletCards}`
+                          : styles.bullets
+                      }
+                    >
                       {w.achievements.map((a, ai) => (
                         <SortableItem
                           key={ai}
@@ -92,6 +98,7 @@ export function WorkExperience({
                         >
                           {(achievementHandle) => (
                             <>
+                              {achievementHandle}
                               <EditableText
                                 value={a}
                                 path={[
@@ -104,18 +111,16 @@ export function WorkExperience({
                                 ariaLabel={`Achievement ${wi + 1}.${ai + 1}`}
                               />
                               {editing && (
-                                <span className={styles.rowControls}>
-                                  {achievementHandle}
-                                  <button
-                                    type="button"
-                                    aria-label={`Remove achievement ${wi + 1}.${ai + 1}`}
-                                    onClick={act(() =>
-                                      store.removeAchievement(wi, ai)
-                                    )}
-                                  >
-                                    ✕
-                                  </button>
-                                </span>
+                                <button
+                                  type="button"
+                                  className={styles.cardRemove}
+                                  aria-label={`Remove achievement ${wi + 1}.${ai + 1}`}
+                                  onClick={act(() =>
+                                    store.removeAchievement(wi, ai)
+                                  )}
+                                >
+                                  ✕
+                                </button>
                               )}
                             </>
                           )}
