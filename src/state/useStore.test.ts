@@ -66,15 +66,6 @@ describe("useStore edit actions", () => {
     expect(useStore.getState().work_experience[0].company).not.toBe(first)
   })
 
-  it("moveExperience swaps with the neighbor and no-ops at the edge", () => {
-    const [a, b] = useStore.getState().work_experience
-    useStore.getState().moveExperience(0, 1)
-    expect(useStore.getState().work_experience[0].company).toBe(b.company)
-    expect(useStore.getState().work_experience[1].company).toBe(a.company)
-    useStore.getState().moveExperience(0, -1)
-    expect(useStore.getState().work_experience[0].company).toBe(b.company)
-  })
-
   it("addAchievement and removeAchievement mutate the bullet list", () => {
     const before = useStore.getState().work_experience[0].achievements.length
     useStore.getState().addAchievement(0)
@@ -87,11 +78,54 @@ describe("useStore edit actions", () => {
     )
   })
 
-  it("moveAchievement swaps neighboring bullets", () => {
+  it("reorder moves an element within a top-level list", () => {
+    const [a, b, c] = useStore.getState().technical_skills
+    useStore.getState().reorder(["technical_skills"], 0, 2)
+    const next = useStore.getState().technical_skills
+    expect(next[0]).toBe(b)
+    expect(next[1]).toBe(c)
+    expect(next[2]).toBe(a)
+  })
+
+  it("reorder moves an element within a nested list", () => {
     const [a, b] = useStore.getState().work_experience[0].achievements
-    useStore.getState().moveAchievement(0, 0, 1)
+    useStore.getState().reorder(["work_experience", 0, "achievements"], 1, 0)
     const next = useStore.getState().work_experience[0].achievements
     expect(next[0]).toBe(b)
     expect(next[1]).toBe(a)
+  })
+
+  it("reorder leaves sibling lists untouched", () => {
+    const otherBefore = useStore.getState().work_experience[1].achievements
+    useStore.getState().reorder(["work_experience", 0, "achievements"], 0, 1)
+    expect(useStore.getState().work_experience[1].achievements).toBe(
+      otherBefore
+    )
+  })
+
+  it("reorder no-ops when from equals to", () => {
+    const before = useStore.getState().awards
+    useStore.getState().reorder(["awards"], 1, 1)
+    expect(useStore.getState().awards).toBe(before)
+  })
+
+  it("reorder no-ops when an index is out of range", () => {
+    const before = useStore.getState().awards
+    useStore.getState().reorder(["awards"], 0, before.length)
+    useStore.getState().reorder(["awards"], -1, 0)
+    expect(useStore.getState().awards).toBe(before)
+  })
+
+  it("reorder no-ops when the path is not an array", () => {
+    const before = useStore.getState().contact
+    useStore.getState().reorder(["contact"], 0, 1)
+    expect(useStore.getState().contact).toBe(before)
+  })
+
+  it("reorder does not mutate the previous array", () => {
+    const before = useStore.getState().languages
+    const snapshot = [...before]
+    useStore.getState().reorder(["languages"], 0, 1)
+    expect(before).toEqual(snapshot)
   })
 })

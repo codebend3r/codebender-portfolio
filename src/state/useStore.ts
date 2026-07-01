@@ -11,12 +11,11 @@ const NEW_EXPERIENCE: Experience = {
   achievements: ["Achievement"],
 }
 
-function swap<T>(list: T[], index: number, dir: -1 | 1): T[] {
-  const target = index + dir
-  if (target < 0 || target >= list.length) return list
-  const next = [...list]
-  ;[next[index], next[target]] = [next[target], next[index]]
-  return next
+function getAtPath(obj: unknown, path: PathKey[]): unknown {
+  return path.reduce<unknown>(
+    (acc, key) => (acc as Record<PathKey, unknown> | undefined)?.[key],
+    obj
+  )
 }
 
 export const useStore = create<ResumeStore>((set, get) => ({
@@ -26,6 +25,18 @@ export const useStore = create<ResumeStore>((set, get) => ({
 
   setPath: (path, value) => set(setPath(get(), path, value)),
 
+  reorder: (path, from, to) => {
+    const state = get()
+    const list = getAtPath(state, path)
+    if (!Array.isArray(list)) return
+    if (from === to) return
+    if (from < 0 || from >= list.length || to < 0 || to >= list.length) return
+    const next = [...list]
+    const [moved] = next.splice(from, 1)
+    next.splice(to, 0, moved)
+    set(setPath(state, path, next))
+  },
+
   addExperience: () =>
     set({ work_experience: [...get().work_experience, { ...NEW_EXPERIENCE }] }),
 
@@ -33,9 +44,6 @@ export const useStore = create<ResumeStore>((set, get) => ({
     set({
       work_experience: get().work_experience.filter((_, i) => i !== index),
     }),
-
-  moveExperience: (index, dir) =>
-    set({ work_experience: swap(get().work_experience, index, dir) }),
 
   addAchievement: (expIndex) =>
     set({
@@ -54,15 +62,6 @@ export const useStore = create<ResumeStore>((set, get) => ({
               ...w,
               achievements: w.achievements.filter((_, j) => j !== achIndex),
             }
-          : w
-      ),
-    }),
-
-  moveAchievement: (expIndex, achIndex, dir) =>
-    set({
-      work_experience: get().work_experience.map((w, i) =>
-        i === expIndex
-          ? { ...w, achievements: swap(w.achievements, achIndex, dir) }
           : w
       ),
     }),

@@ -10,6 +10,10 @@ function manualChunks(id: string) {
       id.includes("@fontsource")
     ) {
       return "react-pdf"
+    } else if (id.includes("@dnd-kit")) {
+      // Keep dnd-kit out of the eager `vendor` chunk; it is only reachable
+      // through the lazy-loaded `SortableListImpl` on the edit page.
+      return "dnd-kit"
     } else if (id.includes("react-dom")) {
       return "react-dom"
     } else if (id.includes("react")) {
@@ -51,7 +55,7 @@ export default defineConfig({
     chunkSizeWarningLimit: 2000,
     modulePreload: {
       resolveDependencies: (_filename, deps) =>
-        deps.filter((d) => !d.includes("react-pdf")),
+        deps.filter((d) => !d.includes("react-pdf") && !d.includes("dnd-kit")),
     },
     rollupOptions: {
       output: {

@@ -1,0 +1,31 @@
+.handle {
+  font: inherit;
+  line-height: 1;
+  padding: 2px 6px;
+  background: var(--panel);
+  color: var(--muted);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  cursor: grab;
+  touch-action: none;
+}
+
+.handle:hover {
+  border-color: var(--accent);
+  color: var(--text);
+}
+
+.handle:active {
+  cursor: grabbing;
+}
+
+.wholeItem {
+  cursor: grab;
+  touch-action: none;
+}
+
+.dragging {
+  position: relative;
+  z-index: 2;
+  opacity: 0.6;
+}
