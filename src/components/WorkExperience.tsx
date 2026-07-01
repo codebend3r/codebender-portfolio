@@ -4,6 +4,7 @@ import styles from "@components/WorkExperience.module.css"
 import { useEditing } from "@edit/EditContext"
 import { EditableText } from "@edit/EditableText"
 import { SortableItem, SortableList } from "@edit/SortableList"
+import sortStyles from "@edit/SortableList.module.css"
 
 import { useStore } from "@state/useStore"
 
@@ -86,7 +87,7 @@ export function WorkExperience({
                     <ul
                       className={
                         editing
-                          ? `${styles.bullets} ${styles.bulletCards}`
+                          ? `${styles.bullets} ${styles.bulletCards} ${sortStyles.cardList}`
                           : styles.bullets
                       }
                     >
@@ -95,6 +96,7 @@ export function WorkExperience({
                           key={ai}
                           index={ai}
                           label={`achievement ${wi + 1}.${ai + 1}`}
+                          className={editing ? sortStyles.rowCard : undefined}
                         >
                           {(achievementHandle) => (
                             <>
@@ -113,7 +115,7 @@ export function WorkExperience({
                               {editing && (
                                 <button
                                   type="button"
-                                  className={styles.cardRemove}
+                                  className={sortStyles.removeButton}
                                   aria-label={`Remove achievement ${wi + 1}.${ai + 1}`}
                                   onClick={act(() =>
                                     store.removeAchievement(wi, ai)

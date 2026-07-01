@@ -134,48 +134,9 @@
   }
 }
 
-/* Edit-mode achievement cards. Kept after the media query above so
-   `padding: 0` beats its `padding-left` at equal specificity. */
+/* Card layout comes from the shared `cardList`/`rowCard` classes. This
+   guard sits after the media query above so `padding: 0` beats its
+   `padding-left` at equal specificity. */
 .bulletCards {
-  list-style: none;
   padding: 0;
-  display: grid;
-  gap: 10px;
-}
-
-.bulletCards > li {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto;
-  align-items: center;
-  gap: 12px;
-  padding: 12px 14px;
-  background: var(--panel);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  transition: border-color 0.15s ease;
-}
-
-.bulletCards > li:hover {
-  border-color: var(--accent);
-}
-
-/* the drag grip is always the card's leading button */
-.bulletCards > li > button:first-child {
-  padding: 8px 9px;
-  font-size: 14px;
-}
-
-.cardRemove {
-  font: inherit;
-  line-height: 1;
-  padding: 2px 6px;
-  background: var(--panel);
-  color: var(--text);
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.cardRemove:hover {
-  border-color: var(--accent);
 }

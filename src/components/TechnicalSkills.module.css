@@ -40,6 +40,24 @@
   transform: translateX(calc(-50% + var(--tooltip-shift, 0px))) translateY(0);
 }
 
+/* Edit-mode pill card: flat panel, no lift, room for grip and remove.
+   Declared after `.pill:hover` so it wins equal-specificity ties. */
+.pillEditing {
+  display: inline-grid;
+  grid-auto-flow: column;
+  align-items: center;
+  gap: 8px;
+  background: var(--panel);
+  border-radius: 10px;
+}
+
+.pillEditing:hover {
+  transform: none;
+  box-shadow: none;
+  background: var(--panel);
+  border-color: var(--accent);
+}
+
 .tooltip {
   position: absolute;
   bottom: calc(100% + 10px);

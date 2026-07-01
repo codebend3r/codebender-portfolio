@@ -1,7 +1,9 @@
 import { Section } from "@components/Section"
 
+import { useEditing } from "@edit/EditContext"
 import { EditableText } from "@edit/EditableText"
 import { SortableItem, SortableList } from "@edit/SortableList"
+import sortStyles from "@edit/SortableList.module.css"
 
 import { useStore } from "@state/useStore"
 
@@ -13,6 +15,7 @@ export function Awards({
   eyebrow?: string
 }) {
   const { awards } = useStore()
+  const { editing } = useEditing()
   const store = useStore.getState()
 
   return (
@@ -21,26 +24,33 @@ export function Awards({
         count={awards.length}
         onReorder={(from, to) => store.reorder(["awards"], from, to)}
       >
-        <ul>
+        <ul className={editing ? sortStyles.cardList : undefined}>
           {awards.map((a, i) => (
-            <SortableItem key={i} index={i} label={`award ${i + 1}`}>
+            <SortableItem
+              key={i}
+              index={i}
+              label={`award ${i + 1}`}
+              className={editing ? sortStyles.rowCard : undefined}
+            >
               {(handle) => (
                 <>
-                  {handle}{" "}
-                  <strong>
+                  {handle}
+                  <span>
+                    <strong>
+                      <EditableText
+                        value={a.name}
+                        path={["awards", i, "name"]}
+                        ariaLabel={`Award ${i + 1} name`}
+                      />
+                    </strong>{" "}
+                    —{" "}
                     <EditableText
-                      value={a.name}
-                      path={["awards", i, "name"]}
-                      ariaLabel={`Award ${i + 1} name`}
-                    />
-                  </strong>{" "}
-                  —{" "}
-                  <EditableText
-                    value={a.organization}
-                    path={["awards", i, "organization"]}
-                    ariaLabel={`Award ${i + 1} organization`}
-                  />{" "}
-                  ({a.year})
+                      value={a.organization}
+                      path={["awards", i, "organization"]}
+                      ariaLabel={`Award ${i + 1} organization`}
+                    />{" "}
+                    ({a.year})
+                  </span>
                 </>
               )}
             </SortableItem>

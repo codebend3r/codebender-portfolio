@@ -67,7 +67,9 @@ export function TechnicalSkills({
                 key={i}
                 index={i}
                 label={`skill ${i + 1}`}
-                className={styles.pill}
+                className={
+                  editing ? `${styles.pill} ${styles.pillEditing}` : styles.pill
+                }
                 wrapperProps={{
                   "aria-label": `${s}: ${description}`,
                   onMouseEnter: (e: MouseEvent<HTMLElement>) =>
