@@ -1,6 +1,15 @@
+import { useState } from "react"
+
+import { RenameModal } from "@edit/RenameModal"
 import styles from "@edit/VariationsPanel.module.css"
 
 import { useVariations } from "@state/useVariations"
+
+type ModalState = {
+  mode: "new" | "rename"
+  id?: string
+  initialName: string
+}
 
 export function VariationsPanel({
   dirty,
@@ -11,7 +20,7 @@ export function VariationsPanel({
   dirty: boolean
   onSave: () => void
   onGenerate: () => void
-  onNew: () => void
+  onNew: (name: string) => void
 }) {
   const {
     variations,
@@ -21,18 +30,30 @@ export function VariationsPanel({
     deleteVariation,
   } = useVariations()
 
+  const [modal, setModal] = useState<ModalState | null>(null)
+
   const onBase = activeId === null
 
-  const rename = (id: string, current: string) => {
-    const next = window.prompt("Rename variation", current)?.trim()
-    if (next) renameVariation(id, next)
+  const confirmModal = (name: string) => {
+    if (!modal) return
+    if (modal.mode === "new") onNew(name)
+    else if (modal.id) renameVariation(modal.id, name)
   }
 
   return (
     <aside className={styles.panel}>
       <div className={styles.heading}>
         <span>Variations</span>
-        <button type="button" className={styles.new} onClick={onNew}>
+        <button
+          type="button"
+          className={styles.new}
+          onClick={() =>
+            setModal({
+              mode: "new",
+              initialName: `Variation ${variations.length + 1}`,
+            })
+          }
+        >
           ＋ New
         </button>
       </div>
@@ -61,7 +82,9 @@ export function VariationsPanel({
             <button
               type="button"
               aria-label={`Rename ${v.name}`}
-              onClick={() => rename(v.id, v.name)}
+              onClick={() =>
+                setModal({ mode: "rename", id: v.id, initialName: v.name })
+              }
             >
               ✎
             </button>
@@ -84,6 +107,18 @@ export function VariationsPanel({
           Generate PDF
         </button>
       </div>
+
+      <RenameModal
+        key={modal ? `${modal.mode}:${modal.id ?? "new"}` : "closed"}
+        open={modal !== null}
+        title={
+          modal?.mode === "rename" ? "Rename variation" : "Name this variation"
+        }
+        initialName={modal?.initialName ?? ""}
+        confirmLabel={modal?.mode === "rename" ? "Save" : "Create"}
+        onConfirm={confirmModal}
+        onClose={() => setModal(null)}
+      />
     </aside>
   )
 }

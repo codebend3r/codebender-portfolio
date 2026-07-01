@@ -87,11 +87,12 @@ function EditSession({
     setDirty(false)
   }, [saveActive])
 
-  const onNew = useCallback(() => {
-    const name = window.prompt("Name this variation")?.trim()
-    if (!name) return
-    createVariation(name, toData(useStore.getState()))
-  }, [createVariation])
+  const onNew = useCallback(
+    (name: string) => {
+      createVariation(name, toData(useStore.getState()))
+    },
+    [createVariation]
+  )
 
   const onGenerate = useCallback(async () => {
     const { generateResumePdf, downloadBlob } = await import("@pdf")
