@@ -172,6 +172,29 @@
   background: rgba(122, 162, 247, 0.08);
 }
 
+/* Edit-mode tag card: flat panel chip housing grip, text, remove.
+   Declared after `.tag` so it wins equal-specificity ties. */
+.tagEditing {
+  display: inline-grid;
+  grid-auto-flow: column;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 8px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  transition: border-color 0.15s ease;
+}
+
+.tagEditing:hover {
+  border-color: var(--accent);
+}
+
+.tagEditing > button {
+  font-size: 11px;
+  padding: 2px 5px;
+}
+
 @media (max-width: 700px) {
   .grid {
     grid-template-columns: 1fr;

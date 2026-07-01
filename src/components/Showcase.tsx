@@ -4,6 +4,7 @@ import styles from "@components/Showcase.module.css"
 import { useEditing } from "@edit/EditContext"
 import { EditableText } from "@edit/EditableText"
 import { SortableItem, SortableList } from "@edit/SortableList"
+import sortStyles from "@edit/SortableList.module.css"
 
 import { useStore } from "@state/useStore"
 
@@ -15,8 +16,13 @@ export function Showcase({
   eyebrow?: string
 }) {
   const { showcase } = useStore()
-  const { editing } = useEditing()
+  const { editing, markDirty } = useEditing()
   const store = useStore.getState()
+
+  const act = (fn: () => void) => () => {
+    fn()
+    markDirty()
+  }
 
   return (
     <Section title="Selected Work" index={index} eyebrow={eyebrow}>
@@ -91,14 +97,48 @@ export function Showcase({
                             <SortableItem
                               key={t}
                               index={t}
-                              label={`tag ${t + 1}`}
+                              label={`showcase ${i + 1} tag ${t + 1}`}
                               as="span"
-                              className={styles.tag}
-                              dragWholeItem
+                              className={`${styles.tag} ${styles.tagEditing}`}
                             >
-                              {() => tag}
+                              {(tagHandle) => (
+                                <>
+                                  {tagHandle}
+                                  <EditableText
+                                    value={tag}
+                                    path={["showcase", i, "tags", t]}
+                                    ariaLabel={`Showcase ${i + 1} tag ${t + 1}`}
+                                  />
+                                  <button
+                                    type="button"
+                                    className={sortStyles.removeButton}
+                                    aria-label={`Remove tag ${t + 1} from showcase ${i + 1}`}
+                                    onClick={act(() =>
+                                      store.setPath(
+                                        ["showcase", i, "tags"],
+                                        item.tags.filter((_, x) => x !== t)
+                                      )
+                                    )}
+                                  >
+                                    ✕
+                                  </button>
+                                </>
+                              )}
                             </SortableItem>
                           ))}
+                          <button
+                            type="button"
+                            className={sortStyles.addChip}
+                            aria-label={`Add tag to showcase ${i + 1}`}
+                            onClick={act(() =>
+                              store.setPath(
+                                ["showcase", i, "tags"],
+                                [...item.tags, "New tag"]
+                              )
+                            )}
+                          >
+                            + Tag
+                          </button>
                         </span>
                       </SortableList>
                     </span>

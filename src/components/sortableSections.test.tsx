@@ -1,13 +1,18 @@
 import type { ReactElement } from "react"
 
-import { render, screen } from "@testing-library/react"
+import { fireEvent, render, screen } from "@testing-library/react"
 import { beforeEach, describe, expect, it } from "vitest"
 
 import { Awards } from "@components/Awards"
 import { Education } from "@components/Education"
 import { Languages } from "@components/Languages"
 import { Showcase } from "@components/Showcase"
-import { TechnicalSkills, reorderSkills } from "@components/TechnicalSkills"
+import {
+  TechnicalSkills,
+  addSkill,
+  removeSkill,
+  reorderSkills,
+} from "@components/TechnicalSkills"
 import { WorkExperience } from "@components/WorkExperience"
 
 import resume from "@data/resume.json"
@@ -75,8 +80,14 @@ const sections: {
   {
     name: "showcase card",
     el: <Showcase />,
-    pattern: /drag to reorder showcase/i,
+    pattern: /drag to reorder showcase \d+$/i,
     count: resume.showcase.length,
+  },
+  {
+    name: "showcase tag",
+    el: <Showcase />,
+    pattern: /drag to reorder showcase \d+ tag \d+/i,
+    count: totalTags,
   },
 ]
 
@@ -113,16 +124,59 @@ describe("section drag handles", () => {
       expect(handles).toHaveLength(section.count)
     })
   }
+})
 
-  it("makes each showcase tag draggable as a whole chip in edit mode", async () => {
-    editRender(<Showcase />)
-    await screen.findAllByRole("button", {
-      name: /drag to reorder showcase/i,
-    })
-    const sortables = document.querySelectorAll(
-      '[aria-roledescription="sortable"]'
+describe("skill and tag editing", () => {
+  beforeEach(() => {
+    useStore.getState().loadData(structuredClone(resume) as Data)
+  })
+
+  it("addSkill appends a skill and a blank description", () => {
+    addSkill()
+    const state = useStore.getState()
+    expect(state.technical_skills).toHaveLength(
+      resume.technical_skills.length + 1
     )
-    expect(sortables).toHaveLength(resume.showcase.length + totalTags)
+    expect(state.skill_descriptions).toHaveLength(
+      resume.skill_descriptions.length + 1
+    )
+    expect(state.technical_skills[state.technical_skills.length - 1]).toBe(
+      "New skill"
+    )
+    expect(state.skill_descriptions[state.skill_descriptions.length - 1]).toBe(
+      ""
+    )
+  })
+
+  it("removeSkill drops the skill and its description together", () => {
+    removeSkill(0)
+    const state = useStore.getState()
+    expect(state.technical_skills[0]).toBe(resume.technical_skills[1])
+    expect(state.skill_descriptions[0]).toBe(resume.skill_descriptions[1])
+  })
+
+  it("adds and removes skills from the pill list", () => {
+    editRender(<TechnicalSkills />)
+    fireEvent.click(screen.getByRole("button", { name: /add skill/i }))
+    const added = useStore.getState().technical_skills
+    expect(added[added.length - 1]).toBe("New skill")
+    fireEvent.click(screen.getAllByRole("button", { name: /remove skill/i })[0])
+    expect(useStore.getState().technical_skills).toHaveLength(
+      resume.technical_skills.length
+    )
+  })
+
+  it("adds and removes tags on a showcase card", () => {
+    editRender(<Showcase />)
+    const before = useStore.getState().showcase[0].tags.length
+    fireEvent.click(
+      screen.getByRole("button", { name: /^add tag to showcase 1$/i })
+    )
+    expect(useStore.getState().showcase[0].tags.length).toBe(before + 1)
+    fireEvent.click(
+      screen.getByRole("button", { name: /^remove tag 1 from showcase 1$/i })
+    )
+    expect(useStore.getState().showcase[0].tags.length).toBe(before)
   })
 })
 

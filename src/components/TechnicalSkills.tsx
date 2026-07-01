@@ -6,6 +6,7 @@ import styles from "@components/TechnicalSkills.module.css"
 import { useEditing } from "@edit/EditContext"
 import { EditableText } from "@edit/EditableText"
 import { SortableItem, SortableList } from "@edit/SortableList"
+import sortStyles from "@edit/SortableList.module.css"
 
 import { useStore } from "@state/useStore"
 
@@ -23,6 +24,24 @@ export function reorderSkills(from: number, to: number) {
   }
   store.reorder(["technical_skills"], from, to)
   store.reorder(["skill_descriptions"], from, to)
+}
+
+export function addSkill() {
+  const store = useStore.getState()
+  store.setPath(["technical_skills"], [...store.technical_skills, "New skill"])
+  store.setPath(["skill_descriptions"], [...store.skill_descriptions, ""])
+}
+
+export function removeSkill(index: number) {
+  const store = useStore.getState()
+  store.setPath(
+    ["technical_skills"],
+    store.technical_skills.filter((_, i) => i !== index)
+  )
+  store.setPath(
+    ["skill_descriptions"],
+    store.skill_descriptions.filter((_, i) => i !== index)
+  )
 }
 
 const fallbackDescription =
@@ -54,7 +73,12 @@ export function TechnicalSkills({
   eyebrow?: string
 }) {
   const { technical_skills, skill_descriptions } = useStore()
-  const { editing } = useEditing()
+  const { editing, markDirty } = useEditing()
+
+  const act = (fn: () => void) => () => {
+    fn()
+    markDirty()
+  }
 
   return (
     <Section title="Technical Skills" index={index} eyebrow={eyebrow}>
@@ -86,6 +110,16 @@ export function TechnicalSkills({
                       path={["technical_skills", i]}
                       ariaLabel={`Skill ${i + 1}`}
                     />
+                    {editing && (
+                      <button
+                        type="button"
+                        className={sortStyles.removeButton}
+                        aria-label={`Remove skill ${i + 1}`}
+                        onClick={act(() => removeSkill(i))}
+                      >
+                        ✕
+                      </button>
+                    )}
                     <span
                       data-skill-tooltip
                       role="tooltip"
@@ -98,6 +132,17 @@ export function TechnicalSkills({
               </SortableItem>
             )
           })}
+          {editing && (
+            <li>
+              <button
+                type="button"
+                className={sortStyles.addChip}
+                onClick={act(addSkill)}
+              >
+                + Add skill
+              </button>
+            </li>
+          )}
         </ul>
       </SortableList>
 

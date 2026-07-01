@@ -74,3 +74,18 @@
 .removeButton:hover {
   border-color: var(--accent);
 }
+
+.addChip {
+  font: inherit;
+  line-height: 1.2;
+  padding: 6px 12px;
+  background: transparent;
+  color: var(--accent);
+  border: 1px dashed var(--border);
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.addChip:hover {
+  border-color: var(--accent);
+}
