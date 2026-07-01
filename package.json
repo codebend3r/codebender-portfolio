@@ -20,6 +20,7 @@
   },
   "dependencies": {
     "@fontsource/inter": "5.2.8",
+    "@fontsource/source-serif-4": "5.2.9",
     "@react-pdf/renderer": "4.5.1",
     "react": "19.2.6",
     "react-dom": "19.2.6",

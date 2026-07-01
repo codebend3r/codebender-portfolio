@@ -52,14 +52,14 @@
       "company": "iPolitics",
       "period": "11/2023 - Present",
       "achievements": [
-        "Sole full-stack developer for two news sites (iPolitics, QP Briefing) built on Next.js, React, Prisma, and Sanity CMS; owned backend, CI/CD, and infrastructure.",
-        "Shipped sponsored articles, a podcast section, and auth-gated admin routes with analytics to drive engagement.",
-        "Resolved Sanity.io CMS issues and maintained all backend services.",
-        "Led tiered TypeScript migration of both codebases (utilities, hooks, components, API routes), locking behavior with Vitest tests before each pass.",
-        "Migrated styling across two generations (styled-jsx to Emotion to CSS Modules + SCSS), landing on a design system with light/dark theming.",
-        "Replaced SWR with @tanstack/react-query + Axios and reorganized hooks and fetchers by resource.",
-        "Hardened dev workflow with Husky hooks, a unified system-check command (Prettier, ESLint, Vitest, ts:check, build), and modernized PR CI.",
-        "Upgraded the stack across major versions (Next.js 15, React 19, Node 18 to 24, Prisma), patched Axios security vulnerabilities, and authored SECURITY.md."
+        "Sole full-stack developer for two Next.js/React/Prisma/Sanity news sites (iPolitics, QP Briefing); owned backend, CI/CD, and infrastructure.",
+        "Shipped sponsored articles, a podcast section, and auth-gated admin routes with analytics.",
+        "Maintained all backend services and resolved Sanity.io CMS issues.",
+        "Led a tiered TypeScript migration of both codebases, locked in by Vitest tests.",
+        "Migrated styling (styled-jsx to Emotion to CSS Modules + SCSS) onto a themed design system.",
+        "Replaced SWR with @tanstack/react-query + Axios, reorganizing hooks and fetchers by resource.",
+        "Hardened the dev workflow with Husky hooks, a unified system-check command, and modernized PR CI.",
+        "Upgraded major versions (Next.js 15, React 19, Node 24, Prisma), patched Axios CVEs, and authored SECURITY.md."
       ]
     },
     {

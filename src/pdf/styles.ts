@@ -8,58 +8,75 @@ export const styles = StyleSheet.create({
     color: tokens.colors.text,
     fontFamily: tokens.font.family,
     fontSize: tokens.fontSize.body,
-    paddingTop: tokens.spacing.xxl,
-    paddingBottom: tokens.spacing.xxl,
-    paddingHorizontal: tokens.spacing.xxl + tokens.spacing.md,
-    lineHeight: 1.4,
+    paddingTop: tokens.page.paddingTop,
+    paddingBottom: tokens.page.paddingBottom,
+    paddingHorizontal: tokens.page.paddingHorizontal,
+    lineHeight: 1.45,
   },
+
+  // Header
   header: {
-    marginBottom: tokens.spacing.lg,
+    display: "flex",
+    flexDirection: "column",
+    gap: tokens.spacing.xs,
   },
   name: {
     fontSize: tokens.fontSize.h1,
     fontWeight: 700,
     color: tokens.colors.text,
-    letterSpacing: -0.5,
+    lineHeight: 1.1,
+    letterSpacing: 0.2,
   },
   title: {
-    fontSize: tokens.fontSize.h3,
-    fontWeight: 500,
+    fontSize: tokens.fontSize.subtitle,
+    fontWeight: 400,
     color: tokens.colors.accent,
+    lineHeight: 1.2,
+  },
+  summary: {
+    fontSize: tokens.fontSize.body,
+    color: tokens.colors.text,
+    lineHeight: 1.4,
     marginTop: tokens.spacing.xs,
   },
-  contact: {
+
+  // Full-bleed contact bar
+  contactBar: {
+    marginTop: tokens.spacing.lg,
+    marginHorizontal: -tokens.page.paddingHorizontal,
+    paddingHorizontal: tokens.page.paddingHorizontal,
+    paddingVertical: tokens.spacing.sm,
+    backgroundColor: tokens.colors.accentDeep,
     flexDirection: "row",
     flexWrap: "wrap",
-    gap: tokens.spacing.md,
-    marginTop: tokens.spacing.md,
-    fontSize: tokens.fontSize.small,
-    color: tokens.colors.muted,
+    justifyContent: "space-between",
+    alignItems: "center",
+    columnGap: tokens.spacing.md,
+    rowGap: tokens.spacing.xs,
   },
   contactItem: {
-    color: tokens.colors.muted,
-  },
-  contactLink: {
-    color: tokens.colors.muted,
+    fontSize: tokens.fontSize.small,
+    color: tokens.colors.onAccent,
     textDecoration: "none",
   },
+
+  // Sections
   section: {
     marginTop: tokens.spacing.lg,
   },
   sectionHeading: {
     fontSize: tokens.fontSize.h2,
     fontWeight: 700,
-    color: tokens.colors.text,
+    color: tokens.colors.accent,
     textTransform: "uppercase",
-    letterSpacing: 0.5,
+    letterSpacing: 1.2,
     paddingBottom: tokens.spacing.xs,
     borderBottomWidth: 1,
-    borderBottomColor: tokens.colors.border,
+    borderBottomColor: tokens.colors.rule,
     marginBottom: tokens.spacing.md,
   },
-  summary: {
-    color: tokens.colors.text,
-  },
+
+  // Skills
   skillsList: {
     flexDirection: "row",
     flexWrap: "wrap",
@@ -68,66 +85,91 @@ export const styles = StyleSheet.create({
   skillPill: {
     fontSize: tokens.fontSize.small,
     paddingHorizontal: tokens.spacing.md,
-    paddingVertical: 2,
-    borderWidth: 1,
-    borderColor: tokens.colors.border,
-    borderRadius: 4,
-    color: tokens.colors.muted,
+    paddingVertical: 3,
+    borderRadius: 3,
+    backgroundColor: tokens.colors.accentDeep,
+    color: tokens.colors.onAccent,
   },
+
+  // Experience
   experience: {
-    marginBottom: tokens.spacing.md,
+    position: "relative",
+    paddingLeft: 22,
+    marginBottom: tokens.spacing.sm,
+  },
+  timelineDash: {
+    position: "absolute",
+    left: 0,
+    top: 6,
+    width: 12,
+    height: 2,
+    backgroundColor: tokens.colors.accent,
   },
   experienceHeader: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "baseline",
-    marginBottom: tokens.spacing.xs,
+    gap: tokens.spacing.md,
   },
   role: {
     fontSize: tokens.fontSize.h3,
-    fontWeight: 600,
+    fontWeight: 700,
     color: tokens.colors.text,
   },
   period: {
     fontSize: tokens.fontSize.small,
+    fontStyle: "italic",
     color: tokens.colors.muted,
   },
   company: {
     fontSize: tokens.fontSize.body,
-    fontWeight: 500,
+    fontWeight: 600,
     color: tokens.colors.accent,
-    marginBottom: tokens.spacing.xs,
+    marginBottom: 3,
   },
   achievement: {
-    flexDirection: "row",
+    fontSize: tokens.fontSize.body,
+    paddingLeft: 10,
+    textIndent: -10,
+    lineHeight: 1.3,
     marginBottom: 2,
   },
   bullet: {
-    width: tokens.spacing.md,
+    color: tokens.colors.accent,
   },
-  achievementText: {
-    flex: 1,
-  },
+
+  // Meta (awards / languages / education)
   metaRow: {
     flexDirection: "row",
-    flexWrap: "wrap",
-    gap: tokens.spacing.lg,
-    marginTop: tokens.spacing.lg,
+    gap: tokens.spacing.xl,
+    marginTop: tokens.spacing.xl,
   },
   metaColumn: {
     flex: 1,
     minWidth: 150,
   },
   metaItem: {
-    marginBottom: tokens.spacing.xs,
+    marginBottom: tokens.spacing.sm,
   },
   metaPrimary: {
     fontSize: tokens.fontSize.body,
-    fontWeight: 600,
+    fontWeight: 700,
     color: tokens.colors.text,
   },
   metaSecondary: {
     fontSize: tokens.fontSize.small,
+    color: tokens.colors.muted,
+  },
+
+  // Footer
+  footer: {
+    position: "absolute",
+    bottom: tokens.spacing.xl,
+    left: tokens.page.paddingHorizontal,
+    right: tokens.page.paddingHorizontal,
+    textAlign: "right",
+    fontSize: tokens.fontSize.micro,
+    fontStyle: "italic",
     color: tokens.colors.muted,
   },
 })

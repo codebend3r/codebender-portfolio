@@ -9,16 +9,12 @@ type Props = { data: Data }
 export function ResumePDF({ data }: Props) {
   return (
     <Document
-      title={`${data.name} — ${data.title}`}
+      title={`${data.name} - ${data.title}`}
       author={data.name}
       subject="Resume"
     >
       <Page size="LETTER" style={styles.page}>
         <ResumeHeader data={data} />
-
-        <Section heading="Summary">
-          <Text style={styles.summary}>{data.summary}</Text>
-        </Section>
 
         <Section heading="Technical Skills">
           <View style={styles.skillsList}>
@@ -70,6 +66,14 @@ export function ResumePDF({ data }: Props) {
             </Section>
           </View>
         </View>
+
+        <Text
+          style={styles.footer}
+          fixed
+          render={({ pageNumber, totalPages }) =>
+            `${data.name}  ·  Page ${pageNumber} of ${totalPages}`
+          }
+        />
       </Page>
     </Document>
   )
@@ -77,19 +81,22 @@ export function ResumePDF({ data }: Props) {
 
 function ResumeHeader({ data }: { data: Data }) {
   return (
-    <View style={styles.header}>
-      <Text style={styles.name}>{data.name}</Text>
-      <Text style={styles.title}>{data.title}</Text>
-      <View style={styles.contact}>
+    <View>
+      <View style={styles.header}>
+        <Text style={styles.name}>{data.name}</Text>
+        <Text style={styles.title}>{data.title}</Text>
+        <Text style={styles.summary}>{data.summary}</Text>
+      </View>
+      <View style={styles.contactBar}>
         <Text style={styles.contactItem}>{data.contact.location}</Text>
-        <Link style={styles.contactLink} src={`mailto:${data.contact.email}`}>
+        <Link style={styles.contactItem} src={`mailto:${data.contact.email}`}>
           {data.contact.email}
         </Link>
         <Text style={styles.contactItem}>{data.contact.phone}</Text>
-        <Link style={styles.contactLink} src={data.contact.github}>
+        <Link style={styles.contactItem} src={data.contact.github}>
           {stripProtocol(data.contact.github)}
         </Link>
-        <Link style={styles.contactLink} src={data.contact.linkedin}>
+        <Link style={styles.contactItem} src={data.contact.linkedin}>
           {stripProtocol(data.contact.linkedin)}
         </Link>
       </View>
@@ -114,22 +121,25 @@ function Section({
 
 function ExperienceEntry({ entry }: { entry: Experience }) {
   return (
-    <View style={styles.experience} wrap={false}>
-      <View style={styles.experienceHeader}>
-        <Text style={styles.role}>{entry.role}</Text>
-        <Text style={styles.period}>{entry.period}</Text>
-      </View>
-      <Text style={styles.company}>{entry.company}</Text>
-      {entry.achievements.map((a, i) => (
-        <View key={i} style={styles.achievement}>
-          <Text style={styles.bullet}>•</Text>
-          <Text style={styles.achievementText}>{a}</Text>
+    <View style={styles.experience} minPresenceAhead={48}>
+      <View style={styles.timelineDash} />
+      <View wrap={false}>
+        <View style={styles.experienceHeader}>
+          <Text style={styles.role}>{entry.role}</Text>
+          <Text style={styles.period}>{entry.period}</Text>
         </View>
+        <Text style={styles.company}>{entry.company}</Text>
+      </View>
+      {entry.achievements.map((a, i) => (
+        <Text key={i} style={styles.achievement}>
+          <Text style={styles.bullet}>{"\u2022  "}</Text>
+          {a}
+        </Text>
       ))}
     </View>
   )
 }
 
 function stripProtocol(url: string) {
-  return url.replace(/^https?:\/\//, "")
+  return url.replace(/^https?:\/\//, "").replace(/\/$/, "")
 }
