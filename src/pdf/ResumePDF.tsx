@@ -88,17 +88,31 @@ function ResumeHeader({ data }: { data: Data }) {
         <Text style={styles.summary}>{data.summary}</Text>
       </View>
       <View style={styles.contactBar}>
-        <Text style={styles.contactItem}>{data.contact.location}</Text>
-        <Link style={styles.contactItem} src={`mailto:${data.contact.email}`}>
-          {data.contact.email}
-        </Link>
-        <Text style={styles.contactItem}>{data.contact.phone}</Text>
-        <Link style={styles.contactItem} src={data.contact.github}>
-          {stripProtocol(data.contact.github)}
-        </Link>
-        <Link style={styles.contactItem} src={data.contact.linkedin}>
-          {stripProtocol(data.contact.linkedin)}
-        </Link>
+        {data.contact.map((entry, i) => {
+          if (isUrl(entry.value)) {
+            return (
+              <Link key={i} style={styles.contactItem} src={entry.value}>
+                {stripProtocol(entry.value)}
+              </Link>
+            )
+          }
+          if (entry.value.includes("@")) {
+            return (
+              <Link
+                key={i}
+                style={styles.contactItem}
+                src={`mailto:${entry.value}`}
+              >
+                {entry.value}
+              </Link>
+            )
+          }
+          return (
+            <Text key={i} style={styles.contactItem}>
+              {entry.value}
+            </Text>
+          )
+        })}
       </View>
     </View>
   )
@@ -138,6 +152,10 @@ function ExperienceEntry({ entry }: { entry: Experience }) {
       ))}
     </View>
   )
+}
+
+function isUrl(value: string) {
+  return /^https?:\/\//i.test(value)
 }
 
 function stripProtocol(url: string) {

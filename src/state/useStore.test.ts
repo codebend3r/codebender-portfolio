@@ -22,15 +22,16 @@ describe("useStore", () => {
     expect(useStore.getState()).toBe(useStore.getState())
   })
 
-  it("contact has the expected shape", () => {
+  it("contact is an ordered list of label/value entries", () => {
     const { contact } = useStore.getState()
-    expect(contact).toMatchObject({
-      email: expect.any(String),
-      phone: expect.any(String),
-      location: expect.any(String),
-      github: expect.stringMatching(/^https?:\/\//),
-      linkedin: expect.stringMatching(/^https?:\/\//),
-    })
+    expect(Array.isArray(contact)).toBe(true)
+    expect(contact.length).toBeGreaterThan(0)
+    for (const entry of contact) {
+      expect(entry).toMatchObject({
+        label: expect.any(String),
+        value: expect.any(String),
+      })
+    }
   })
 })
 
@@ -47,9 +48,30 @@ describe("useStore edit actions", () => {
     expect(useStore.getState().name).toBe("Changed Name")
   })
 
+  it("loadData converts a legacy object contact to an entry list", () => {
+    const legacy = {
+      ...(structuredClone(resume) as Data),
+      contact: {
+        email: "a@x.com",
+        phone: "555",
+        location: "Toronto",
+        github: "https://github.com/a",
+        linkedin: "https://linkedin.com/in/a",
+      } as unknown as ContactEntry[],
+    }
+    useStore.getState().loadData(legacy)
+    expect(useStore.getState().contact).toEqual([
+      { label: "Email", value: "a@x.com" },
+      { label: "Phone", value: "555" },
+      { label: "Location", value: "Toronto" },
+      { label: "GitHub", value: "https://github.com/a" },
+      { label: "LinkedIn", value: "https://linkedin.com/in/a" },
+    ])
+  })
+
   it("setPath updates a nested value immutably", () => {
-    useStore.getState().setPath(["contact", "email"], "new@x.com")
-    expect(useStore.getState().contact.email).toBe("new@x.com")
+    useStore.getState().setPath(["contact", 0, "value"], "new@x.com")
+    expect(useStore.getState().contact[0].value).toBe("new@x.com")
   })
 
   it("addExperience appends a new experience", () => {
@@ -117,9 +139,9 @@ describe("useStore edit actions", () => {
   })
 
   it("reorder no-ops when the path is not an array", () => {
-    const before = useStore.getState().contact
-    useStore.getState().reorder(["contact"], 0, 1)
-    expect(useStore.getState().contact).toBe(before)
+    const before = useStore.getState().work_experience[0]
+    useStore.getState().reorder(["work_experience", 0], 0, 1)
+    expect(useStore.getState().work_experience[0]).toBe(before)
   })
 
   it("reorder does not mutate the previous array", () => {

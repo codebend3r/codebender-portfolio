@@ -2,6 +2,7 @@ import { create } from "zustand"
 
 import data from "@data/resume.json"
 
+import { normalizeData } from "@utils/normalizeData"
 import { setPath } from "@utils/setPath"
 
 const NEW_EXPERIENCE: Experience = {
@@ -19,9 +20,9 @@ function getAtPath(obj: unknown, path: PathKey[]): unknown {
 }
 
 export const useStore = create<ResumeStore>((set, get) => ({
-  ...(structuredClone(data) as Data),
+  ...normalizeData(structuredClone(data) as Data),
 
-  loadData: (next) => set(structuredClone(next)),
+  loadData: (next) => set(normalizeData(structuredClone(next))),
 
   setPath: (path, value) => set(setPath(get(), path, value)),
 

@@ -4,8 +4,9 @@ import { useStore } from "@state/useStore"
 
 export function Footer() {
   const name = useStore((s) => s.name)
-  const github = useStore((s) => s.contact.github)
-  const githubLabel = github.replace(/^https?:\/\//, "")
+  const contact = useStore((s) => s.contact)
+  const github = contact.find((c) => c.value.includes("github.com"))?.value
+  const githubLabel = github?.replace(/^https?:\/\//, "")
   return (
     <footer className={styles.footer}>
       <small className={styles.stack}>
@@ -16,10 +17,15 @@ export function Footer() {
         © {new Date().getFullYear()}. Codebender Inc.
       </small>
       <small className={styles.credit}>
-        {name} ·{" "}
-        <a href={github} target="_blank" rel="noopener noreferrer">
-          {githubLabel}
-        </a>
+        {name}
+        {github && (
+          <>
+            {" · "}
+            <a href={github} target="_blank" rel="noopener noreferrer">
+              {githubLabel}
+            </a>
+          </>
+        )}
       </small>
     </footer>
   )

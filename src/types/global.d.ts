@@ -26,15 +26,11 @@ type Showcase = {
   tags: string[]
 }
 
+type ContactEntry = { label: string; value: string }
+
 type Data = {
   name: string
-  contact: {
-    email: string
-    phone: string
-    location: string
-    github: string
-    linkedin: string
-  }
+  contact: ContactEntry[]
   title: string
   summary: string
   technical_skills: string[]
