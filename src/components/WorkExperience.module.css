@@ -53,10 +53,18 @@
 }
 
 .period {
+  display: grid;
+  gap: 2px;
   color: var(--accent2);
   font-family: var(--font-mono);
   font-weight: 700;
   white-space: nowrap;
+}
+
+.duration {
+  color: var(--muted);
+  font-weight: 400;
+  font-size: 12px;
 }
 
 .bullets {

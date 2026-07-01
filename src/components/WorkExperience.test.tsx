@@ -44,6 +44,16 @@ describe("WorkExperience", () => {
     render(<WorkExperience index={2} eyebrow="Experience" />)
     expect(screen.getByText("02 · Experience")).toBeInTheDocument()
   })
+
+  it("shows a human-readable duration next to each period", () => {
+    render(<WorkExperience />)
+    // 09/2024 - 05/2026 counts 21 calendar months
+    expect(
+      screen.getAllByText("1 year 9 months").length
+    ).toBeGreaterThanOrEqual(1)
+    // 06/2024 - 09/2024 counts 4 calendar months
+    expect(screen.getAllByText("4 months").length).toBeGreaterThanOrEqual(1)
+  })
 })
 
 describe("WorkExperience editing", () => {
