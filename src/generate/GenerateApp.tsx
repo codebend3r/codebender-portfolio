@@ -76,6 +76,7 @@ export default function GenerateApp() {
   const handleDiscard = () => {
     reset()
     setExistingId(null)
+    setName("")
   }
 
   if (status === "done" && result) {

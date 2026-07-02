@@ -64,4 +64,19 @@ describe("GeneratePreview", () => {
     expect(onConfirm).toHaveBeenCalled()
     expect(onDiscard).toHaveBeenCalled()
   })
+
+  it("renders the showcase section for review", () => {
+    render(
+      <GeneratePreview
+        data={data()}
+        name="N"
+        onNameChange={() => {}}
+        onConfirm={() => {}}
+        onDiscard={() => {}}
+      />
+    )
+    expect(
+      screen.getByRole("heading", { level: 2, name: "Selected Work" })
+    ).toBeInTheDocument()
+  })
 })

@@ -4,6 +4,7 @@ import { Awards } from "@components/Awards"
 import { Education } from "@components/Education"
 import { Header } from "@components/Header"
 import { Languages } from "@components/Languages"
+import { Showcase } from "@components/Showcase"
 import { Summary } from "@components/Summary"
 import { TechnicalSkills } from "@components/TechnicalSkills"
 import { WorkExperience } from "@components/WorkExperience"
@@ -57,6 +58,7 @@ export function GeneratePreview({
         <Summary />
         <TechnicalSkills index={1} eyebrow="Stack" />
         <WorkExperience index={2} eyebrow="Experience" />
+        <Showcase index={3} eyebrow="Selected Work" />
         <div className={styles.subgrid}>
           <Awards index={4} eyebrow="Recognition" />
           <Languages index={5} eyebrow="Languages" />
