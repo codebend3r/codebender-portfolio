@@ -41,8 +41,8 @@
 }
 
 .header {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 1fr auto;
   align-items: baseline;
   gap: 12px;
 }
@@ -53,15 +53,72 @@
 }
 
 .period {
+  display: grid;
+  gap: 2px;
   color: var(--accent2);
   font-family: var(--font-mono);
   font-weight: 700;
   white-space: nowrap;
 }
 
+.duration {
+  color: var(--muted);
+  font-weight: 400;
+  font-size: 12px;
+}
+
+/* The period column is `auto`; let the input's `size` attribute fit the
+   value instead of the shared `width: 100%` field rule. */
+.period input {
+  width: auto;
+}
+
 .bullets {
   margin: 0;
   padding: 0;
+}
+
+.item > .rowControls,
+.item > .addButton {
+  grid-column: 2;
+}
+
+.rowControls {
+  display: inline-grid;
+  grid-auto-flow: column;
+  gap: 4px;
+  align-items: center;
+  justify-content: start;
+}
+
+.rowControls button {
+  font: inherit;
+  line-height: 1;
+  padding: 2px 6px;
+  background: var(--panel);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.rowControls button:hover {
+  border-color: var(--accent);
+}
+
+.addButton {
+  justify-self: start;
+  font: inherit;
+  padding: 4px 10px;
+  background: transparent;
+  color: var(--accent);
+  border: 1px dashed var(--border);
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.addButton:hover {
+  border-color: var(--accent);
 }
 
 @media (max-width: 700px) {
@@ -76,8 +133,8 @@
   }
 
   .header {
-    flex-direction: column;
-    align-items: flex-start;
+    grid-template-columns: 1fr;
+    justify-items: start;
     gap: 4px;
   }
 
@@ -89,4 +146,11 @@
   .bullets {
     padding-left: 18px;
   }
+}
+
+/* Card layout comes from the shared `cardList`/`rowCard` classes. This
+   guard sits after the media query above so `padding: 0` beats its
+   `padding-left` at equal specificity. */
+.bulletCards {
+  padding: 0;
 }

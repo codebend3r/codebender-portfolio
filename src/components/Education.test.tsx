@@ -1,10 +1,11 @@
-import { useStore } from "@state/useStore"
 import { render, screen } from "@testing-library/react"
 import { afterEach, describe, expect, it } from "vitest"
 
 import { Education } from "@components/Education"
 
 import resume from "@data/resume.json"
+
+import { useStore } from "@state/useStore"
 
 describe("Education", () => {
   const originalEducation = useStore.getState().education

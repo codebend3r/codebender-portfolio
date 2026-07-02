@@ -5,6 +5,8 @@ import { TechnicalSkills } from "@components/TechnicalSkills"
 
 import resume from "@data/resume.json"
 
+import { EditProvider } from "@edit/EditContext"
+
 describe("TechnicalSkills", () => {
   it("renders inside a Technical Skills section", () => {
     render(<TechnicalSkills />)
@@ -29,5 +31,24 @@ describe("TechnicalSkills", () => {
   it("renders a numbered eyebrow chip when index and eyebrow are passed", () => {
     render(<TechnicalSkills index={1} eyebrow="Stack" />)
     expect(screen.getByText("01 · Stack")).toBeInTheDocument()
+  })
+
+  it("does not render the hover-text editor when not editing", () => {
+    render(<TechnicalSkills />)
+    expect(screen.queryByText("Chip hover text")).not.toBeInTheDocument()
+  })
+
+  it("renders an editable hover-text field per skill when editing", () => {
+    render(
+      <EditProvider editing markDirty={() => {}}>
+        <TechnicalSkills />
+      </EditProvider>
+    )
+    expect(screen.getByText("Chip hover text")).toBeInTheDocument()
+    const reactIndex = resume.technical_skills.indexOf("React")
+    const field = screen.getByRole("textbox", {
+      name: "Hover text for React",
+    })
+    expect(field).toHaveValue(resume.skill_descriptions[reactIndex])
   })
 })

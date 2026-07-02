@@ -1,8 +1,15 @@
-import { useStore } from "@state/useStore"
+import { Fragment } from "react"
 
 import Logo from "@assets/robot-logo.png"
 
 import styles from "@components/Header.module.css"
+
+import { useEditing } from "@edit/EditContext"
+import { EditableText } from "@edit/EditableText"
+import { SortableItem, SortableList } from "@edit/SortableList"
+import sortStyles from "@edit/SortableList.module.css"
+
+import { useStore } from "@state/useStore"
 
 function EmailIcon() {
   return (
@@ -75,41 +82,163 @@ function LinkedInIcon() {
   )
 }
 
+function LinkIcon() {
+  return (
+    <svg
+      className={styles.icon}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
+      <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
+    </svg>
+  )
+}
+
+function isUrl(value: string) {
+  return /^https?:\/\//i.test(value)
+}
+
+function isEmail(value: string) {
+  return !isUrl(value) && value.includes("@")
+}
+
+function isPhone(value: string) {
+  return /^[\d\s()+.-]+$/.test(value.trim()) && /\d/.test(value)
+}
+
+function contactHref(value: string): string | null {
+  if (isUrl(value)) return value
+  if (isEmail(value)) return `mailto:${value}`
+  if (isPhone(value)) return `tel:${value}`
+  return null
+}
+
+function ContactIcon({ value }: { value: string }) {
+  if (value.includes("github.com")) return <GitHubIcon />
+  if (value.includes("linkedin.com")) return <LinkedInIcon />
+  if (isUrl(value)) return <LinkIcon />
+  if (isEmail(value)) return <EmailIcon />
+  if (isPhone(value)) return <PhoneIcon />
+  return null
+}
+
+function ContactValue({ entry }: { entry: ContactEntry }) {
+  const href = contactHref(entry.value)
+  if (!href) return <span className={styles.location}>{entry.value}</span>
+  // Links read by their label; email and phone read by their value.
+  const text = isUrl(entry.value) ? entry.label : entry.value
+  const external = isUrl(entry.value)
+  return (
+    <a
+      href={href}
+      {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+    >
+      <ContactIcon value={entry.value} />
+      <span className={styles.label}>{text}</span>
+    </a>
+  )
+}
+
 export function Header() {
   const { name, title, contact } = useStore()
+  const { editing, markDirty } = useEditing()
+  const store = useStore.getState()
+
+  const act = (fn: () => void) => () => {
+    fn()
+    markDirty()
+  }
 
   return (
     <header className={styles.header}>
       <div className={styles.brand}>
         <img src={Logo} alt="Logo" className={styles.logo} />
         <div>
-          <h1>{name}</h1>
-          <p className={styles.subtitle}>{title}</p>
+          <h1>
+            <EditableText value={name} path={["name"]} ariaLabel="Name" />
+          </h1>
+          <p className={styles.subtitle}>
+            <EditableText value={title} path={["title"]} ariaLabel="Title" />
+          </p>
         </div>
       </div>
-      <div className={styles.contact}>
-        <a href={`mailto:${contact.email}`}>
-          <EmailIcon />
-          <span className={styles.label}>{contact.email}</span>
-        </a>
-        <span className={styles.sep}>•</span>
-        <a href={`tel:${contact.phone}`}>
-          <PhoneIcon />
-          <span className={styles.label}>{contact.phone}</span>
-        </a>
-        <span className={styles.sep}>•</span>
-        <span className={styles.location}>{contact.location}</span>
-        <span className={styles.sep}>•</span>
-        <a href={contact.github} target="_blank" rel="noopener noreferrer">
-          <GitHubIcon />
-          <span className={styles.label}>GitHub</span>
-        </a>
-        <span className={styles.sep}>•</span>
-        <a href={contact.linkedin} target="_blank" rel="noopener noreferrer">
-          <LinkedInIcon />
-          <span className={styles.label}>LinkedIn</span>
-        </a>
-      </div>
+      {editing ? (
+        <SortableList
+          count={contact.length}
+          onReorder={(from, to) => store.reorder(["contact"], from, to)}
+        >
+          <ul className={`${styles.contactEdit} ${sortStyles.cardList}`}>
+            {contact.map((entry, i) => (
+              <SortableItem
+                key={i}
+                index={i}
+                label={`link ${i + 1}`}
+                className={sortStyles.rowCard}
+              >
+                {(handle) => (
+                  <>
+                    {handle}
+                    <span className={styles.linkFields}>
+                      <EditableText
+                        value={entry.label}
+                        path={["contact", i, "label"]}
+                        ariaLabel={`Link ${i + 1} label`}
+                      />
+                      <EditableText
+                        value={entry.value}
+                        path={["contact", i, "value"]}
+                        ariaLabel={`Link ${i + 1} value`}
+                      />
+                    </span>
+                    <button
+                      type="button"
+                      className={sortStyles.removeButton}
+                      aria-label={`Remove link ${i + 1}`}
+                      onClick={act(() =>
+                        store.setPath(
+                          ["contact"],
+                          contact.filter((_, x) => x !== i)
+                        )
+                      )}
+                    >
+                      ✕
+                    </button>
+                  </>
+                )}
+              </SortableItem>
+            ))}
+            <li>
+              <button
+                type="button"
+                className={sortStyles.addChip}
+                onClick={act(() =>
+                  store.setPath(
+                    ["contact"],
+                    [...contact, { label: "Link", value: "https://" }]
+                  )
+                )}
+              >
+                + Add link
+              </button>
+            </li>
+          </ul>
+        </SortableList>
+      ) : (
+        <div className={styles.contact}>
+          {contact.map((entry, i) => (
+            <Fragment key={i}>
+              {i > 0 && <span className={styles.sep}>•</span>}
+              <ContactValue entry={entry} />
+            </Fragment>
+          ))}
+        </div>
+      )}
     </header>
   )
 }

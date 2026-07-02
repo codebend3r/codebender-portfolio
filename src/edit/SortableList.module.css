@@ -1,0 +1,91 @@
+.handle {
+  font: inherit;
+  line-height: 1;
+  padding: 2px 6px;
+  background: var(--panel);
+  color: var(--muted);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  cursor: grab;
+  touch-action: none;
+}
+
+.handle:hover {
+  border-color: var(--accent);
+  color: var(--text);
+}
+
+.handle:active {
+  cursor: grabbing;
+}
+
+.wholeItem {
+  cursor: grab;
+  touch-action: none;
+}
+
+.dragging {
+  position: relative;
+  z-index: 2;
+  opacity: 0.6;
+}
+
+/* Shared edit-mode card treatment for sortable lists */
+.cardList {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: 10px;
+}
+
+.rowCard {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  transition: border-color 0.15s ease;
+}
+
+.rowCard:hover {
+  border-color: var(--accent);
+}
+
+/* the drag grip is always a card's leading button */
+.rowCard > button:first-child {
+  padding: 8px 9px;
+  font-size: 14px;
+}
+
+.removeButton {
+  font: inherit;
+  line-height: 1;
+  padding: 2px 6px;
+  background: var(--panel);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.removeButton:hover {
+  border-color: var(--accent);
+}
+
+.addChip {
+  font: inherit;
+  line-height: 1.2;
+  padding: 6px 12px;
+  background: transparent;
+  color: var(--accent);
+  border: 1px dashed var(--border);
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.addChip:hover {
+  border-color: var(--accent);
+}

@@ -40,6 +40,24 @@
   transform: translateX(calc(-50% + var(--tooltip-shift, 0px))) translateY(0);
 }
 
+/* Edit-mode pill card: flat panel, no lift, room for grip and remove.
+   Declared after `.pill:hover` so it wins equal-specificity ties. */
+.pillEditing {
+  display: inline-grid;
+  grid-auto-flow: column;
+  align-items: center;
+  gap: 8px;
+  background: var(--panel);
+  border-radius: 10px;
+}
+
+.pillEditing:hover {
+  transform: none;
+  box-shadow: none;
+  background: var(--panel);
+  border-color: var(--accent);
+}
+
 .tooltip {
   position: absolute;
   bottom: calc(100% + 10px);
@@ -89,5 +107,67 @@
 
   .tooltip {
     width: min(240px, 70vw);
+  }
+}
+
+/* In edit mode, disable chip hover lift + tooltip so they don't cover
+   the text being edited. Overrides the base :hover rules by specificity. */
+:global(.resume-editing) .pill:hover {
+  transform: none;
+  border-color: var(--border);
+  background: linear-gradient(90deg, #1e3a7a, #5a2086);
+  box-shadow: none;
+}
+
+:global(.resume-editing) .pill:hover > [data-skill-tooltip] {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(calc(-50% + var(--tooltip-shift, 0px))) translateY(6px);
+}
+
+/* Edit-only editor for each chip's hover text */
+.hoverEditor {
+  display: grid;
+  gap: 12px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+
+.hoverEditorTitle {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+}
+
+.hoverEditorList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 10px;
+}
+
+.hoverEditorRow {
+  display: grid;
+  grid-template-columns: 160px 1fr;
+  gap: 12px;
+  align-items: start;
+}
+
+.hoverEditorName {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--text);
+  padding-top: 6px;
+}
+
+@media (max-width: 700px) {
+  .hoverEditorRow {
+    grid-template-columns: 1fr;
+    gap: 4px;
   }
 }

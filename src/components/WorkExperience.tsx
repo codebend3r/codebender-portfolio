@@ -1,7 +1,14 @@
-import { useStore } from "@state/useStore"
-
 import { Section } from "@components/Section"
 import styles from "@components/WorkExperience.module.css"
+
+import { useEditing } from "@edit/EditContext"
+import { EditableText } from "@edit/EditableText"
+import { SortableItem, SortableList } from "@edit/SortableList"
+import sortStyles from "@edit/SortableList.module.css"
+
+import { useStore } from "@state/useStore"
+
+import { experienceDuration } from "@utils/experienceDuration"
 
 export function WorkExperience({
   index,
@@ -11,29 +18,153 @@ export function WorkExperience({
   eyebrow?: string
 }) {
   const { work_experience } = useStore()
+  const { editing, markDirty } = useEditing()
+  const store = useStore.getState()
+
+  const act = (fn: () => void) => () => {
+    fn()
+    markDirty()
+  }
 
   return (
     <Section title="Work Experience" index={index} eyebrow={eyebrow}>
-      <ul className={styles.timeline}>
-        {work_experience.map((w) => (
-          <li key={w.company + w.period}>
-            <div className={styles.item}>
-              <div className={styles.header}>
-                <div>
-                  <h3>{w.role}</h3>
-                  <p className={styles.muted}>{w.company}</p>
-                </div>
-                <span className={styles.period}>{w.period}</span>
-              </div>
-              <ul className={styles.bullets}>
-                {w.achievements.map((a, i) => (
-                  <li key={i}>{a}</li>
-                ))}
-              </ul>
-            </div>
-          </li>
-        ))}
-      </ul>
+      <SortableList
+        count={work_experience.length}
+        onReorder={(from, to) => store.reorder(["work_experience"], from, to)}
+      >
+        <ul className={styles.timeline}>
+          {work_experience.map((w, wi) => {
+            const duration = experienceDuration(w.period)
+            return (
+              <SortableItem key={wi} index={wi} label={`experience ${wi + 1}`}>
+                {(experienceHandle) => (
+                  <div className={styles.item}>
+                    <div className={styles.header}>
+                      <div>
+                        <h3>
+                          <EditableText
+                            value={w.role}
+                            path={["work_experience", wi, "role"]}
+                            ariaLabel={`Role ${wi + 1}`}
+                          />
+                        </h3>
+                        <p className={styles.muted}>
+                          <EditableText
+                            value={w.company}
+                            path={["work_experience", wi, "company"]}
+                            ariaLabel={`Company ${wi + 1}`}
+                          />
+                        </p>
+                      </div>
+                      <span className={styles.period}>
+                        <EditableText
+                          value={w.period}
+                          path={["work_experience", wi, "period"]}
+                          ariaLabel={`Period ${wi + 1}`}
+                        />
+                        {duration && (
+                          <span className={styles.duration}>{duration}</span>
+                        )}
+                      </span>
+                    </div>
+
+                    {editing && (
+                      <div className={styles.rowControls}>
+                        {experienceHandle}
+                        <button
+                          type="button"
+                          aria-label={`Remove experience ${wi + 1}`}
+                          onClick={act(() => store.removeExperience(wi))}
+                        >
+                          ✕
+                        </button>
+                      </div>
+                    )}
+
+                    <SortableList
+                      count={w.achievements.length}
+                      onReorder={(from, to) =>
+                        store.reorder(
+                          ["work_experience", wi, "achievements"],
+                          from,
+                          to
+                        )
+                      }
+                    >
+                      <ul
+                        className={
+                          editing
+                            ? `${styles.bullets} ${styles.bulletCards} ${sortStyles.cardList}`
+                            : styles.bullets
+                        }
+                      >
+                        {w.achievements.map((a, ai) => (
+                          <SortableItem
+                            key={ai}
+                            index={ai}
+                            label={`achievement ${wi + 1}.${ai + 1}`}
+                            className={editing ? sortStyles.rowCard : undefined}
+                          >
+                            {(achievementHandle) => (
+                              <>
+                                {achievementHandle}
+                                <EditableText
+                                  value={a}
+                                  path={[
+                                    "work_experience",
+                                    wi,
+                                    "achievements",
+                                    ai,
+                                  ]}
+                                  multiline
+                                  ariaLabel={`Achievement ${wi + 1}.${ai + 1}`}
+                                />
+                                {editing && (
+                                  <button
+                                    type="button"
+                                    className={sortStyles.removeButton}
+                                    aria-label={`Remove achievement ${wi + 1}.${ai + 1}`}
+                                    onClick={act(() =>
+                                      store.removeAchievement(wi, ai)
+                                    )}
+                                  >
+                                    ✕
+                                  </button>
+                                )}
+                              </>
+                            )}
+                          </SortableItem>
+                        ))}
+                      </ul>
+                    </SortableList>
+
+                    {editing && (
+                      <button
+                        type="button"
+                        className={styles.addButton}
+                        aria-label={`Add achievement to experience ${wi + 1}`}
+                        onClick={act(() => store.addAchievement(wi))}
+                      >
+                        + Add achievement
+                      </button>
+                    )}
+                  </div>
+                )}
+              </SortableItem>
+            )
+          })}
+        </ul>
+      </SortableList>
+
+      {editing && (
+        <button
+          type="button"
+          className={styles.addButton}
+          onClick={act(() => store.addExperience())}
+        >
+          + Add experience
+        </button>
+      )}
     </Section>
   )
 }
