@@ -52,4 +52,29 @@ describe("useVariations", () => {
     useVariations.getState().createVariation("Persisted", base())
     expect(localStorage.getItem("resume-variations")).toContain("Persisted")
   })
+
+  it("stores meta on create when provided", () => {
+    const id = useVariations.getState().createVariation("Gen", base(), {
+      hash: "abc123def456",
+      sourcePreview: "Senior Frontend Engineer at Achievers…",
+      origin: "generated",
+    })
+    const v = useVariations.getState().variations.find((x) => x.id === id)!
+    expect(v.hash).toBe("abc123def456")
+    expect(v.sourcePreview).toBe("Senior Frontend Engineer at Achievers…")
+    expect(v.origin).toBe("generated")
+  })
+
+  it("createVariation without meta stays backward-compatible", () => {
+    const id = useVariations.getState().createVariation("Plain", base())
+    const v = useVariations.getState().variations.find((x) => x.id === id)!
+    expect(v.hash).toBeUndefined()
+    expect(v.origin).toBeUndefined()
+  })
+
+  it("findByHash returns the matching variation or undefined", () => {
+    useVariations.getState().createVariation("Gen", base(), { hash: "aaa" })
+    expect(useVariations.getState().findByHash("aaa")?.name).toBe("Gen")
+    expect(useVariations.getState().findByHash("zzz")).toBeUndefined()
+  })
 })
