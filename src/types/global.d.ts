@@ -56,10 +56,24 @@ type ResumeActions = {
 
 type ResumeStore = Data & ResumeActions
 
+type VariationMeta = {
+  hash?: string // stable content id of the generating input
+  sourcePreview?: string // memory aid: what the input was
+  origin?: "manual" | "generated"
+}
+
 type Variation = {
   id: string
   name: string
   createdAt: number
   updatedAt: number
   data: Data
-}
+} & VariationMeta
+
+type GenerateInput =
+  | { type: "text"; text: string }
+  | { type: "image"; mediaType: string; dataBase64: string }
+
+type GenerateRequest = { password: string; input: GenerateInput }
+
+type GenerateResponse = { data: Data; suggestedName: string }
