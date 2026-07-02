@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
 
-import { routeFor } from "@app/Entry"
+import { routeFor } from "@utils/routeFor"
 
 describe("routeFor", () => {
   it("returns 'edit' for /edit-resume", () => {
