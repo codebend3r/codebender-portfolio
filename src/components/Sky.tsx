@@ -11,31 +11,11 @@ import { Starfield } from "@components/Starfield"
 import { getCurrentSky } from "@sky"
 import type { Sky as SkyName } from "@sky"
 
+import { makeClouds } from "@utils/particles"
+import type { CloudLayerConfig } from "@utils/particles"
+import { spritePosition } from "@utils/spriteSheet"
+
 type DaylightSky = Exclude<SkyName, "night">
-
-type Cloud = {
-  x: number
-  y: number
-  scale: number
-  opacity: number
-  flip: boolean
-  shape: number
-  driftAmount: number
-  driftDuration: number
-  driftDelay: number
-}
-
-const SPRITE_GRID = 3
-const SPRITE_COUNT = SPRITE_GRID * SPRITE_GRID
-
-type CloudLayerConfig = {
-  speed: number
-  count: number
-  scaleRange: [number, number]
-  opacityRange: [number, number]
-  driftRange: [number, number]
-  driftAmount: number
-}
 
 const SUN_VARIANT: Record<DaylightSky, string> = {
   day: styles.sunDay,
@@ -108,28 +88,6 @@ const CLOUD_LAYERS: Record<DaylightSky, CloudLayerConfig[]> = {
   ],
 }
 
-function makeClouds(config: CloudLayerConfig): Cloud[] {
-  const [minScale, maxScale] = config.scaleRange
-  const [minOpacity, maxOpacity] = config.opacityRange
-  const [minDur, maxDur] = config.driftRange
-  const clouds: Cloud[] = []
-  for (let i = 0; i < config.count; i++) {
-    const direction = Math.random() < 0.5 ? -1 : 1
-    clouds.push({
-      x: Math.random() * 90,
-      y: Math.random() * 90,
-      scale: minScale + Math.random() * (maxScale - minScale),
-      opacity: minOpacity + Math.random() * (maxOpacity - minOpacity),
-      flip: Math.random() < 0.5,
-      shape: Math.floor(Math.random() * SPRITE_COUNT),
-      driftAmount: direction * config.driftAmount,
-      driftDuration: minDur + Math.random() * (maxDur - minDur),
-      driftDelay: -Math.random() * maxDur,
-    })
-  }
-  return clouds
-}
-
 function Moon() {
   const pos = spritePosition(MOON_SPRITE_INDEX)
   return (
@@ -158,14 +116,6 @@ function Sun({ kind }: { kind: DaylightSky }) {
       />
     </div>
   )
-}
-
-function spritePosition(shape: number): { x: string; y: string } {
-  const index = ((shape % SPRITE_COUNT) + SPRITE_COUNT) % SPRITE_COUNT
-  const col = index % SPRITE_GRID
-  const row = Math.floor(index / SPRITE_GRID)
-  const step = 100 / (SPRITE_GRID - 1)
-  return { x: `${col * step}%`, y: `${row * step}%` }
 }
 
 function Clouds({ kind }: { kind: DaylightSky }) {

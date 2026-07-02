@@ -2,11 +2,13 @@ import styles from "@components/Footer.module.css"
 
 import { useStore } from "@state/useStore"
 
+import { stripProtocol } from "@utils/contact"
+
 export function Footer() {
   const name = useStore((s) => s.name)
   const contact = useStore((s) => s.contact)
   const github = contact.find((c) => c.value.includes("github.com"))?.value
-  const githubLabel = github?.replace(/^https?:\/\//, "")
+  const githubLabel = github && stripProtocol(github)
   return (
     <footer className={styles.footer}>
       <small className={styles.stack}>
