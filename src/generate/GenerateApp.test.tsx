@@ -114,4 +114,60 @@ describe("GenerateApp", () => {
       expect(screen.getByText(/wrong password/i)).toBeInTheDocument()
     )
   })
+
+  it("freezes hash and sourcePreview at generate time", async () => {
+    let resolveFetch!: (value: unknown) => void
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(() => new Promise((resolve) => (resolveFetch = resolve)))
+    )
+    render(<GenerateApp />)
+    fireEvent.change(screen.getByRole("textbox", { name: /job posting/i }), {
+      target: { value: "Original posting" },
+    })
+    fireEvent.change(screen.getByLabelText(/password/i), {
+      target: { value: "hunter2" },
+    })
+    fireEvent.click(screen.getByRole("button", { name: /^generate$/i }))
+    await waitFor(() => expect(fetch).toHaveBeenCalled())
+
+    fireEvent.change(screen.getByRole("textbox", { name: /job posting/i }), {
+      target: { value: "Edited during flight" },
+    })
+    resolveFetch({ ok: true, status: 200, json: async () => okBody })
+    await waitFor(() =>
+      screen.getByRole("textbox", { name: /variation name/i })
+    )
+    fireEvent.click(screen.getByRole("button", { name: /save & edit/i }))
+
+    const { hashInput } = await import("@utils/hashInput")
+    const v = useVariations.getState().variations[0]
+    expect(v.sourcePreview).toContain("Original posting")
+    expect(v.hash).toBe(
+      await hashInput({ type: "text", text: "Original posting" })
+    )
+  })
+
+  it("clears the dedupe notice when the input changes", async () => {
+    const { hashInput } = await import("@utils/hashInput")
+    const hash = await hashInput({
+      type: "text",
+      text: "Senior Frontend Engineer at Acme",
+    })
+    useVariations
+      .getState()
+      .createVariation("Existing", structuredClone(resume) as Data, { hash })
+    useVariations.getState().selectVariation(null)
+
+    render(<GenerateApp />)
+    await fillAndGenerate()
+    await waitFor(() =>
+      expect(screen.getByText(/already generated/i)).toBeInTheDocument()
+    )
+
+    fireEvent.change(screen.getByRole("textbox", { name: /job posting/i }), {
+      target: { value: "A different posting" },
+    })
+    expect(screen.queryByText(/already generated/i)).not.toBeInTheDocument()
+  })
 })

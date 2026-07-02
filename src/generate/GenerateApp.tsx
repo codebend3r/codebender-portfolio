@@ -24,7 +24,10 @@ export default function GenerateApp() {
     () => localStorage.getItem(PASSWORD_KEY) ?? ""
   )
   const [inputError, setInputError] = useState<string | null>(null)
-  const [hash, setHash] = useState<string | null>(null)
+  const [submitted, setSubmitted] = useState<{
+    input: GenerateInput
+    hash: string
+  } | null>(null)
   const [existingId, setExistingId] = useState<string | null>(null)
   const [name, setName] = useState("")
 
@@ -38,7 +41,7 @@ export default function GenerateApp() {
     localStorage.setItem(PASSWORD_KEY, password)
 
     const h = await hashInput(input)
-    setHash(h)
+    setSubmitted({ input, hash: h })
 
     const existing = findByHash(h)
     if (existing) {
@@ -49,9 +52,9 @@ export default function GenerateApp() {
   }
 
   const handleRegenerate = async () => {
-    if (!input) return
+    if (!submitted) return
     setExistingId(null)
-    await generate({ password, input })
+    await generate({ password, input: submitted.input })
   }
 
   const handleOpenExisting = () => {
@@ -61,10 +64,10 @@ export default function GenerateApp() {
   }
 
   const handleConfirm = () => {
-    if (!result || !input) return
+    if (!result || !submitted) return
     createVariation(name || result.suggestedName, result.data, {
-      hash: hash ?? undefined,
-      sourcePreview: sourcePreviewOf(input),
+      hash: submitted.hash,
+      sourcePreview: sourcePreviewOf(submitted.input),
       origin: "generated",
     })
     navigate("/edit-resume")
@@ -98,7 +101,14 @@ export default function GenerateApp() {
         into a new variation — the original is never modified.
       </p>
 
-      <DropArea value={input} onChange={setInput} onError={setInputError} />
+      <DropArea
+        value={input}
+        onChange={(next) => {
+          setInput(next)
+          setExistingId(null)
+        }}
+        onError={setInputError}
+      />
 
       <label className={styles.passwordLabel}>
         Password
