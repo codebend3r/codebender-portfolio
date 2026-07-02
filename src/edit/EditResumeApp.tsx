@@ -18,22 +18,10 @@ import { VariationsPanel } from "@edit/VariationsPanel"
 import { useStore } from "@state/useStore"
 import { useVariations } from "@state/useVariations"
 
+import { slugify } from "@utils/slugify"
+import { toData } from "@utils/toData"
+
 import appStyles from "@app/App.module.css"
-
-function toData(state: ResumeStore): Data {
-  return Object.fromEntries(
-    Object.entries(state).filter(([, v]) => typeof v !== "function")
-  ) as Data
-}
-
-function slugify(name: string): string {
-  return (
-    name
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, "_")
-      .replace(/^_+|_+$/g, "") || "resume"
-  )
-}
 
 export default function EditResumeApp() {
   const { variations, activeId } = useVariations()

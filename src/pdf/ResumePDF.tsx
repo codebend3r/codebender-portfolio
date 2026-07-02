@@ -4,6 +4,8 @@ import { Document, Link, Page, Text, View } from "@react-pdf/renderer"
 
 import { styles } from "@pdf/styles"
 
+import { isUrl, stripProtocol } from "@utils/contact"
+
 type Props = { data: Data }
 
 export function ResumePDF({ data }: Props) {
@@ -152,12 +154,4 @@ function ExperienceEntry({ entry }: { entry: Experience }) {
       ))}
     </View>
   )
-}
-
-function isUrl(value: string) {
-  return /^https?:\/\//i.test(value)
-}
-
-function stripProtocol(url: string) {
-  return url.replace(/^https?:\/\//, "").replace(/\/$/, "")
 }

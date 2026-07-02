@@ -1,4 +1,7 @@
-export type Sky = "night" | "dawn" | "day" | "dusk"
+import { skyForHour } from "@utils/skyForHour"
+import type { Sky } from "@utils/skyForHour"
+
+export type { Sky }
 
 type Palette = {
   bg: string
@@ -35,13 +38,6 @@ const PALETTES: Record<Sky, Palette> = {
     glow2:
       "radial-gradient(75vw 70vh at 85% 100%, rgba(186, 85, 211, 0.40), transparent 65%)",
   },
-}
-
-function skyForHour(hour: number): Sky {
-  if (hour >= 5 && hour < 8) return "dawn"
-  if (hour >= 8 && hour < 17) return "day"
-  if (hour >= 17 && hour < 20) return "dusk"
-  return "night"
 }
 
 function getOverride(): Sky | null {

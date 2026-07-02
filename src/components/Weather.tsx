@@ -5,31 +5,10 @@ import type { Weather as WeatherKind } from "@weather"
 
 import styles from "@components/Weather.module.css"
 
-type Drop = {
-  left: number
-  delay: number
-  duration: number
-  opacity: number
-  scale: number
-}
+import { makeDrops } from "@utils/particles"
 
 const RAIN_COUNT = 140
 const SNOW_COUNT = 90
-
-function makeDrops(count: number, durationRange: [number, number]): Drop[] {
-  const [minDur, maxDur] = durationRange
-  const drops: Drop[] = []
-  for (let i = 0; i < count; i++) {
-    drops.push({
-      left: Math.random() * 100,
-      delay: -Math.random() * maxDur,
-      duration: minDur + Math.random() * (maxDur - minDur),
-      opacity: 0.4 + Math.random() * 0.6,
-      scale: 0.6 + Math.random() * 0.9,
-    })
-  }
-  return drops
-}
 
 function Rain() {
   const drops = useMemo(() => makeDrops(RAIN_COUNT, [0.45, 1.1]), [])

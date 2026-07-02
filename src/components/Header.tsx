@@ -11,6 +11,8 @@ import sortStyles from "@edit/SortableList.module.css"
 
 import { useStore } from "@state/useStore"
 
+import { contactHref, isEmail, isPhone, isUrl } from "@utils/contact"
+
 function EmailIcon() {
   return (
     <svg
@@ -98,25 +100,6 @@ function LinkIcon() {
       <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
     </svg>
   )
-}
-
-function isUrl(value: string) {
-  return /^https?:\/\//i.test(value)
-}
-
-function isEmail(value: string) {
-  return !isUrl(value) && value.includes("@")
-}
-
-function isPhone(value: string) {
-  return /^[\d\s()+.-]+$/.test(value.trim()) && /\d/.test(value)
-}
-
-function contactHref(value: string): string | null {
-  if (isUrl(value)) return value
-  if (isEmail(value)) return `mailto:${value}`
-  if (isPhone(value)) return `tel:${value}`
-  return null
 }
 
 function ContactIcon({ value }: { value: string }) {

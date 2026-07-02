@@ -2,22 +2,10 @@ import { useEffect, useMemo, useRef } from "react"
 
 import styles from "@components/Starfield.module.css"
 
-type Star = {
-  x: number
-  y: number
-  size: number
-  opacity: number
-}
+import { makeStars } from "@utils/particles"
+import type { StarLayerConfig } from "@utils/particles"
 
-type LayerConfig = {
-  count: number
-  speed: number
-  sizeRange: [number, number]
-  opacityRange: [number, number]
-  rangeY: number
-}
-
-const LAYERS: LayerConfig[] = [
+const LAYERS: StarLayerConfig[] = [
   {
     count: 160,
     speed: 0.1,
@@ -40,21 +28,6 @@ const LAYERS: LayerConfig[] = [
     rangeY: 4000,
   },
 ]
-
-function makeStars(config: LayerConfig): Star[] {
-  const [minSize, maxSize] = config.sizeRange
-  const [minOpacity, maxOpacity] = config.opacityRange
-  const stars: Star[] = []
-  for (let i = 0; i < config.count; i++) {
-    stars.push({
-      x: Math.random() * 100,
-      y: Math.random() * config.rangeY,
-      size: minSize + Math.random() * (maxSize - minSize),
-      opacity: minOpacity + Math.random() * (maxOpacity - minOpacity),
-    })
-  }
-  return stars
-}
 
 export function Starfield() {
   const layers = useMemo(
