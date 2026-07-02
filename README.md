@@ -1,6 +1,6 @@
 # CJ Rivas — Portfolio
 
-> A single-page resume & portfolio for a Senior Frontend Engineer + Architect. Built as a showcase of modern React patterns, with a living, time-of-day sky and a live weather overlay driven by the visitor's location.
+> A single-page resume & portfolio for a Senior Frontend Engineer + Architect. Built as a showcase of modern React patterns, with a living, time-of-day sky, a live weather overlay driven by the visitor's location, a native PDF export pipeline, and a full drag-and-drop resume editor with saved variations.
 
 ![CJ Rivas portfolio at day](docs/screenshots/hero-day.png)
 
@@ -44,15 +44,36 @@ A live indicator shows the current local date, time, weather emoji, and temperat
 - The `AppHeader` uses `IntersectionObserver` on a sentinel `<div>` to detect when it sticks to the top of the viewport, then `data-stuck` triggers a compact layout (smaller logo + title, tightened spacing).
 - Clock ticks once per minute via `setInterval`, weather fetched once per session.
 
+### Section navigation
+
+A floating nav tracks scroll position via `IntersectionObserver` and highlights the section currently in view, with numbered chips mirroring the sections mounted in `App.tsx`. Clicking a link smooth-scrolls to the section (instant if `prefers-reduced-motion` is set).
+
+### Selected Work showcase
+
+A grid of project cards (browser-chrome framing, screenshot, domain badge, role, period, description, tag pills) linking out to live projects — sourced from the `showcase` array in `resume.json`.
+
 ### One-click PDF export
 
-A "Download CV" button rasterizes the resume to a single, full-height PDF — using `html2pdf.js` with a custom `waitForAssets` utility that resolves once every image and webfont is decoded, so the PDF never captures half-loaded state.
+A "Download CV" button generates a single-page PDF entirely client-side using [`@react-pdf/renderer`](https://react-pdf.org): `src/pdf/ResumePDF.tsx` mirrors the on-page layout with a dedicated set of design tokens (`src/pdf/tokens.ts`), and `src/pdf/fonts.ts` embeds Source Serif 4 (regular/italic/semibold/bold) via `Font.register` so the PDF's typography matches the page. `@react-pdf/renderer` and its `fontkit` dependency are dynamically imported (`import("@pdf")`) so they never ship in the main bundle — only users who click download (or generate a PDF from the editor) pay for that chunk.
+
+### Resume editor & variations
+
+![resume editor](docs/screenshots/edit-resume.png)
+
+Visiting `/edit-resume` mounts the same component tree in an editing context (`EditProvider`) instead of the read-only page:
+
+- Every text field becomes an inline, auto-growing `<input>`/`<textarea>` (`EditableText`) that writes straight to the Zustand store via a generic `setPath(path, value)`.
+- Lists — skills, achievements, showcase items, tags — get add/remove buttons and drag-to-reorder handles powered by `@dnd-kit`. The drag machinery is lazy-loaded (`SortableListImpl`) so the public-facing page never downloads it.
+- A **Variations** side panel lets you fork the base resume into named, independently-editable copies persisted to `localStorage` (Zustand `persist` middleware, `src/state/useVariations.ts`). Switch between "Base (original)" and any saved variation, rename or delete variations, and an unsaved-changes guard (`beforeunload`) warns before you navigate away with a dirty edit.
+- "Generate PDF" produces a PDF scoped to whichever variation is currently active, with the filename slugified from the variation's name (e.g. `cj_rivas_backend_leaning.pdf`).
 
 ### Data-driven content
 
-The entire resume — name, contact, summary, skills, work history, awards, languages, education — is hydrated from a single `src/data/resume.json` file at module load. Adding a new section is: extend the JSON → add a type → extend the Zustand store → mount a component. No mutations, no async fetch, no setters.
+The entire resume — name, contact, summary, skills (+ per-skill hover text), work history, awards, languages, education, showcase — is hydrated from a single `src/data/resume.json` file at module load and normalized through `normalizeData()` (which migrates older/legacy data shapes, e.g. a pre-array `contact` object, so saved variations never break after a schema change). Adding a new section is: extend the JSON → add a type → extend the Zustand store → mount a component.
 
-Hover tooltips on each Technical Skills pill are sourced from `src/data/skillDescriptions.ts` — a separate keyed lookup so the resume JSON stays focused on the skill list itself.
+Hover tooltips on each Technical Skills pill come from the `skill_descriptions` array in `resume.json`, kept in parallel with `technical_skills` (and reordered/edited together in the editor).
+
+Each work experience entry also shows a computed, human-readable duration (e.g. "1 year 9 months") derived from its `period` string by `src/utils/experienceDuration.ts`.
 
 ---
 
@@ -69,20 +90,22 @@ Hover tooltips on each Technical Skills pill are sourced from `src/data/skillDes
 
 ## Tech stack
 
-| Layer               | Choice                             | Why                                                                        |
-| ------------------- | ---------------------------------- | -------------------------------------------------------------------------- |
-| **Build / dev**     | Vite 8                             | Instant HMR, native ESM, fast cold starts                                  |
-| **UI framework**    | React 19 + TypeScript 6            | `useId`, automatic batching, modern types                                  |
-| **State**           | Zustand 5                          | Tiny, no boilerplate, store seeded from JSON at module load                |
-| **Styling**         | CSS Modules + design tokens        | Scoped class names, no runtime, readable in DevTools (`Header_logo__a3f2`) |
-| **PDF export**      | `html2pdf.js`                      | DOM → canvas → jsPDF pipeline; runs entirely client-side                   |
-| **Weather data**    | Open-Meteo (free, no key)          | WMO weather codes via `current_weather`                                    |
-| **Testing**         | Vitest 4 + Testing Library + jsdom | Component + util tests colocated next to source                            |
-| **Lint / format**   | ESLint 9 (flat config) + Prettier  | `@trivago/prettier-plugin-sort-imports` enforces import groups             |
-| **Type checking**   | `tsc --noEmit`                     | Runs on every commit                                                       |
-| **Git hooks**       | Husky                              | `pre-commit`: ts:check → prettier → lint → build                           |
-| **Package manager** | Bun                                | `packageManager` field pinned in `package.json`                            |
-| **Deploy**          | Netlify                            | Project: [`codebend3r`](https://app.netlify.com/projects/codebend3r)       |
+| Layer               | Choice                                            | Why                                                                                               |
+| ------------------- | ------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| **Build / dev**     | Vite 8                                            | Instant HMR, native ESM, fast cold starts                                                         |
+| **UI framework**    | React 19 + TypeScript 6                           | `useId`, automatic batching, modern types                                                         |
+| **State**           | Zustand 5                                         | Tiny, no boilerplate; resume store seeded from JSON, variations store persisted to `localStorage` |
+| **Styling**         | CSS Modules + design tokens                       | Scoped class names, no runtime, readable in DevTools (`Header_logo__a3f2`)                        |
+| **PDF export**      | `@react-pdf/renderer`                             | Declarative React → PDF, embedded webfonts, runs entirely client-side, lazy-loaded chunk          |
+| **Drag & drop**     | `@dnd-kit/core` + `sortable` + `utilities`        | Accessible reordering in the resume editor; lazy-loaded, absent from the public page              |
+| **Webfonts**        | `@fontsource/inter`, `@fontsource/source-serif-4` | Self-hosted, no external font requests; Source Serif 4 double-embedded for PDF output             |
+| **Weather data**    | Open-Meteo (free, no key)                         | WMO weather codes via `current_weather`                                                           |
+| **Testing**         | Vitest 4 + Testing Library + jsdom                | Component + util tests colocated next to source                                                   |
+| **Lint / format**   | ESLint 9 (flat config) + Prettier                 | `@trivago/prettier-plugin-sort-imports` enforces import groups                                    |
+| **Type checking**   | `tsc --noEmit`                                    | Runs on every commit                                                                              |
+| **Git hooks**       | Husky                                             | `pre-commit`: prettier check → ts:check → lint → test                                             |
+| **Package manager** | Bun                                               | `packageManager` field pinned in `package.json`                                                   |
+| **Deploy**          | Netlify                                           | Project: [`codebend3r`](https://app.netlify.com/projects/codebend3r)                              |
 
 ---
 
@@ -90,41 +113,61 @@ Hover tooltips on each Technical Skills pill are sourced from `src/data/skillDes
 
 ```
 src/
-├── App.tsx                  ← Composes Sky + Weather + AppHeader + sections; owns PDF download flow
-├── Entry.tsx                ← React root, mounts global styles + applies sky palette
-├── components/              ← Flat directory — each component is a .tsx + .module.css + .test.tsx triple
+├── App.tsx                  ← Composes Sky + Weather + SectionNav + AppHeader + read-only sections
+├── Entry.tsx                ← React root; routes "/edit-resume" → <EditResumeApp />, else <App />
+├── components/              ← Flat directory — each component is a .tsx + .module.css (+ .test.tsx) triple
 │   ├── AppHeader.tsx        ← Sticky-on-scroll wrapper; mounts <Header /> + <WeatherClock /> + Download CV button
 │   ├── Header.tsx           ← Identity + contact line (email, phone, location, GitHub, LinkedIn)
+│   ├── SectionNav.tsx       ← Floating nav; highlights active section via IntersectionObserver
 │   ├── Sky.tsx              ← Time-of-day clouds, sun, moon (PNG sprite); swaps to <Starfield /> at night
 │   ├── Starfield.tsx        ← Parallax 3-layer night sky (160 + 80 + 30 stars)
 │   ├── Weather.tsx          ← Rain (140 drops) / snow (90 flakes) overlay; pure CSS animation
 │   ├── WeatherClock.tsx     ← Live clock + weather emoji + temperature (ticks every minute)
 │   ├── Section.tsx          ← Shared <section> + <h2> wrapper used by all content sections
-│   ├── Summary.tsx  TechnicalSkills.tsx  WorkExperience.tsx
+│   ├── Summary.tsx  TechnicalSkills.tsx  WorkExperience.tsx  Showcase.tsx
 │   ├── Awards.tsx  Languages.tsx  Education.tsx  Footer.tsx
+├── edit/                    ← Resume editor, mounted only at /edit-resume
+│   ├── EditResumeApp.tsx    ← Renders the resume tree inside EditProvider; owns variation/session state
+│   ├── EditContext.tsx      ← `editing` flag + `markDirty()`, consumed by every section component
+│   ├── EditableText.tsx     ← Inline auto-growing input/textarea bound to a store path
+│   ├── VariationsPanel.tsx  ← Create/rename/delete/select variations; Save + Generate PDF actions
+│   ├── RenameModal.tsx      ← Portal-rendered modal for naming/renaming a variation
+│   ├── SortableList.tsx     ← Public wrapper; lazy-loads dnd-kit only when editing
+│   ├── SortableListImpl.tsx ← Actual @dnd-kit sortable context (lazy chunk)
+│   └── sortableContext.ts   ← Context bridging the lazy dnd-kit implementation into SortableItem
+├── pdf/                     ← @react-pdf/renderer document, lazy-loaded via `import("@pdf")`
+│   ├── generatePdf.tsx      ← generateResumePdf(data) → Blob; downloadBlob() triggers the browser download
+│   ├── ResumePDF.tsx        ← React-PDF document mirroring the on-page resume layout
+│   ├── fonts.ts             ← Registers Source Serif 4 weights/styles for @react-pdf/renderer
+│   ├── styles.ts            ← @react-pdf/renderer StyleSheet definitions
+│   ├── tokens.ts             ← PDF-specific design tokens (fonts, spacing, colors)
+│   └── index.ts              ← Barrel re-exporting generatePdf's public API
 ├── data/
-│   ├── resume.json          ← Single source of truth for resume content
-│   ├── skillDescriptions.ts ← Per-skill tooltip copy keyed by skill name
+│   ├── resume.json          ← Single source of truth for resume content (incl. showcase, skill_descriptions)
 │   └── CJ Rivas - Senior Frontend Engineer.pdf  ← Pre-rendered CV (also produced live via Download CV)
-├── state/useStore.ts        ← Zustand store, seeded from resume.json at module init
+├── state/
+│   ├── useStore.ts          ← Zustand store, seeded from resume.json; setPath/reorder + add/remove actions
+│   └── useVariations.ts     ← Zustand store (persisted to localStorage) for named resume variations
 ├── styles/
 │   ├── tokens.css           ← :root CSS custom properties (--bg, --accent, --cloud-drift, …)
-│   ├── keyframes.css        ← cloudDrift, rainFall, snowFall, glowPulse
-│   └── global.css           ← resets + @media print rules for PDF export
-├── sky.ts                   ← getCurrentSky(), applySky(), URL override parsing
-├── weather.ts               ← Open-Meteo fetcher, WMO code mapping, URL override parsing
+│   ├── keyframes.css         ← cloudDrift, rainFall, snowFall, glowPulse
+│   └── global.css            ← resets + @media print rules
+├── sky.ts                    ← getCurrentSky(), applySky(), URL override parsing
+├── weather.ts                ← Open-Meteo fetcher, WMO code mapping, URL override parsing
 ├── utils/
-│   ├── dom-utils.ts         ← DOM helpers
-│   └── print-utils.ts       ← waitForAssets() — gates PDF capture on image/font load
-├── types/global.d.ts        ← Ambient types: Experience, Award, Language, Education, Data
-└── test/                    ← Vitest setup
+│   ├── dom-utils.ts           ← DOM helpers
+│   ├── normalizeData.ts       ← Migrates legacy resume/variation data shapes on load
+│   ├── setPath.ts              ← Generic immutable nested-path update used by the editor
+│   └── experienceDuration.ts   ← Formats a work-experience period into "N years M months"
+├── types/global.d.ts          ← Ambient types: Data, Experience, Award, Language, Education, Showcase, Variation, ResumeStore
+└── test/                       ← Vitest setup
 ```
 
 ### Path aliases
 
 Configured in **both** `vite.config.ts` (runtime) and `tsconfig.json` (types) — they must stay in sync.
 
-`@App`, `@app`, `@assets/*`, `@components/*`, `@data/*`, `@sky`, `@state/*`, `@styles/*`, `@utils/*`, `@weather`
+`@App`, `@app`, `@assets/*`, `@components/*`, `@data/*`, `@edit/*`, `@pdf/*`, `@sky`, `@state/*`, `@styles/*`, `@utils/*`, `@weather`
 
 ---
 
@@ -144,6 +187,7 @@ bun dev          # http://localhost:4242
 | `http://localhost:4242/?weather=rain`           | Force rain overlay          |
 | `http://localhost:4242/?weather=snow`           | Force snow overlay          |
 | `http://localhost:4242/?sky=night&weather=snow` | Combine: snowy night        |
+| `http://localhost:4242/edit-resume`             | Open the resume editor      |
 
 ---
 
@@ -158,7 +202,7 @@ bun dev          # http://localhost:4242
 | `bun prettier` / `bun prettier:check`               | Prettier write / check                                                                  |
 | `bun ts:check`                                      | TypeScript type check (no emit)                                                         |
 | `bun test` / `bun test:watch` / `bun test:coverage` | Vitest                                                                                  |
-| `bun system-check`                                  | `prettier:check` → `lint` → `test` → `build`                                            |
+| `bun system-check`                                  | `prettier:check` → `ts:check` → `lint` → `test` → `build`                               |
 
 ---
 
@@ -166,7 +210,7 @@ bun dev          # http://localhost:4242
 
 Husky runs on every commit and push:
 
-- **pre-commit** — `ts:check` → `prettier:check` → `lint` → `test` → `build`. The commit fails if any step fails. Because `prettier:check` does not write, you need to run `bun prettier` yourself before committing if formatting is off.
+- **pre-commit** — `prettier:check` → `ts:check` → `lint` → `test`. The commit fails if any step fails. Because `prettier:check` does not write, run `bun prettier` yourself first if formatting is off.
 - **pre-push** — `bun run build`, then prints the last 10 commits as a sanity check. Push fails if the build fails, so deps must be installed (`bun install`) before pushing.
 
 ---
@@ -174,6 +218,6 @@ Husky runs on every commit and push:
 ## Code style
 
 - No semicolons, double quotes, 2-space indent, `printWidth: 80`, `trailingComma: "es5"`.
-- Import order is enforced by `@trivago/prettier-plugin-sort-imports` with custom groups (react first → third-party → `@components`/`@data`/`@state`/`@styles` → relative). Groups are blank-line separated.
+- Import order is enforced by `@trivago/prettier-plugin-sort-imports` with custom groups (react first → third-party → `@components`/`@data`/`@edit`/`@pdf`/`@state`/`@styles` → relative). Groups are blank-line separated.
 - ESLint enforces `@typescript-eslint/consistent-type-imports` — type-only imports must use `import type`.
 - `_`-prefixed unused vars are ignored.
