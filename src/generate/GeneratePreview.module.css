@@ -1,0 +1,28 @@
+.preview {
+  display: grid;
+  gap: 24px;
+}
+
+.controls {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: 12px;
+  align-items: end;
+}
+
+.nameLabel {
+  display: grid;
+  gap: 6px;
+  color: var(--muted);
+}
+
+.resume {
+  display: grid;
+  gap: 20px;
+}
+
+.subgrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+}

@@ -1,0 +1,33 @@
+.page {
+  display: grid;
+  gap: 24px;
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 48px 24px;
+  color: var(--text);
+}
+
+.hint {
+  color: var(--muted);
+}
+
+.passwordLabel {
+  display: grid;
+  gap: 6px;
+  justify-items: start;
+  color: var(--muted);
+}
+
+.notice {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: 12px;
+  align-items: center;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px 16px;
+}
+
+.error {
+  color: var(--accent2);
+}
