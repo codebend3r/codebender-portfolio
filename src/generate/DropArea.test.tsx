@@ -70,4 +70,22 @@ describe("DropArea", () => {
     fireEvent.click(screen.getByRole("button", { name: /clear/i }))
     expect(onChange).toHaveBeenCalledWith(null)
   })
+
+  it("surfaces a file-read failure via onError", async () => {
+    const onChange = vi.fn()
+    const onError = vi.fn()
+    vi.spyOn(FileReader.prototype, "readAsDataURL").mockImplementation(
+      function (this: FileReader) {
+        this.dispatchEvent(new ProgressEvent("error"))
+      }
+    )
+    render(<DropArea value={null} onChange={onChange} onError={onError} />)
+    fireEvent.drop(screen.getByLabelText(/drop area/i), {
+      dataTransfer: { files: [makeImageFile(100)] },
+    })
+    await waitFor(() =>
+      expect(onError).toHaveBeenCalledWith("Could not read the image file")
+    )
+    expect(onChange).not.toHaveBeenCalled()
+  })
 })

@@ -29,8 +29,12 @@ export function DropArea({ value, onChange, onError }: DropAreaProps) {
       onError("Image is too large — max ~3.5MB")
       return true
     }
-    const dataBase64 = await fileToBase64(file)
-    onChange({ type: "image", mediaType: file.type, dataBase64 })
+    try {
+      const dataBase64 = await fileToBase64(file)
+      onChange({ type: "image", mediaType: file.type, dataBase64 })
+    } catch {
+      onError("Could not read the image file")
+    }
     return true
   }
 
