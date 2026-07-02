@@ -77,7 +77,7 @@ Routing stays a `pathname` branch in `Entry.tsx`; no router library is added.
 | `netlify/functions/generate.mts`   | Server handler: validate password, build messages, call Claude, return `{ data, suggestedName }`.                                                                                                   |
 | `netlify/functions/prompt.ts`      | Pure helpers: system prompt builder, `DATA_SCHEMA` (JSON Schema mirroring `Data`), `validatePassword` (constant-time). Unit-testable without network.                                               |
 | `netlify/functions/tsconfig.json`  | Node/serverless TS config (no DOM lib) so `bun ts:check` covers functions without polluting the app config.                                                                                         |
-| `netlify.toml`                     | Functions directory + esbuild bundler; timeout raised where the plan allows.                                                                                                                        |
+| `netlify.toml`                     | Functions directory + esbuild bundler; sync timeout isn't a `netlify.toml` key — see Known risk below.                                                                                              |
 | `.env.example`                     | Documents `ANTHROPIC_API_KEY` and `GENERATE_PASSWORD` for `netlify dev`.                                                                                                                            |
 
 ### Types
@@ -200,9 +200,9 @@ suggestedName: string }` so the reply is guaranteed-valid `Data`.
 ## Known risk — function timeout
 
 An Opus-4-8 call can occasionally exceed Netlify's 10s sync limit. Mitigations,
-in order: the fast model config above; raise the timeout in `netlify.toml` (26s
-on Pro); if still tight, move to a **background function + client polling**
-(documented, not built in v1).
+in order: the fast model config above; request a higher function timeout via
+Netlify site settings/support (Pro allows up to 26s); if still tight, move to
+a **background function + client polling** (documented, not built in v1).
 
 ## Testing
 
