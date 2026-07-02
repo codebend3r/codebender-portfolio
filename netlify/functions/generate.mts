@@ -7,7 +7,7 @@ import {
   buildUserContent,
   parseGenerateRequest,
   validatePassword,
-} from "./prompt"
+} from "./lib/prompt"
 
 function json(status: number, body: unknown): Response {
   return new Response(JSON.stringify(body), {

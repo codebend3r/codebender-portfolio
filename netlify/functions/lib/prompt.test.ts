@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
 
-import resume from "../../src/data/resume.json"
+import resume from "../../../src/data/resume.json"
 import {
   WRAPPER_SCHEMA,
   buildSystemPrompt,
