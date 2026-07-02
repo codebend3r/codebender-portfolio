@@ -1046,10 +1046,11 @@ export default function GenerateApp() {
 import React from "react"
 
 import App from "@App"
-import GenerateApp from "@generate/GenerateApp"
 import ReactDOM from "react-dom/client"
 
 import EditResumeApp from "@edit/EditResumeApp"
+
+import GenerateApp from "@generate/GenerateApp"
 
 import { applySky } from "@sky"
 
@@ -1130,9 +1131,10 @@ useGenerate(): {
 - [ ] **Step 1: Write the failing test** — `src/generate/useGenerate.test.ts`
 
 ```ts
-import { useGenerate } from "@generate/useGenerate"
 import { act, renderHook } from "@testing-library/react"
 import { afterEach, describe, expect, it, vi } from "vitest"
+
+import { useGenerate } from "@generate/useGenerate"
 
 const okBody: GenerateResponse = {
   data: { name: "CJ" } as Data,
@@ -1321,9 +1323,10 @@ Behavior: textarea for text (typing or pasting emits `{type:"text"}`); pasting o
 - [ ] **Step 1: Write the failing test** — `src/generate/DropArea.test.tsx`
 
 ```tsx
-import { DropArea } from "@generate/DropArea"
 import { fireEvent, render, screen, waitFor } from "@testing-library/react"
 import { describe, expect, it, vi } from "vitest"
+
+import { DropArea } from "@generate/DropArea"
 
 function makeImageFile(bytes: number, name = "posting.png"): File {
   return new File([new Uint8Array(bytes)], name, { type: "image/png" })
@@ -1574,11 +1577,12 @@ Check the exact props of `Header`/`Summary`/etc. in `src/edit/EditResumeApp.tsx`
 - [ ] **Step 1: Write the failing preview test** — `src/generate/GeneratePreview.test.tsx`
 
 ```tsx
-import { GeneratePreview } from "@generate/GeneratePreview"
 import { fireEvent, render, screen } from "@testing-library/react"
 import { beforeEach, describe, expect, it, vi } from "vitest"
 
 import resume from "@data/resume.json"
+
+import { GeneratePreview } from "@generate/GeneratePreview"
 
 import { useStore } from "@state/useStore"
 
@@ -1757,11 +1761,12 @@ Expected: PASS
 - [ ] **Step 5: Write the failing app test** — `src/generate/GenerateApp.test.tsx`
 
 ```tsx
-import GenerateApp from "@generate/GenerateApp"
 import { fireEvent, render, screen, waitFor } from "@testing-library/react"
 import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest"
 
 import resume from "@data/resume.json"
+
+import GenerateApp from "@generate/GenerateApp"
 
 import { useStore } from "@state/useStore"
 import { useVariations } from "@state/useVariations"

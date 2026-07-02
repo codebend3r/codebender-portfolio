@@ -13,6 +13,7 @@ const config = {
     "^@components/(.*)$",
     "^@data/(.*)$",
     "^@edit/(.*)$",
+    "^@generate/(.*)$",
     "^@fetcher/(.*)$",
     "^@hooks/(.*)$",
     "^@pages/(.*)$",
