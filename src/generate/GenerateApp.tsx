@@ -9,6 +9,7 @@ import { useVariations } from "@state/useVariations"
 
 import { hashInput } from "@utils/hashInput"
 import { navigate } from "@utils/navigate"
+import { normalizeInput } from "@utils/normalizeInput"
 
 const PASSWORD_KEY = "generate-password"
 
@@ -40,15 +41,17 @@ export default function GenerateApp() {
     setExistingId(null)
     localStorage.setItem(PASSWORD_KEY, password)
 
-    const h = await hashInput(input)
-    setSubmitted({ input, hash: h })
+    // A lone pasted URL becomes a url input — the function fetches the page.
+    const normalized = normalizeInput(input)
+    const h = await hashInput(normalized)
+    setSubmitted({ input: normalized, hash: h })
 
     const existing = findByHash(h)
     if (existing) {
       setExistingId(existing.id)
       return
     }
-    await generate({ password, input })
+    await generate({ password, input: normalized })
   }
 
   const handleRegenerate = async () => {
@@ -98,8 +101,8 @@ export default function GenerateApp() {
     <main className={styles.page}>
       <h1>Generate a tailored resume</h1>
       <p className={styles.hint}>
-        Paste a job posting (text or screenshot). Claude tailors the base resume
-        into a new variation — the original is never modified.
+        Paste a job posting (text, link, or screenshot). Claude tailors the base
+        resume into a new variation — the original is never modified.
       </p>
 
       <DropArea
@@ -130,6 +133,15 @@ export default function GenerateApp() {
           <button type="button" onClick={handleRegenerate}>
             Regenerate
           </button>
+        </div>
+      )}
+
+      {status === "generating" && (
+        <div className={styles.progress} role="status">
+          <span className={styles.spinner} aria-hidden="true" />
+          <span>
+            Generating your tailored resume — this can take a minute or two.
+          </span>
         </div>
       )}
 

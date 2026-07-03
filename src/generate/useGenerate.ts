@@ -2,7 +2,14 @@ import { useCallback, useState } from "react"
 
 export type GenerateStatus = "idle" | "generating" | "done" | "error"
 
-const ENDPOINT = "/.netlify/functions/generate"
+// /generate is a Netlify *background* function: it replies 202 immediately
+// and reports progress through a blob read back via /generate-status.
+const GENERATE_ENDPOINT = "/.netlify/functions/generate"
+const STATUS_ENDPOINT = "/.netlify/functions/generate-status"
+const POLL_INTERVAL_MS = 2_500
+const POLL_TIMEOUT_MS = 240_000
+
+const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
 
 export function useGenerate() {
   const [status, setStatus] = useState<GenerateStatus>("idle")
@@ -13,28 +20,43 @@ export function useGenerate() {
     setStatus("generating")
     setResult(null)
     setError(null)
+    const fail = (message: string) => {
+      setStatus("error")
+      setError(message)
+    }
+
     try {
-      const res = await fetch(ENDPOINT, {
+      const jobId = crypto.randomUUID()
+      const kickoff = await fetch(GENERATE_ENDPOINT, {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify(req),
+        body: JSON.stringify({ ...req, jobId } satisfies GenerateJobRequest),
       })
-      if (res.status === 401) {
-        setStatus("error")
-        setError("Wrong password")
+      if (!kickoff.ok) {
+        fail("could not start the generation — try again")
         return
       }
-      if (!res.ok) {
-        setStatus("error")
-        setError("Generation failed — try again")
-        return
+
+      const deadline = Date.now() + POLL_TIMEOUT_MS
+      while (Date.now() < deadline) {
+        const poll = await fetch(`${STATUS_ENDPOINT}?id=${jobId}`)
+        if (poll.ok) {
+          const job = (await poll.json()) as GenerateJob
+          if (job.status === "done") {
+            setResult({ data: job.data, suggestedName: job.suggestedName })
+            setStatus("done")
+            return
+          }
+          if (job.status === "error") {
+            fail(job.error)
+            return
+          }
+        }
+        await sleep(POLL_INTERVAL_MS)
       }
-      const body = (await res.json()) as GenerateResponse
-      setResult(body)
-      setStatus("done")
+      fail("timed out waiting for the generation — try again")
     } catch {
-      setStatus("error")
-      setError("Network error — is the function running?")
+      fail("network error — is the function running?")
     }
   }, [])
 

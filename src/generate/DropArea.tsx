@@ -76,7 +76,7 @@ export function DropArea({ value, onChange, onError }: DropAreaProps) {
         <textarea
           aria-label="Job posting"
           className={styles.textarea}
-          placeholder="Paste the job posting text — or paste/drop a screenshot"
+          placeholder="Paste the job posting text or URL — or paste/drop a screenshot"
           rows={12}
           value={value?.type === "text" ? value.text : ""}
           onChange={handleText}
