@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest"
 
 import resume from "../../../src/data/resume.json"
 import {
-  WRAPPER_SCHEMA,
+  PATCH_SCHEMA,
   buildSystemPrompt,
   buildUserContent,
   parseGenerateRequest,
@@ -160,17 +160,21 @@ describe("buildUserContent", () => {
   })
 })
 
-describe("WRAPPER_SCHEMA", () => {
-  it("requires resume and suggestedName with no extra props", () => {
-    expect(WRAPPER_SCHEMA.required).toEqual(["resume", "suggestedName"])
-    expect(WRAPPER_SCHEMA.additionalProperties).toBe(false)
+describe("PATCH_SCHEMA", () => {
+  it("requires every patch field with no extra props", () => {
+    expect(PATCH_SCHEMA.required).toEqual([
+      "title",
+      "summary",
+      "technical_skills",
+      "work_experience",
+      "suggestedName",
+    ])
+    expect(PATCH_SCHEMA.additionalProperties).toBe(false)
   })
 
-  it("mirrors every top-level Data key", () => {
-    const dataKeys = Object.keys(resume).sort()
-    const schemaKeys = Object.keys(
-      WRAPPER_SCHEMA.properties.resume.properties
-    ).sort()
-    expect(schemaKeys).toEqual(dataKeys)
+  it("patches work_experience by index and achievements only", () => {
+    const entry = PATCH_SCHEMA.properties.work_experience.items
+    expect(entry.required).toEqual(["index", "achievements"])
+    expect(entry.additionalProperties).toBe(false)
   })
 })

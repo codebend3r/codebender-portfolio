@@ -77,6 +77,19 @@ type GenerateInput =
 
 type GenerateRequest = { password: string; input: GenerateInput }
 
+// Sparse model output from /generate — only the tailored fields, merged over
+// the base resume by `applyResumePatch`. `work_experience` entries reference
+// base entries by index and replace only their achievements.
+// `skill_descriptions` are derived from the base resume during the merge, so
+// they always stay aligned with `technical_skills`.
+type ResumePatch = {
+  title: string
+  summary: string
+  technical_skills: string[]
+  work_experience: { index: number; achievements: string[] }[]
+  suggestedName: string
+}
+
 // Wire format of the background function POST — the client mints the jobId.
 type GenerateJobRequest = GenerateRequest & { jobId: string }
 

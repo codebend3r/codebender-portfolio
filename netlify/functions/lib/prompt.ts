@@ -79,19 +79,24 @@ export function buildSystemPrompt(base: Data): string {
     "",
     JSON.stringify(base, null, 2),
     "",
+    "Output a PATCH, not the whole resume — only the tailored fields:",
+    "- `title` and `summary`: rewritten for relevance to the posting.",
+    "- `technical_skills`: reselected/reordered from the `technical_skills`",
+    "  list in the resume above, copied verbatim (descriptions are attached",
+    "  automatically by name).",
+    "- `work_experience`: ONLY the entries whose achievement bullets you",
+    "  rephrase, as { index, achievements } where `index` is the entry's",
+    "  position in the resume above. Patch at most the 4 most relevant",
+    "  entries; omit the rest.",
+    "- `suggestedName`: a short label for this variation such as",
+    '  "Senior Frontend Engineer @ Achievers" (role @ company from the',
+    "  posting).",
+    "",
     "Rules:",
     "- Reorder and re-emphasize existing content to fit the target role.",
-    "- Rewrite the summary, title, and technical_skills selection/order for",
-    "  relevance to the posting.",
     "- Rephrase achievement bullets to foreground relevant impact.",
     "- NEVER invent employers, roles, dates, technologies, awards, or any",
     "  fact not present in the resume above.",
-    "- Keep the same JSON shape as the resume above.",
-    "- Keep `skill_descriptions` aligned index-for-index with",
-    "  `technical_skills`.",
-    "- Also produce `suggestedName`: a short label for this variation such",
-    '  as "Senior Frontend Engineer @ Achievers" (role @ company from the',
-    "  posting).",
   ].join("\n")
 }
 
@@ -125,125 +130,40 @@ export function buildUserContent(
 }
 
 // ---------------------------------------------------------------------------
-// JSON Schema for structured output. Mirrors `Data` in src/types/global.d.ts
-// — keep the two in sync when the resume shape changes.
+// JSON Schema for structured output. Mirrors `ResumePatch` in
+// src/types/global.d.ts — keep the two in sync. The model returns only the
+// tailored fields; `applyResumePatch` merges them over the base resume.
 // ---------------------------------------------------------------------------
 
 const str = { type: "string" } as const
 const strArray = { type: "array", items: str } as const
 
-const DATA_SCHEMA = {
+export const PATCH_SCHEMA = {
   type: "object",
   properties: {
-    name: str,
-    contact: {
-      type: "array",
-      items: {
-        type: "object",
-        properties: { label: str, value: str },
-        required: ["label", "value"],
-        additionalProperties: false,
-      },
-    },
     title: str,
     summary: str,
     technical_skills: strArray,
-    skill_descriptions: strArray,
     work_experience: {
       type: "array",
       items: {
         type: "object",
         properties: {
-          role: str,
-          company: str,
-          period: str,
+          index: { type: "integer" },
           achievements: strArray,
         },
-        required: ["role", "company", "period", "achievements"],
+        required: ["index", "achievements"],
         additionalProperties: false,
       },
     },
-    awards: {
-      type: "array",
-      items: {
-        type: "object",
-        properties: {
-          name: str,
-          organization: str,
-          year: { type: "integer" },
-        },
-        required: ["name", "organization", "year"],
-        additionalProperties: false,
-      },
-    },
-    languages: {
-      type: "array",
-      items: {
-        type: "object",
-        properties: { name: str, proficiency: str },
-        required: ["name", "proficiency"],
-        additionalProperties: false,
-      },
-    },
-    education: {
-      type: "array",
-      items: {
-        type: "object",
-        properties: { program: str, institution: str, details: str },
-        required: ["program", "institution"],
-        additionalProperties: false,
-      },
-    },
-    showcase: {
-      type: "array",
-      items: {
-        type: "object",
-        properties: {
-          name: str,
-          domain: str,
-          url: str,
-          role: str,
-          period: str,
-          description: str,
-          image: str,
-          tags: strArray,
-        },
-        required: [
-          "name",
-          "domain",
-          "url",
-          "role",
-          "period",
-          "description",
-          "image",
-          "tags",
-        ],
-        additionalProperties: false,
-      },
-    },
+    suggestedName: str,
   },
   required: [
-    "name",
-    "contact",
     "title",
     "summary",
     "technical_skills",
-    "skill_descriptions",
     "work_experience",
-    "awards",
-    "languages",
-    "education",
-    "showcase",
+    "suggestedName",
   ],
-  additionalProperties: false,
-} as const
-
-export const WRAPPER_SCHEMA = {
-  type: "object",
-  properties: {
-    resume: DATA_SCHEMA,
-    suggestedName: str,
-  },
-  required: ["resume", "suggestedName"],
   additionalProperties: false,
 } as const

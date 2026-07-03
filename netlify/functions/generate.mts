@@ -4,8 +4,9 @@ import type { Config } from "@netlify/functions"
 
 import resume from "../../src/data/resume.json"
 import { JobPageError, fetchPostingText } from "./lib/jobPage"
+import { applyResumePatch } from "./lib/patch"
 import {
-  WRAPPER_SCHEMA,
+  PATCH_SCHEMA,
   buildSystemPrompt,
   buildUserContent,
   parseGenerateRequest,
@@ -49,9 +50,9 @@ export default async (req: Request): Promise<void> => {
       // Haiku 4.5: cheapest/fastest tier, supports json_schema output.
       // No `effort` here — output_config.effort errors on Haiku 4.5.
       model: "claude-haiku-4-5",
-      max_tokens: 8000,
+      max_tokens: 4000,
       output_config: {
-        format: { type: "json_schema", schema: WRAPPER_SCHEMA },
+        format: { type: "json_schema", schema: PATCH_SCHEMA },
       },
       system: buildSystemPrompt(resume as Data),
       messages: [
@@ -68,11 +69,12 @@ export default async (req: Request): Promise<void> => {
       return
     }
 
-    const { resume: data, suggestedName } = JSON.parse(text) as {
-      resume: Data
-      suggestedName: string
-    }
-    await write({ status: "done", data, suggestedName })
+    const patch = JSON.parse(text) as ResumePatch
+    await write({
+      status: "done",
+      data: applyResumePatch(resume as Data, patch),
+      suggestedName: patch.suggestedName,
+    })
   } catch (err) {
     console.error("generate failed:", err instanceof Error ? err.message : err)
     await write({
