@@ -13,7 +13,7 @@ import {
 } from "./lib/prompt"
 
 // Background function: Netlify replies 202 immediately and lets the handler
-// run up to 15 minutes. The Claude call takes 1-3 minutes — far past the
+// run up to 15 minutes. The Claude call can take tens of seconds — past the
 // 10s/26s synchronous limit that killed generation in production. Job state
 // goes to the `generate-jobs` blob store, polled via /generate-status.
 export const config: Config = { background: true }
@@ -46,10 +46,11 @@ export default async (req: Request): Promise<void> => {
 
     const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
     const response = await client.messages.create({
-      model: "claude-opus-4-8",
+      // Haiku 4.5: cheapest/fastest tier, supports json_schema output.
+      // No `effort` here — output_config.effort errors on Haiku 4.5.
+      model: "claude-haiku-4-5",
       max_tokens: 8000,
       output_config: {
-        effort: "medium",
         format: { type: "json_schema", schema: WRAPPER_SCHEMA },
       },
       system: buildSystemPrompt(resume as Data),
