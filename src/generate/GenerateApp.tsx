@@ -13,9 +13,9 @@ import { navigate } from "@utils/navigate"
 const PASSWORD_KEY = "generate-password"
 
 function sourcePreviewOf(input: GenerateInput): string {
-  return input.type === "text"
-    ? input.text.trim().slice(0, 200)
-    : `image (${input.mediaType})`
+  if (input.type === "text") return input.text.trim().slice(0, 200)
+  if (input.type === "url") return input.url.slice(0, 200)
+  return `image (${input.mediaType})`
 }
 
 export default function GenerateApp() {

@@ -56,4 +56,22 @@ describe("hashInput", () => {
     })
     expect(a).not.toBe(b)
   })
+
+  it("is deterministic for the same url", async () => {
+    const a = await hashInput({ type: "url", url: "https://jobs.example/a" })
+    const b = await hashInput({ type: "url", url: "https://jobs.example/a" })
+    expect(a).toBe(b)
+  })
+
+  it("url and text inputs with equal payloads do not collide", async () => {
+    const a = await hashInput({ type: "text", text: "https://jobs.example/a" })
+    const b = await hashInput({ type: "url", url: "https://jobs.example/a" })
+    expect(a).not.toBe(b)
+  })
+
+  it("differs across different urls", async () => {
+    const a = await hashInput({ type: "url", url: "https://jobs.example/a" })
+    const b = await hashInput({ type: "url", url: "https://jobs.example/b" })
+    expect(a).not.toBe(b)
+  })
 })

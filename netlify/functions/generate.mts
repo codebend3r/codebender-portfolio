@@ -27,6 +27,11 @@ export default async (req: Request): Promise<Response> => {
     return json(401, { error: "unauthorized" })
   }
 
+  // Narrows the type; parseGenerateRequest does not emit url inputs yet.
+  if (parsed.input.type === "url") {
+    return json(501, { error: "url input not supported yet" })
+  }
+
   try {
     const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
     // Fast config on purpose: grounded rewrite, not deep reasoning, and

@@ -73,6 +73,7 @@ type Variation = {
 type GenerateInput =
   | { type: "text"; text: string }
   | { type: "image"; mediaType: string; dataBase64: string }
+  | { type: "url"; url: string }
 
 type GenerateRequest = { password: string; input: GenerateInput }
 

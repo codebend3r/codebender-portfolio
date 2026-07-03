@@ -76,7 +76,11 @@ export function buildSystemPrompt(base: Data): string {
   ].join("\n")
 }
 
-export function buildUserContent(input: GenerateInput) {
+// `url` inputs are resolved to `text` (via fetchPostingText) before the
+// Claude call, so this only ever sees text or image.
+export function buildUserContent(
+  input: Exclude<GenerateInput, { type: "url" }>
+) {
   if (input.type === "text") {
     return [
       {

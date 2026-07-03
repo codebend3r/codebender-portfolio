@@ -8,7 +8,9 @@ export async function hashInput(input: GenerateInput): Promise<string> {
   const normalized =
     input.type === "text"
       ? `text:${input.text.trim()}`
-      : `image:${input.dataBase64}`
+      : input.type === "url"
+        ? `url:${input.url.trim()}`
+        : `image:${input.dataBase64}`
   const bytes = new TextEncoder().encode(normalized)
   const digest = await crypto.subtle.digest("SHA-256", bytes)
   return Array.from(new Uint8Array(digest))
