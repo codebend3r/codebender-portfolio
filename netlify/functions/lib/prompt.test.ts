@@ -24,44 +24,101 @@ describe("validatePassword", () => {
   })
 })
 
+const JOB_ID = "3f2a9c1e-7b4d-4e6f-9a2b-1c3d5e7f9a0b"
+
 describe("parseGenerateRequest", () => {
   it("accepts a valid text request", () => {
     const req = parseGenerateRequest({
+      jobId: JOB_ID,
       password: "p",
       input: { type: "text", text: "job posting" },
     })
     expect(req?.input.type).toBe("text")
+    expect(req?.jobId).toBe(JOB_ID)
   })
 
   it("accepts a valid image request", () => {
     const req = parseGenerateRequest({
+      jobId: JOB_ID,
       password: "p",
       input: { type: "image", mediaType: "image/png", dataBase64: "AAAA" },
     })
     expect(req?.input.type).toBe("image")
   })
 
+  it("accepts a valid url request", () => {
+    const req = parseGenerateRequest({
+      jobId: JOB_ID,
+      password: "p",
+      input: { type: "url", url: "https://jobs.lever.co/acme/123?src=x" },
+    })
+    expect(req?.input).toEqual({
+      type: "url",
+      url: "https://jobs.lever.co/acme/123?src=x",
+    })
+  })
+
+  it("rejects non-http(s) or unparseable urls", () => {
+    const withUrl = (url: unknown) =>
+      parseGenerateRequest({
+        jobId: JOB_ID,
+        password: "p",
+        input: { type: "url", url },
+      })
+    expect(withUrl("javascript:alert(1)")).toBeNull()
+    expect(withUrl("ftp://example.com/file")).toBeNull()
+    expect(withUrl("not a url")).toBeNull()
+    expect(withUrl("")).toBeNull()
+    expect(withUrl(42)).toBeNull()
+    expect(withUrl(`https://example.com/${"x".repeat(2_049)}`)).toBeNull()
+  })
+
+  it("rejects a missing or malformed jobId", () => {
+    const withJobId = (jobId: unknown) =>
+      parseGenerateRequest({
+        jobId,
+        password: "p",
+        input: { type: "text", text: "posting" },
+      })
+    expect(withJobId(undefined)).toBeNull()
+    expect(withJobId("")).toBeNull()
+    expect(withJobId("short")).toBeNull()
+    expect(withJobId("../escape-the-store")).toBeNull()
+    expect(withJobId("z".repeat(36))).toBeNull()
+    expect(withJobId(JOB_ID)).not.toBeNull()
+  })
+
   it("rejects malformed bodies", () => {
     expect(parseGenerateRequest(null)).toBeNull()
     expect(parseGenerateRequest({})).toBeNull()
-    expect(parseGenerateRequest({ password: "p" })).toBeNull()
+    expect(parseGenerateRequest({ jobId: JOB_ID, password: "p" })).toBeNull()
     expect(
-      parseGenerateRequest({ password: "p", input: { type: "text" } })
+      parseGenerateRequest({
+        jobId: JOB_ID,
+        password: "p",
+        input: { type: "text" },
+      })
     ).toBeNull()
     expect(
-      parseGenerateRequest({ password: 1, input: { type: "text", text: "x" } })
+      parseGenerateRequest({
+        jobId: JOB_ID,
+        password: 1,
+        input: { type: "text", text: "x" },
+      })
     ).toBeNull()
   })
 
   it("rejects oversized payloads", () => {
     expect(
       parseGenerateRequest({
+        jobId: JOB_ID,
         password: "p",
         input: { type: "text", text: "x".repeat(50_001) },
       })
     ).toBeNull()
     expect(
       parseGenerateRequest({
+        jobId: JOB_ID,
         password: "p",
         input: {
           type: "image",

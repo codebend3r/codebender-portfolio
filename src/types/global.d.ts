@@ -77,4 +77,14 @@ type GenerateInput =
 
 type GenerateRequest = { password: string; input: GenerateInput }
 
+// Wire format of the background function POST — the client mints the jobId.
+type GenerateJobRequest = GenerateRequest & { jobId: string }
+
 type GenerateResponse = { data: Data; suggestedName: string }
+
+// Job state written to Netlify Blobs by the background function and read
+// back through /generate-status.
+type GenerateJob =
+  | { status: "pending" }
+  | ({ status: "done" } & GenerateResponse)
+  | { status: "error"; error: string }

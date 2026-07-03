@@ -7,6 +7,9 @@ import { createHash, timingSafeEqual } from "node:crypto"
 
 const MAX_TEXT_CHARS = 50_000
 const MAX_IMAGE_BASE64_CHARS = 5_000_000 // ~3.5MB binary, under Netlify's 6MB body cap
+const MAX_URL_CHARS = 2_048
+// Client-minted uuid; also the Netlify Blobs key, so keep the charset tight.
+export const JOB_ID_PATTERN = /^[0-9a-fA-F-]{8,64}$/
 
 /** Constant-time password check; always false when no password is configured. */
 export function validatePassword(provided: string, expected: string): boolean {
@@ -16,9 +19,10 @@ export function validatePassword(provided: string, expected: string): boolean {
   return timingSafeEqual(a, b)
 }
 
-export function parseGenerateRequest(body: unknown): GenerateRequest | null {
+export function parseGenerateRequest(body: unknown): GenerateJobRequest | null {
   if (typeof body !== "object" || body === null) return null
-  const { password, input } = body as Record<string, unknown>
+  const { jobId, password, input } = body as Record<string, unknown>
+  if (typeof jobId !== "string" || !JOB_ID_PATTERN.test(jobId)) return null
   if (typeof password !== "string") return null
   if (typeof input !== "object" || input === null) return null
   const candidate = input as Record<string, unknown>
@@ -27,7 +31,7 @@ export function parseGenerateRequest(body: unknown): GenerateRequest | null {
     if (typeof candidate.text !== "string") return null
     if (candidate.text.length === 0 || candidate.text.length > MAX_TEXT_CHARS)
       return null
-    return { password, input: { type: "text", text: candidate.text } }
+    return { jobId, password, input: { type: "text", text: candidate.text } }
   }
 
   if (candidate.type === "image") {
@@ -39,6 +43,7 @@ export function parseGenerateRequest(body: unknown): GenerateRequest | null {
     )
       return null
     return {
+      jobId,
       password,
       input: {
         type: "image",
@@ -46,6 +51,20 @@ export function parseGenerateRequest(body: unknown): GenerateRequest | null {
         dataBase64: candidate.dataBase64,
       },
     }
+  }
+
+  if (candidate.type === "url") {
+    if (typeof candidate.url !== "string") return null
+    if (candidate.url.length === 0 || candidate.url.length > MAX_URL_CHARS)
+      return null
+    let parsed: URL
+    try {
+      parsed = new URL(candidate.url)
+    } catch {
+      return null
+    }
+    if (parsed.protocol !== "http:" && parsed.protocol !== "https:") return null
+    return { jobId, password, input: { type: "url", url: candidate.url } }
   }
 
   return null
