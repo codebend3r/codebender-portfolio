@@ -19,6 +19,7 @@
       "@components/*": ["./src/components/*"],
       "@data/*": ["./src/data/*"],
       "@edit/*": ["./src/edit/*"],
+      "@generate/*": ["./src/generate/*"],
       "@pdf": ["./src/pdf"],
       "@pdf/*": ["./src/pdf/*"],
       "@sky": ["./src/sky.ts"],

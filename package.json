@@ -12,17 +12,19 @@
     "prettier:check": "prettier --check .",
     "preview": "vite preview",
     "prepare": "husky",
-    "ts:check": "tsc",
+    "ts:check": "tsc && tsc -p netlify/functions",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
     "system-check": "run-s prettier:check ts:check lint test build"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "0.110.0",
     "@dnd-kit/core": "6.3.1",
     "@dnd-kit/sortable": "10.0.0",
     "@dnd-kit/utilities": "3.2.2",
     "@fontsource/source-serif-4": "5.2.9",
+    "@netlify/blobs": "10.7.9",
     "@react-pdf/renderer": "4.5.1",
     "react": "19.2.6",
     "react-dom": "19.2.6",
@@ -30,6 +32,7 @@
   },
   "devDependencies": {
     "@eslint/js": "9.39.4",
+    "@netlify/functions": "5.3.0",
     "@testing-library/dom": "10.4.1",
     "@testing-library/jest-dom": "6.9.1",
     "@testing-library/react": "16.3.2",

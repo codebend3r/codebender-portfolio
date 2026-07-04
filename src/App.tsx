@@ -15,6 +15,8 @@ import { WorkExperience } from "@components/WorkExperience"
 
 import { useStore } from "@state/useStore"
 
+import { pdfFileName } from "@utils/pdfFileName"
+
 import styles from "@app/App.module.css"
 
 export default function App() {
@@ -27,7 +29,7 @@ export default function App() {
       const { generateResumePdf, downloadBlob } = await import("@pdf")
       const data = useStore.getState()
       const blob = await generateResumePdf(data)
-      downloadBlob(blob, "cj_rivas_senior_frontend_engineer.pdf")
+      downloadBlob(blob, pdfFileName(data.name, data.title))
     } catch (err) {
       console.error("PDF generation failed:", err)
     } finally {

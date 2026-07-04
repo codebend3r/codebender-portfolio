@@ -43,6 +43,7 @@ export default defineConfig({
       "@components": path.resolve(__dirname, "src/components"),
       "@data": path.resolve(__dirname, "src/data"),
       "@edit": path.resolve(__dirname, "src/edit"),
+      "@generate": path.resolve(__dirname, "src/generate"),
       "@pdf": path.resolve(__dirname, "src/pdf"),
       "@sky": path.resolve(__dirname, "src/sky.ts"),
       "@state": path.resolve(__dirname, "src/state"),

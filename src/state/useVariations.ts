@@ -4,11 +4,12 @@ import { persist } from "zustand/middleware"
 type VariationsState = {
   variations: Variation[]
   activeId: string | null
-  createVariation: (name: string, data: Data) => string
+  createVariation: (name: string, data: Data, meta?: VariationMeta) => string
   renameVariation: (id: string, name: string) => void
   deleteVariation: (id: string) => void
   selectVariation: (id: string | null) => void
   saveActive: (data: Data) => void
+  findByHash: (hash: string) => Variation | undefined
 }
 
 export const useVariations = create<VariationsState>()(
@@ -17,7 +18,7 @@ export const useVariations = create<VariationsState>()(
       variations: [],
       activeId: null,
 
-      createVariation: (name, data) => {
+      createVariation: (name, data, meta) => {
         const id = crypto.randomUUID()
         const now = Date.now()
         const variation: Variation = {
@@ -26,6 +27,7 @@ export const useVariations = create<VariationsState>()(
           createdAt: now,
           updatedAt: now,
           data: structuredClone(data),
+          ...meta,
         }
         set({ variations: [...get().variations, variation], activeId: id })
         return id
@@ -57,6 +59,8 @@ export const useVariations = create<VariationsState>()(
           ),
         })
       },
+
+      findByHash: (hash) => get().variations.find((v) => v.hash === hash),
     }),
     {
       name: "resume-variations",

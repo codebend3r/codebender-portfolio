@@ -1,0 +1,134 @@
+.page {
+  display: grid;
+  gap: 24px;
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 48px 24px;
+  color: var(--text);
+}
+
+.hint {
+  color: var(--muted);
+}
+
+.passwordLabel {
+  display: grid;
+  gap: 6px;
+  justify-items: start;
+  color: var(--muted);
+}
+
+.passwordInput {
+  width: min(360px, 100%);
+  padding: 12px 14px;
+  font: inherit;
+  color: var(--text);
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  outline: none;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.passwordInput:hover {
+  border-color: var(--panel-edge);
+}
+
+.passwordInput:focus-visible {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(122, 162, 247, 0.25);
+}
+
+.notice {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: 12px;
+  align-items: center;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px 16px;
+}
+
+.error {
+  color: var(--accent2);
+}
+
+.progress {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 12px;
+  align-items: center;
+  color: var(--muted);
+}
+
+.spinner {
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--border);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.9s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.generateButton {
+  width: 100%;
+  padding: 20px 32px;
+  font: inherit;
+  font-size: 1.35rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--bg);
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  border: 1px solid var(--panel-edge);
+  border-radius: 12px;
+  cursor: pointer;
+  box-shadow:
+    0 0 18px rgba(122, 162, 247, 0.35),
+    0 6px 24px rgba(11, 14, 20, 0.6);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.generateButton:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow:
+    0 0 26px rgba(122, 162, 247, 0.5),
+    0 0 40px rgba(198, 120, 221, 0.3),
+    0 10px 28px rgba(11, 14, 20, 0.6);
+}
+
+.generateButton:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.generateButton:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.generateButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .generateButton,
+  .passwordInput {
+    transition: none;
+  }
+
+  .generateButton:hover:not(:disabled) {
+    transform: none;
+  }
+}

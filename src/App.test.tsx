@@ -89,7 +89,7 @@ describe("App", () => {
     await waitFor(() => expect(generateResumePdfMock).toHaveBeenCalledTimes(1))
     expect(downloadBlobMock).toHaveBeenCalledTimes(1)
     expect(downloadBlobMock.mock.calls[0][1]).toBe(
-      "cj_rivas_senior_frontend_engineer.pdf"
+      "CJ Rivas - Senior Frontend Engineer + Architect.pdf"
     )
   })
 

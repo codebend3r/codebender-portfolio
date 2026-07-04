@@ -18,7 +18,7 @@ import { VariationsPanel } from "@edit/VariationsPanel"
 import { useStore } from "@state/useStore"
 import { useVariations } from "@state/useVariations"
 
-import { slugify } from "@utils/slugify"
+import { pdfFileName } from "@utils/pdfFileName"
 import { toData } from "@utils/toData"
 
 import appStyles from "@app/App.module.css"
@@ -84,11 +84,9 @@ function EditSession({
 
   const onGenerate = useCallback(async () => {
     const { generateResumePdf, downloadBlob } = await import("@pdf")
-    const blob = await generateResumePdf(useStore.getState())
-    const filename = activeName
-      ? `cj_rivas_${slugify(activeName)}.pdf`
-      : "cj_rivas_senior_frontend_engineer.pdf"
-    downloadBlob(blob, filename)
+    const data = useStore.getState()
+    const blob = await generateResumePdf(data)
+    downloadBlob(blob, pdfFileName(data.name, activeName || data.title))
   }, [activeName])
 
   return (
