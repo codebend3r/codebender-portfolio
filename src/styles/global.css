@@ -33,6 +33,29 @@ body {
     background-image 1.2s ease;
 }
 
+/* Themed defaults so a bare form control never renders as a white browser
+   widget; component modules override these per case. */
+button,
+input,
+textarea,
+select {
+  font: inherit;
+  color: var(--text);
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 6px 10px;
+}
+
+button {
+  cursor: pointer;
+}
+
+:is(button, input, textarea, select):focus-visible {
+  outline: none;
+  border-color: var(--accent);
+}
+
 a {
   color: var(--accent);
   text-decoration: none;

@@ -16,6 +16,63 @@
   color: var(--muted);
 }
 
+.nameInput {
+  font: inherit;
+  padding: 10px 12px;
+  color: var(--text);
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  outline: none;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.nameInput:hover {
+  border-color: var(--panel-edge);
+}
+
+.nameInput:focus-visible {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(122, 162, 247, 0.25);
+}
+
+.confirm,
+.discard {
+  font: inherit;
+  padding: 10px 16px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.confirm {
+  color: var(--bg);
+  background: var(--accent);
+  border-color: var(--panel-edge);
+}
+
+.confirm:hover {
+  background: color-mix(in srgb, var(--accent) 85%, white);
+}
+
+.discard {
+  color: var(--text);
+  background: transparent;
+}
+
+.discard:hover {
+  border-color: var(--accent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nameInput {
+    transition: none;
+  }
+}
+
 .resume {
   display: grid;
   gap: 20px;
