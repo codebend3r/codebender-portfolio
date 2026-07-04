@@ -118,6 +118,7 @@ export default function GenerateApp() {
         Password
         <input
           aria-label="Password"
+          className={styles.passwordInput}
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
@@ -153,6 +154,7 @@ export default function GenerateApp() {
 
       <button
         type="button"
+        className={styles.generateButton}
         disabled={!input || !password || status === "generating"}
         onClick={handleGenerate}
       >
