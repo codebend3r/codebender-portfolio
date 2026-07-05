@@ -10,7 +10,9 @@
 .textarea {
   width: 100%;
   resize: vertical;
+  padding: 0;
   border: none;
+  border-radius: 0;
   background: transparent;
   color: var(--text);
   font: inherit;

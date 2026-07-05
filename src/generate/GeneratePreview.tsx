@@ -41,15 +41,16 @@ export function GeneratePreview({
           Variation name
           <input
             aria-label="Variation name"
+            className={styles.nameInput}
             type="text"
             value={name}
             onChange={(e) => onNameChange(e.target.value)}
           />
         </label>
-        <button type="button" onClick={onConfirm}>
+        <button type="button" className={styles.confirm} onClick={onConfirm}>
           Save & edit
         </button>
-        <button type="button" onClick={onDiscard}>
+        <button type="button" className={styles.discard} onClick={onDiscard}>
           Discard
         </button>
       </div>
