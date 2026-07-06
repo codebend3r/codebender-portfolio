@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
 
-import { applyResumePatch } from "./patch"
+import { applyResumePatch, isResumePatch } from "./patch"
 
 const base: Data = {
   name: "CJ Rivas",
@@ -113,5 +113,64 @@ describe("applyResumePatch", () => {
     const snapshot = JSON.parse(JSON.stringify(base))
     applyResumePatch(base, patch)
     expect(base).toEqual(snapshot)
+  })
+
+  it("lets a later duplicate index win", () => {
+    const merged = applyResumePatch(base, {
+      ...patch,
+      work_experience: [
+        { index: 0, achievements: ["first"] },
+        { index: 0, achievements: ["second"] },
+      ],
+    })
+    expect(merged.work_experience[0].achievements).toEqual(["second"])
+  })
+})
+
+describe("isResumePatch", () => {
+  it("accepts a valid patch", () => {
+    expect(isResumePatch(patch)).toBe(true)
+  })
+
+  it("accepts an empty work_experience list", () => {
+    expect(isResumePatch({ ...patch, work_experience: [] })).toBe(true)
+  })
+
+  it("rejects non-objects", () => {
+    expect(isResumePatch(null)).toBe(false)
+    expect(isResumePatch(undefined)).toBe(false)
+    expect(isResumePatch("patch")).toBe(false)
+    expect(isResumePatch(42)).toBe(false)
+    expect(isResumePatch([])).toBe(false)
+  })
+
+  it("rejects missing or mistyped top-level fields", () => {
+    expect(isResumePatch({ ...patch, title: 1 })).toBe(false)
+    expect(isResumePatch({ ...patch, summary: undefined })).toBe(false)
+    expect(isResumePatch({ ...patch, technical_skills: "React" })).toBe(false)
+    expect(isResumePatch({ ...patch, technical_skills: ["React", 2] })).toBe(
+      false
+    )
+    expect(isResumePatch({ ...patch, work_experience: {} })).toBe(false)
+    expect(isResumePatch({ ...patch, suggestedName: null })).toBe(false)
+  })
+
+  it("rejects malformed work_experience entries", () => {
+    expect(
+      isResumePatch({
+        ...patch,
+        work_experience: [{ index: "0", achievements: ["x"] }],
+      })
+    ).toBe(false)
+    expect(
+      isResumePatch({
+        ...patch,
+        work_experience: [{ index: 0, achievements: [1] }],
+      })
+    ).toBe(false)
+    expect(isResumePatch({ ...patch, work_experience: [{ index: 0 }] })).toBe(
+      false
+    )
+    expect(isResumePatch({ ...patch, work_experience: [null] })).toBe(false)
   })
 })

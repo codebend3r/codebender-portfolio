@@ -5,6 +5,7 @@ import {
   PATCH_SCHEMA,
   buildSystemPrompt,
   buildUserContent,
+  isImageMediaType,
   parseGenerateRequest,
   validatePassword,
 } from "./prompt"
@@ -132,10 +133,24 @@ describe("parseGenerateRequest", () => {
 
 describe("buildSystemPrompt", () => {
   it("embeds the base resume and the ground-truth rules", () => {
-    const prompt = buildSystemPrompt(resume as Data)
+    const prompt = buildSystemPrompt(resume)
     expect(prompt).toContain(resume.name)
     expect(prompt.toLowerCase()).toContain("never invent")
     expect(prompt).toContain("suggestedName")
+  })
+})
+
+describe("isImageMediaType", () => {
+  it("accepts the Claude-supported image formats", () => {
+    const accepted = ["image/jpeg", "image/png", "image/gif", "image/webp"]
+    expect(accepted.every(isImageMediaType)).toBe(true)
+  })
+
+  it("rejects everything else", () => {
+    expect(isImageMediaType("image/svg+xml")).toBe(false)
+    expect(isImageMediaType("image/tiff")).toBe(false)
+    expect(isImageMediaType("text/html")).toBe(false)
+    expect(isImageMediaType("")).toBe(false)
   })
 })
 

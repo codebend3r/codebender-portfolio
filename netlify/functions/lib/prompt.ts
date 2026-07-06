@@ -11,6 +11,21 @@ const MAX_URL_CHARS = 2_048
 // Client-minted uuid; also the Netlify Blobs key, so keep the charset tight.
 export const JOB_ID_PATTERN = /^[0-9a-fA-F-]{8,64}$/
 
+// Image formats the Claude API accepts; anything else is rejected before
+// the model call.
+const IMAGE_MEDIA_TYPES = [
+  "image/jpeg",
+  "image/png",
+  "image/gif",
+  "image/webp",
+] as const
+
+export type ImageMediaType = (typeof IMAGE_MEDIA_TYPES)[number]
+
+export function isImageMediaType(value: string): value is ImageMediaType {
+  return IMAGE_MEDIA_TYPES.some((mediaType) => mediaType === value)
+}
+
 /** Constant-time password check; always false when no password is configured. */
 export function validatePassword(provided: string, expected: string): boolean {
   if (!expected) return false
@@ -21,53 +36,66 @@ export function validatePassword(provided: string, expected: string): boolean {
 
 export function parseGenerateRequest(body: unknown): GenerateJobRequest | null {
   if (typeof body !== "object" || body === null) return null
-  const { jobId, password, input } = body as Record<string, unknown>
-  if (typeof jobId !== "string" || !JOB_ID_PATTERN.test(jobId)) return null
-  if (typeof password !== "string") return null
-  if (typeof input !== "object" || input === null) return null
-  const candidate = input as Record<string, unknown>
+  if (!("jobId" in body) || typeof body.jobId !== "string") return null
+  if (!JOB_ID_PATTERN.test(body.jobId)) return null
+  if (!("password" in body) || typeof body.password !== "string") return null
+  if (!("input" in body)) return null
+  const input = parseGenerateInput(body.input)
+  if (!input) return null
+  return { jobId: body.jobId, password: body.password, input }
+}
+
+function parseGenerateInput(candidate: unknown): GenerateInput | null {
+  if (typeof candidate !== "object" || candidate === null) return null
+  if (!("type" in candidate)) return null
 
   if (candidate.type === "text") {
-    if (typeof candidate.text !== "string") return null
+    if (!("text" in candidate) || typeof candidate.text !== "string")
+      return null
     if (candidate.text.length === 0 || candidate.text.length > MAX_TEXT_CHARS)
       return null
-    return { jobId, password, input: { type: "text", text: candidate.text } }
+    return { type: "text", text: candidate.text }
   }
 
   if (candidate.type === "image") {
-    if (typeof candidate.mediaType !== "string") return null
-    if (typeof candidate.dataBase64 !== "string") return null
+    if (!("mediaType" in candidate) || typeof candidate.mediaType !== "string")
+      return null
+    if (
+      !("dataBase64" in candidate) ||
+      typeof candidate.dataBase64 !== "string"
+    )
+      return null
     if (
       candidate.dataBase64.length === 0 ||
       candidate.dataBase64.length > MAX_IMAGE_BASE64_CHARS
     )
       return null
     return {
-      jobId,
-      password,
-      input: {
-        type: "image",
-        mediaType: candidate.mediaType,
-        dataBase64: candidate.dataBase64,
-      },
+      type: "image",
+      mediaType: candidate.mediaType,
+      dataBase64: candidate.dataBase64,
     }
   }
 
   if (candidate.type === "url") {
-    if (typeof candidate.url !== "string") return null
+    if (!("url" in candidate) || typeof candidate.url !== "string") return null
     if (candidate.url.length === 0 || candidate.url.length > MAX_URL_CHARS)
       return null
-    let parsed: URL
-    try {
-      parsed = new URL(candidate.url)
-    } catch {
-      return null
-    }
+    const parsed = parseUrl(candidate.url)
+    if (!parsed) return null
     if (parsed.protocol !== "http:" && parsed.protocol !== "https:") return null
-    return { jobId, password, input: { type: "url", url: candidate.url } }
+    return { type: "url", url: candidate.url }
   }
 
   return null
+}
+
+function parseUrl(value: string): URL | null {
+  try {
+    return new URL(value)
+  } catch {
+    return null
+  }
 }
 
 export function buildSystemPrompt(base: Data): string {
@@ -100,30 +128,42 @@ export function buildSystemPrompt(base: Data): string {
   ].join("\n")
 }
 
-// `url` inputs are resolved to `text` (via fetchPostingText) before the
-// Claude call, so this only ever sees text or image.
+// What the /generate handler feeds the model: url inputs are resolved to
+// text (via fetchPostingText) and image media types are narrowed first.
+export type PromptInput =
+  | { type: "text"; text: string }
+  | { type: "image"; mediaType: ImageMediaType; dataBase64: string }
+
+// SDK-free shapes structurally compatible with Anthropic.ContentBlockParam,
+// so the caller needs no cast.
+type TextBlock = { type: "text"; text: string }
+type ImageBlock = {
+  type: "image"
+  source: { type: "base64"; media_type: ImageMediaType; data: string }
+}
+
 export function buildUserContent(
-  input: Exclude<GenerateInput, { type: "url" }>
-) {
+  input: PromptInput
+): (TextBlock | ImageBlock)[] {
   if (input.type === "text") {
     return [
       {
-        type: "text" as const,
+        type: "text",
         text: `Tailor the resume for this job posting:\n\n${input.text}`,
       },
     ]
   }
   return [
     {
-      type: "image" as const,
+      type: "image",
       source: {
-        type: "base64" as const,
+        type: "base64",
         media_type: input.mediaType,
         data: input.dataBase64,
       },
     },
     {
-      type: "text" as const,
+      type: "text",
       text: "The image above is the job posting. Tailor the resume for it.",
     },
   ]
