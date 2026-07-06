@@ -1,19 +1,17 @@
-.backdrop {
-  position: fixed;
-  inset: 0;
+.screen {
+  min-height: 100vh;
   display: grid;
   place-items: center;
   padding: 16px;
-  background: color-mix(in srgb, var(--bg) 30%, rgba(0, 0, 0, 0.55));
-  z-index: 100;
+  background: var(--bg);
 }
 
-.dialog {
+.card {
   display: grid;
   gap: 16px;
   width: 100%;
   max-width: 360px;
-  padding: 20px;
+  padding: 24px;
   background: var(--panel);
   border: 1px solid var(--border);
   border-radius: 10px;
@@ -21,8 +19,14 @@
 
 .title {
   margin: 0;
-  font-size: 15px;
+  font-size: 18px;
   color: var(--text);
+}
+
+.hint {
+  margin: 0;
+  font-size: 13px;
+  color: var(--muted);
 }
 
 .input {
@@ -45,32 +49,23 @@
   color: var(--accent2);
 }
 
-.actions {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
-}
-
-.cancel,
-.confirm {
+.submit {
   font: inherit;
   padding: 8px 10px;
   border: 1px solid var(--border);
   border-radius: 6px;
+  background: var(--accent);
+  color: var(--bg);
   cursor: pointer;
 }
 
-.cancel {
-  background: transparent;
-  color: var(--text);
-}
-
-.confirm {
-  background: var(--accent);
-  color: var(--bg);
-}
-
-.confirm:disabled {
+.submit:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+.back {
+  font-size: 13px;
+  color: var(--muted);
+  justify-self: center;
 }

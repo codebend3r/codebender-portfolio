@@ -1,5 +1,5 @@
 import type { Session } from "@supabase/supabase-js"
-import { fireEvent, render, screen } from "@testing-library/react"
+import { render, screen } from "@testing-library/react"
 import { beforeEach, describe, expect, it, vi } from "vitest"
 
 import { VariationsPanel } from "@edit/VariationsPanel"
@@ -57,10 +57,14 @@ describe("VariationsPanel cloud sync", () => {
     expect(screen.getByRole("status")).toHaveAccessibleName("Globe: synced")
   })
 
-  it("offers sign-in when signed out and opens the modal", () => {
+  it("hides sync controls when signed out (route gate owns sign-in)", () => {
     renderPanel()
-    fireEvent.click(screen.getByRole("button", { name: /sign in to sync/i }))
-    expect(screen.getByLabelText("Email")).toBeInTheDocument()
+    expect(
+      screen.queryByRole("button", { name: /^sync/i })
+    ).not.toBeInTheDocument()
+    expect(
+      screen.queryByRole("button", { name: /sign out/i })
+    ).not.toBeInTheDocument()
   })
 
   it("shows the pending count on the sync button when signed in", () => {

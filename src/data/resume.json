@@ -14,22 +14,26 @@
       "value": "Mississauga"
     },
     {
+      "label": "Portfolio",
+      "value": "https://codebender-portoflio.netlify.app/"
+    },
+    {
       "label": "GitHub",
       "value": "https://github.com/codebend3r"
     },
     {
       "label": "LinkedIn",
-      "value": "https://www.linkedin.com/in/chesterrivas/"
+      "value": "https://linkedin.com/in/chesterrivas/"
     }
   ],
   "title": "Senior Frontend Engineer + Architect",
   "summary": "Experienced Senior Frontend Engineer + Architect with nearly 20 years in the field, specializing in React and AI technologies. Committed to driving innovation through AI-powered development, with a proven record of leading initiatives that boost user engagement.",
   "technical_skills": [
-    "AI Tooling/LLM",
-    "Claude/Codex/Cursor",
     "TypeScript",
     "JavaScript",
     "React",
+    "AI Tooling/LLM",
+    "Claude/Codex/Cursor",
     "Next.js",
     "Vue.js",
     "Node.js",

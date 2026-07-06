@@ -1,7 +1,6 @@
 import { useState } from "react"
 
 import { RenameModal } from "@edit/RenameModal"
-import { SignInModal } from "@edit/SignInModal"
 import styles from "@edit/VariationsPanel.module.css"
 
 import { cloudConfigured } from "@state/supabase"
@@ -36,11 +35,10 @@ export function VariationsPanel({
     renameVariation,
     deleteVariation,
   } = useVariations()
-  const { session, ready } = useAuth()
+  const { session } = useAuth()
   const { syncing, error: syncError, syncNow } = useSync()
 
   const [modal, setModal] = useState<ModalState | null>(null)
-  const [signInOpen, setSignInOpen] = useState(false)
 
   const onBase = activeId === null
   const signedIn = session !== null
@@ -134,28 +132,19 @@ export function VariationsPanel({
         <button type="button" onClick={onGenerate}>
           Generate PDF
         </button>
-        {cloudConfigured &&
-          (signedIn ? (
-            <button
-              type="button"
-              onClick={() => void syncNow()}
-              disabled={syncing}
-            >
-              {syncing
-                ? "Syncing…"
-                : unsyncedCount > 0
-                  ? `Sync (${unsyncedCount})`
-                  : "Sync ✓"}
-            </button>
-          ) : (
-            <button
-              type="button"
-              onClick={() => setSignInOpen(true)}
-              disabled={!ready}
-            >
-              Sign in to sync
-            </button>
-          ))}
+        {cloudConfigured && signedIn && (
+          <button
+            type="button"
+            onClick={() => void syncNow()}
+            disabled={syncing}
+          >
+            {syncing
+              ? "Syncing…"
+              : unsyncedCount > 0
+                ? `Sync (${unsyncedCount})`
+                : "Sync ✓"}
+          </button>
+        )}
         {cloudConfigured && signedIn && (
           <button
             type="button"
@@ -182,12 +171,6 @@ export function VariationsPanel({
         confirmLabel={modal?.mode === "rename" ? "Save" : "Create"}
         onConfirm={confirmModal}
         onClose={() => setModal(null)}
-      />
-
-      <SignInModal
-        key={signInOpen ? "open" : "closed"}
-        open={signInOpen}
-        onClose={() => setSignInOpen(false)}
       />
     </aside>
   )
