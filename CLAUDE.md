@@ -41,7 +41,9 @@ When adding a new resume section: extend `resume.json` → add a type to `src/ty
 Resume variations (created on `/edit-resume` and `/generate`) persist locally via Zustand `persist` (localStorage key `resume-variations`) and sync to a Supabase Postgres table `resume_variations` (JSONB `data` column, owner-only RLS) for cross-device access:
 
 - `src/state/supabase.ts` — typed client; **null when `VITE_SUPABASE_URL` / `VITE_SUPABASE_ANON_KEY` are absent**, which hides all cloud UI. Vitest forces these empty (see `vitest.config.ts` `test.env`); cloud test suites mock `@state/supabase` instead.
-- `src/components/AuthGate.tsx` — gates the private routes (`/edit-resume`, `/generate`) in `Entry.tsx` behind a Supabase session with a full-page sign-in screen. The gate is inert when the env vars are absent (no login mechanism exists without a project).
+- `src/components/AuthGate.tsx` — gates the private routes (`/edit-resume`, `/generate`) in `Entry.tsx`: anonymous visitors are redirected to the homepage via `@utils/navigate`. The gate is inert when the env vars are absent (no login mechanism exists without a project).
+- `src/components/LoginPage.tsx` — owner sign-in at `/login`, deliberately unlinked from public pages; redirects home once signed in (or when unconfigured).
+- `src/components/SideMenu.tsx` — owner navigation drawer mounted on every route in `Entry.tsx`; renders nothing for anonymous visitors, shows Home / Edit Resume / Generate links and sign-out when a session exists.
 - `src/state/useAuth.ts` — Supabase email+password session (single owner account; public signups disabled in the Supabase dashboard). Signing in triggers a sync.
 - `src/state/useSync.ts` — `syncNow()` pulls rows, merges last-write-wins via `src/utils/mergeVariations.ts`, pushes dirty variations, and propagates deletions. A variation is "unsynced" when `syncedAt` is missing or older than `updatedAt`; local deletions queue in `pendingDeletes` until synced. Sync never runs without a session (RLS would return zero rows and read as remote deletion).
 - `src/types/database.types.ts` — generated from the schema; regenerate after migrations.

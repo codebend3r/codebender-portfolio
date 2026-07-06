@@ -4,6 +4,8 @@ import App from "@App"
 import ReactDOM from "react-dom/client"
 
 import { AuthGate } from "@components/AuthGate"
+import { LoginPage } from "@components/LoginPage"
+import { SideMenu } from "@components/SideMenu"
 
 import EditResumeApp from "@edit/EditResumeApp"
 
@@ -25,6 +27,7 @@ if (rootEl) {
 
   ReactDOM.createRoot(rootEl).render(
     <React.StrictMode>
+      <SideMenu />
       {route === "edit" ? (
         <AuthGate>
           <EditResumeApp />
@@ -33,6 +36,8 @@ if (rootEl) {
         <AuthGate>
           <GenerateApp />
         </AuthGate>
+      ) : route === "login" ? (
+        <LoginPage />
       ) : (
         <App />
       )}
