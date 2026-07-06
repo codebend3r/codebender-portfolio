@@ -4,12 +4,17 @@ import { persist } from "zustand/middleware"
 type VariationsState = {
   variations: Variation[]
   activeId: string | null
+  // Ids deleted locally that may still have a database row; cleared by sync.
+  pendingDeletes: string[]
   createVariation: (name: string, data: Data, meta?: VariationMeta) => string
   renameVariation: (id: string, name: string) => void
   deleteVariation: (id: string) => void
   selectVariation: (id: string | null) => void
   saveActive: (data: Data) => void
   findByHash: (hash: string) => Variation | undefined
+  applyMerge: (merged: Variation[]) => void
+  markSynced: (entries: { id: string; syncedAt: number }[]) => void
+  clearPendingDeletes: (ids: string[]) => void
 }
 
 export const useVariations = create<VariationsState>()(
@@ -17,6 +22,7 @@ export const useVariations = create<VariationsState>()(
     (set, get) => ({
       variations: [],
       activeId: null,
+      pendingDeletes: [],
 
       createVariation: (name, data, meta) => {
         const id = crypto.randomUUID()
@@ -44,6 +50,7 @@ export const useVariations = create<VariationsState>()(
         set({
           variations: get().variations.filter((v) => v.id !== id),
           activeId: get().activeId === id ? null : get().activeId,
+          pendingDeletes: [...get().pendingDeletes, id],
         }),
 
       selectVariation: (id) => set({ activeId: id }),
@@ -61,12 +68,37 @@ export const useVariations = create<VariationsState>()(
       },
 
       findByHash: (hash) => get().variations.find((v) => v.hash === hash),
+
+      applyMerge: (merged) =>
+        set({
+          variations: merged,
+          activeId: merged.some((v) => v.id === get().activeId)
+            ? get().activeId
+            : null,
+        }),
+
+      markSynced: (entries) => {
+        const byId = new Map(entries.map((e) => [e.id, e.syncedAt]))
+        set({
+          variations: get().variations.map((v) =>
+            byId.has(v.id) ? { ...v, syncedAt: byId.get(v.id) } : v
+          ),
+        })
+      },
+
+      clearPendingDeletes: (ids) =>
+        set({
+          pendingDeletes: get().pendingDeletes.filter(
+            (id) => !ids.includes(id)
+          ),
+        }),
     }),
     {
       name: "resume-variations",
       partialize: (state) => ({
         variations: state.variations,
         activeId: state.activeId,
+        pendingDeletes: state.pendingDeletes,
       }),
     }
   )

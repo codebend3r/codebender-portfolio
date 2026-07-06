@@ -24,6 +24,12 @@ export default defineConfig({
   test: {
     globals: false,
     environment: "jsdom",
+    // Force cloud sync off in tests regardless of a local .env; suites that
+    // exercise cloud UI mock @state/supabase explicitly.
+    env: {
+      VITE_SUPABASE_URL: "",
+      VITE_SUPABASE_ANON_KEY: "",
+    },
     setupFiles: ["./src/test/setup.ts"],
     css: false,
     include: [

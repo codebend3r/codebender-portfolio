@@ -16,6 +16,7 @@ import styles from "@edit/EditResumeApp.module.css"
 import { VariationsPanel } from "@edit/VariationsPanel"
 
 import { useStore } from "@state/useStore"
+import { useSync } from "@state/useSync"
 import { useVariations } from "@state/useVariations"
 
 import { pdfFileName } from "@utils/pdfFileName"
@@ -73,11 +74,14 @@ function EditSession({
   const onSave = useCallback(() => {
     saveActive(toData(useStore.getState()))
     setDirty(false)
+    // No-op while signed out; pushes the saved variation when signed in.
+    void useSync.getState().syncNow()
   }, [saveActive])
 
   const onNew = useCallback(
     (name: string) => {
       createVariation(name, toData(useStore.getState()))
+      void useSync.getState().syncNow()
     },
     [createVariation]
   )

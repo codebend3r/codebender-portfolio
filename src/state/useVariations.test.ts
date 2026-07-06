@@ -8,7 +8,7 @@ const base = () => structuredClone(resume) as Data
 
 beforeEach(() => {
   localStorage.clear()
-  useVariations.setState({ variations: [], activeId: null })
+  useVariations.setState({ variations: [], activeId: null, pendingDeletes: [] })
 })
 
 describe("useVariations", () => {
@@ -76,5 +76,49 @@ describe("useVariations", () => {
     useVariations.getState().createVariation("Gen", base(), { hash: "aaa" })
     expect(useVariations.getState().findByHash("aaa")?.name).toBe("Gen")
     expect(useVariations.getState().findByHash("zzz")).toBeUndefined()
+  })
+
+  it("records deleted ids in pendingDeletes", () => {
+    const id = useVariations.getState().createVariation("X", base())
+    useVariations.getState().deleteVariation(id)
+    expect(useVariations.getState().pendingDeletes).toEqual([id])
+  })
+
+  it("persists pendingDeletes to localStorage", () => {
+    const id = useVariations.getState().createVariation("X", base())
+    useVariations.getState().deleteVariation(id)
+    expect(localStorage.getItem("resume-variations")).toContain(id)
+  })
+
+  it("applyMerge replaces the list and keeps a surviving activeId", () => {
+    const id = useVariations.getState().createVariation("Keep", base())
+    const merged = useVariations.getState().variations
+    useVariations.getState().applyMerge(merged)
+    expect(useVariations.getState().activeId).toBe(id)
+  })
+
+  it("applyMerge clears activeId when the active variation is gone", () => {
+    useVariations.getState().createVariation("Gone", base())
+    useVariations.getState().applyMerge([])
+    expect(useVariations.getState().variations).toEqual([])
+    expect(useVariations.getState().activeId).toBeNull()
+  })
+
+  it("markSynced stamps syncedAt only on the given ids", () => {
+    const a = useVariations.getState().createVariation("A", base())
+    const b = useVariations.getState().createVariation("B", base())
+    useVariations.getState().markSynced([{ id: a, syncedAt: 123 }])
+    const state = useVariations.getState()
+    expect(state.variations.find((v) => v.id === a)?.syncedAt).toBe(123)
+    expect(state.variations.find((v) => v.id === b)?.syncedAt).toBeUndefined()
+  })
+
+  it("clearPendingDeletes removes only the given ids", () => {
+    const a = useVariations.getState().createVariation("A", base())
+    const b = useVariations.getState().createVariation("B", base())
+    useVariations.getState().deleteVariation(a)
+    useVariations.getState().deleteVariation(b)
+    useVariations.getState().clearPendingDeletes([a])
+    expect(useVariations.getState().pendingDeletes).toEqual([b])
   })
 })

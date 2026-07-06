@@ -1,9 +1,15 @@
 import { useState } from "react"
 
 import { RenameModal } from "@edit/RenameModal"
+import { SignInModal } from "@edit/SignInModal"
 import styles from "@edit/VariationsPanel.module.css"
 
+import { cloudConfigured } from "@state/supabase"
+import { useAuth } from "@state/useAuth"
+import { useSync } from "@state/useSync"
 import { useVariations } from "@state/useVariations"
+
+import { isSynced } from "@utils/mergeVariations"
 
 type ModalState = {
   mode: "new" | "rename"
@@ -25,19 +31,31 @@ export function VariationsPanel({
   const {
     variations,
     activeId,
+    pendingDeletes,
     selectVariation,
     renameVariation,
     deleteVariation,
   } = useVariations()
+  const { session, ready } = useAuth()
+  const { syncing, error: syncError, syncNow } = useSync()
 
   const [modal, setModal] = useState<ModalState | null>(null)
+  const [signInOpen, setSignInOpen] = useState(false)
 
   const onBase = activeId === null
+  const signedIn = session !== null
+  const unsyncedCount =
+    variations.filter((v) => !isSynced(v)).length + pendingDeletes.length
 
   const confirmModal = (name: string) => {
     if (!modal) return
     if (modal.mode === "new") onNew(name)
     else if (modal.id) renameVariation(modal.id, name)
+  }
+
+  const onDelete = (id: string) => {
+    deleteVariation(id)
+    void syncNow()
   }
 
   return (
@@ -79,6 +97,16 @@ export function VariationsPanel({
             >
               {v.name}
             </button>
+            {cloudConfigured && (
+              <span
+                className={isSynced(v) ? styles.synced : styles.unsynced}
+                title={isSynced(v) ? "Synced to cloud" : "Not synced to cloud"}
+                role="status"
+                aria-label={`${v.name}: ${isSynced(v) ? "synced" : "not synced"}`}
+              >
+                {isSynced(v) ? "✓" : "●"}
+              </span>
+            )}
             <button
               type="button"
               aria-label={`Rename ${v.name}`}
@@ -91,7 +119,7 @@ export function VariationsPanel({
             <button
               type="button"
               aria-label={`Delete ${v.name}`}
-              onClick={() => deleteVariation(v.id)}
+              onClick={() => onDelete(v.id)}
             >
               ✕
             </button>
@@ -106,6 +134,42 @@ export function VariationsPanel({
         <button type="button" onClick={onGenerate}>
           Generate PDF
         </button>
+        {cloudConfigured &&
+          (signedIn ? (
+            <button
+              type="button"
+              onClick={() => void syncNow()}
+              disabled={syncing}
+            >
+              {syncing
+                ? "Syncing…"
+                : unsyncedCount > 0
+                  ? `Sync (${unsyncedCount})`
+                  : "Sync ✓"}
+            </button>
+          ) : (
+            <button
+              type="button"
+              onClick={() => setSignInOpen(true)}
+              disabled={!ready}
+            >
+              Sign in to sync
+            </button>
+          ))}
+        {cloudConfigured && signedIn && (
+          <button
+            type="button"
+            className={styles.signOut}
+            onClick={() => void useAuth.getState().signOut()}
+          >
+            Sign out
+          </button>
+        )}
+        {syncError && (
+          <p className={styles.syncError} role="alert">
+            {syncError}
+          </p>
+        )}
       </div>
 
       <RenameModal
@@ -118,6 +182,12 @@ export function VariationsPanel({
         confirmLabel={modal?.mode === "rename" ? "Save" : "Create"}
         onConfirm={confirmModal}
         onClose={() => setModal(null)}
+      />
+
+      <SignInModal
+        key={signInOpen ? "open" : "closed"}
+        open={signInOpen}
+        onClose={() => setSignInOpen(false)}
       />
     </aside>
   )

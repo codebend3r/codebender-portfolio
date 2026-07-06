@@ -7,7 +7,7 @@ import { useVariations } from "@state/useVariations"
 
 beforeEach(() => {
   localStorage.clear()
-  useVariations.setState({ variations: [], activeId: null })
+  useVariations.setState({ variations: [], activeId: null, pendingDeletes: [] })
 })
 
 const noop = () => {}

@@ -67,6 +67,9 @@ type Variation = {
   name: string
   createdAt: number
   updatedAt: number
+  // Watermark for cloud sync: the updatedAt value at the last successful
+  // push/pull. Missing or older than updatedAt means "not synced".
+  syncedAt?: number
   data: Data
 } & VariationMeta
 

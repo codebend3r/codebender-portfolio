@@ -22,6 +22,8 @@ function manualChunks(id: string) {
       return "core-js"
     } else if (id.includes("zustand")) {
       return "zustand"
+    } else if (id.includes("@supabase")) {
+      return "supabase"
     } else {
       return "vendor"
     }
