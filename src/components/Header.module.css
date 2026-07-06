@@ -5,6 +5,15 @@
   gap: 20px;
 }
 
+/* Owner pages: brand full-width on top, contact full-width below. */
+.stacked {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.stacked .contact {
+  justify-self: start;
+}
+
 .brand {
   display: grid;
   grid-template-columns: auto 1fr;

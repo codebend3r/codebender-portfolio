@@ -128,7 +128,10 @@ function ContactValue({ entry }: { entry: ContactEntry }) {
   )
 }
 
-export function Header() {
+// `stacked` puts the brand full-width on top with the contact list
+// full-width below it (owner pages); the default keeps the two-column
+// public layout.
+export function Header({ stacked = false }: { stacked?: boolean }) {
   const { name, title, contact } = useStore()
   const { editing, markDirty } = useEditing()
   const store = useStore.getState()
@@ -139,7 +142,9 @@ export function Header() {
   }
 
   return (
-    <header className={styles.header}>
+    <header
+      className={stacked ? `${styles.header} ${styles.stacked}` : styles.header}
+    >
       <div className={styles.brand}>
         <img src={Logo} alt="Logo" className={styles.logo} />
         <div>

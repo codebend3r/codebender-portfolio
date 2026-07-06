@@ -30,6 +30,22 @@ describe("GeneratePreview", () => {
     expect(useStore.getState().name).toBe("Generated Name")
   })
 
+  it("renders the header stacked above full-width contact links", () => {
+    // The header sits inside a <section>, which strips its banner role.
+    const { container } = render(
+      <GeneratePreview
+        data={data()}
+        name="Frontend @ Acme"
+        onNameChange={() => {}}
+        onConfirm={() => {}}
+        onDiscard={() => {}}
+      />
+    )
+    expect(container.querySelector("header")?.className ?? "").toContain(
+      "stacked"
+    )
+  })
+
   it("edits the variation name", () => {
     const onNameChange = vi.fn()
     render(

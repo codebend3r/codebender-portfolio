@@ -106,7 +106,7 @@ function EditSession({
           id="resume-root"
           className={`${appStyles.resumeRoot}${editing ? " resume-editing" : ""}`}
         >
-          <Header />
+          <Header stacked />
           <div className={`${appStyles.container} ${styles.container}`}>
             <main className={appStyles.main}>
               <Summary />

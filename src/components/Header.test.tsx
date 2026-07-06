@@ -75,6 +75,16 @@ describe("Header", () => {
     render(<Header />)
     expect(screen.getByAltText("Logo")).toBeInTheDocument()
   })
+
+  it("uses the two-column layout by default", () => {
+    render(<Header />)
+    expect(screen.getByRole("banner").className).not.toContain("stacked")
+  })
+
+  it("stacks brand above contact when `stacked` is set", () => {
+    render(<Header stacked />)
+    expect(screen.getByRole("banner").className).toContain("stacked")
+  })
 })
 
 describe("Header editing", () => {
