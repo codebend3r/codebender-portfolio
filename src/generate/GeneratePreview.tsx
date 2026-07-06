@@ -55,7 +55,7 @@ export function GeneratePreview({
         </button>
       </div>
       <div className={styles.resume}>
-        <Header />
+        <Header stacked />
         <Summary />
         <TechnicalSkills index={1} eyebrow="Stack" />
         <WorkExperience index={2} eyebrow="Experience" />

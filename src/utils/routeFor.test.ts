@@ -11,6 +11,10 @@ describe("routeFor", () => {
     expect(routeFor("/generate")).toBe("generate")
   })
 
+  it("maps /login to login", () => {
+    expect(routeFor("/login")).toBe("login")
+  })
+
   it("maps everything else to app", () => {
     expect(routeFor("/")).toBe("app")
     expect(routeFor("/anything")).toBe("app")

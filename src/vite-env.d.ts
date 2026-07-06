@@ -1,6 +1,17 @@
 /* eslint-disable @typescript-eslint/consistent-type-imports */
 /// <reference types="vite/client" />
 
+// Supabase credentials; both are publishable values, safe in the client
+// bundle. Cloud sync features stay disabled when they are absent.
+interface ImportMetaEnv {
+  readonly VITE_SUPABASE_URL?: string
+  readonly VITE_SUPABASE_ANON_KEY?: string
+}
+
+interface ImportMeta {
+  readonly env: ImportMetaEnv
+}
+
 // Support importing PNG files.
 declare module "*.png" {
   const src: string
