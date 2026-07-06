@@ -32,6 +32,7 @@ export default defineConfig({
     },
     setupFiles: ["./src/test/setup.ts"],
     css: false,
+    reporters: ["tree"],
     include: [
       "src/**/*.{test,spec}.{ts,tsx}",
       "netlify/functions/**/*.test.ts",
