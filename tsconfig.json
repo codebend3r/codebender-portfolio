@@ -18,6 +18,8 @@
       "@assets/*": ["./src/assets/*"],
       "@components/*": ["./src/components/*"],
       "@data/*": ["./src/data/*"],
+      "@docx": ["./src/docx"],
+      "@docx/*": ["./src/docx/*"],
       "@edit/*": ["./src/edit/*"],
       "@generate/*": ["./src/generate/*"],
       "@pdf": ["./src/pdf"],

@@ -11,6 +11,7 @@ export default defineConfig({
       "@assets": path.resolve(__dirname, "src/assets"),
       "@components": path.resolve(__dirname, "src/components"),
       "@data": path.resolve(__dirname, "src/data"),
+      "@docx": path.resolve(__dirname, "src/docx"),
       "@edit": path.resolve(__dirname, "src/edit"),
       "@generate": path.resolve(__dirname, "src/generate"),
       "@pdf": path.resolve(__dirname, "src/pdf"),

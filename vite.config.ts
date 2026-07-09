@@ -10,6 +10,13 @@ function manualChunks(id: string) {
       id.includes("@fontsource")
     ) {
       return "react-pdf"
+    } else if (
+      id.includes("node_modules/docx/") ||
+      id.includes("node_modules/buffer/") ||
+      id.includes("node_modules/fflate/")
+    ) {
+      // Only reachable through the lazy-loaded Word export on the edit page.
+      return "docx"
     } else if (id.includes("@dnd-kit")) {
       // Keep dnd-kit out of the eager `vendor` chunk; it is only reachable
       // through the lazy-loaded `SortableListImpl` on the edit page.
@@ -44,6 +51,7 @@ export default defineConfig({
       "@assets": path.resolve(__dirname, "src/assets"),
       "@components": path.resolve(__dirname, "src/components"),
       "@data": path.resolve(__dirname, "src/data"),
+      "@docx": path.resolve(__dirname, "src/docx"),
       "@edit": path.resolve(__dirname, "src/edit"),
       "@generate": path.resolve(__dirname, "src/generate"),
       "@pdf": path.resolve(__dirname, "src/pdf"),
