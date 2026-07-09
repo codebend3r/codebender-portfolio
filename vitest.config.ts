@@ -17,6 +17,7 @@ export default defineConfig({
       "@sky": path.resolve(__dirname, "src/sky.ts"),
       "@state": path.resolve(__dirname, "src/state"),
       "@styles": path.resolve(__dirname, "src/styles"),
+      "@theme": path.resolve(__dirname, "src/theme"),
       "@utils": path.resolve(__dirname, "src/utils"),
       "@weather": path.resolve(__dirname, "src/weather.ts"),
     },

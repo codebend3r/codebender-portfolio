@@ -25,6 +25,7 @@
       "@sky": ["./src/sky.ts"],
       "@state/*": ["./src/state/*"],
       "@styles/*": ["./src/styles/*"],
+      "@theme/*": ["./src/theme/*"],
       "@utils/*": ["./src/utils/*"],
       "@weather": ["./src/weather.ts"]
     }
