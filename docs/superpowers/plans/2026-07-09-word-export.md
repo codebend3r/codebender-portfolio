@@ -36,7 +36,7 @@
 
 - Produces: `documentFileName({ name, label, extension }: { name: string; label: string; extension: DocumentFormat }): string` and `type DocumentFormat = "pdf" | "docx"` — Tasks 5 and 6 import both from `@utils/documentFileName`.
 
-- [ ] **Step 1: Write the failing test**
+- [x] **Step 1: Write the failing test**
 
 Create `src/utils/documentFileName.test.ts`:
 
@@ -90,12 +90,12 @@ describe("documentFileName", () => {
 })
 ```
 
-- [ ] **Step 2: Run test to verify it fails**
+- [x] **Step 2: Run test to verify it fails**
 
 Run: `bun run test -- src/utils/documentFileName.test.ts`
 Expected: FAIL — cannot resolve `@utils/documentFileName`.
 
-- [ ] **Step 3: Write the implementation**
+- [x] **Step 3: Write the implementation**
 
 Create `src/utils/documentFileName.ts`:
 
@@ -118,12 +118,12 @@ export function documentFileName({
 }
 ```
 
-- [ ] **Step 4: Run test to verify it passes**
+- [x] **Step 4: Run test to verify it passes**
 
 Run: `bun run test -- src/utils/documentFileName.test.ts`
 Expected: PASS (5 tests).
 
-- [ ] **Step 5: Switch call sites and delete `pdfFileName`**
+- [x] **Step 5: Switch call sites and delete `pdfFileName`**
 
 In `src/App.tsx` replace the import (line 18):
 
@@ -165,12 +165,12 @@ Then delete the old files:
 git rm src/utils/pdfFileName.ts src/utils/pdfFileName.test.ts
 ```
 
-- [ ] **Step 6: Run the full test suite**
+- [x] **Step 6: Run the full test suite**
 
 Run: `bun run test`
 Expected: PASS — `App.test.tsx` still asserts the exact filename `"CJ Rivas - Senior Frontend Engineer + Architect.pdf"`, which is unchanged behavior.
 
-- [ ] **Step 7: Commit**
+- [x] **Step 7: Commit**
 
 ```bash
 bun run prettier
@@ -195,7 +195,7 @@ git commit -m "CJR: replace pdfFileName with format-aware documentFileName
 
 - Produces: `tokens` importable from `@theme/tokens` (same shape as today: `colors`, `fontSize`, `spacing`, `page`, `font`). Tasks 3–4 depend on this.
 
-- [ ] **Step 1: Move the file and add aliases**
+- [x] **Step 1: Move the file and add aliases**
 
 ```bash
 mkdir -p src/theme
@@ -220,7 +220,7 @@ In `vitest.config.ts` `resolve.alias`, add the same line:
 "@theme": path.resolve(__dirname, "src/theme"),
 ```
 
-- [ ] **Step 2: Update the two importers**
+- [x] **Step 2: Update the two importers**
 
 In `src/pdf/styles.ts` and `src/pdf/fonts.ts` replace:
 
@@ -234,12 +234,12 @@ with:
 import { tokens } from "@theme/tokens"
 ```
 
-- [ ] **Step 3: Verify**
+- [x] **Step 3: Verify**
 
 Run: `bun run ts:check && bun run test`
 Expected: both PASS; `grep -rn "@pdf/tokens" src` returns nothing.
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 bun run prettier
@@ -263,7 +263,7 @@ git commit -m "CJR: hoist theme tokens to src/theme with @theme alias
 
 - Produces: `loadDocxFonts(): Promise<DocxFont[]>` and `type DocxFont = { name: string; data: Buffer }` from `@docx/fonts`. Font-table names are exactly `"Source Serif 4"` (Regular) and `"Source Serif 4 Semibold"` (Semibold) — these match the TTFs' internal legacy family names (verified from the 4.005R name tables) and Task 4 references them.
 
-- [ ] **Step 1: Add dependencies (exact pins)**
+- [x] **Step 1: Add dependencies (exact pins)**
 
 ```bash
 bun add --exact docx@9.7.1 buffer@6.0.3
@@ -272,7 +272,7 @@ bun add --exact --dev fflate@0.8.2
 
 Verify `package.json` shows `"docx": "9.7.1"`, `"buffer": "6.0.3"`, `"fflate": "0.8.2"` with no `^`/`~`.
 
-- [ ] **Step 2: Add `@docx` aliases**
+- [x] **Step 2: Add `@docx` aliases**
 
 `tsconfig.json` paths (after `"@data/*"`):
 
@@ -287,7 +287,7 @@ Verify `package.json` shows `"docx": "9.7.1"`, `"buffer": "6.0.3"`, `"fflate": "
 "@docx": path.resolve(__dirname, "src/docx"),
 ```
 
-- [ ] **Step 3: Vendor the TTFs**
+- [x] **Step 3: Vendor the TTFs**
 
 ```bash
 mkdir -p src/docx/fonts
@@ -302,7 +302,7 @@ rm /tmp/source-serif-4.005.zip
 
 Expected: `ls -la src/docx/fonts` shows the two TTFs (~253KB and ~272KB) plus `LICENSE.md`.
 
-- [ ] **Step 4: Write the font loader**
+- [x] **Step 4: Write the font loader**
 
 Create `src/docx/fonts.ts`:
 
@@ -341,7 +341,7 @@ export function loadDocxFonts(): Promise<DocxFont[]> {
 
 Note: `*?url` imports are typed by `vite/client` (`declare module '*?url'`), already referenced in `src/vite-env.d.ts`. No new declarations needed. `fonts.ts` is exercised through `generateDocx` (mocked in unit tests — `fetch` of Vite asset URLs is unavailable under jsdom).
 
-- [ ] **Step 5: Keep docx out of eager chunks**
+- [x] **Step 5: Keep docx out of eager chunks**
 
 In `vite.config.ts` `manualChunks`, add a branch after the `@react-pdf` case:
 
@@ -356,12 +356,12 @@ In `vite.config.ts` `manualChunks`, add a branch after the `@react-pdf` case:
 }
 ```
 
-- [ ] **Step 6: Verify**
+- [x] **Step 6: Verify**
 
 Run: `bun run ts:check && bun run build`
 Expected: both PASS; build output lists a `docx-*.js` chunk only if referenced (it isn't yet — that's fine, no chunk appears until Task 5 wires imports).
 
-- [ ] **Step 7: Commit**
+- [x] **Step 7: Commit**
 
 ```bash
 bun run prettier
@@ -388,7 +388,7 @@ git commit -m "CJR: add docx deps, vendored Source Serif 4 TTFs, and font loader
 - Consumes: `tokens` from `@theme/tokens` (Task 2); `type DocxFont` from `@docx/fonts` (Task 3, type-only); `isEmail`, `isUrl`, `stripProtocol` from `@utils/contact` (existing).
 - Produces: `buildResumeDocument({ data, fonts }: { data: Data; fonts: DocxFont[] }): Document` from `@docx/ResumeDocx`; `resumeFixture: Data` from `@app/test/resumeFixture`. Task 5 uses both.
 
-- [ ] **Step 1: Create the shared test fixture**
+- [x] **Step 1: Create the shared test fixture**
 
 Create `src/test/resumeFixture.ts` (in `src/test/` so it stays out of coverage):
 
@@ -419,7 +419,7 @@ export const resumeFixture: Data = {
 }
 ```
 
-- [ ] **Step 2: Write the failing test**
+- [x] **Step 2: Write the failing test**
 
 Create `src/docx/ResumeDocx.test.ts`. Tests unzip the packed document with `fflate` and assert on the OOXML parts (this exact approach was dry-run against `docx@9.7.1` — all assertions verified passing):
 
@@ -500,12 +500,12 @@ describe("buildResumeDocument", () => {
 })
 ```
 
-- [ ] **Step 3: Run test to verify it fails**
+- [x] **Step 3: Run test to verify it fails**
 
 Run: `bun run test -- src/docx/ResumeDocx.test.ts`
 Expected: FAIL — cannot resolve `@docx/ResumeDocx`.
 
-- [ ] **Step 4: Write the builder**
+- [x] **Step 4: Write the builder**
 
 Create `src/docx/ResumeDocx.ts`. This code was dry-run end-to-end (type-checked strict, packed, unzipped, opened structure verified) — copy it exactly:
 
@@ -930,12 +930,12 @@ export function buildResumeDocument({
 
 Note: `DocxFont` is declared here **and** in `@docx/fonts` with the same shape. Keep the `ResumeDocx.ts` copy — it lets the builder stay import-free of the fetch-based loader — but the test imports the type from `@docx/fonts` (type-only, erased at runtime). They are structurally identical so both compile everywhere.
 
-- [ ] **Step 5: Run test to verify it passes**
+- [x] **Step 5: Run test to verify it passes**
 
 Run: `bun run test -- src/docx/ResumeDocx.test.ts`
 Expected: PASS (5 tests).
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 bun run prettier
@@ -962,7 +962,7 @@ git commit -m "CJR: add ResumeDocx Word document builder
 - Consumes: `buildResumeDocument` (Task 4), `loadDocxFonts` (Task 3).
 - Produces: `generateResumeDocx(data: Data): Promise<Blob>` exported from `@docx` alongside a `downloadBlob` re-export — mirroring `@pdf`'s barrel exactly. Task 6 lazy-imports `@docx`.
 
-- [ ] **Step 1: Write the failing test**
+- [x] **Step 1: Write the failing test**
 
 Create `src/docx/generateDocx.test.ts`:
 
@@ -990,12 +990,12 @@ describe("generateResumeDocx", () => {
 
 (The MIME type assertion is safe: `Packer.toBlob` sets it — verified in the dry run.)
 
-- [ ] **Step 2: Run test to verify it fails**
+- [x] **Step 2: Run test to verify it fails**
 
 Run: `bun run test -- src/docx/generateDocx.test.ts`
 Expected: FAIL — cannot resolve `@docx/generateDocx`.
 
-- [ ] **Step 3: Write the implementation**
+- [x] **Step 3: Write the implementation**
 
 Create `src/docx/generateDocx.ts`:
 
@@ -1017,12 +1017,12 @@ export { generateResumeDocx } from "@docx/generateDocx"
 export { downloadBlob } from "@utils/downloadBlob"
 ```
 
-- [ ] **Step 4: Run test to verify it passes**
+- [x] **Step 4: Run test to verify it passes**
 
 Run: `bun run test -- src/docx/generateDocx.test.ts`
 Expected: PASS.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 bun run prettier
@@ -1048,7 +1048,7 @@ git commit -m "CJR: add generateResumeDocx and @docx barrel
 - Consumes: `@docx` barrel (Task 5), `documentFileName` + `DocumentFormat` (Task 1).
 - Produces: `VariationsPanel`'s `onGenerate` prop becomes `(format: DocumentFormat) => void`. Existing test renders pass `noop = () => {}`, which remains assignable — no churn in existing tests.
 
-- [ ] **Step 1: Write the failing test**
+- [x] **Step 1: Write the failing test**
 
 In `src/edit/VariationsPanel.test.tsx`, add inside `describe("VariationsPanel")`:
 
@@ -1070,12 +1070,12 @@ it("generates the chosen document format", () => {
 })
 ```
 
-- [ ] **Step 2: Run test to verify it fails**
+- [x] **Step 2: Run test to verify it fails**
 
 Run: `bun run test -- src/edit/VariationsPanel.test.tsx`
 Expected: FAIL — no button named "Generate Word".
 
-- [ ] **Step 3: Update VariationsPanel**
+- [x] **Step 3: Update VariationsPanel**
 
 In `src/edit/VariationsPanel.tsx`, add the type import:
 
@@ -1100,7 +1100,7 @@ Replace the single generate button (lines 132–134) with:
 </button>
 ```
 
-- [ ] **Step 4: Update EditResumeApp's onGenerate**
+- [x] **Step 4: Update EditResumeApp's onGenerate**
 
 In `src/edit/EditResumeApp.tsx`, add the type import and replace the `onGenerate` callback (lines 89–94):
 
@@ -1129,12 +1129,12 @@ const onGenerate = useCallback(
 )
 ```
 
-- [ ] **Step 5: Run the edit-suite tests**
+- [x] **Step 5: Run the edit-suite tests**
 
 Run: `bun run test -- src/edit`
 Expected: PASS — existing `VariationsPanel`/`EditResumeApp`/cloud tests are unaffected (`noop` stays assignable to the widened prop), and the new test passes.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 bun run prettier
@@ -1149,15 +1149,15 @@ git commit -m "CJR: add Generate Word button to the variations panel
 
 ### Task 7: Full verification
 
-- [ ] **Step 1: Run the complete system check**
+- [x] **Step 1: Run the complete system check**
 
 Run: `bun run system-check`
 Expected: prettier:check, ts:check (app + netlify), eslint, vitest, and build all PASS. Build output includes a lazy `docx-*.js` chunk and the two TTF assets.
 
-- [ ] **Step 2: Manual smoke test**
+- [x] **Step 2: Manual smoke test**
 
 Run: `bun dev`, open `http://localhost:4242/generate`, click **Generate Word**. Expected: a `CJ Rivas - <title>.docx` downloads (~600KB) and opens in Word/Pages with the themed layout (colored contact bar, pills, timeline dashes, footer page numbers).
 
-- [ ] **Step 3: Commit any straggler formatting and stop**
+- [x] **Step 3: Commit any straggler formatting and stop**
 
 If `git status` is dirty after the system check, run `bun run prettier`, commit as `CJR: formatting`, and stop. Do not push or open a PR unless asked.
