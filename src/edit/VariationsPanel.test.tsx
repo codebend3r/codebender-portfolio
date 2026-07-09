@@ -49,6 +49,22 @@ describe("VariationsPanel", () => {
     expect(screen.getByRole("button", { name: "Globe" })).toBeInTheDocument()
   })
 
+  it("generates the chosen document format", () => {
+    const onGenerate = vi.fn()
+    render(
+      <VariationsPanel
+        dirty={false}
+        onSave={noop}
+        onGenerate={onGenerate}
+        onNew={noop}
+      />
+    )
+    fireEvent.click(screen.getByRole("button", { name: "Generate PDF" }))
+    expect(onGenerate).toHaveBeenCalledWith("pdf")
+    fireEvent.click(screen.getByRole("button", { name: "Generate Word" }))
+    expect(onGenerate).toHaveBeenCalledWith("docx")
+  })
+
   it("opens a modal on New and calls onNew with the entered name", () => {
     const onNew = vi.fn()
     render(

@@ -19,7 +19,7 @@ import { useStore } from "@state/useStore"
 import { useSync } from "@state/useSync"
 import { useVariations } from "@state/useVariations"
 
-import { documentFileName } from "@utils/documentFileName"
+import { type DocumentFormat, documentFileName } from "@utils/documentFileName"
 import { toData } from "@utils/toData"
 
 import appStyles from "@app/App.module.css"
@@ -86,19 +86,24 @@ function EditSession({
     [createVariation]
   )
 
-  const onGenerate = useCallback(async () => {
-    const { generateResumePdf, downloadBlob } = await import("@pdf")
-    const data = useStore.getState()
-    const blob = await generateResumePdf(data)
-    downloadBlob(
-      blob,
-      documentFileName({
+  const onGenerate = useCallback(
+    async (format: DocumentFormat) => {
+      const data = useStore.getState()
+      const filename = documentFileName({
         name: data.name,
         label: activeName || data.title,
-        extension: "pdf",
+        extension: format,
       })
-    )
-  }, [activeName])
+      if (format === "docx") {
+        const { generateResumeDocx, downloadBlob } = await import("@docx")
+        downloadBlob(await generateResumeDocx(data), filename)
+        return
+      }
+      const { generateResumePdf, downloadBlob } = await import("@pdf")
+      downloadBlob(await generateResumePdf(data), filename)
+    },
+    [activeName]
+  )
 
   return (
     <div className={styles.page}>
