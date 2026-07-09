@@ -19,7 +19,7 @@ import { useStore } from "@state/useStore"
 import { useSync } from "@state/useSync"
 import { useVariations } from "@state/useVariations"
 
-import { pdfFileName } from "@utils/pdfFileName"
+import { documentFileName } from "@utils/documentFileName"
 import { toData } from "@utils/toData"
 
 import appStyles from "@app/App.module.css"
@@ -90,7 +90,14 @@ function EditSession({
     const { generateResumePdf, downloadBlob } = await import("@pdf")
     const data = useStore.getState()
     const blob = await generateResumePdf(data)
-    downloadBlob(blob, pdfFileName(data.name, activeName || data.title))
+    downloadBlob(
+      blob,
+      documentFileName({
+        name: data.name,
+        label: activeName || data.title,
+        extension: "pdf",
+      })
+    )
   }, [activeName])
 
   return (
