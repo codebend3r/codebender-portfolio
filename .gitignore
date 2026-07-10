@@ -12,3 +12,4 @@ deno.lock
 .superpowers
 
 .env
+public/cv/

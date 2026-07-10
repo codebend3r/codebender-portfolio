@@ -180,14 +180,15 @@ bun dev          # http://localhost:4242
 
 ### Demo URLs
 
-| URL                                             | Effect                      |
-| ----------------------------------------------- | --------------------------- |
-| `http://localhost:4242/?sky=night`              | Force night sky + starfield |
-| `http://localhost:4242/?sky=dawn`               | Force dawn palette          |
-| `http://localhost:4242/?weather=rain`           | Force rain overlay          |
-| `http://localhost:4242/?weather=snow`           | Force snow overlay          |
-| `http://localhost:4242/?sky=night&weather=snow` | Combine: snowy night        |
-| `http://localhost:4242/edit-resume`             | Open the resume editor      |
+| URL                                             | Effect                                                                                      |
+| ----------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| `http://localhost:4242/?sky=night`              | Force night sky + starfield                                                                 |
+| `http://localhost:4242/?sky=dawn`               | Force dawn palette                                                                          |
+| `http://localhost:4242/?weather=rain`           | Force rain overlay                                                                          |
+| `http://localhost:4242/?weather=snow`           | Force snow overlay                                                                          |
+| `http://localhost:4242/?sky=night&weather=snow` | Combine: snowy night                                                                        |
+| `http://localhost:4242/edit-resume`             | Open the resume editor                                                                      |
+| `http://localhost:4242/angular-version/`        | Angular recreation of the homepage (public, React-free; same `?sky=`/`?weather=` overrides) |
 
 ---
 

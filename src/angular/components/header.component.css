@@ -1,0 +1,126 @@
+.header {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 20px;
+}
+
+/* Owner pages: brand full-width on top, contact full-width below. */
+.stacked {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.stacked .contact {
+  justify-self: start;
+}
+
+.brand {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: var(--header-brand-gap, 16px);
+}
+
+.brand h1 {
+  font-family: var(--font-role);
+  font-size: var(--header-h1-size, 28px);
+  margin: 0;
+  font-weight: 800;
+  letter-spacing: 0.2px;
+}
+
+.logo {
+  width: var(--header-logo-size, 72px);
+  height: var(--header-logo-size, 72px);
+}
+
+.subtitle {
+  margin: 2px 0 0;
+  color: var(--muted);
+  font-weight: 600;
+  font-size: var(--header-meta-size, 16px);
+}
+
+.contact {
+  /* Intrinsic-width items wrapping onto new lines; grid has no
+     equivalent for this, so flex-wrap stays. */
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  justify-self: end;
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: var(--header-meta-size, 16px);
+}
+
+.contactEdit {
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 14px;
+}
+
+.linkFields {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2px;
+  min-width: 0;
+}
+
+/* first field is the display label, second the address */
+.linkFields input:first-child {
+  font-size: 12px;
+  color: var(--text);
+}
+
+.icon {
+  display: none;
+  width: 22px;
+  height: 22px;
+  vertical-align: middle;
+}
+
+@media (max-width: 700px) {
+  .header {
+    grid-template-columns: 1fr;
+    justify-items: start;
+    gap: 12px;
+  }
+
+  .brand h1 {
+    letter-spacing: 0;
+    line-height: 1.15;
+  }
+
+  .subtitle {
+    margin-top: 4px;
+    line-height: 1.3;
+  }
+
+  .contact {
+    gap: 10px;
+    row-gap: 6px;
+    line-height: 1.4;
+    justify-self: center;
+  }
+
+  .label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  .sep,
+  .location {
+    display: none;
+  }
+
+  .icon {
+    display: inline-block;
+  }
+}
