@@ -1,13 +1,18 @@
+import angular from "@analogjs/vite-plugin-angular"
 import react from "@vitejs/plugin-react"
 import path from "node:path"
 import { defineConfig } from "vitest/config"
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [
+    angular({ tsconfig: path.resolve(__dirname, "tsconfig.angular.json") }),
+    react(),
+  ],
   resolve: {
     alias: {
       "@App": path.resolve(__dirname, "src/App.tsx"),
       "@app": path.resolve(__dirname, "src"),
+      "@ngapp": path.resolve(__dirname, "src/angular"),
       "@assets": path.resolve(__dirname, "src/assets"),
       "@components": path.resolve(__dirname, "src/components"),
       "@data": path.resolve(__dirname, "src/data"),
@@ -32,7 +37,7 @@ export default defineConfig({
       VITE_SUPABASE_URL: "",
       VITE_SUPABASE_ANON_KEY: "",
     },
-    setupFiles: ["./src/test/setup.ts"],
+    setupFiles: ["./src/test/setup.ts", "./src/angular/test-setup.ts"],
     css: false,
     reporters: ["tree"],
     include: [
