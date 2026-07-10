@@ -190,7 +190,12 @@ Each task: write co-located failing test mirroring the React `*.test.tsx` behavi
 Exemplar — `src/angular/components/section.component.ts`:
 
 ```ts
-import { ChangeDetectionStrategy, Component, computed, input } from "@angular/core"
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  input,
+} from "@angular/core"
 
 @Component({
   selector: "ng-section",

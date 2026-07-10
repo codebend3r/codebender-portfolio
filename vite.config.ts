@@ -1,10 +1,13 @@
+import angular from "@analogjs/vite-plugin-angular"
 import react from "@vitejs/plugin-react"
 import path from "node:path"
 import { defineConfig } from "vite"
 
 function manualChunks(id: string) {
   if (id.includes("node_modules")) {
-    if (
+    if (id.includes("@angular/") || id.includes("@analogjs/")) {
+      return "angular"
+    } else if (
       id.includes("@react-pdf") ||
       id.includes("fontkit") ||
       id.includes("@fontsource")
@@ -40,7 +43,10 @@ function manualChunks(id: string) {
 }
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [
+    angular({ tsconfig: path.resolve(__dirname, "tsconfig.angular.json") }),
+    react(),
+  ],
   server: {
     port: 4242,
   },
@@ -48,6 +54,7 @@ export default defineConfig({
     alias: {
       "@App": path.resolve(__dirname, "src/App.tsx"),
       "@app": path.resolve(__dirname, "src"),
+      "@ngapp": path.resolve(__dirname, "src/angular"),
       "@assets": path.resolve(__dirname, "src/assets"),
       "@components": path.resolve(__dirname, "src/components"),
       "@data": path.resolve(__dirname, "src/data"),
@@ -70,6 +77,10 @@ export default defineConfig({
         deps.filter((d) => !d.includes("react-pdf") && !d.includes("dnd-kit")),
     },
     rollupOptions: {
+      input: {
+        main: path.resolve(__dirname, "index.html"),
+        angularVersion: path.resolve(__dirname, "angular-version/index.html"),
+      },
       output: {
         manualChunks,
       },
