@@ -4,8 +4,7 @@ import serifSemiBoldItalic from "@fontsource/source-serif-4/files/source-serif-4
 import serifSemiBold from "@fontsource/source-serif-4/files/source-serif-4-latin-600-normal.woff?url"
 import serifBold from "@fontsource/source-serif-4/files/source-serif-4-latin-700-normal.woff?url"
 import { Font } from "@react-pdf/renderer"
-
-import { tokens } from "@pdf/tokens"
+import { tokens } from "@theme/tokens"
 
 let registered = false
 

@@ -18,6 +18,8 @@
       "@assets/*": ["./src/assets/*"],
       "@components/*": ["./src/components/*"],
       "@data/*": ["./src/data/*"],
+      "@docx": ["./src/docx"],
+      "@docx/*": ["./src/docx/*"],
       "@edit/*": ["./src/edit/*"],
       "@generate/*": ["./src/generate/*"],
       "@pdf": ["./src/pdf"],
@@ -25,6 +27,7 @@
       "@sky": ["./src/sky.ts"],
       "@state/*": ["./src/state/*"],
       "@styles/*": ["./src/styles/*"],
+      "@theme/*": ["./src/theme/*"],
       "@utils/*": ["./src/utils/*"],
       "@weather": ["./src/weather.ts"]
     }

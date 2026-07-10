@@ -8,6 +8,7 @@ import { useAuth } from "@state/useAuth"
 import { useSync } from "@state/useSync"
 import { useVariations } from "@state/useVariations"
 
+import type { DocumentFormat } from "@utils/documentFileName"
 import { isSynced } from "@utils/mergeVariations"
 
 type ModalState = {
@@ -24,7 +25,7 @@ export function VariationsPanel({
 }: {
   dirty: boolean
   onSave: () => void
-  onGenerate: () => void
+  onGenerate: (format: DocumentFormat) => void
   onNew: (name: string) => void
 }) {
   const {
@@ -129,8 +130,11 @@ export function VariationsPanel({
         <button type="button" onClick={onSave} disabled={onBase || !dirty}>
           Save{dirty && !onBase ? " •" : ""}
         </button>
-        <button type="button" onClick={onGenerate}>
+        <button type="button" onClick={() => onGenerate("pdf")}>
           Generate PDF
+        </button>
+        <button type="button" onClick={() => onGenerate("docx")}>
+          Generate Word
         </button>
         {cloudConfigured && signedIn && (
           <button
