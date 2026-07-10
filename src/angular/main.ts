@@ -3,9 +3,13 @@ import { bootstrapApplication } from "@angular/platform-browser"
 
 import { AppComponent } from "@ngapp/app.component"
 
+import { applySky } from "@sky"
+
 import "@styles/global.css"
 import "@styles/keyframes.css"
 import "@styles/tokens.css"
+
+applySky()
 
 void bootstrapApplication(AppComponent, {
   providers: [provideZonelessChangeDetection()],
