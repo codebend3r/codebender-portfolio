@@ -4,7 +4,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "run-s generate:cv build:vite",
+    "assert:no-react": "bun scripts/assert-no-react.mjs",
+    "build": "run-s generate:cv build:vite assert:no-react",
     "build:vite": "vite build",
     "dev": "run-s generate:cv dev:vite",
     "dev:vite": "vite",
