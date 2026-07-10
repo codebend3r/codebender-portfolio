@@ -4,8 +4,11 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "vite build",
-    "dev": "vite",
+    "build": "run-s generate:cv build:vite",
+    "build:vite": "vite build",
+    "dev": "run-s generate:cv dev:vite",
+    "dev:vite": "vite",
+    "generate:cv": "bun scripts/generate-cv-pdf.tsx",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "prettier": "prettier --write .",
