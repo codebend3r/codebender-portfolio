@@ -1,0 +1,23 @@
+.footer {
+  display: grid;
+  grid-template-columns: auto auto;
+  grid-template-areas: "stack stack" "year credit";
+  gap: 8px;
+  margin: 64px 0 0 0;
+  color: var(--muted);
+  text-align: center;
+  justify-content: center;
+}
+
+.stack {
+  grid-area: stack;
+}
+
+.year {
+  grid-area: year;
+}
+
+.credit {
+  font-size: 0.75rem;
+  grid-area: credit;
+}
