@@ -37,6 +37,12 @@ export default defineConfig({
       VITE_SUPABASE_URL: "",
       VITE_SUPABASE_ANON_KEY: "",
     },
+    // On CI's low-core runners, Vitest's CPU-based default collapses to a
+    // single worker, which serializes all 80 files into one process and lets
+    // module-level state (the Zustand store, Angular's TestBed/vi.mock
+    // singletons) bleed across files. Pin a floor above 1 so files always
+    // get separate, isolated processes.
+    maxWorkers: 4,
     setupFiles: ["./src/test/setup.ts", "./src/angular/test-setup.ts"],
     css: false,
     reporters: ["tree"],
