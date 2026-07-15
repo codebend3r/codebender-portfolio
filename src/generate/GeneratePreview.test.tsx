@@ -81,6 +81,64 @@ describe("GeneratePreview", () => {
     expect(onDiscard).toHaveBeenCalled()
   })
 
+  it("highlights lines that differ from the base resume", () => {
+    const generated = data()
+    generated.title = "Design Systems Lead"
+    generated.summary = "Rewritten summary for the posting"
+    generated.work_experience[0].achievements[0] = "Fabricated bullet"
+    generated.technical_skills = ["Turborepo", ...generated.technical_skills]
+    render(
+      <GeneratePreview
+        data={generated}
+        name="N"
+        onNameChange={() => {}}
+        onConfirm={() => {}}
+        onDiscard={() => {}}
+      />
+    )
+
+    const classOf = (text: string, selector: string) =>
+      screen.getByText(text).closest(selector)?.className ?? ""
+    expect(classOf("Design Systems Lead", "p")).toContain("modified")
+    expect(classOf("Rewritten summary for the posting", "p")).toContain(
+      "modified"
+    )
+    expect(classOf("Fabricated bullet", "li")).toContain("modified")
+    expect(classOf("Turborepo", "li")).toContain("modifiedPill")
+  })
+
+  it("does not highlight lines carried over from the base resume", () => {
+    render(
+      <GeneratePreview
+        data={data()}
+        name="N"
+        onNameChange={() => {}}
+        onConfirm={() => {}}
+        onDiscard={() => {}}
+      />
+    )
+    const untouched = (resume as Data).work_experience[0].achievements[0]
+    expect(
+      screen.getByText(untouched).closest("li")?.className ?? ""
+    ).not.toContain("modified")
+    expect(
+      screen.getByText((resume as Data).summary).closest("p")?.className ?? ""
+    ).not.toContain("modified")
+  })
+
+  it("explains the highlight with a legend", () => {
+    render(
+      <GeneratePreview
+        data={data()}
+        name="N"
+        onNameChange={() => {}}
+        onConfirm={() => {}}
+        onDiscard={() => {}}
+      />
+    )
+    expect(screen.getByText(/highlighted lines/i)).toBeInTheDocument()
+  })
+
   it("renders the showcase section for review", () => {
     render(
       <GeneratePreview

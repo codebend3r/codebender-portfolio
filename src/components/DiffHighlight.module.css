@@ -1,0 +1,15 @@
+/* Marks content the generator changed from the base resume. */
+
+.modified {
+  background: color-mix(in srgb, var(--accent2) 12%, transparent);
+  box-shadow: inset 3px 0 0 var(--accent2);
+  border-radius: 4px;
+  padding-inline: 10px 6px;
+}
+
+/* Skill pills carry their own border/background; an inset ring reads as
+   "modified" without fighting the pill styles. */
+.modifiedPill {
+  background: color-mix(in srgb, var(--accent2) 12%, transparent);
+  box-shadow: inset 0 0 0 1.5px var(--accent2);
+}

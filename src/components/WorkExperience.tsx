@@ -1,3 +1,5 @@
+import { useDiff } from "@components/DiffContext"
+import hl from "@components/DiffHighlight.module.css"
 import { Section } from "@components/Section"
 import styles from "@components/WorkExperience.module.css"
 
@@ -20,6 +22,7 @@ export function WorkExperience({
   const { work_experience } = useStore()
   const { editing, markDirty } = useEditing()
   const store = useStore.getState()
+  const diff = useDiff()
 
   const act = (fn: () => void) => () => {
     fn()
@@ -103,7 +106,16 @@ export function WorkExperience({
                             key={ai}
                             index={ai}
                             label={`achievement ${wi + 1}.${ai + 1}`}
-                            className={editing ? sortStyles.rowCard : undefined}
+                            className={
+                              [
+                                editing ? sortStyles.rowCard : "",
+                                (diff?.changedAchievements[wi]?.[ai] ?? false)
+                                  ? hl.modified
+                                  : "",
+                              ]
+                                .filter(Boolean)
+                                .join(" ") || undefined
+                            }
                           >
                             {(achievementHandle) => (
                               <>
