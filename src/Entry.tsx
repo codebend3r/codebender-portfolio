@@ -1,15 +1,8 @@
 import React from "react"
 
-import App from "@App"
 import ReactDOM from "react-dom/client"
 
-import { AuthGate } from "@components/AuthGate"
-import { LoginPage } from "@components/LoginPage"
 import { SideMenu } from "@components/SideMenu"
-
-import EditResumeApp from "@edit/EditResumeApp"
-
-import GenerateApp from "@generate/GenerateApp"
 
 import { applySky } from "@sky"
 
@@ -18,6 +11,8 @@ import { routeFor } from "@utils/routeFor"
 import "@styles/global.css"
 import "@styles/keyframes.css"
 import "@styles/tokens.css"
+
+import { pageForRoute } from "@app/pageForRoute"
 
 const rootEl = document.getElementById("root")
 
@@ -28,23 +23,7 @@ if (rootEl) {
   ReactDOM.createRoot(rootEl).render(
     <React.StrictMode>
       <SideMenu />
-      {route === "edit" ? (
-        <AuthGate>
-          <EditResumeApp />
-        </AuthGate>
-      ) : route === "generate-proximate" ? (
-        <AuthGate>
-          <GenerateApp mode="proximate" />
-        </AuthGate>
-      ) : route === "generate-exact" ? (
-        <AuthGate>
-          <GenerateApp mode="exact" />
-        </AuthGate>
-      ) : route === "login" ? (
-        <LoginPage />
-      ) : (
-        <App />
-      )}
+      {pageForRoute(route)}
     </React.StrictMode>
   )
 }
