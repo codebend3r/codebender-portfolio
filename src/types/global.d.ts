@@ -78,7 +78,18 @@ type GenerateInput =
   | { type: "image"; mediaType: string; dataBase64: string }
   | { type: "url"; url: string }
 
-type GenerateRequest = { password: string; input: GenerateInput }
+// How hard the model may lean into the posting: "proximate" only reorders
+// and rephrases real content; "exact" may fabricate details at the real
+// employers so every posting requirement is covered.
+type GenerateMode = "proximate" | "exact"
+
+type GenerateRequest = {
+  password: string
+  input: GenerateInput
+  // Absent on requests from older clients; the function defaults to
+  // "proximate".
+  mode?: GenerateMode
+}
 
 // Sparse model output from /generate — only the tailored fields, merged over
 // the base resume by `applyResumePatch`. `work_experience` entries reference

@@ -74,7 +74,7 @@ export default async (req: Request): Promise<void> => {
       output_config: {
         format: { type: "json_schema", schema: PATCH_SCHEMA },
       },
-      system: buildSystemPrompt(baseResume),
+      system: buildSystemPrompt({ base: baseResume, mode: parsed.mode }),
       messages: [{ role: "user", content: buildUserContent(input) }],
     })
 

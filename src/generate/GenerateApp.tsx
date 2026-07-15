@@ -1,10 +1,15 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
+
+import { Header } from "@components/Header"
+
+import resume from "@data/resume.json"
 
 import { DropArea } from "@generate/DropArea"
 import styles from "@generate/GenerateApp.module.css"
 import { GeneratePreview } from "@generate/GeneratePreview"
 import { useGenerate } from "@generate/useGenerate"
 
+import { useStore } from "@state/useStore"
 import { useVariations } from "@state/useVariations"
 
 import { hashInput } from "@utils/hashInput"
@@ -13,13 +18,26 @@ import { normalizeInput } from "@utils/normalizeInput"
 
 const PASSWORD_KEY = "generate-password"
 
+const baseResume: Data = resume
+
+const COPY: Record<GenerateMode, { title: string; hint: string }> = {
+  proximate: {
+    title: "Generate a tailored resume",
+    hint: "Paste a job posting (text, link, or screenshot). Claude tailors the base resume into a new variation — the original is never modified.",
+  },
+  exact: {
+    title: "Generate an exact-match resume",
+    hint: "Paste a job posting (text, link, or screenshot). Claude rewrites the base resume to cover every requirement — details may be embellished at the real employers, so review each highlighted line.",
+  },
+}
+
 function sourcePreviewOf(input: GenerateInput): string {
   if (input.type === "text") return input.text.trim().slice(0, 200)
   if (input.type === "url") return input.url.slice(0, 200)
   return `image (${input.mediaType})`
 }
 
-export default function GenerateApp() {
+export default function GenerateApp({ mode }: { mode: GenerateMode }) {
   const [input, setInput] = useState<GenerateInput | null>(null)
   const [password, setPassword] = useState(
     () => localStorage.getItem(PASSWORD_KEY) ?? ""
@@ -35,6 +53,15 @@ export default function GenerateApp() {
   const { status, result, error, generate, reset } = useGenerate()
   const { createVariation, findByHash, selectVariation } = useVariations()
 
+  const showPreview = status === "done" && !!result
+
+  useEffect(() => {
+    // The preview loads the generated data into the store; reload the base
+    // resume whenever the input screen shows so its header stays CJ's real
+    // name and title (e.g. after discarding a preview).
+    if (!showPreview) useStore.getState().loadData(structuredClone(baseResume))
+  }, [showPreview])
+
   const handleGenerate = async () => {
     if (!input) return
     setInputError(null)
@@ -43,7 +70,7 @@ export default function GenerateApp() {
 
     // A lone pasted URL becomes a url input — the function fetches the page.
     const normalized = normalizeInput(input)
-    const h = await hashInput(normalized)
+    const h = await hashInput({ input: normalized, mode })
     setSubmitted({ input: normalized, hash: h })
 
     const existing = findByHash(h)
@@ -51,13 +78,13 @@ export default function GenerateApp() {
       setExistingId(existing.id)
       return
     }
-    await generate({ password, input: normalized })
+    await generate({ password, input: normalized, mode })
   }
 
   const handleRegenerate = async () => {
     if (!submitted) return
     setExistingId(null)
-    await generate({ password, input: submitted.input })
+    await generate({ password, input: submitted.input, mode })
   }
 
   const handleOpenExisting = () => {
@@ -82,7 +109,7 @@ export default function GenerateApp() {
     setName("")
   }
 
-  if (status === "done" && result) {
+  if (showPreview && result) {
     return (
       <main className={styles.page}>
         <h1>Review generated resume</h1>
@@ -99,11 +126,9 @@ export default function GenerateApp() {
 
   return (
     <main className={styles.page}>
-      <h1>Generate a tailored resume</h1>
-      <p className={styles.hint}>
-        Paste a job posting (text, link, or screenshot). Claude tailors the base
-        resume into a new variation — the original is never modified.
-      </p>
+      <Header stacked />
+      <h1>{COPY[mode].title}</h1>
+      <p className={styles.hint}>{COPY[mode].hint}</p>
 
       <DropArea
         value={input}

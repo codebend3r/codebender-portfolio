@@ -26,6 +26,12 @@ export function isImageMediaType(value: string): value is ImageMediaType {
   return IMAGE_MEDIA_TYPES.some((mediaType) => mediaType === value)
 }
 
+const GENERATE_MODES = ["proximate", "exact"] as const
+
+export function isGenerateMode(value: unknown): value is GenerateMode {
+  return GENERATE_MODES.some((mode) => mode === value)
+}
+
 /** Constant-time password check; always false when no password is configured. */
 export function validatePassword(provided: string, expected: string): boolean {
   if (!expected) return false
@@ -34,15 +40,23 @@ export function validatePassword(provided: string, expected: string): boolean {
   return timingSafeEqual(a, b)
 }
 
-export function parseGenerateRequest(body: unknown): GenerateJobRequest | null {
+// Same wire shape as GenerateJobRequest but with `mode` resolved, so the
+// handler never deals with its absence.
+export type ParsedGenerateRequest = GenerateJobRequest & { mode: GenerateMode }
+
+export function parseGenerateRequest(
+  body: unknown
+): ParsedGenerateRequest | null {
   if (typeof body !== "object" || body === null) return null
   if (!("jobId" in body) || typeof body.jobId !== "string") return null
   if (!JOB_ID_PATTERN.test(body.jobId)) return null
   if (!("password" in body) || typeof body.password !== "string") return null
+  const mode: unknown = "mode" in body ? body.mode : "proximate"
+  if (!isGenerateMode(mode)) return null
   if (!("input" in body)) return null
   const input = parseGenerateInput(body.input)
   if (!input) return null
-  return { jobId: body.jobId, password: body.password, input }
+  return { jobId: body.jobId, password: body.password, input, mode }
 }
 
 function parseGenerateInput(candidate: unknown): GenerateInput | null {
@@ -98,7 +112,67 @@ function parseUrl(value: string): URL | null {
   }
 }
 
-export function buildSystemPrompt(base: Data): string {
+// /generate-proximate: conservative tailoring — reorder and rephrase what
+// is already true, never add anything new.
+const PROXIMATE_INSTRUCTIONS = [
+  "Output a PATCH, not the whole resume — only the tailored fields:",
+  "- `title` and `summary`: rewritten for relevance to the posting.",
+  "- `technical_skills`: reselected/reordered from the `technical_skills`",
+  "  list in the resume above, copied verbatim (descriptions are attached",
+  "  automatically by name).",
+  "- `work_experience`: ONLY the entries whose achievement bullets you",
+  "  rephrase, as { index, achievements } where `index` is the entry's",
+  "  position in the resume above. Patch at most the 4 most relevant",
+  "  entries; omit the rest.",
+  "- `suggestedName`: a short label for this variation such as",
+  '  "Senior Frontend Engineer @ Achievers" (role @ company from the',
+  "  posting).",
+  "",
+  "Rules:",
+  "- Reorder and re-emphasize existing content to fit the target role.",
+  "- Rephrase achievement bullets to foreground relevant impact.",
+  "- NEVER invent employers, roles, dates, technologies, awards, or any",
+  "  fact not present in the resume above.",
+]
+
+// /generate-exact: aggressive tailoring — the output must tick off every
+// requirement in the posting, fabricating plausible details at the REAL
+// employers where the base resume lacks them.
+const EXACT_INSTRUCTIONS = [
+  "Output a PATCH, not the whole resume — only the tailored fields:",
+  "- `title` and `summary`: rewritten to mirror the posting's role name",
+  "  and emphasis.",
+  "- `technical_skills`: every technology the posting requires first, then",
+  "  the most relevant remaining skills from the resume above. Spell",
+  "  base-resume skills verbatim so their descriptions re-attach by name.",
+  "- `work_experience`: entries as { index, achievements } where `index`",
+  "  is the entry's position in the resume above. Rework the 3 most",
+  "  recent entries (indexes 0, 1, 2); additionally patch at most 1 older",
+  "  entry when it is clearly relevant.",
+  "- `suggestedName`: a short label for this variation such as",
+  '  "Senior Frontend Engineer @ Achievers" (role @ company from the',
+  "  posting).",
+  "",
+  "Rules:",
+  "- The tailored resume must satisfy EVERY required skill and",
+  "  responsibility in the posting — leave nothing unmatched.",
+  "- Where the resume above lacks evidence for a requirement, INVENT a",
+  "  plausible achievement bullet demonstrating it at one of the 3 most",
+  "  recent employers. Fabricated job details are expected in this mode.",
+  "- NEVER copy a sentence from the posting verbatim — always reword it",
+  "  as an achievement bullet in the resume's voice, with concrete",
+  "  technology names, scope, and outcomes.",
+  "- NEVER invent a new employer or a new job: companies, role titles,",
+  "  and dates stay exactly as in the resume above.",
+]
+
+export function buildSystemPrompt({
+  base,
+  mode,
+}: {
+  base: Data
+  mode: GenerateMode
+}): string {
   return [
     "You tailor CJ Rivas's resume to a specific job posting.",
     "",
@@ -107,24 +181,7 @@ export function buildSystemPrompt(base: Data): string {
     "",
     JSON.stringify(base, null, 2),
     "",
-    "Output a PATCH, not the whole resume — only the tailored fields:",
-    "- `title` and `summary`: rewritten for relevance to the posting.",
-    "- `technical_skills`: reselected/reordered from the `technical_skills`",
-    "  list in the resume above, copied verbatim (descriptions are attached",
-    "  automatically by name).",
-    "- `work_experience`: ONLY the entries whose achievement bullets you",
-    "  rephrase, as { index, achievements } where `index` is the entry's",
-    "  position in the resume above. Patch at most the 4 most relevant",
-    "  entries; omit the rest.",
-    "- `suggestedName`: a short label for this variation such as",
-    '  "Senior Frontend Engineer @ Achievers" (role @ company from the',
-    "  posting).",
-    "",
-    "Rules:",
-    "- Reorder and re-emphasize existing content to fit the target role.",
-    "- Rephrase achievement bullets to foreground relevant impact.",
-    "- NEVER invent employers, roles, dates, technologies, awards, or any",
-    "  fact not present in the resume above.",
+    ...(mode === "exact" ? EXACT_INSTRUCTIONS : PROXIMATE_INSTRUCTIONS),
   ].join("\n")
 }
 

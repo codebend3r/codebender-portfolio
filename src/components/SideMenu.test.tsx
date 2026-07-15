@@ -47,10 +47,12 @@ describe("SideMenu", () => {
       "href",
       "/edit-resume"
     )
-    expect(screen.getByRole("link", { name: "Generate" })).toHaveAttribute(
-      "href",
-      "/generate"
-    )
+    expect(
+      screen.getByRole("link", { name: "Generate (Proximate)" })
+    ).toHaveAttribute("href", "/generate-proximate")
+    expect(
+      screen.getByRole("link", { name: "Generate (Exact)" })
+    ).toHaveAttribute("href", "/generate-exact")
   })
 
   it("marks the current route with aria-current", () => {
@@ -62,9 +64,9 @@ describe("SideMenu", () => {
       "aria-current",
       "page"
     )
-    expect(screen.getByRole("link", { name: "Generate" })).not.toHaveAttribute(
-      "aria-current"
-    )
+    expect(
+      screen.getByRole("link", { name: "Generate (Proximate)" })
+    ).not.toHaveAttribute("aria-current")
   })
 
   it("closes on Escape", () => {

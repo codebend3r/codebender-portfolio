@@ -1,6 +1,7 @@
-import { useEffect } from "react"
+import { useEffect, useMemo } from "react"
 
 import { Awards } from "@components/Awards"
+import { DiffProvider } from "@components/DiffContext"
 import { Education } from "@components/Education"
 import { Header } from "@components/Header"
 import { Languages } from "@components/Languages"
@@ -9,9 +10,15 @@ import { Summary } from "@components/Summary"
 import { TechnicalSkills } from "@components/TechnicalSkills"
 import { WorkExperience } from "@components/WorkExperience"
 
+import resume from "@data/resume.json"
+
 import styles from "@generate/GeneratePreview.module.css"
 
 import { useStore } from "@state/useStore"
+
+import { diffResume } from "@utils/resumeDiff"
+
+const baseResume: Data = resume
 
 type GeneratePreviewProps = {
   data: Data
@@ -34,6 +41,11 @@ export function GeneratePreview({
     loadData(structuredClone(data))
   }, [data, loadData])
 
+  const diff = useMemo(
+    () => diffResume({ base: baseResume, generated: data }),
+    [data]
+  )
+
   return (
     <section className={styles.preview}>
       <div className={styles.controls}>
@@ -54,18 +66,25 @@ export function GeneratePreview({
           Discard
         </button>
       </div>
-      <div className={styles.resume}>
-        <Header stacked />
-        <Summary />
-        <TechnicalSkills index={1} eyebrow="Stack" />
-        <WorkExperience index={2} eyebrow="Experience" />
-        <Showcase index={3} eyebrow="Selected Work" />
-        <div className={styles.subgrid}>
-          <Awards index={4} eyebrow="Recognition" />
-          <Languages index={5} eyebrow="Languages" />
-          <Education index={6} eyebrow="Education" />
+      <p className={styles.legend}>
+        <span className={styles.legendSwatch} aria-hidden="true" />
+        Highlighted lines were changed from the base resume — review them before
+        saving.
+      </p>
+      <DiffProvider value={diff}>
+        <div className={styles.resume}>
+          <Header stacked />
+          <Summary />
+          <TechnicalSkills index={1} eyebrow="Stack" />
+          <WorkExperience index={2} eyebrow="Experience" />
+          <Showcase index={3} eyebrow="Selected Work" />
+          <div className={styles.subgrid}>
+            <Awards index={4} eyebrow="Recognition" />
+            <Languages index={5} eyebrow="Languages" />
+            <Education index={6} eyebrow="Education" />
+          </div>
         </div>
-      </div>
+      </DiffProvider>
     </section>
   )
 }

@@ -5,6 +5,7 @@ import {
   PATCH_SCHEMA,
   buildSystemPrompt,
   buildUserContent,
+  isGenerateMode,
   isImageMediaType,
   parseGenerateRequest,
   validatePassword,
@@ -109,6 +110,41 @@ describe("parseGenerateRequest", () => {
     ).toBeNull()
   })
 
+  it("defaults a missing mode to proximate", () => {
+    const req = parseGenerateRequest({
+      jobId: JOB_ID,
+      password: "p",
+      input: { type: "text", text: "posting" },
+    })
+    expect(req?.mode).toBe("proximate")
+  })
+
+  it("accepts an explicit mode", () => {
+    const withMode = (mode: unknown) =>
+      parseGenerateRequest({
+        jobId: JOB_ID,
+        password: "p",
+        input: { type: "text", text: "posting" },
+        mode,
+      })
+    expect(withMode("proximate")?.mode).toBe("proximate")
+    expect(withMode("exact")?.mode).toBe("exact")
+  })
+
+  it("rejects an unknown mode", () => {
+    const withMode = (mode: unknown) =>
+      parseGenerateRequest({
+        jobId: JOB_ID,
+        password: "p",
+        input: { type: "text", text: "posting" },
+        mode,
+      })
+    expect(withMode("aggressive")).toBeNull()
+    expect(withMode("")).toBeNull()
+    expect(withMode(1)).toBeNull()
+    expect(withMode(null)).toBeNull()
+  })
+
   it("rejects oversized payloads", () => {
     expect(
       parseGenerateRequest({
@@ -131,12 +167,43 @@ describe("parseGenerateRequest", () => {
   })
 })
 
+describe("isGenerateMode", () => {
+  it("accepts the two known modes", () => {
+    expect(isGenerateMode("proximate")).toBe(true)
+    expect(isGenerateMode("exact")).toBe(true)
+  })
+
+  it("rejects everything else", () => {
+    expect(isGenerateMode("aggressive")).toBe(false)
+    expect(isGenerateMode("")).toBe(false)
+    expect(isGenerateMode(1)).toBe(false)
+    expect(isGenerateMode(null)).toBe(false)
+    expect(isGenerateMode(undefined)).toBe(false)
+  })
+})
+
 describe("buildSystemPrompt", () => {
-  it("embeds the base resume and the ground-truth rules", () => {
-    const prompt = buildSystemPrompt(resume)
+  it("embeds the base resume and ground-truth rules in proximate mode", () => {
+    const prompt = buildSystemPrompt({ base: resume, mode: "proximate" })
     expect(prompt).toContain(resume.name)
     expect(prompt.toLowerCase()).toContain("never invent")
     expect(prompt).toContain("suggestedName")
+  })
+
+  it("allows fabricated details at real employers in exact mode", () => {
+    const prompt = buildSystemPrompt({ base: resume, mode: "exact" })
+    expect(prompt).toContain(resume.name)
+    expect(prompt).toContain("suggestedName")
+    expect(prompt.toLowerCase()).toContain("invent a")
+    expect(prompt).toContain("EVERY required skill")
+    expect(prompt.toLowerCase()).toContain("never copy a sentence")
+    expect(prompt.toLowerCase()).toContain("never invent a new employer")
+  })
+
+  it("keeps the fabrication license out of proximate mode", () => {
+    const prompt = buildSystemPrompt({ base: resume, mode: "proximate" })
+    expect(prompt).not.toContain("EVERY required skill")
+    expect(prompt.toLowerCase()).not.toContain("fabricated")
   })
 })
 

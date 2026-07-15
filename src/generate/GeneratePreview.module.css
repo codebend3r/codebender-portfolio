@@ -73,6 +73,24 @@
   }
 }
 
+.legend {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.legendSwatch {
+  flex: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 4px;
+  background: color-mix(in srgb, var(--accent2) 12%, transparent);
+  box-shadow: inset 3px 0 0 var(--accent2);
+}
+
 .resume {
   display: grid;
   gap: 20px;

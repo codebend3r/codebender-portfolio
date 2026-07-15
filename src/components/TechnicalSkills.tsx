@@ -1,5 +1,7 @@
 import type { FocusEvent, MouseEvent } from "react"
 
+import { useDiff } from "@components/DiffContext"
+import hl from "@components/DiffHighlight.module.css"
 import { Section } from "@components/Section"
 import styles from "@components/TechnicalSkills.module.css"
 
@@ -74,6 +76,7 @@ export function TechnicalSkills({
 }) {
   const { technical_skills, skill_descriptions } = useStore()
   const { editing, markDirty } = useEditing()
+  const diff = useDiff()
 
   const act = (fn: () => void) => () => {
     fn()
@@ -91,9 +94,13 @@ export function TechnicalSkills({
                 key={i}
                 index={i}
                 label={`skill ${i + 1}`}
-                className={
-                  editing ? `${styles.pill} ${styles.pillEditing}` : styles.pill
-                }
+                className={[
+                  styles.pill,
+                  editing ? styles.pillEditing : "",
+                  (diff?.newSkills.has(s) ?? false) ? hl.modifiedPill : "",
+                ]
+                  .filter(Boolean)
+                  .join(" ")}
                 wrapperProps={{
                   "aria-label": `${s}: ${description}`,
                   onMouseEnter: (e: MouseEvent<HTMLElement>) =>

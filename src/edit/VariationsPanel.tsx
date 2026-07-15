@@ -17,6 +17,18 @@ type ModalState = {
   initialName: string
 }
 
+function syncLabel({
+  syncing,
+  unsyncedCount,
+}: {
+  syncing: boolean
+  unsyncedCount: number
+}): string {
+  if (syncing) return "Syncing…"
+  if (unsyncedCount > 0) return `Sync (${unsyncedCount})`
+  return "Sync ✓"
+}
+
 export function VariationsPanel({
   dirty,
   onSave,
@@ -142,11 +154,7 @@ export function VariationsPanel({
             onClick={() => void syncNow()}
             disabled={syncing}
           >
-            {syncing
-              ? "Syncing…"
-              : unsyncedCount > 0
-                ? `Sync (${unsyncedCount})`
-                : "Sync ✓"}
+            {syncLabel({ syncing, unsyncedCount })}
           </button>
         )}
         {cloudConfigured && signedIn && (

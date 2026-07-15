@@ -47,6 +47,7 @@ export default [
       ...(reactHooksPlugin.configs?.recommended?.rules || {}),
       ...(jsxA11yPlugin.configs?.recommended?.rules || {}),
       // Custom project tweaks
+      "no-nested-ternary": "error",
       "react/react-in-jsx-scope": "off",
       "react/prop-types": "off",
       "no-undef": "off",

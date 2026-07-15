@@ -1,0 +1,38 @@
+import type { ReactElement } from "react"
+
+import App from "@App"
+
+import { AuthGate } from "@components/AuthGate"
+import { LoginPage } from "@components/LoginPage"
+
+import EditResumeApp from "@edit/EditResumeApp"
+
+import GenerateApp from "@generate/GenerateApp"
+
+import type { Route } from "@utils/routeFor"
+
+// One page per route; private pages wrap themselves in AuthGate. Record
+// keys keep this exhaustive — adding a Route without a page is a type error.
+const PAGES: Record<Route, () => ReactElement> = {
+  edit: () => (
+    <AuthGate>
+      <EditResumeApp />
+    </AuthGate>
+  ),
+  "generate-proximate": () => (
+    <AuthGate>
+      <GenerateApp mode="proximate" />
+    </AuthGate>
+  ),
+  "generate-exact": () => (
+    <AuthGate>
+      <GenerateApp mode="exact" />
+    </AuthGate>
+  ),
+  login: () => <LoginPage />,
+  app: () => <App />,
+}
+
+export function pageForRoute(route: Route): ReactElement {
+  return PAGES[route]()
+}

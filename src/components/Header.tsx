@@ -2,6 +2,8 @@ import { Fragment } from "react"
 
 import Logo from "@assets/robot-logo.png"
 
+import { useDiff } from "@components/DiffContext"
+import hl from "@components/DiffHighlight.module.css"
 import styles from "@components/Header.module.css"
 
 import { useEditing } from "@edit/EditContext"
@@ -135,6 +137,7 @@ export function Header({ stacked = false }: { stacked?: boolean }) {
   const { name, title, contact } = useStore()
   const { editing, markDirty } = useEditing()
   const store = useStore.getState()
+  const diff = useDiff()
 
   const act = (fn: () => void) => () => {
     fn()
@@ -151,7 +154,13 @@ export function Header({ stacked = false }: { stacked?: boolean }) {
           <h1>
             <EditableText value={name} path={["name"]} ariaLabel="Name" />
           </h1>
-          <p className={styles.subtitle}>
+          <p
+            className={
+              (diff?.title ?? false)
+                ? `${styles.subtitle} ${hl.modified}`
+                : styles.subtitle
+            }
+          >
             <EditableText value={title} path={["title"]} ariaLabel="Title" />
           </p>
         </div>
