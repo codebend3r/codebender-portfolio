@@ -24,8 +24,9 @@ function clampTooltipToViewport(pill: HTMLElement) {
   const overflowLeft = margin - rect.left
   const overflowRight = rect.right - (window.innerWidth - margin)
 
-  const shift =
-    overflowLeft > 0 ? overflowLeft : overflowRight > 0 ? -overflowRight : 0
+  let shift = 0
+  if (overflowLeft > 0) shift = overflowLeft
+  else if (overflowRight > 0) shift = -overflowRight
 
   if (shift !== 0) pill.style.setProperty("--tooltip-shift", `${shift}px`)
 }

@@ -4,6 +4,12 @@
  * Same input + mode → same hash, used by the generate pages to dedupe
  * variations. SHA-256 over a normalized string, truncated to 12 hex chars.
  */
+function contentOf(input: GenerateInput): string {
+  if (input.type === "text") return `text:${input.text.trim()}`
+  if (input.type === "url") return `url:${input.url.trim()}`
+  return `image:${input.dataBase64}`
+}
+
 export async function hashInput({
   input,
   mode = "proximate",
@@ -11,12 +17,7 @@ export async function hashInput({
   input: GenerateInput
   mode?: GenerateMode
 }): Promise<string> {
-  const content =
-    input.type === "text"
-      ? `text:${input.text.trim()}`
-      : input.type === "url"
-        ? `url:${input.url.trim()}`
-        : `image:${input.dataBase64}`
+  const content = contentOf(input)
   // "proximate" keeps the historical un-prefixed format so variations
   // stored before modes existed still dedupe against it.
   const normalized = mode === "proximate" ? content : `${mode}:${content}`

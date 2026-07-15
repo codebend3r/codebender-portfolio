@@ -103,6 +103,13 @@ function contactChild(value: string): ContactChild {
   return new TextRun({ text: value, ...style })
 }
 
+// Outer contact cells hug their page edge; inner cells center.
+function contactAlignment({ index, count }: { index: number; count: number }) {
+  if (index === 0) return AlignmentType.LEFT
+  if (index === count - 1) return AlignmentType.RIGHT
+  return AlignmentType.CENTER
+}
+
 // The PDF's full-bleed contact bar: a borderless single-row table spanning
 // the full page width (negative indent cancels the page margin), one shaded
 // cell per entry, outer cells padded back to the content edge.
@@ -132,12 +139,7 @@ function contactBar(data: Data): Table {
               },
               children: [
                 new Paragraph({
-                  alignment:
-                    i === 0
-                      ? AlignmentType.LEFT
-                      : i === count - 1
-                        ? AlignmentType.RIGHT
-                        : AlignmentType.CENTER,
+                  alignment: contactAlignment({ index: i, count }),
                   children: [contactChild(entry.value)],
                 }),
               ],
