@@ -73,6 +73,27 @@ async function fillAndGenerate(text = "Senior Frontend Engineer at Acme") {
 }
 
 describe("GenerateApp", () => {
+  it("keeps the CJ Rivas header on the input screen", () => {
+    render(<GenerateApp mode="proximate" />)
+    expect(
+      screen.getByRole("heading", { name: resume.name })
+    ).toBeInTheDocument()
+    expect(screen.getByText(resume.title)).toBeInTheDocument()
+  })
+
+  it("restores the base header after discarding a preview", async () => {
+    render(<GenerateApp mode="exact" />)
+    await fillAndGenerate()
+    await waitFor(() =>
+      screen.getByRole("textbox", { name: /variation name/i })
+    )
+    fireEvent.click(screen.getByRole("button", { name: /discard/i }))
+    expect(
+      screen.getByRole("heading", { name: resume.name })
+    ).toBeInTheDocument()
+    expect(useStore.getState().name).toBe(resume.name)
+  })
+
   it("generates and shows the preview with the suggested name", async () => {
     render(<GenerateApp mode="proximate" />)
     await fillAndGenerate()

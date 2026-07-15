@@ -1,10 +1,15 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
+
+import { Header } from "@components/Header"
+
+import resume from "@data/resume.json"
 
 import { DropArea } from "@generate/DropArea"
 import styles from "@generate/GenerateApp.module.css"
 import { GeneratePreview } from "@generate/GeneratePreview"
 import { useGenerate } from "@generate/useGenerate"
 
+import { useStore } from "@state/useStore"
 import { useVariations } from "@state/useVariations"
 
 import { hashInput } from "@utils/hashInput"
@@ -12,6 +17,8 @@ import { navigate } from "@utils/navigate"
 import { normalizeInput } from "@utils/normalizeInput"
 
 const PASSWORD_KEY = "generate-password"
+
+const baseResume: Data = resume
 
 const COPY: Record<GenerateMode, { title: string; hint: string }> = {
   proximate: {
@@ -45,6 +52,15 @@ export default function GenerateApp({ mode }: { mode: GenerateMode }) {
 
   const { status, result, error, generate, reset } = useGenerate()
   const { createVariation, findByHash, selectVariation } = useVariations()
+
+  const showPreview = status === "done" && !!result
+
+  useEffect(() => {
+    // The preview loads the generated data into the store; reload the base
+    // resume whenever the input screen shows so its header stays CJ's real
+    // name and title (e.g. after discarding a preview).
+    if (!showPreview) useStore.getState().loadData(structuredClone(baseResume))
+  }, [showPreview])
 
   const handleGenerate = async () => {
     if (!input) return
@@ -93,7 +109,7 @@ export default function GenerateApp({ mode }: { mode: GenerateMode }) {
     setName("")
   }
 
-  if (status === "done" && result) {
+  if (showPreview && result) {
     return (
       <main className={styles.page}>
         <h1>Review generated resume</h1>
@@ -110,6 +126,7 @@ export default function GenerateApp({ mode }: { mode: GenerateMode }) {
 
   return (
     <main className={styles.page}>
+      <Header stacked />
       <h1>{COPY[mode].title}</h1>
       <p className={styles.hint}>{COPY[mode].hint}</p>
 
