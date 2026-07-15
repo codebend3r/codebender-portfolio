@@ -13,7 +13,11 @@ import { routeFor } from "@utils/routeFor"
 const LINKS = [
   { href: "/", label: "Home", route: "app" },
   { href: "/edit-resume", label: "Edit Resume", route: "edit" },
-  { href: "/generate", label: "Generate", route: "generate" },
+  {
+    href: "/generate-proximate",
+    label: "Generate (Proximate)",
+    route: "generate-proximate",
+  },
 ] as const
 
 // Owner navigation. Invisible to anonymous visitors; renders a fixed toggle

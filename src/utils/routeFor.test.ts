@@ -7,8 +7,8 @@ describe("routeFor", () => {
     expect(routeFor("/edit-resume")).toBe("edit")
   })
 
-  it("maps /generate to generate", () => {
-    expect(routeFor("/generate")).toBe("generate")
+  it("maps /generate-proximate to generate-proximate", () => {
+    expect(routeFor("/generate-proximate")).toBe("generate-proximate")
   })
 
   it("maps /login to login", () => {
@@ -18,6 +18,7 @@ describe("routeFor", () => {
   it("maps everything else to app", () => {
     expect(routeFor("/")).toBe("app")
     expect(routeFor("/anything")).toBe("app")
-    expect(routeFor("/generate/extra")).toBe("app")
+    expect(routeFor("/generate")).toBe("app")
+    expect(routeFor("/generate-proximate/extra")).toBe("app")
   })
 })

@@ -32,7 +32,7 @@ if (rootEl) {
         <AuthGate>
           <EditResumeApp />
         </AuthGate>
-      ) : route === "generate" ? (
+      ) : route === "generate-proximate" ? (
         <AuthGate>
           <GenerateApp />
         </AuthGate>
