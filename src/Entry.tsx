@@ -34,7 +34,11 @@ if (rootEl) {
         </AuthGate>
       ) : route === "generate-proximate" ? (
         <AuthGate>
-          <GenerateApp />
+          <GenerateApp mode="proximate" />
+        </AuthGate>
+      ) : route === "generate-exact" ? (
+        <AuthGate>
+          <GenerateApp mode="exact" />
         </AuthGate>
       ) : route === "login" ? (
         <LoginPage />

@@ -18,6 +18,11 @@ const LINKS = [
     label: "Generate (Proximate)",
     route: "generate-proximate",
   },
+  {
+    href: "/generate-exact",
+    label: "Generate (Exact)",
+    route: "generate-exact",
+  },
 ] as const
 
 // Owner navigation. Invisible to anonymous visitors; renders a fixed toggle

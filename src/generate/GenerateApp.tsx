@@ -13,13 +13,24 @@ import { normalizeInput } from "@utils/normalizeInput"
 
 const PASSWORD_KEY = "generate-password"
 
+const COPY: Record<GenerateMode, { title: string; hint: string }> = {
+  proximate: {
+    title: "Generate a tailored resume",
+    hint: "Paste a job posting (text, link, or screenshot). Claude tailors the base resume into a new variation — the original is never modified.",
+  },
+  exact: {
+    title: "Generate an exact-match resume",
+    hint: "Paste a job posting (text, link, or screenshot). Claude rewrites the base resume to cover every requirement — details may be embellished at the real employers, so review each highlighted line.",
+  },
+}
+
 function sourcePreviewOf(input: GenerateInput): string {
   if (input.type === "text") return input.text.trim().slice(0, 200)
   if (input.type === "url") return input.url.slice(0, 200)
   return `image (${input.mediaType})`
 }
 
-export default function GenerateApp() {
+export default function GenerateApp({ mode }: { mode: GenerateMode }) {
   const [input, setInput] = useState<GenerateInput | null>(null)
   const [password, setPassword] = useState(
     () => localStorage.getItem(PASSWORD_KEY) ?? ""
@@ -43,7 +54,7 @@ export default function GenerateApp() {
 
     // A lone pasted URL becomes a url input — the function fetches the page.
     const normalized = normalizeInput(input)
-    const h = await hashInput(normalized)
+    const h = await hashInput({ input: normalized, mode })
     setSubmitted({ input: normalized, hash: h })
 
     const existing = findByHash(h)
@@ -51,13 +62,13 @@ export default function GenerateApp() {
       setExistingId(existing.id)
       return
     }
-    await generate({ password, input: normalized })
+    await generate({ password, input: normalized, mode })
   }
 
   const handleRegenerate = async () => {
     if (!submitted) return
     setExistingId(null)
-    await generate({ password, input: submitted.input })
+    await generate({ password, input: submitted.input, mode })
   }
 
   const handleOpenExisting = () => {
@@ -99,11 +110,8 @@ export default function GenerateApp() {
 
   return (
     <main className={styles.page}>
-      <h1>Generate a tailored resume</h1>
-      <p className={styles.hint}>
-        Paste a job posting (text, link, or screenshot). Claude tailors the base
-        resume into a new variation — the original is never modified.
-      </p>
+      <h1>{COPY[mode].title}</h1>
+      <p className={styles.hint}>{COPY[mode].hint}</p>
 
       <DropArea
         value={input}

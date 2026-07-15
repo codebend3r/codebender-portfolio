@@ -74,7 +74,7 @@ async function fillAndGenerate(text = "Senior Frontend Engineer at Acme") {
 
 describe("GenerateApp", () => {
   it("generates and shows the preview with the suggested name", async () => {
-    render(<GenerateApp />)
+    render(<GenerateApp mode="proximate" />)
     await fillAndGenerate()
     await waitFor(() =>
       expect(
@@ -84,7 +84,7 @@ describe("GenerateApp", () => {
   })
 
   it("saves a variation with hash meta and navigates to the editor", async () => {
-    render(<GenerateApp />)
+    render(<GenerateApp mode="proximate" />)
     await fillAndGenerate()
     await waitFor(() =>
       screen.getByRole("textbox", { name: /variation name/i })
@@ -99,9 +99,38 @@ describe("GenerateApp", () => {
     expect(navigate).toHaveBeenCalledWith("/edit-resume")
   })
 
+  it("sends its mode with the kickoff request", async () => {
+    const calls = mockJobFetch(doneJob)
+    render(<GenerateApp mode="exact" />)
+    await fillAndGenerate()
+    await waitFor(() =>
+      screen.getByRole("textbox", { name: /variation name/i })
+    )
+    expect(postedBody(calls).mode).toBe("exact")
+  })
+
+  it("dedupes per mode: an exact run ignores a proximate variation", async () => {
+    const { hashInput } = await import("@utils/hashInput")
+    const hash = await hashInput({
+      input: { type: "text", text: "Senior Frontend Engineer at Acme" },
+      mode: "proximate",
+    })
+    useVariations
+      .getState()
+      .createVariation("Existing", structuredClone(resume) as Data, { hash })
+    useVariations.getState().selectVariation(null)
+
+    render(<GenerateApp mode="exact" />)
+    await fillAndGenerate()
+    await waitFor(() =>
+      screen.getByRole("textbox", { name: /variation name/i })
+    )
+    expect(screen.queryByText(/already generated/i)).not.toBeInTheDocument()
+  })
+
   it("sends a lone pasted url as a url input", async () => {
     const calls = mockJobFetch(doneJob)
-    render(<GenerateApp />)
+    render(<GenerateApp mode="proximate" />)
     await fillAndGenerate("  https://jobs.lever.co/acme/123?src=indeed \n")
     await waitFor(() =>
       screen.getByRole("textbox", { name: /variation name/i })
@@ -114,7 +143,7 @@ describe("GenerateApp", () => {
 
   it("saves the url as the variation sourcePreview", async () => {
     mockJobFetch(doneJob)
-    render(<GenerateApp />)
+    render(<GenerateApp mode="proximate" />)
     await fillAndGenerate("https://jobs.lever.co/acme/123")
     await waitFor(() =>
       screen.getByRole("textbox", { name: /variation name/i })
@@ -126,12 +155,11 @@ describe("GenerateApp", () => {
   })
 
   it("offers to open an existing variation when the hash matches", async () => {
-    render(<GenerateApp />)
+    render(<GenerateApp mode="proximate" />)
     // Seed a variation whose hash equals the hash of the input we'll paste
     const { hashInput } = await import("@utils/hashInput")
     const hash = await hashInput({
-      type: "text",
-      text: "Senior Frontend Engineer at Acme",
+      input: { type: "text", text: "Senior Frontend Engineer at Acme" },
     })
     useVariations
       .getState()
@@ -153,7 +181,7 @@ describe("GenerateApp", () => {
   it("shows a progress indicator while generating", async () => {
     let resolveJob!: (job: GenerateJob) => void
     mockJobFetch(new Promise<GenerateJob>((res) => (resolveJob = res)))
-    render(<GenerateApp />)
+    render(<GenerateApp mode="proximate" />)
     await fillAndGenerate()
 
     await waitFor(() =>
@@ -169,7 +197,7 @@ describe("GenerateApp", () => {
 
   it("shows the job error message on failure", async () => {
     mockJobFetch({ status: "error", error: "wrong password" })
-    render(<GenerateApp />)
+    render(<GenerateApp mode="proximate" />)
     await fillAndGenerate()
     await waitFor(() =>
       expect(screen.getByText(/wrong password/i)).toBeInTheDocument()
@@ -179,7 +207,7 @@ describe("GenerateApp", () => {
   it("freezes hash and sourcePreview at generate time", async () => {
     let resolveJob!: (job: GenerateJob) => void
     mockJobFetch(new Promise<GenerateJob>((res) => (resolveJob = res)))
-    render(<GenerateApp />)
+    render(<GenerateApp mode="proximate" />)
     await fillAndGenerate("Original posting")
     await waitFor(() => expect(fetch).toHaveBeenCalled())
 
@@ -196,22 +224,21 @@ describe("GenerateApp", () => {
     const v = useVariations.getState().variations[0]
     expect(v.sourcePreview).toContain("Original posting")
     expect(v.hash).toBe(
-      await hashInput({ type: "text", text: "Original posting" })
+      await hashInput({ input: { type: "text", text: "Original posting" } })
     )
   })
 
   it("clears the dedupe notice when the input changes", async () => {
     const { hashInput } = await import("@utils/hashInput")
     const hash = await hashInput({
-      type: "text",
-      text: "Senior Frontend Engineer at Acme",
+      input: { type: "text", text: "Senior Frontend Engineer at Acme" },
     })
     useVariations
       .getState()
       .createVariation("Existing", structuredClone(resume) as Data, { hash })
     useVariations.getState().selectVariation(null)
 
-    render(<GenerateApp />)
+    render(<GenerateApp mode="proximate" />)
     await fillAndGenerate()
     await waitFor(() =>
       expect(screen.getByText(/already generated/i)).toBeInTheDocument()

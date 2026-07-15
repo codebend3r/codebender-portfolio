@@ -50,6 +50,9 @@ describe("SideMenu", () => {
     expect(
       screen.getByRole("link", { name: "Generate (Proximate)" })
     ).toHaveAttribute("href", "/generate-proximate")
+    expect(
+      screen.getByRole("link", { name: "Generate (Exact)" })
+    ).toHaveAttribute("href", "/generate-exact")
   })
 
   it("marks the current route with aria-current", () => {

@@ -11,6 +11,10 @@ describe("routeFor", () => {
     expect(routeFor("/generate-proximate")).toBe("generate-proximate")
   })
 
+  it("maps /generate-exact to generate-exact", () => {
+    expect(routeFor("/generate-exact")).toBe("generate-exact")
+  })
+
   it("maps /login to login", () => {
     expect(routeFor("/login")).toBe("login")
   })

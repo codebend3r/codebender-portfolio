@@ -65,7 +65,12 @@ describe("SideMenuComponent", () => {
     const hrefs = [...(nav?.querySelectorAll("a.link") ?? [])].map(
       (a) => a.getAttribute("href") ?? ""
     )
-    expect(hrefs).toEqual(["/", "/edit-resume", "/generate-proximate"])
+    expect(hrefs).toEqual([
+      "/",
+      "/edit-resume",
+      "/generate-proximate",
+      "/generate-exact",
+    ])
   })
 
   it("marks the Home route current on this page", async () => {
