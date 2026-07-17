@@ -37,12 +37,16 @@ describe("buildResumeDocument", () => {
     expect(xml.includes("Education")).toBe(true)
   })
 
-  it("renders the employment label after the company", async () => {
+  it("renders colour-coded employment values after the company", async () => {
     const xml = strFromU8((await unzipDocument())["word/document.xml"])
     const company = xml.indexOf("Babbage &amp; Co")
-    const employment = xml.indexOf("Full-time · Permanent")
+    const schedule = xml.indexOf("Full-time")
+    const arrangement = xml.indexOf("Permanent")
     expect(company).toBeGreaterThanOrEqual(0)
-    expect(employment).toBeGreaterThan(company)
+    expect(schedule).toBeGreaterThan(company)
+    expect(arrangement).toBeGreaterThan(schedule)
+    expect(xml.includes("2F6DA0")).toBe(true) // full-time blue
+    expect(xml.includes("3D7A4F")).toBe(true) // permanent green
   })
 
   it("links urls and emails in the contact bar", async () => {
