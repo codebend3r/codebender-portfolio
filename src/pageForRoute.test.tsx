@@ -53,4 +53,8 @@ describe("pageForRoute", () => {
   it("renders the public app for the app route", () => {
     expect(pageForRoute("app").type).toBe(App)
   })
+
+  it("falls back to the public app for the angular-version route", () => {
+    expect(pageForRoute("angular-version").type).toBe(App)
+  })
 })

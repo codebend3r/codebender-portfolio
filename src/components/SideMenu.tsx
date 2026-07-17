@@ -20,6 +20,11 @@ const LINKS = [
     label: "Generate (Exact)",
     route: "generate-exact",
   },
+  {
+    href: "/angular-version/",
+    label: "Angular Version",
+    route: "angular-version",
+  },
 ] as const
 
 // Owner navigation, mounted on every route. Invisible to anonymous

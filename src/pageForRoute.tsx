@@ -30,6 +30,9 @@ const PAGES: Record<Route, () => ReactElement> = {
     </AuthGate>
   ),
   login: () => <LoginPage />,
+  // `/angular-version/` is a separate MPA entry served by its own
+  // `index.html`; this fallback only renders if the React shell loads there.
+  "angular-version": () => <App />,
   app: () => <App />,
 }
 

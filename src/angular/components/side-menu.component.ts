@@ -23,6 +23,11 @@ const LINKS = [
     label: "Generate (Exact)",
     route: "generate-exact",
   },
+  {
+    href: "/angular-version/",
+    label: "Angular Version",
+    route: "angular-version",
+  },
 ] as const
 
 // Owner navigation. Invisible to anonymous visitors; renders a fixed toggle

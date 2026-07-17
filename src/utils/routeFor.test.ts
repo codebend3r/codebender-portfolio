@@ -19,6 +19,11 @@ describe("routeFor", () => {
     expect(routeFor("/login")).toBe("login")
   })
 
+  it("maps /angular-version to angular-version, with or without a trailing slash", () => {
+    expect(routeFor("/angular-version")).toBe("angular-version")
+    expect(routeFor("/angular-version/")).toBe("angular-version")
+  })
+
   it("maps everything else to app", () => {
     expect(routeFor("/")).toBe("app")
     expect(routeFor("/anything")).toBe("app")

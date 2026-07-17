@@ -4,8 +4,11 @@ Operating rules for this repo.
 
 ## Workflow
 
-- Always create a branch for each feature or bug fix.
-- Auto-commit each logical change without asking.
+- Do not commit anything until I tell you to.
+- Do not push anything until I tell you to.
+- Do not merge anything until I tell you to.
+- Do not create a PR until I tell you to.
+- Do not create a branch until I tell you to.
 
 ## Tooling
 
