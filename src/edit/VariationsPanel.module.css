@@ -6,7 +6,8 @@
   background: var(--panel);
   border: 1px solid var(--border);
   border-radius: 10px;
-  height: fit-content;
+  height: calc(100vh - 32px);
+  height: calc(100dvh - 32px);
   position: sticky;
   top: 16px;
 }
@@ -22,8 +23,12 @@
 .list {
   display: grid;
   gap: 6px;
+  align-content: start;
   list-style: none;
   padding: 0;
+  margin: 0;
+  min-height: 0;
+  overflow-y: auto;
 }
 
 .row {
@@ -80,16 +85,26 @@
 .footer {
   display: grid;
   gap: 8px;
+  /* keep the bottom button clear of the fixed menu toggle */
+  padding-bottom: 32px;
 }
 
 .footer button {
   font: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
   padding: 8px 10px;
   border-radius: 6px;
   border: 1px solid var(--border);
   background: var(--accent);
   color: var(--bg);
   cursor: pointer;
+}
+
+.buttonIcon {
+  flex-shrink: 0;
 }
 
 .footer button:disabled {
