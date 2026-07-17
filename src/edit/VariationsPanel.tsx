@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { type ReactNode, useState } from "react"
 
 import { RenameModal } from "@edit/RenameModal"
 import styles from "@edit/VariationsPanel.module.css"
@@ -15,6 +15,76 @@ type ModalState = {
   mode: "new" | "rename"
   id?: string
   initialName: string
+}
+
+function ButtonIcon({ children }: { children: ReactNode }) {
+  return (
+    <svg
+      className={styles.buttonIcon}
+      viewBox="0 0 24 24"
+      width="16"
+      height="16"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      {children}
+    </svg>
+  )
+}
+
+function SaveIcon() {
+  return (
+    <ButtonIcon>
+      <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" />
+      <polyline points="17 21 17 13 7 13 7 21" />
+      <polyline points="7 3 7 8 15 8" />
+    </ButtonIcon>
+  )
+}
+
+function PdfIcon() {
+  return (
+    <ButtonIcon>
+      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+      <polyline points="14 2 14 8 20 8" />
+      <line x1="16" y1="13" x2="8" y2="13" />
+      <line x1="16" y1="17" x2="8" y2="17" />
+    </ButtonIcon>
+  )
+}
+
+function WordIcon() {
+  return (
+    <ButtonIcon>
+      <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z" />
+      <polyline points="13 2 13 9 20 9" />
+    </ButtonIcon>
+  )
+}
+
+function SyncIcon() {
+  return (
+    <ButtonIcon>
+      <polyline points="23 4 23 10 17 10" />
+      <polyline points="1 20 1 14 7 14" />
+      <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10" />
+      <path d="M20.49 15a9 9 0 0 1-14.85 3.36L1 14" />
+    </ButtonIcon>
+  )
+}
+
+function SignOutIcon() {
+  return (
+    <ButtonIcon>
+      <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+      <polyline points="16 17 21 12 16 7" />
+      <line x1="21" y1="12" x2="9" y2="12" />
+    </ButtonIcon>
+  )
 }
 
 function syncLabel({
@@ -140,12 +210,15 @@ export function VariationsPanel({
 
       <div className={styles.footer}>
         <button type="button" onClick={onSave} disabled={onBase || !dirty}>
+          <SaveIcon />
           Save{dirty && !onBase ? " •" : ""}
         </button>
         <button type="button" onClick={() => onGenerate("pdf")}>
+          <PdfIcon />
           Generate PDF
         </button>
         <button type="button" onClick={() => onGenerate("docx")}>
+          <WordIcon />
           Generate Word
         </button>
         {cloudConfigured && signedIn && (
@@ -154,6 +227,7 @@ export function VariationsPanel({
             onClick={() => void syncNow()}
             disabled={syncing}
           >
+            <SyncIcon />
             {syncLabel({ syncing, unsyncedCount })}
           </button>
         )}
@@ -163,6 +237,7 @@ export function VariationsPanel({
             className={styles.signOut}
             onClick={() => void useAuth.getState().signOut()}
           >
+            <SignOutIcon />
             Sign out
           </button>
         )}
