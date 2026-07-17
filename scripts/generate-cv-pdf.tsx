@@ -7,7 +7,7 @@ import { tokens } from "@theme/tokens"
 import { mkdir } from "node:fs/promises"
 import path from "node:path"
 
-import resume from "@data/resume.json"
+import { resumeData } from "@data/resumeData"
 
 import { ResumePDF } from "@pdf/ResumePDF"
 
@@ -38,7 +38,7 @@ Font.register({
 })
 Font.registerHyphenationCallback((word) => [word])
 
-const data = normalizeData(structuredClone(resume))
+const data = normalizeData(structuredClone(resumeData))
 const buffer = await renderToBuffer(<ResumePDF data={data} />)
 
 const outDir = path.resolve(import.meta.dir, "../public/cv")

@@ -5,6 +5,7 @@ import {
   formatEmployment,
   isEmploymentArrangement,
   isEmploymentSchedule,
+  narrowEmployment,
   scheduleOptions,
 } from "@utils/employment"
 
@@ -53,6 +54,35 @@ describe("formatEmployment", () => {
 
   it("returns null when both are absent", () => {
     expect(formatEmployment({})).toBe(null)
+  })
+})
+
+describe("narrowEmployment", () => {
+  const base = {
+    role: "Engine Analyst",
+    company: "Babbage & Co",
+    period: "1842 – 1843",
+    achievements: ["Wrote the first algorithm"],
+  }
+
+  it("keeps valid values", () => {
+    const entry = narrowEmployment({
+      ...base,
+      schedule: "part-time",
+      arrangement: "contract",
+    })
+    expect(entry.schedule).toBe("part-time")
+    expect(entry.arrangement).toBe("contract")
+  })
+
+  it("drops invalid values to undefined", () => {
+    const entry = narrowEmployment({
+      ...base,
+      schedule: "sometimes",
+      arrangement: 3,
+    })
+    expect(entry.schedule).toBeUndefined()
+    expect(entry.arrangement).toBeUndefined()
   })
 })
 

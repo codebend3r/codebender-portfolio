@@ -81,6 +81,8 @@
       "role": "Senior Frontend Engineer",
       "company": "The Globe and Mail",
       "period": "09/2024 - 05/2026",
+      "schedule": "full-time",
+      "arrangement": "contract",
       "achievements": [
         "Developed interactive React components integrated with a proprietary CMS, boosting reader engagement and streamlining content management.",
         "Embedded AI tooling into daily development and code reviews, raising code quality and cutting review turnaround time.",
@@ -93,6 +95,8 @@
       "role": "Fullstack Engineer",
       "company": "iPolitics",
       "period": "11/2023 - Present",
+      "schedule": "part-time",
+      "arrangement": "contract",
       "achievements": [
         "Served as the sole full-stack developer for two Next.js/React/Prisma/Sanity news sites (iPolitics and QP Briefing), owning the backend, CI/CD, and infrastructure end-to-end.",
         "Diagnosed and resolved Sanity.io CMS issues, keeping both newsrooms publishing without interruption.",
@@ -104,6 +108,8 @@
       "role": "Principal Robot",
       "company": "Robots and Pencils",
       "period": "06/2024 - 09/2024",
+      "schedule": "full-time",
+      "arrangement": "contract",
       "achievements": [
         "Managed the ASU project lifecycle end-to-end, implementing new features and ensuring timely delivery.",
         "Conducted pull request reviews, upholding code quality and reinforcing team best practices.",
@@ -114,6 +120,8 @@
       "role": "Senior Frontend Engineer",
       "company": "XP Ventures Labs",
       "period": "03/2024 - 05/2024",
+      "schedule": "full-time",
+      "arrangement": "contract",
       "achievements": [
         "Led the conversion of a legacy React JavaScript application into modular TypeScript micro-frontends, modernizing the architecture and enabling independent deployments.",
         "Migrated global state from Redux to Zustand and refactored components to modern React patterns, improving performance and reducing complexity.",
@@ -126,6 +134,8 @@
       "role": "Senior Frontend Engineer + Architect",
       "company": "Radian",
       "period": "06/2022 - 11/2023",
+      "schedule": "full-time",
+      "arrangement": "contract",
       "achievements": [
         "Served as Frontend Lead Architect for homegeniusrealestate.com, leading frontend development from scratch to production with Next.js, TypeScript, GraphQL, and Nest.js.",
         "Delivered the complete real estate platform to market in under one year.",
@@ -140,6 +150,8 @@
       "role": "Senior Frontend Engineer + Architect",
       "company": "Varicent",
       "period": "01/2021 - 06/2022",
+      "schedule": "full-time",
+      "arrangement": "permanent",
       "achievements": [
         "Collaborated directly with the CTO as Frontend Architect, migrating React JavaScript components to TypeScript across projects to improve maintainability and type safety.",
         "Overhauled the webpack configuration and migrated builds to Vite and esbuild, cutting build times significantly.",
@@ -153,6 +165,8 @@
       "role": "Senior Frontend Engineer",
       "company": "Myplanet",
       "period": "12/2020 - 02/2021",
+      "schedule": "full-time",
+      "arrangement": "contract",
       "achievements": [
         "Developed an internal TypeScript toolset that streamlined website and application production by automating repetitive frontend tasks.",
         "Built a suite of reusable React component libraries to accelerate delivery across product teams.",
@@ -164,6 +178,8 @@
       "role": "Senior Frontend Engineer",
       "company": "RBC Capital Markets",
       "period": "08/2020 - 12/2020",
+      "schedule": "full-time",
+      "arrangement": "contract",
       "achievements": [
         "Engineered a real-time stock trading application leveraging React Hooks, TypeScript, and RxJS to deliver reactive market data streams.",
         "Authored comprehensive unit test coverage across React components to safeguard performance and stability.",
@@ -175,6 +191,8 @@
       "role": "Lead Frontend Engineer",
       "company": "RBC Ventures",
       "period": "08/2019 - 08/2020",
+      "schedule": "full-time",
+      "arrangement": "contract",
       "achievements": [
         "Planned and developed new frontend features for the admin app, enabling efficient user management.",
         "Migrated the app from its legacy React architecture to a custom framework built on React Hooks.",
@@ -187,6 +205,8 @@
       "role": "Frontend Team Lead",
       "company": "Toronto Star",
       "period": "12/2018 - 08/2019",
+      "schedule": "full-time",
+      "arrangement": "contract",
       "achievements": [
         "Maintained and enhanced thestar.com in React, leading development of a new responsive main menu.",
         "Acted as lead developer, owning pull request reviews and merges to uphold code quality, site performance, and user experience.",
@@ -200,6 +220,8 @@
       "role": "Senior Frontend Engineer",
       "company": "The Globe and Mail",
       "period": "05/2016 - 04/2018",
+      "schedule": "full-time",
+      "arrangement": "permanent",
       "achievements": [
         "Developed and maintained website features using vanilla JavaScript.",
         "Collaborated with the frontend team to build highly performant, responsive components.",
@@ -213,6 +235,8 @@
       "role": "Senior Frontend Engineer",
       "company": "theScore",
       "period": "01/2016 - 05/2016",
+      "schedule": "full-time",
+      "arrangement": "contract",
       "achievements": [
         "Developed a fantasy sports application using Ember.js, delivering interactive features for end users.",
         "Collaborated within an agile team environment, contributing to iterative development and sprint planning.",
@@ -224,6 +248,8 @@
       "role": "Frontend Team Lead",
       "company": "Rogers",
       "period": "11/2014 - 01/2016",
+      "schedule": "full-time",
+      "arrangement": "contract",
       "achievements": [
         "Developed a Rogers web application and established AngularJS coding conventions adopted by all developers.",
         "Conducted technical interviews to assess candidates' AngularJS expertise, ensuring strong additions to the team.",
@@ -236,6 +262,8 @@
       "role": "Intermediate Frontend Developer",
       "company": "Uptime Software",
       "period": "04/2014 - 11/2014",
+      "schedule": "full-time",
+      "arrangement": "permanent",
       "achievements": [
         "Served as the sole frontend specialist for a company-wide computer and server monitoring application built with AngularJS.",
         "Implemented a Test-Driven Development (TDD) workflow using Jasmine, Karma, and Protractor.",
@@ -248,6 +276,8 @@
       "role": "Intermediate Frontend Developer",
       "company": "Kobo Inc.",
       "period": "02/2012 - 03/2014",
+      "schedule": "full-time",
+      "arrangement": "permanent",
       "achievements": [
         "Contributed to the development of Kobo's Instant Reader web application, built on the SproutCore JavaScript framework.",
         "Diagnosed and resolved frontend defects while delivering new features across the reading experience.",
@@ -260,6 +290,8 @@
       "role": "Senior Flash Developer + Team Lead",
       "company": "Research Now",
       "period": "07/2008 - 09/2011",
+      "schedule": "full-time",
+      "arrangement": "permanent",
       "achievements": [
         "Architected a global Flash framework that powered Research Now's custom survey tooling across international markets.",
         "Engaged directly with clients to gather requirements and scope custom development work.",

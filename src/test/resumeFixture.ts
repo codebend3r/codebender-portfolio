@@ -14,6 +14,8 @@ export const resumeFixture: Data = {
       role: "Engine Analyst",
       company: "Babbage & Co",
       period: "1842 – 1843",
+      schedule: "full-time",
+      arrangement: "permanent",
       achievements: ["Wrote the first algorithm", "Annotated the memoir"],
     },
   ],

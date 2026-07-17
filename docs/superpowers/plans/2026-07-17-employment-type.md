@@ -226,6 +226,8 @@ EOF
 - Modify: `src/generate/GenerateApp.tsx:5,21`
 - Modify: `scripts/generate-cv-pdf.tsx:10,41`
 - Modify: `src/test/resumeFixture.ts:13-18`
+- Create: `netlify/functions/lib/baseResume.ts` (discovered during execution: `generate.mts` and `prompt.test.ts` also bind the JSON to `Data`; they share a relative-import twin of the loader built on `narrowEmployment` from `@utils/employment`)
+- Modify: `netlify/functions/generate.mts:5,18`, `netlify/functions/lib/prompt.test.ts:3,187-204`
 
 **Interfaces:**
 

@@ -10,15 +10,13 @@ import { Summary } from "@components/Summary"
 import { TechnicalSkills } from "@components/TechnicalSkills"
 import { WorkExperience } from "@components/WorkExperience"
 
-import resume from "@data/resume.json"
+import { resumeData as baseResume } from "@data/resumeData"
 
 import styles from "@generate/GeneratePreview.module.css"
 
 import { useStore } from "@state/useStore"
 
 import { diffResume } from "@utils/resumeDiff"
-
-const baseResume: Data = resume
 
 type GeneratePreviewProps = {
   data: Data

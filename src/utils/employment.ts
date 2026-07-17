@@ -29,6 +29,21 @@ export const arrangementOptions: readonly EmploymentOption[] = ARRANGEMENTS.map(
   (value) => ({ value, label: LABELS[value] })
 )
 
+type RawExperience = Omit<Experience, "schedule" | "arrangement"> & {
+  schedule?: unknown
+  arrangement?: unknown
+}
+
+// Narrows a JSON-sourced entry (schedule/arrangement inferred as `string`)
+// to the literal unions without casts; invalid values become `undefined`.
+export const narrowEmployment = (entry: RawExperience): Experience => ({
+  ...entry,
+  schedule: isEmploymentSchedule(entry.schedule) ? entry.schedule : undefined,
+  arrangement: isEmploymentArrangement(entry.arrangement)
+    ? entry.arrangement
+    : undefined,
+})
+
 export const formatEmployment = ({
   schedule,
   arrangement,
