@@ -1,3 +1,4 @@
+import sansRegular from "@docx/fonts/SourceSans3-Regular.ttf?url"
 import serifRegular from "@docx/fonts/SourceSerif4-Regular.ttf?url"
 import serifSemibold from "@docx/fonts/SourceSerif4-Semibold.ttf?url"
 import { tokens } from "@theme/tokens"
@@ -26,5 +27,6 @@ export function loadDocxFonts(): Promise<DocxFont[]> {
   return Promise.all([
     loadFont({ name: tokens.font.family, url: serifRegular }),
     loadFont({ name: `${tokens.font.family} Semibold`, url: serifSemibold }),
+    loadFont({ name: tokens.font.sans, url: sansRegular }),
   ])
 }

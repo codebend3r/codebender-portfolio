@@ -45,6 +45,39 @@ describe("WorkExperience", () => {
     expect(screen.getByText("02 · Experience")).toBeInTheDocument()
   })
 
+  it("shows the employment label under the period", () => {
+    render(<WorkExperience />)
+    const byComposedText =
+      (expected: string) => (_: string, element: Element | null) =>
+        (element?.textContent ?? "") === expected &&
+        !!element?.querySelector("[style]")
+    expect(
+      screen.getAllByText(byComposedText("Full-time · Contract")).length
+    ).toBeGreaterThanOrEqual(1)
+    expect(
+      screen.getAllByText(byComposedText("Part-time · Contract")).length
+    ).toBeGreaterThanOrEqual(1)
+    expect(
+      screen.getAllByText(byComposedText("Full-time · Permanent")).length
+    ).toBeGreaterThanOrEqual(1)
+  })
+
+  it("colours each employment value with its CSS variable", () => {
+    render(<WorkExperience />)
+    expect(
+      screen.getAllByText("Full-time")[0].getAttribute("style") ?? ""
+    ).toContain("--employment-full-time")
+    expect(
+      screen.getAllByText("Part-time")[0].getAttribute("style") ?? ""
+    ).toContain("--employment-part-time")
+    expect(
+      screen.getAllByText("Contract")[0].getAttribute("style") ?? ""
+    ).toContain("--employment-contract")
+    expect(
+      screen.getAllByText("Permanent")[0].getAttribute("style") ?? ""
+    ).toContain("--employment-permanent")
+  })
+
   it("shows a human-readable duration next to each period", () => {
     render(<WorkExperience />)
     // 09/2024 - 05/2026 counts 21 calendar months
@@ -83,6 +116,24 @@ describe("WorkExperience editing", () => {
       screen.getAllByRole("button", { name: /remove experience/i })[0]
     )
     expect(useStore.getState().work_experience[0].company).toBe(second)
+  })
+
+  it("updates schedule through the dropdown", () => {
+    renderEditing()
+    fireEvent.change(
+      screen.getAllByRole("combobox", { name: /schedule/i })[0],
+      { target: { value: "part-time" } }
+    )
+    expect(useStore.getState().work_experience[0].schedule).toBe("part-time")
+  })
+
+  it("clears arrangement when the placeholder is chosen", () => {
+    renderEditing()
+    fireEvent.change(
+      screen.getAllByRole("combobox", { name: /arrangement/i })[0],
+      { target: { value: "" } }
+    )
+    expect(useStore.getState().work_experience[0].arrangement).toBeUndefined()
   })
 
   it("adds a bullet to the first experience", () => {

@@ -1,6 +1,6 @@
 import { create } from "zustand"
 
-import data from "@data/resume.json"
+import { resumeData } from "@data/resumeData"
 
 import { getAtPath } from "@utils/getAtPath"
 import { moveItem } from "@utils/moveItem"
@@ -11,11 +11,13 @@ const NEW_EXPERIENCE: Experience = {
   role: "New Role",
   company: "Company",
   period: "MM/YYYY - Present",
+  schedule: "full-time",
+  arrangement: "permanent",
   achievements: ["Achievement"],
 }
 
 export const useStore = create<ResumeStore>((set, get) => ({
-  ...normalizeData(structuredClone(data) as Data),
+  ...normalizeData(structuredClone(resumeData)),
 
   loadData: (next) => set(normalizeData(structuredClone(next))),
 

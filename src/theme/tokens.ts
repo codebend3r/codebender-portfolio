@@ -9,6 +9,14 @@ export const tokens = {
     onAccentMuted: "#c4d2dc",
     border: "#d6dce2",
     rule: "#c9d2da",
+    // One colour per employment value so document exporters render every
+    // schedule/arrangement combination as the same colour pair.
+    employment: {
+      "full-time": "#2f6da0",
+      "part-time": "#7a5ea6",
+      contract: "#a8681f",
+      permanent: "#3d7a4f",
+    },
   },
   fontSize: {
     micro: 8,
@@ -33,6 +41,10 @@ export const tokens = {
     paddingHorizontal: 40,
   },
   font: {
+    // Serif carries the display voice (name, roles, companies); sans the
+    // reading voice (body text, labels). Same Adobe superfamily, so the
+    // two are designed to pair.
     family: "Source Serif 4",
+    sans: "Source Sans 3",
   },
 } as const

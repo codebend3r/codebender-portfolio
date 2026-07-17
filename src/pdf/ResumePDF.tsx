@@ -1,10 +1,12 @@
-import type { ReactNode } from "react"
+import { Fragment, type ReactNode } from "react"
 
 import { Document, Link, Page, Text, View } from "@react-pdf/renderer"
+import { tokens } from "@theme/tokens"
 
 import { styles } from "@pdf/styles"
 
 import { isUrl, stripProtocol } from "@utils/contact"
+import { employmentParts } from "@utils/employment"
 
 type Props = { data: Data }
 
@@ -136,6 +138,7 @@ function Section({
 }
 
 function ExperienceEntry({ entry }: { entry: Experience }) {
+  const employment = employmentParts(entry)
   // wrap={false} keeps the whole entry on one page: when it does not fit
   // in the remaining space it moves to the next page instead of splitting.
   return (
@@ -145,7 +148,21 @@ function ExperienceEntry({ entry }: { entry: Experience }) {
         <Text style={styles.role}>{entry.role}</Text>
         <Text style={styles.period}>{entry.period}</Text>
       </View>
-      <Text style={styles.company}>{entry.company}</Text>
+      <View style={styles.companyRow}>
+        <Text style={styles.company}>{entry.company}</Text>
+        {!!employment.length && (
+          <Text style={styles.employment}>
+            {employment.map((part, i) => (
+              <Fragment key={part.key}>
+                {i > 0 && " · "}
+                <Text style={{ color: tokens.colors.employment[part.key] }}>
+                  {part.label}
+                </Text>
+              </Fragment>
+            ))}
+          </Text>
+        )}
+      </View>
       {entry.achievements.map((a, i) => (
         <Text key={i} style={styles.achievement}>
           <Text style={styles.bullet}>{"\u2022  "}</Text>

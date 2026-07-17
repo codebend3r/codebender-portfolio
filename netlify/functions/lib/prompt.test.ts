@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
 
-import resume from "../../../src/data/resume.json"
+import { baseResume } from "./baseResume"
 import {
   PATCH_SCHEMA,
   buildSystemPrompt,
@@ -184,15 +184,15 @@ describe("isGenerateMode", () => {
 
 describe("buildSystemPrompt", () => {
   it("embeds the base resume and ground-truth rules in proximate mode", () => {
-    const prompt = buildSystemPrompt({ base: resume, mode: "proximate" })
-    expect(prompt).toContain(resume.name)
+    const prompt = buildSystemPrompt({ base: baseResume, mode: "proximate" })
+    expect(prompt).toContain(baseResume.name)
     expect(prompt.toLowerCase()).toContain("never invent")
     expect(prompt).toContain("suggestedName")
   })
 
   it("allows fabricated details at real employers in exact mode", () => {
-    const prompt = buildSystemPrompt({ base: resume, mode: "exact" })
-    expect(prompt).toContain(resume.name)
+    const prompt = buildSystemPrompt({ base: baseResume, mode: "exact" })
+    expect(prompt).toContain(baseResume.name)
     expect(prompt).toContain("suggestedName")
     expect(prompt.toLowerCase()).toContain("invent a")
     expect(prompt).toContain("EVERY required skill")
@@ -201,7 +201,7 @@ describe("buildSystemPrompt", () => {
   })
 
   it("keeps the fabrication license out of proximate mode", () => {
-    const prompt = buildSystemPrompt({ base: resume, mode: "proximate" })
+    const prompt = buildSystemPrompt({ base: baseResume, mode: "proximate" })
     expect(prompt).not.toContain("EVERY required skill")
     expect(prompt.toLowerCase()).not.toContain("fabricated")
   })

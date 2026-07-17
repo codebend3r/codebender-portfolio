@@ -9,7 +9,7 @@ import { Summary } from "@components/Summary"
 import { TechnicalSkills } from "@components/TechnicalSkills"
 import { WorkExperience } from "@components/WorkExperience"
 
-import resume from "@data/resume.json"
+import { resumeData } from "@data/resumeData"
 
 import { EditProvider } from "@edit/EditContext"
 import styles from "@edit/EditResumeApp.module.css"
@@ -27,7 +27,7 @@ import appStyles from "@app/App.module.css"
 export default function EditResumeApp() {
   const { variations, activeId } = useVariations()
   const active = variations.find((v) => v.id === activeId)
-  const initialData = active ? active.data : (resume as Data)
+  const initialData = active?.data ?? resumeData
 
   // Key on the selection so switching variations remounts the session,
   // resetting its dirty flag without calling setState inside an effect.

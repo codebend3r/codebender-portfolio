@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core"
 
-import resume from "@data/resume.json"
+import { resumeData } from "@data/resumeData"
 
 import { normalizeData } from "@utils/normalizeData"
 
@@ -8,5 +8,5 @@ import { normalizeData } from "@utils/normalizeData"
 // the checked-in `resume.json` only; no store, no cloud sync.
 @Injectable({ providedIn: "root" })
 export class ResumeDataService {
-  readonly data: Data = normalizeData(structuredClone(resume))
+  readonly data: Data = normalizeData(structuredClone(resumeData))
 }

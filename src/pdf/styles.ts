@@ -5,7 +5,7 @@ export const styles = StyleSheet.create({
   page: {
     backgroundColor: tokens.colors.bg,
     color: tokens.colors.text,
-    fontFamily: tokens.font.family,
+    fontFamily: tokens.font.sans,
     fontSize: tokens.fontSize.body,
     paddingTop: tokens.page.paddingTop,
     paddingBottom: tokens.page.paddingBottom,
@@ -20,6 +20,7 @@ export const styles = StyleSheet.create({
     gap: tokens.spacing.xs,
   },
   name: {
+    fontFamily: tokens.font.family,
     fontSize: tokens.fontSize.h1,
     fontWeight: 700,
     color: tokens.colors.text,
@@ -111,6 +112,7 @@ export const styles = StyleSheet.create({
     gap: tokens.spacing.md,
   },
   role: {
+    fontFamily: tokens.font.family,
     fontSize: tokens.fontSize.h3,
     fontWeight: 700,
     color: tokens.colors.text,
@@ -120,11 +122,23 @@ export const styles = StyleSheet.create({
     fontStyle: "italic",
     color: tokens.colors.muted,
   },
+  companyRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "baseline",
+    gap: tokens.spacing.md,
+    marginBottom: 3,
+  },
   company: {
+    fontFamily: tokens.font.family,
     fontSize: tokens.fontSize.body,
     fontWeight: 600,
     color: tokens.colors.accent,
-    marginBottom: 3,
+  },
+  employment: {
+    fontSize: tokens.fontSize.small,
+    fontStyle: "italic",
+    color: tokens.colors.muted,
   },
   achievement: {
     fontSize: tokens.fontSize.body,
@@ -151,6 +165,7 @@ export const styles = StyleSheet.create({
     marginBottom: tokens.spacing.sm,
   },
   metaPrimary: {
+    fontFamily: tokens.font.family,
     fontSize: tokens.fontSize.body,
     fontWeight: 700,
     color: tokens.colors.text,

@@ -8,6 +8,7 @@ import {
 import { SectionComponent } from "@ngapp/components/section.component"
 import { ResumeDataService } from "@ngapp/services/resume-data.service"
 
+import { employmentParts } from "@utils/employment"
 import { experienceDuration } from "@utils/experienceDuration"
 
 @Component({
@@ -35,6 +36,16 @@ import { experienceDuration } from "@utils/experienceDuration"
                   @if (experience.duration !== null) {
                     <span class="duration">{{ experience.duration }}</span>
                   }
+                  @if (experience.employment.length) {
+                    <span class="employment">
+                      @for (part of experience.employment; track part.key) {
+                        @if (!$first) {
+                          <span>{{ " · " }}</span>
+                        }
+                        <span [style.color]="part.color">{{ part.label }}</span>
+                      }
+                    </span>
+                  }
                 </span>
               </div>
               <ul class="bullets">
@@ -57,6 +68,10 @@ export class WorkExperienceComponent {
     (experience) => ({
       ...experience,
       duration: experienceDuration(experience.period),
+      employment: employmentParts(experience).map((part) => ({
+        ...part,
+        color: `var(--employment-${part.key})`,
+      })),
     })
   )
 }
