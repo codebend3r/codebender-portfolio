@@ -53,6 +53,9 @@ describe("SideMenu", () => {
     expect(
       screen.getByRole("link", { name: "Generate (Exact)" })
     ).toHaveAttribute("href", "/generate-exact")
+    expect(
+      screen.getByRole("link", { name: "Angular Version" })
+    ).toHaveAttribute("href", "/angular-version/")
   })
 
   it("marks the current route with aria-current", () => {

@@ -70,11 +70,12 @@ describe("SideMenuComponent", () => {
       "/edit-resume",
       "/generate-proximate",
       "/generate-exact",
+      "/angular-version/",
     ])
   })
 
   it("marks the Home route current on this page", async () => {
-    // `routeFor` maps unknown paths (like /angular-version) to the app route.
+    // jsdom serves tests from "/", so Home is the active route.
     const auth = makeAuth()
     signedIn(auth)
     const { root, fixture } = await render(auth)
