@@ -120,11 +120,22 @@ export const styles = StyleSheet.create({
     fontStyle: "italic",
     color: tokens.colors.muted,
   },
+  companyRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "baseline",
+    gap: tokens.spacing.md,
+    marginBottom: 3,
+  },
   company: {
     fontSize: tokens.fontSize.body,
     fontWeight: 600,
     color: tokens.colors.accent,
-    marginBottom: 3,
+  },
+  employment: {
+    fontSize: tokens.fontSize.small,
+    fontStyle: "italic",
+    color: tokens.colors.muted,
   },
   achievement: {
     fontSize: tokens.fontSize.body,
