@@ -67,9 +67,18 @@
   font-size: 12px;
 }
 
+.employment {
+  display: grid;
+  gap: 2px;
+  color: var(--muted);
+  font-weight: 400;
+  font-size: 12px;
+}
+
 /* The period column is `auto`; let the input's `size` attribute fit the
    value instead of the shared `width: 100%` field rule. */
-.period input {
+.period input,
+.period select {
   width: auto;
 }
 

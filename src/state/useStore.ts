@@ -11,6 +11,8 @@ const NEW_EXPERIENCE: Experience = {
   role: "New Role",
   company: "Company",
   period: "MM/YYYY - Present",
+  schedule: "full-time",
+  arrangement: "permanent",
   achievements: ["Achievement"],
 }
 

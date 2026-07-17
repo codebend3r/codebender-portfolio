@@ -4,12 +4,20 @@ import { Section } from "@components/Section"
 import styles from "@components/WorkExperience.module.css"
 
 import { useEditing } from "@edit/EditContext"
+import { EditableSelect } from "@edit/EditableSelect"
 import { EditableText } from "@edit/EditableText"
 import { SortableItem, SortableList } from "@edit/SortableList"
 import sortStyles from "@edit/SortableList.module.css"
 
 import { useStore } from "@state/useStore"
 
+import {
+  arrangementOptions,
+  formatEmployment,
+  isEmploymentArrangement,
+  isEmploymentSchedule,
+  scheduleOptions,
+} from "@utils/employment"
 import { experienceDuration } from "@utils/experienceDuration"
 
 export function WorkExperience({
@@ -38,6 +46,7 @@ export function WorkExperience({
         <ul className={styles.timeline}>
           {work_experience.map((w, wi) => {
             const duration = experienceDuration(w.period)
+            const employment = formatEmployment(w)
             return (
               <SortableItem key={wi} index={wi} label={`experience ${wi + 1}`}>
                 {(experienceHandle) => (
@@ -67,6 +76,42 @@ export function WorkExperience({
                         />
                         {duration && (
                           <span className={styles.duration}>{duration}</span>
+                        )}
+                        {editing ? (
+                          <span className={styles.employment}>
+                            <EditableSelect
+                              value={w.schedule ?? ""}
+                              options={scheduleOptions}
+                              placeholder="schedule"
+                              ariaLabel={`Schedule ${wi + 1}`}
+                              onCommit={(next) =>
+                                store.setPath(
+                                  ["work_experience", wi, "schedule"],
+                                  isEmploymentSchedule(next) ? next : undefined
+                                )
+                              }
+                            />
+                            <EditableSelect
+                              value={w.arrangement ?? ""}
+                              options={arrangementOptions}
+                              placeholder="arrangement"
+                              ariaLabel={`Arrangement ${wi + 1}`}
+                              onCommit={(next) =>
+                                store.setPath(
+                                  ["work_experience", wi, "arrangement"],
+                                  isEmploymentArrangement(next)
+                                    ? next
+                                    : undefined
+                                )
+                              }
+                            />
+                          </span>
+                        ) : (
+                          !!employment && (
+                            <span className={styles.employment}>
+                              {employment}
+                            </span>
+                          )
                         )}
                       </span>
                     </div>
