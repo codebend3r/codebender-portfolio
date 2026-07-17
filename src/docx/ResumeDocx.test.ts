@@ -37,6 +37,14 @@ describe("buildResumeDocument", () => {
     expect(xml.includes("Education")).toBe(true)
   })
 
+  it("renders the employment label after the company", async () => {
+    const xml = strFromU8((await unzipDocument())["word/document.xml"])
+    const company = xml.indexOf("Babbage &amp; Co")
+    const employment = xml.indexOf("Full-time · Permanent")
+    expect(company).toBeGreaterThanOrEqual(0)
+    expect(employment).toBeGreaterThan(company)
+  })
+
   it("links urls and emails in the contact bar", async () => {
     const rels = strFromU8(
       (await unzipDocument())["word/_rels/document.xml.rels"]

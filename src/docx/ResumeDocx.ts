@@ -21,6 +21,7 @@ import {
 } from "docx"
 
 import { isEmail, isUrl, stripProtocol } from "@utils/contact"
+import { formatEmployment } from "@utils/employment"
 
 type ContactChild = TextRun | ExternalHyperlink
 
@@ -202,6 +203,7 @@ function skillPills(skills: string[]): Paragraph {
 // and keepNext/keepLines emulate the PDF's wrap={false}.
 function experienceParagraphs(entry: Experience): Paragraph[] {
   const indent = twips(22)
+  const employment = formatEmployment(entry)
   return [
     new Paragraph({
       keepNext: true,
@@ -236,12 +238,24 @@ function experienceParagraphs(entry: Experience): Paragraph[] {
       keepLines: true,
       indent: { left: indent },
       spacing: { after: twips(3) },
+      tabStops: [{ type: TabStopType.RIGHT, position: CONTENT_WIDTH }],
       children: [
         new TextRun({
           text: entry.company,
           font: FONT_SEMIBOLD,
           color: hex(tokens.colors.accent),
         }),
+        ...(employment
+          ? [
+              new TextRun({ children: [new Tab()] }),
+              new TextRun({
+                text: employment,
+                italics: true,
+                size: halfPoints(tokens.fontSize.small),
+                color: hex(tokens.colors.muted),
+              }),
+            ]
+          : []),
       ],
     }),
     ...entry.achievements.map(
