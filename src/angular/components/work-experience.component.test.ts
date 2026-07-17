@@ -51,6 +51,14 @@ describe("WorkExperienceComponent", () => {
     )
   })
 
+  it("renders the employment label for the first experience", async () => {
+    const root = await render()
+    const first = root.querySelector(".item")
+    expect(first?.querySelector(".employment")?.textContent?.trim() ?? "").toBe(
+      "Full-time · Contract"
+    )
+  })
+
   it("renders the computed duration when the period parses", async () => {
     const root = await render()
     const experience = resume.work_experience[0]
