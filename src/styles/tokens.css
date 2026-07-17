@@ -6,6 +6,12 @@
   --accent: #7aa2f7;
   --accent2: #c678dd;
   --border: #1b2233;
+  /* Dark-theme variants of `tokens.colors.employment` (print hexes live in
+     src/theme/tokens.ts); same hue semantics, brightened for this bg. */
+  --employment-full-time: #7dcfff;
+  --employment-part-time: #bb9af7;
+  --employment-contract: #e0af68;
+  --employment-permanent: #9ece6a;
   --panel-overlay: linear-gradient(
     180deg,
     rgba(17, 22, 34, 0.78),

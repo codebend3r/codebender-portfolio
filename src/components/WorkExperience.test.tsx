@@ -47,15 +47,35 @@ describe("WorkExperience", () => {
 
   it("shows the employment label under the period", () => {
     render(<WorkExperience />)
+    const byComposedText =
+      (expected: string) => (_: string, element: Element | null) =>
+        (element?.textContent ?? "") === expected &&
+        !!element?.querySelector("[style]")
     expect(
-      screen.getAllByText("Full-time · Contract").length
+      screen.getAllByText(byComposedText("Full-time · Contract")).length
     ).toBeGreaterThanOrEqual(1)
     expect(
-      screen.getAllByText("Part-time · Contract").length
+      screen.getAllByText(byComposedText("Part-time · Contract")).length
     ).toBeGreaterThanOrEqual(1)
     expect(
-      screen.getAllByText("Full-time · Permanent").length
+      screen.getAllByText(byComposedText("Full-time · Permanent")).length
     ).toBeGreaterThanOrEqual(1)
+  })
+
+  it("colours each employment value with its CSS variable", () => {
+    render(<WorkExperience />)
+    expect(
+      screen.getAllByText("Full-time")[0].getAttribute("style") ?? ""
+    ).toContain("--employment-full-time")
+    expect(
+      screen.getAllByText("Part-time")[0].getAttribute("style") ?? ""
+    ).toContain("--employment-part-time")
+    expect(
+      screen.getAllByText("Contract")[0].getAttribute("style") ?? ""
+    ).toContain("--employment-contract")
+    expect(
+      screen.getAllByText("Permanent")[0].getAttribute("style") ?? ""
+    ).toContain("--employment-permanent")
   })
 
   it("shows a human-readable duration next to each period", () => {

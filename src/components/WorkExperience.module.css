@@ -68,11 +68,14 @@
 }
 
 .employment {
-  display: grid;
-  gap: 2px;
   color: var(--muted);
   font-weight: 400;
   font-size: 12px;
+}
+
+.employmentEditor {
+  display: grid;
+  gap: 2px;
 }
 
 /* The period column is `auto`; let the input's `size` attribute fit the

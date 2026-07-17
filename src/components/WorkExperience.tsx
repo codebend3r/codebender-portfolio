@@ -1,3 +1,5 @@
+import { Fragment } from "react"
+
 import { useDiff } from "@components/DiffContext"
 import hl from "@components/DiffHighlight.module.css"
 import { Section } from "@components/Section"
@@ -13,7 +15,7 @@ import { useStore } from "@state/useStore"
 
 import {
   arrangementOptions,
-  formatEmployment,
+  employmentParts,
   isEmploymentArrangement,
   isEmploymentSchedule,
   scheduleOptions,
@@ -46,7 +48,7 @@ export function WorkExperience({
         <ul className={styles.timeline}>
           {work_experience.map((w, wi) => {
             const duration = experienceDuration(w.period)
-            const employment = formatEmployment(w)
+            const employment = employmentParts(w)
             return (
               <SortableItem key={wi} index={wi} label={`experience ${wi + 1}`}>
                 {(experienceHandle) => (
@@ -78,7 +80,9 @@ export function WorkExperience({
                           <span className={styles.duration}>{duration}</span>
                         )}
                         {editing ? (
-                          <span className={styles.employment}>
+                          <span
+                            className={`${styles.employment} ${styles.employmentEditor}`}
+                          >
                             <EditableSelect
                               value={w.schedule ?? ""}
                               options={scheduleOptions}
@@ -107,9 +111,20 @@ export function WorkExperience({
                             />
                           </span>
                         ) : (
-                          !!employment && (
+                          !!employment.length && (
                             <span className={styles.employment}>
-                              {employment}
+                              {employment.map((part, pi) => (
+                                <Fragment key={part.key}>
+                                  {pi > 0 && " · "}
+                                  <span
+                                    style={{
+                                      color: `var(--employment-${part.key})`,
+                                    }}
+                                  >
+                                    {part.label}
+                                  </span>
+                                </Fragment>
+                              ))}
                             </span>
                           )
                         )}

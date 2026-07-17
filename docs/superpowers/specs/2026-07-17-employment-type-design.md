@@ -69,22 +69,24 @@ New `src/utils/employment.ts` (+ co-located test):
 Display casing: `Full-time`, `Part-time`, `Contract`, `Permanent`, joined
 with `·`.
 
-## Colour coding (PDF + DOCX)
+## Colour coding (all outputs)
 
-Each employment value has a fixed colour, defined once in
-`tokens.colors.employment` so both document exporters share it and every
-combination (e.g. full-time + permanent) is always the same colour pair:
+Each employment value has a fixed colour so every combination (e.g.
+full-time + permanent) is always the same colour pair. Print colours live in
+`tokens.colors.employment` (PDF + DOCX, on white); the dark-theme web/Angular
+variants are the `--employment-*` variables in `src/styles/tokens.css`
+(same hue semantics, brightened for the dark background):
 
-| Value     | Colour           |
-| --------- | ---------------- |
-| full-time | `#2f6da0` blue   |
-| part-time | `#7a5ea6` violet |
-| contract  | `#a8681f` bronze |
-| permanent | `#3d7a4f` green  |
+| Value     | Print (PDF/DOCX) | Web/Angular (dark) |
+| --------- | ---------------- | ------------------ |
+| full-time | `#2f6da0` blue   | `#7dcfff`          |
+| part-time | `#7a5ea6` violet | `#bb9af7`          |
+| contract  | `#a8681f` bronze | `#e0af68`          |
+| permanent | `#3d7a4f` green  | `#9ece6a`          |
 
 `employmentParts` in `@utils/employment` returns the `{ key, label }` tokens
-so renderers can colour each part; the `·` separator stays muted. The web
-and Angular views keep the single muted label.
+so renderers can colour each part; the `·` separator stays muted in every
+output.
 
 ## Rendering
 
