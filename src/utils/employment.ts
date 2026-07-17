@@ -44,15 +44,26 @@ export const narrowEmployment = (entry: RawExperience): Experience => ({
     : undefined,
 })
 
-export const formatEmployment = ({
+type EmploymentPart = {
+  key: EmploymentSchedule | EmploymentArrangement
+  label: string
+}
+
+// The label split into keyed tokens so renderers can colour each value
+// (see `tokens.colors.employment`) while keeping the separator neutral.
+export const employmentParts = ({
   schedule,
   arrangement,
-}: Pick<Experience, "schedule" | "arrangement">): string | null => {
-  const label = [schedule, arrangement]
-    .filter(
-      (part): part is EmploymentSchedule | EmploymentArrangement => !!part
-    )
-    .map((part) => LABELS[part])
+}: Pick<Experience, "schedule" | "arrangement">): EmploymentPart[] =>
+  [schedule, arrangement]
+    .filter((key): key is EmploymentSchedule | EmploymentArrangement => !!key)
+    .map((key) => ({ key, label: LABELS[key] }))
+
+export const formatEmployment = (
+  entry: Pick<Experience, "schedule" | "arrangement">
+): string | null => {
+  const label = employmentParts(entry)
+    .map((part) => part.label)
     .join(" · ")
   return label || null
 }

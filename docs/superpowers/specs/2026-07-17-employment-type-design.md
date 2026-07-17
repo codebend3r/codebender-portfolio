@@ -69,6 +69,23 @@ New `src/utils/employment.ts` (+ co-located test):
 Display casing: `Full-time`, `Part-time`, `Contract`, `Permanent`, joined
 with `·`.
 
+## Colour coding (PDF + DOCX)
+
+Each employment value has a fixed colour, defined once in
+`tokens.colors.employment` so both document exporters share it and every
+combination (e.g. full-time + permanent) is always the same colour pair:
+
+| Value     | Colour           |
+| --------- | ---------------- |
+| full-time | `#2f6da0` blue   |
+| part-time | `#7a5ea6` violet |
+| contract  | `#a8681f` bronze |
+| permanent | `#3d7a4f` green  |
+
+`employmentParts` in `@utils/employment` returns the `{ key, label }` tokens
+so renderers can colour each part; the `·` separator stays muted. The web
+and Angular views keep the single muted label.
+
 ## Rendering
 
 The label is styled like the muted period/duration text in each output:

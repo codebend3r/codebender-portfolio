@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest"
 
 import {
   arrangementOptions,
+  employmentParts,
   formatEmployment,
   isEmploymentArrangement,
   isEmploymentSchedule,
@@ -54,6 +55,27 @@ describe("formatEmployment", () => {
 
   it("returns null when both are absent", () => {
     expect(formatEmployment({})).toBe(null)
+  })
+})
+
+describe("employmentParts", () => {
+  it("returns a keyed, labelled token per set value", () => {
+    expect(
+      employmentParts({ schedule: "full-time", arrangement: "permanent" })
+    ).toEqual([
+      { key: "full-time", label: "Full-time" },
+      { key: "permanent", label: "Permanent" },
+    ])
+  })
+
+  it("returns a single token when only one value is set", () => {
+    expect(employmentParts({ arrangement: "contract" })).toEqual([
+      { key: "contract", label: "Contract" },
+    ])
+  })
+
+  it("returns an empty list when both are absent", () => {
+    expect(employmentParts({})).toEqual([])
   })
 })
 
