@@ -21,6 +21,7 @@ import {
 } from "docx"
 
 import { isEmail, isUrl, stripProtocol } from "@utils/contact"
+import { employmentParts } from "@utils/employment"
 
 type ContactChild = TextRun | ExternalHyperlink
 
@@ -42,6 +43,7 @@ const CONTENT_WIDTH = PAGE_WIDTH - MARGIN_X * 2
 
 const FONT = tokens.font.family
 const FONT_SEMIBOLD = `${tokens.font.family} Semibold`
+const FONT_SANS = tokens.font.sans
 
 const NO_BORDER = { style: BorderStyle.NONE, size: 0, color: "auto" }
 const NO_BORDERS = {
@@ -60,6 +62,7 @@ function headerParagraphs(data: Data): Paragraph[] {
       children: [
         new TextRun({
           text: data.name,
+          font: FONT,
           bold: true,
           size: halfPoints(tokens.fontSize.h1),
           characterSpacing: twips(0.2),
@@ -202,6 +205,11 @@ function skillPills(skills: string[]): Paragraph {
 // and keepNext/keepLines emulate the PDF's wrap={false}.
 function experienceParagraphs(entry: Experience): Paragraph[] {
   const indent = twips(22)
+  const employment = employmentParts(entry)
+  const employmentRun = {
+    italics: true,
+    size: halfPoints(tokens.fontSize.small),
+  }
   return [
     new Paragraph({
       keepNext: true,
@@ -219,6 +227,7 @@ function experienceParagraphs(entry: Experience): Paragraph[] {
         }),
         new TextRun({
           text: entry.role,
+          font: FONT,
           bold: true,
           size: halfPoints(tokens.fontSize.h3),
         }),
@@ -236,12 +245,34 @@ function experienceParagraphs(entry: Experience): Paragraph[] {
       keepLines: true,
       indent: { left: indent },
       spacing: { after: twips(3) },
+      tabStops: [{ type: TabStopType.RIGHT, position: CONTENT_WIDTH }],
       children: [
         new TextRun({
           text: entry.company,
           font: FONT_SEMIBOLD,
           color: hex(tokens.colors.accent),
         }),
+        ...(employment.length
+          ? [
+              new TextRun({ children: [new Tab()] }),
+              ...employment.flatMap((part, i) => [
+                ...(i > 0
+                  ? [
+                      new TextRun({
+                        ...employmentRun,
+                        text: " · ",
+                        color: hex(tokens.colors.muted),
+                      }),
+                    ]
+                  : []),
+                new TextRun({
+                  ...employmentRun,
+                  text: part.label,
+                  color: hex(tokens.colors.employment[part.key]),
+                }),
+              ]),
+            ]
+          : []),
       ],
     }),
     ...entry.achievements.map(
@@ -276,7 +307,7 @@ function metaItemParagraphs({
 }): Paragraph[] {
   return [
     new Paragraph({
-      children: [new TextRun({ text: primary, bold: true })],
+      children: [new TextRun({ text: primary, font: FONT, bold: true })],
     }),
     new Paragraph({
       spacing: { after: twips(tokens.spacing.sm) },
@@ -378,7 +409,7 @@ export function buildResumeDocument({
       default: {
         document: {
           run: {
-            font: FONT,
+            font: FONT_SANS,
             size: halfPoints(tokens.fontSize.body),
             color: hex(tokens.colors.text),
           },

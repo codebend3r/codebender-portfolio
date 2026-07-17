@@ -8,10 +8,16 @@ type Education = {
   details?: string
 }
 
+type EmploymentSchedule = "full-time" | "part-time"
+
+type EmploymentArrangement = "contract" | "permanent"
+
 type Experience = {
   role: string
   company: string
   period: string
+  schedule?: EmploymentSchedule
+  arrangement?: EmploymentArrangement
   achievements: string[]
 }
 

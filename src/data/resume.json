@@ -50,14 +50,26 @@
     "CI/CD",
     "Responsive Design",
     "E2E Testing",
-    "REST API"
+    "REST API",
+    "GraphQL",
+    "TanStack Query",
+    "Zod",
+    "Prisma",
+    "Headless CMS/Sanity",
+    "React Server Components",
+    "Tailwind CSS",
+    "React Native/Expo",
+    "Supabase",
+    "Serverless/Edge Functions",
+    "MCP/AI Agents",
+    "Accessibility/WCAG"
   ],
   "skill_descriptions": [
-    "Hands-on experience integrating large language models and AI tooling into developer workflows and production apps. Covers prompt engineering, retrieval, agent design, and shipping AI-powered features end-to-end.",
-    "AI coding assistants (Claude, Codex, Cursor) woven into daily development for generation, refactoring, and review. Used with persistent project context to ship features faster while keeping quality high.",
     "A strongly typed superset of JavaScript that adds static type checking and modern language features. Essential for scaling large codebases, improving editor tooling, and catching bugs at compile time.",
     "The core scripting language of the web, powering everything from interactive UIs to backend services. Modern ES features enable expressive, asynchronous, and modular application development.",
     "A component-based library for building declarative user interfaces. Uses a virtual DOM and hooks-based composition to manage state and side effects with predictable rendering.",
+    "Hands-on experience integrating large language models and AI tooling into developer workflows and production apps. Covers prompt engineering, retrieval, agent design, and shipping AI-powered features end-to-end.",
+    "AI coding assistants (Claude, Codex, Cursor) woven into daily development for generation, refactoring, and review. Used with persistent project context to ship features faster while keeping quality high.",
     "A React meta-framework with server-side rendering, file-based routing, and full-stack capabilities. Optimized for performance via the App Router, React Server Components, and edge deployment.",
     "A progressive JavaScript framework featuring a reactive data model and single-file components. Balances approachable templating with a powerful composition API for scalable apps.",
     "JavaScript runtime built on V8 for high-performance, event-driven server applications. Enables fullstack JS, CLI tooling, and scalable I/O with a vast npm ecosystem.",
@@ -74,13 +86,27 @@
     "Continuous integration and delivery pipelines that automate builds, tests, and deployments. Catch regressions early and ship safely on every push via reusable, event-driven workflows.",
     "Designing layouts that adapt fluidly across viewports from mobile to ultra-wide desktop. Relies on flexible grids, media and container queries, and accessible touch targets.",
     "Validates entire user journeys across the full stack, from UI interactions to API responses. Catches integration regressions unit tests miss and provides confidence before each deploy.",
-    "An architectural style for HTTP APIs using stateless requests and resource-oriented URLs. Standard verbs and status codes make endpoints predictable, cacheable, and easy to consume from frontends."
+    "An architectural style for HTTP APIs using stateless requests and resource-oriented URLs. Standard verbs and status codes make endpoints predictable, cacheable, and easy to consume from frontends.",
+    "A query language and runtime for APIs where clients request exactly the data they need. Enables typed, schema-first contracts between frontends and backends with efficient, aggregated fetching.",
+    "Server-state management for React that handles fetching, caching, and background synchronization. Eliminates hand-rolled loading states with declarative queries, mutations, and cache invalidation.",
+    "TypeScript-first schema validation with static type inference. Validates API responses, forms, and configuration at runtime while keeping compile-time types perfectly in sync.",
+    "A type-safe ORM for Node.js with declarative schemas and generated migrations. Bridges application code and SQL databases with autocompleted, fully typed queries.",
+    "Decoupled content platforms that serve structured content to any frontend over APIs. Covers schema modeling, editorial workflow customization, and real-time collaborative publishing.",
+    "React's server-first rendering model that streams UI with zero client-bundle cost. The foundation of the Next.js App Router and modern data-fetching architecture.",
+    "A utility-first CSS framework for composing custom designs directly in markup. Pairs a constrained design-token scale with tree-shaken output for consistent, minimal stylesheets.",
+    "Cross-platform React targeting iOS, Android, web, and desktop from a single codebase. Expo layers on managed builds, over-the-air updates, and native APIs without leaving TypeScript.",
+    "An open-source Postgres backend with auth, storage, realtime, and edge functions. A fast path from schema to production for full-stack TypeScript applications.",
+    "Backend logic deployed as managed functions in the cloud or at the CDN edge. Scales to zero, deploys with the frontend, and keeps latency close to the user.",
+    "Agentic workflows and Model Context Protocol integrations that let LLMs safely use tools, data, and services. The emerging standard for wiring AI capabilities into real products.",
+    "Interfaces built to WCAG standards: semantic markup, keyboard navigation, ARIA, and screen-reader support. Treats accessibility as a baseline of quality, not an afterthought."
   ],
   "work_experience": [
     {
       "role": "Senior Frontend Engineer",
       "company": "The Globe and Mail",
       "period": "09/2024 - 05/2026",
+      "schedule": "full-time",
+      "arrangement": "contract",
       "achievements": [
         "Developed interactive React components integrated with a proprietary CMS, boosting reader engagement and streamlining content management.",
         "Embedded AI tooling into daily development and code reviews, raising code quality and cutting review turnaround time.",
@@ -93,6 +119,8 @@
       "role": "Fullstack Engineer",
       "company": "iPolitics",
       "period": "11/2023 - Present",
+      "schedule": "part-time",
+      "arrangement": "contract",
       "achievements": [
         "Served as the sole full-stack developer for two Next.js/React/Prisma/Sanity news sites (iPolitics and QP Briefing), owning the backend, CI/CD, and infrastructure end-to-end.",
         "Diagnosed and resolved Sanity.io CMS issues, keeping both newsrooms publishing without interruption.",
@@ -104,6 +132,8 @@
       "role": "Principal Robot",
       "company": "Robots and Pencils",
       "period": "06/2024 - 09/2024",
+      "schedule": "full-time",
+      "arrangement": "contract",
       "achievements": [
         "Managed the ASU project lifecycle end-to-end, implementing new features and ensuring timely delivery.",
         "Conducted pull request reviews, upholding code quality and reinforcing team best practices.",
@@ -114,6 +144,8 @@
       "role": "Senior Frontend Engineer",
       "company": "XP Ventures Labs",
       "period": "03/2024 - 05/2024",
+      "schedule": "full-time",
+      "arrangement": "contract",
       "achievements": [
         "Led the conversion of a legacy React JavaScript application into modular TypeScript micro-frontends, modernizing the architecture and enabling independent deployments.",
         "Migrated global state from Redux to Zustand and refactored components to modern React patterns, improving performance and reducing complexity.",
@@ -126,6 +158,8 @@
       "role": "Senior Frontend Engineer + Architect",
       "company": "Radian",
       "period": "06/2022 - 11/2023",
+      "schedule": "full-time",
+      "arrangement": "contract",
       "achievements": [
         "Served as Frontend Lead Architect for homegeniusrealestate.com, leading frontend development from scratch to production with Next.js, TypeScript, GraphQL, and Nest.js.",
         "Delivered the complete real estate platform to market in under one year.",
@@ -140,6 +174,8 @@
       "role": "Senior Frontend Engineer + Architect",
       "company": "Varicent",
       "period": "01/2021 - 06/2022",
+      "schedule": "full-time",
+      "arrangement": "permanent",
       "achievements": [
         "Collaborated directly with the CTO as Frontend Architect, migrating React JavaScript components to TypeScript across projects to improve maintainability and type safety.",
         "Overhauled the webpack configuration and migrated builds to Vite and esbuild, cutting build times significantly.",
@@ -153,6 +189,8 @@
       "role": "Senior Frontend Engineer",
       "company": "Myplanet",
       "period": "12/2020 - 02/2021",
+      "schedule": "full-time",
+      "arrangement": "contract",
       "achievements": [
         "Developed an internal TypeScript toolset that streamlined website and application production by automating repetitive frontend tasks.",
         "Built a suite of reusable React component libraries to accelerate delivery across product teams.",
@@ -164,6 +202,8 @@
       "role": "Senior Frontend Engineer",
       "company": "RBC Capital Markets",
       "period": "08/2020 - 12/2020",
+      "schedule": "full-time",
+      "arrangement": "contract",
       "achievements": [
         "Engineered a real-time stock trading application leveraging React Hooks, TypeScript, and RxJS to deliver reactive market data streams.",
         "Authored comprehensive unit test coverage across React components to safeguard performance and stability.",
@@ -175,6 +215,8 @@
       "role": "Lead Frontend Engineer",
       "company": "RBC Ventures",
       "period": "08/2019 - 08/2020",
+      "schedule": "full-time",
+      "arrangement": "contract",
       "achievements": [
         "Planned and developed new frontend features for the admin app, enabling efficient user management.",
         "Migrated the app from its legacy React architecture to a custom framework built on React Hooks.",
@@ -187,6 +229,8 @@
       "role": "Frontend Team Lead",
       "company": "Toronto Star",
       "period": "12/2018 - 08/2019",
+      "schedule": "full-time",
+      "arrangement": "contract",
       "achievements": [
         "Maintained and enhanced thestar.com in React, leading development of a new responsive main menu.",
         "Acted as lead developer, owning pull request reviews and merges to uphold code quality, site performance, and user experience.",
@@ -200,6 +244,8 @@
       "role": "Senior Frontend Engineer",
       "company": "The Globe and Mail",
       "period": "05/2016 - 04/2018",
+      "schedule": "full-time",
+      "arrangement": "permanent",
       "achievements": [
         "Developed and maintained website features using vanilla JavaScript.",
         "Collaborated with the frontend team to build highly performant, responsive components.",
@@ -213,6 +259,8 @@
       "role": "Senior Frontend Engineer",
       "company": "theScore",
       "period": "01/2016 - 05/2016",
+      "schedule": "full-time",
+      "arrangement": "contract",
       "achievements": [
         "Developed a fantasy sports application using Ember.js, delivering interactive features for end users.",
         "Collaborated within an agile team environment, contributing to iterative development and sprint planning.",
@@ -224,6 +272,8 @@
       "role": "Frontend Team Lead",
       "company": "Rogers",
       "period": "11/2014 - 01/2016",
+      "schedule": "full-time",
+      "arrangement": "contract",
       "achievements": [
         "Developed a Rogers web application and established AngularJS coding conventions adopted by all developers.",
         "Conducted technical interviews to assess candidates' AngularJS expertise, ensuring strong additions to the team.",
@@ -236,6 +286,8 @@
       "role": "Intermediate Frontend Developer",
       "company": "Uptime Software",
       "period": "04/2014 - 11/2014",
+      "schedule": "full-time",
+      "arrangement": "permanent",
       "achievements": [
         "Served as the sole frontend specialist for a company-wide computer and server monitoring application built with AngularJS.",
         "Implemented a Test-Driven Development (TDD) workflow using Jasmine, Karma, and Protractor.",
@@ -248,6 +300,8 @@
       "role": "Intermediate Frontend Developer",
       "company": "Kobo Inc.",
       "period": "02/2012 - 03/2014",
+      "schedule": "full-time",
+      "arrangement": "permanent",
       "achievements": [
         "Contributed to the development of Kobo's Instant Reader web application, built on the SproutCore JavaScript framework.",
         "Diagnosed and resolved frontend defects while delivering new features across the reading experience.",
@@ -260,6 +314,8 @@
       "role": "Senior Flash Developer + Team Lead",
       "company": "Research Now",
       "period": "07/2008 - 09/2011",
+      "schedule": "full-time",
+      "arrangement": "permanent",
       "achievements": [
         "Architected a global Flash framework that powered Research Now's custom survey tooling across international markets.",
         "Engaged directly with clients to gather requirements and scope custom development work.",

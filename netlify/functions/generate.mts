@@ -2,7 +2,7 @@ import Anthropic from "@anthropic-ai/sdk"
 import { getStore } from "@netlify/blobs"
 import type { Config } from "@netlify/functions"
 
-import resume from "../../src/data/resume.json"
+import { baseResume } from "./lib/baseResume"
 import { JobPageError, fetchPostingText } from "./lib/jobPage"
 import { applyResumePatch, isResumePatch } from "./lib/patch"
 import type { PromptInput } from "./lib/prompt"
@@ -14,8 +14,6 @@ import {
   parseGenerateRequest,
   validatePassword,
 } from "./lib/prompt"
-
-const baseResume: Data = resume
 
 // Background function: Netlify replies 202 immediately and lets the handler
 // run up to 15 minutes. The Claude call can take tens of seconds — past the

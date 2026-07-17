@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 
 import { Header } from "@components/Header"
 
-import resume from "@data/resume.json"
+import { resumeData as baseResume } from "@data/resumeData"
 
 import { DropArea } from "@generate/DropArea"
 import styles from "@generate/GenerateApp.module.css"
@@ -17,8 +17,6 @@ import { navigate } from "@utils/navigate"
 import { normalizeInput } from "@utils/normalizeInput"
 
 const PASSWORD_KEY = "generate-password"
-
-const baseResume: Data = resume
 
 const COPY: Record<GenerateMode, { title: string; hint: string }> = {
   proximate: {

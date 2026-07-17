@@ -67,6 +67,12 @@
   font-size: 12px;
 }
 
+.employment {
+  color: var(--muted);
+  font-weight: 400;
+  font-size: 12px;
+}
+
 .bullets {
   margin: 0;
   padding: 0;

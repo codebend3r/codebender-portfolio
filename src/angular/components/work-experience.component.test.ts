@@ -51,6 +51,22 @@ describe("WorkExperienceComponent", () => {
     )
   })
 
+  it("renders the employment label for the first experience", async () => {
+    const root = await render()
+    const first = root.querySelector(".item")
+    expect(first?.querySelector(".employment")?.textContent?.trim() ?? "").toBe(
+      "Full-time · Contract"
+    )
+  })
+
+  it("colours each employment value with its CSS variable", async () => {
+    const root = await render()
+    const values = root.querySelectorAll(".item .employment [style]")
+    const styles = [...values].map((span) => span.getAttribute("style") ?? "")
+    expect(styles.some((s) => s.includes("--employment-full-time"))).toBe(true)
+    expect(styles.some((s) => s.includes("--employment-contract"))).toBe(true)
+  })
+
   it("renders the computed duration when the period parses", async () => {
     const root = await render()
     const experience = resume.work_experience[0]

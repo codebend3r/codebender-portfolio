@@ -7,7 +7,7 @@ import { tokens } from "@theme/tokens"
 import { mkdir } from "node:fs/promises"
 import path from "node:path"
 
-import resume from "@data/resume.json"
+import { resumeData } from "@data/resumeData"
 
 import { ResumePDF } from "@pdf/ResumePDF"
 
@@ -16,29 +16,40 @@ import { normalizeData } from "@utils/normalizeData"
 
 // `@pdf/fonts` resolves the font files with Vite-only `?url` imports, so this
 // script registers the same faces from their `node_modules` paths instead.
-const fontDir = path.join(
-  path.dirname(
-    Bun.resolveSync("@fontsource/source-serif-4/package.json", import.meta.dir)
-  ),
-  "files"
-)
+const fontFile = ({ pkg, name }: { pkg: string; name: string }) =>
+  path.join(
+    path.dirname(Bun.resolveSync(`${pkg}/package.json`, import.meta.dir)),
+    "files",
+    `${pkg.replace("@fontsource/", "")}-latin-${name}.woff`
+  )
 
-const fontFile = (name: string) =>
-  path.join(fontDir, `source-serif-4-latin-${name}.woff`)
+const serifFile = (name: string) =>
+  fontFile({ pkg: "@fontsource/source-serif-4", name })
+const sansFile = (name: string) =>
+  fontFile({ pkg: "@fontsource/source-sans-3", name })
 
 Font.register({
   family: tokens.font.family,
   fonts: [
-    { src: fontFile("400-normal"), fontWeight: 400, fontStyle: "normal" },
-    { src: fontFile("400-italic"), fontWeight: 400, fontStyle: "italic" },
-    { src: fontFile("600-normal"), fontWeight: 600, fontStyle: "normal" },
-    { src: fontFile("600-italic"), fontWeight: 600, fontStyle: "italic" },
-    { src: fontFile("700-normal"), fontWeight: 700, fontStyle: "normal" },
+    { src: serifFile("400-normal"), fontWeight: 400, fontStyle: "normal" },
+    { src: serifFile("400-italic"), fontWeight: 400, fontStyle: "italic" },
+    { src: serifFile("600-normal"), fontWeight: 600, fontStyle: "normal" },
+    { src: serifFile("600-italic"), fontWeight: 600, fontStyle: "italic" },
+    { src: serifFile("700-normal"), fontWeight: 700, fontStyle: "normal" },
+  ],
+})
+Font.register({
+  family: tokens.font.sans,
+  fonts: [
+    { src: sansFile("400-normal"), fontWeight: 400, fontStyle: "normal" },
+    { src: sansFile("400-italic"), fontWeight: 400, fontStyle: "italic" },
+    { src: sansFile("600-normal"), fontWeight: 600, fontStyle: "normal" },
+    { src: sansFile("700-normal"), fontWeight: 700, fontStyle: "normal" },
   ],
 })
 Font.registerHyphenationCallback((word) => [word])
 
-const data = normalizeData(structuredClone(resume))
+const data = normalizeData(structuredClone(resumeData))
 const buffer = await renderToBuffer(<ResumePDF data={data} />)
 
 const outDir = path.resolve(import.meta.dir, "../public/cv")

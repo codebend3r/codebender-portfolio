@@ -37,6 +37,26 @@ describe("buildResumeDocument", () => {
     expect(xml.includes("Education")).toBe(true)
   })
 
+  it("defaults body runs to the sans with serif display runs", async () => {
+    const files = await unzipDocument()
+    const stylesXml = strFromU8(files["word/styles.xml"])
+    const documentXml = strFromU8(files["word/document.xml"])
+    expect(stylesXml.includes("Source Sans 3")).toBe(true) // document default
+    expect(documentXml.includes("Source Serif 4")).toBe(true) // name/role runs
+  })
+
+  it("renders colour-coded employment values after the company", async () => {
+    const xml = strFromU8((await unzipDocument())["word/document.xml"])
+    const company = xml.indexOf("Babbage &amp; Co")
+    const schedule = xml.indexOf("Full-time")
+    const arrangement = xml.indexOf("Permanent")
+    expect(company).toBeGreaterThanOrEqual(0)
+    expect(schedule).toBeGreaterThan(company)
+    expect(arrangement).toBeGreaterThan(schedule)
+    expect(xml.includes("2F6DA0")).toBe(true) // full-time blue
+    expect(xml.includes("3D7A4F")).toBe(true) // permanent green
+  })
+
   it("links urls and emails in the contact bar", async () => {
     const rels = strFromU8(
       (await unzipDocument())["word/_rels/document.xml.rels"]

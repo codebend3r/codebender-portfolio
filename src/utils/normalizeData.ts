@@ -1,3 +1,5 @@
+import { resumeData } from "@data/resumeData"
+
 type LegacyContact = {
   email?: string
   phone?: string
@@ -16,13 +18,44 @@ const LEGACY_CONTACT_ORDER: [keyof LegacyContact, string][] = [
 
 // Variations saved before the contact-list migration store `contact` as a
 // keyed object; convert it to the ordered entry list the app now expects.
-export function normalizeData(data: Data): Data {
+function normalizeContact(data: Data): Data {
   if (Array.isArray(data.contact)) return data
   const legacy = data.contact as unknown as LegacyContact
-  const contact: ContactEntry[] = []
-  for (const [key, label] of LEGACY_CONTACT_ORDER) {
-    const value = legacy[key]
-    if (value) contact.push({ label, value })
-  }
+  const contact: ContactEntry[] = LEGACY_CONTACT_ORDER.flatMap(
+    ([key, label]) => {
+      const value = legacy[key]
+      return value ? [{ label, value }] : []
+    }
+  )
   return { ...data, contact }
+}
+
+const stintKey = ({
+  company,
+  period,
+}: Pick<Experience, "company" | "period">) => `${company}|${period}`
+
+const employmentByStint = new Map(
+  resumeData.work_experience.map((entry) => [stintKey(entry), entry])
+)
+
+// Variations saved before the employment fields existed carry none; fill
+// them from the matching base-resume stint so old data gains the labels.
+// Values a variation already set always win.
+function backfillEmployment(data: Data): Data {
+  return {
+    ...data,
+    work_experience: data.work_experience.map((entry) => {
+      const base = employmentByStint.get(stintKey(entry))
+      return {
+        ...entry,
+        schedule: entry.schedule ?? base?.schedule,
+        arrangement: entry.arrangement ?? base?.arrangement,
+      }
+    }),
+  }
+}
+
+export function normalizeData(data: Data): Data {
+  return backfillEmployment(normalizeContact(data))
 }
