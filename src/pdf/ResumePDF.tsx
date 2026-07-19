@@ -95,7 +95,7 @@ function ResumeHeader({ data }: { data: Data }) {
         {data.contact.map((entry, i) => {
           if (isUrl(entry.value)) {
             return (
-              <Link key={i} style={styles.contactItem} src={entry.value}>
+              <Link key={i} style={styles.contactLink} src={entry.value}>
                 {stripProtocol(entry.value)}
               </Link>
             )
@@ -104,7 +104,7 @@ function ResumeHeader({ data }: { data: Data }) {
             return (
               <Link
                 key={i}
-                style={styles.contactItem}
+                style={styles.contactLink}
                 src={`mailto:${entry.value}`}
               >
                 {entry.value}
