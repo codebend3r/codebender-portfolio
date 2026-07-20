@@ -7,6 +7,7 @@ import { Awards } from "@components/Awards"
 import { Education } from "@components/Education"
 import { Languages } from "@components/Languages"
 import { Showcase } from "@components/Showcase"
+import { SoftSkills } from "@components/SoftSkills"
 import {
   TechnicalSkills,
   addSkill,
@@ -66,6 +67,12 @@ const sections: {
     count: resume.technical_skills.length,
   },
   {
+    name: "soft skill pill",
+    el: <SoftSkills />,
+    pattern: /drag to reorder soft skill/i,
+    count: resume.soft_skills.length,
+  },
+  {
     name: "experience",
     el: <WorkExperience />,
     pattern: /drag to reorder experience/i,
@@ -103,6 +110,7 @@ describe("section drag handles", () => {
         <Languages />
         <Education />
         <TechnicalSkills />
+        <SoftSkills />
         <WorkExperience />
         <Showcase />
       </>

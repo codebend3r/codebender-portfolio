@@ -25,6 +25,20 @@ describe("normalizeData", () => {
   })
 })
 
+describe("normalizeData soft-skills backfill", () => {
+  it("backfills soft skills missing from older variations", () => {
+    const data = structuredClone(resume) as Data
+    Reflect.deleteProperty(data, "soft_skills")
+    expect(normalizeData(data).soft_skills).toEqual(resume.soft_skills)
+  })
+
+  it("never overwrites soft skills already set on the variation", () => {
+    const data = structuredClone(resume) as Data
+    data.soft_skills = ["Rubber Duck Debugging"]
+    expect(normalizeData(data).soft_skills).toEqual(["Rubber Duck Debugging"])
+  })
+})
+
 describe("normalizeData employment backfill", () => {
   const stripped = () => {
     const data = structuredClone(resume) as Data

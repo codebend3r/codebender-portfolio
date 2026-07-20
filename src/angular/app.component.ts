@@ -9,6 +9,7 @@ import { SectionNavComponent } from "@ngapp/components/section-nav.component"
 import { ShowcaseComponent } from "@ngapp/components/showcase.component"
 import { SideMenuComponent } from "@ngapp/components/side-menu.component"
 import { SkyComponent } from "@ngapp/components/sky.component"
+import { SoftSkillsComponent } from "@ngapp/components/soft-skills.component"
 import { SummaryComponent } from "@ngapp/components/summary.component"
 import { TechnicalSkillsComponent } from "@ngapp/components/technical-skills.component"
 import { WeatherComponent } from "@ngapp/components/weather.component"
@@ -27,6 +28,7 @@ import { WorkExperienceComponent } from "@ngapp/components/work-experience.compo
     ShowcaseComponent,
     SideMenuComponent,
     SkyComponent,
+    SoftSkillsComponent,
     SummaryComponent,
     TechnicalSkillsComponent,
     WeatherComponent,
@@ -45,13 +47,14 @@ import { WorkExperienceComponent } from "@ngapp/components/work-experience.compo
         <main class="main">
           <app-summary />
           <app-technical-skills [index]="1" eyebrow="Stack" />
-          <app-work-experience [index]="2" eyebrow="Experience" />
-          <app-showcase [index]="3" eyebrow="Selected Work" />
+          <app-soft-skills [index]="2" eyebrow="Soft Skills" />
+          <app-work-experience [index]="3" eyebrow="Experience" />
+          <app-showcase [index]="4" eyebrow="Selected Work" />
 
           <div class="subgrid">
-            <app-awards [index]="4" eyebrow="Recognition" />
-            <app-languages [index]="5" eyebrow="Languages" />
-            <app-education [index]="6" eyebrow="Education" />
+            <app-awards [index]="5" eyebrow="Recognition" />
+            <app-languages [index]="6" eyebrow="Languages" />
+            <app-education [index]="7" eyebrow="Education" />
           </div>
         </main>
 

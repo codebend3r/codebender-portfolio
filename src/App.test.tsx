@@ -49,6 +49,7 @@ describe("App", () => {
     for (const title of [
       "Summary",
       "Technical Skills",
+      "Soft Skills",
       "Work Experience",
       "Selected Work",
       "Awards",
@@ -62,11 +63,12 @@ describe("App", () => {
 
     for (const chip of [
       "01 · Stack",
-      "02 · Experience",
-      "03 · Selected Work",
-      "04 · Recognition",
-      "05 · Languages",
-      "06 · Education",
+      "02 · Soft Skills",
+      "03 · Experience",
+      "04 · Selected Work",
+      "05 · Recognition",
+      "06 · Languages",
+      "07 · Education",
     ]) {
       expect(screen.getByText(chip)).toBeInTheDocument()
     }

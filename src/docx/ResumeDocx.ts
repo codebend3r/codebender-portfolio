@@ -446,6 +446,8 @@ export function buildResumeDocument({
           contactBar(data),
           sectionHeading("Technical Skills"),
           skillPills(data.technical_skills),
+          sectionHeading("Soft Skills"),
+          skillPills(data.soft_skills),
           sectionHeading("Work Experience"),
           ...data.work_experience.flatMap(experienceParagraphs),
           metaRow(data),

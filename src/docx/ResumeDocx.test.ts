@@ -23,6 +23,8 @@ describe("buildResumeDocument", () => {
       resumeFixture.summary,
       "Technical Skills",
       "Punch Cards",
+      "Soft Skills",
+      "Analytical Rigor",
       "Work Experience",
       "Engine Analyst",
       "Babbage &amp; Co",

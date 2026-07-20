@@ -5,6 +5,7 @@ import { Education } from "@components/Education"
 import { Header } from "@components/Header"
 import { Languages } from "@components/Languages"
 import { Showcase } from "@components/Showcase"
+import { SoftSkills } from "@components/SoftSkills"
 import { Summary } from "@components/Summary"
 import { TechnicalSkills } from "@components/TechnicalSkills"
 import { WorkExperience } from "@components/WorkExperience"
@@ -123,12 +124,13 @@ function EditSession({
             <main className={appStyles.main}>
               <Summary />
               <TechnicalSkills index={1} eyebrow="Stack" />
-              <WorkExperience index={2} eyebrow="Experience" />
-              <Showcase index={3} eyebrow="Selected Work" />
+              <SoftSkills index={2} eyebrow="Soft Skills" />
+              <WorkExperience index={3} eyebrow="Experience" />
+              <Showcase index={4} eyebrow="Selected Work" />
               <div className={appStyles.subgrid}>
-                <Awards index={4} eyebrow="Recognition" />
-                <Languages index={5} eyebrow="Languages" />
-                <Education index={6} eyebrow="Education" />
+                <Awards index={5} eyebrow="Recognition" />
+                <Languages index={6} eyebrow="Languages" />
+                <Education index={7} eyebrow="Education" />
               </div>
             </main>
           </div>

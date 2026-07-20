@@ -56,6 +56,13 @@ function backfillEmployment(data: Data): Data {
   }
 }
 
+// Variations saved before the soft-skills section existed carry none; fill
+// the list from the base resume so old data gains the section.
+function backfillSoftSkills(data: Data): Data {
+  const soft_skills: string[] | undefined = data.soft_skills
+  return { ...data, soft_skills: soft_skills ?? resumeData.soft_skills }
+}
+
 export function normalizeData(data: Data): Data {
-  return backfillEmployment(normalizeContact(data))
+  return backfillSoftSkills(backfillEmployment(normalizeContact(data)))
 }

@@ -30,6 +30,16 @@ export function ResumePDF({ data }: Props) {
           </View>
         </Section>
 
+        <Section heading="Soft Skills">
+          <View style={styles.skillsList}>
+            {data.soft_skills.map((skill) => (
+              <Text key={skill} style={styles.skillPill}>
+                {skill}
+              </Text>
+            ))}
+          </View>
+        </Section>
+
         <Section heading="Work Experience">
           {data.work_experience.map((entry, i) => (
             <ExperienceEntry key={`${entry.company}-${i}`} entry={entry} />
