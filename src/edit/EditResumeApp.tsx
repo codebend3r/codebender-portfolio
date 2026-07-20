@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react"
+import { useCallback, useEffect, useMemo, useState } from "react"
 
 import { Awards } from "@components/Awards"
 import { Education } from "@components/Education"
@@ -14,6 +14,7 @@ import { resumeData } from "@data/resumeData"
 
 import { EditProvider } from "@edit/EditContext"
 import styles from "@edit/EditResumeApp.module.css"
+import { JsonEditor } from "@edit/JsonEditor"
 import { VariationsPanel } from "@edit/VariationsPanel"
 
 import { useStore } from "@state/useStore"
@@ -21,14 +22,21 @@ import { useSync } from "@state/useSync"
 import { useVariations } from "@state/useVariations"
 
 import { type DocumentFormat, documentFileName } from "@utils/documentFileName"
+import { normalizeData } from "@utils/normalizeData"
 import { toData } from "@utils/toData"
 
 import appStyles from "@app/App.module.css"
+
+export type EditViewMode = "form" | "json"
 
 export default function EditResumeApp() {
   const { variations, activeId } = useVariations()
   const active = variations.find((v) => v.id === activeId)
   const initialData = active?.data ?? resumeData
+
+  // Held above the keyed session so the Form/JSON choice survives switching
+  // between variations.
+  const [viewMode, setViewMode] = useState<EditViewMode>("form")
 
   // Key on the selection so switching variations remounts the session,
   // resetting its dirty flag without calling setState inside an effect.
@@ -38,6 +46,8 @@ export default function EditResumeApp() {
       activeId={activeId}
       activeName={active?.name ?? null}
       initialData={initialData}
+      viewMode={viewMode}
+      onViewMode={setViewMode}
     />
   )
 }
@@ -46,15 +56,26 @@ function EditSession({
   activeId,
   activeName,
   initialData,
+  viewMode,
+  onViewMode,
 }: {
   activeId: string | null
   activeName: string | null
   initialData: Data
+  viewMode: EditViewMode
+  onViewMode: (mode: EditViewMode) => void
 }) {
   const { createVariation, saveActive } = useVariations()
   const [dirty, setDirty] = useState(false)
 
   const editing = activeId !== null
+
+  // The JSON view seeds from the same normalized shape the store loads, so
+  // what the editor shows always round-trips through `validateData`.
+  const jsonSeed = useMemo(
+    () => normalizeData(structuredClone(initialData)),
+    [initialData]
+  )
 
   useEffect(() => {
     useStore.getState().loadData(initialData)
@@ -113,29 +134,41 @@ function EditSession({
         onSave={onSave}
         onGenerate={onGenerate}
         onNew={onNew}
+        viewMode={viewMode}
+        onViewMode={onViewMode}
       />
-      <EditProvider editing={editing} markDirty={markDirty}>
-        <div
-          id="resume-root"
-          className={`${appStyles.resumeRoot}${editing ? " resume-editing" : ""}`}
-        >
-          <Header stacked />
-          <div className={`${appStyles.container} ${styles.container}`}>
-            <main className={appStyles.main}>
-              <Summary />
-              <TechnicalSkills index={1} eyebrow="Stack" />
-              <SoftSkills index={2} eyebrow="Soft Skills" />
-              <WorkExperience index={3} eyebrow="Experience" />
-              <Showcase index={4} eyebrow="Selected Work" />
-              <div className={appStyles.subgrid}>
-                <Awards index={5} eyebrow="Recognition" />
-                <Languages index={6} eyebrow="Languages" />
-                <Education index={7} eyebrow="Education" />
-              </div>
-            </main>
+      {viewMode === "json" ? (
+        <JsonEditor
+          key={activeId ?? "__base__"}
+          initialData={jsonSeed}
+          onSave={onSave}
+          markDirty={markDirty}
+          persists={editing}
+        />
+      ) : (
+        <EditProvider editing={editing} markDirty={markDirty}>
+          <div
+            id="resume-root"
+            className={`${appStyles.resumeRoot}${editing ? " resume-editing" : ""}`}
+          >
+            <Header stacked />
+            <div className={`${appStyles.container} ${styles.container}`}>
+              <main className={appStyles.main}>
+                <Summary />
+                <TechnicalSkills index={1} eyebrow="Stack" />
+                <SoftSkills index={2} eyebrow="Soft Skills" />
+                <WorkExperience index={3} eyebrow="Experience" />
+                <Showcase index={4} eyebrow="Selected Work" />
+                <div className={appStyles.subgrid}>
+                  <Awards index={5} eyebrow="Recognition" />
+                  <Languages index={6} eyebrow="Languages" />
+                  <Education index={7} eyebrow="Education" />
+                </div>
+              </main>
+            </div>
           </div>
-        </div>
-      </EditProvider>
+        </EditProvider>
+      )}
     </div>
   )
 }
