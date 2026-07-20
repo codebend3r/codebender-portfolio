@@ -9,6 +9,7 @@ const base: Data = {
   summary: "Generalist engineer.",
   technical_skills: ["React", "TypeScript", "Node"],
   skill_descriptions: ["UI library", "Typed JS", "JS runtime"],
+  soft_skills: ["Communication"],
   work_experience: [
     {
       role: "Senior Dev",

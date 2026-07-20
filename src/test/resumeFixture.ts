@@ -9,6 +9,7 @@ export const resumeFixture: Data = {
   ],
   technical_skills: ["Punch Cards", "Algorithms"],
   skill_descriptions: [],
+  soft_skills: ["Analytical Rigor", "Scientific Correspondence"],
   work_experience: [
     {
       role: "Engine Analyst",
