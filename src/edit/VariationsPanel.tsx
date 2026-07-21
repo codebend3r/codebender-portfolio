@@ -1,5 +1,6 @@
 import { type ReactNode, useState } from "react"
 
+import type { EditViewMode } from "@edit/EditResumeApp"
 import { RenameModal } from "@edit/RenameModal"
 import styles from "@edit/VariationsPanel.module.css"
 
@@ -104,11 +105,15 @@ export function VariationsPanel({
   onSave,
   onGenerate,
   onNew,
+  viewMode,
+  onViewMode,
 }: {
   dirty: boolean
   onSave: () => void
   onGenerate: (format: DocumentFormat) => void
   onNew: (name: string) => void
+  viewMode?: EditViewMode
+  onViewMode?: (mode: EditViewMode) => void
 }) {
   const {
     variations,
@@ -156,6 +161,29 @@ export function VariationsPanel({
           ＋ New
         </button>
       </div>
+
+      {onViewMode && (
+        <div
+          className={styles.viewToggle}
+          role="group"
+          aria-label="Editor view"
+        >
+          <button
+            type="button"
+            aria-pressed={viewMode !== "json"}
+            onClick={() => onViewMode("form")}
+          >
+            Form
+          </button>
+          <button
+            type="button"
+            aria-pressed={viewMode === "json"}
+            onClick={() => onViewMode("json")}
+          >
+            JSON
+          </button>
+        </div>
+      )}
 
       <ul className={styles.list}>
         <li>

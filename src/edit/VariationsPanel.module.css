@@ -1,6 +1,6 @@
 .panel {
-  display: grid;
-  grid-template-rows: auto 1fr auto;
+  display: flex;
+  flex-direction: column;
   gap: 16px;
   padding: 16px;
   background: var(--panel);
@@ -10,6 +10,31 @@
   height: calc(100dvh - 32px);
   position: sticky;
   top: 16px;
+}
+
+.viewToggle {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+  padding: 3px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.viewToggle button {
+  font: inherit;
+  padding: 6px 8px;
+  background: transparent;
+  color: var(--muted);
+  border: 1px solid transparent;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.viewToggle button[aria-pressed="true"] {
+  color: var(--text);
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
 }
 
 .heading {
@@ -27,6 +52,7 @@
   list-style: none;
   padding: 0;
   margin: 0;
+  flex: 1 1 auto;
   min-height: 0;
   overflow-y: auto;
 }
@@ -85,6 +111,7 @@
 .footer {
   display: grid;
   gap: 8px;
+  flex-shrink: 0;
   /* keep the bottom button clear of the fixed menu toggle */
   padding-bottom: 32px;
 }

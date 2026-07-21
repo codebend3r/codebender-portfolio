@@ -39,6 +39,7 @@ describe("AppComponent", () => {
     expect(sectionIds).toEqual([
       "summary",
       "technical-skills",
+      "soft-skills",
       "work-experience",
       "selected-work",
       "awards",

@@ -17,6 +17,7 @@ import {
   TableLayoutType,
   TableRow,
   TextRun,
+  UnderlineType,
   WidthType,
 } from "docx"
 
@@ -91,16 +92,22 @@ function contactChild(value: string): ContactChild {
     color: hex(tokens.colors.onAccent),
     size: halfPoints(tokens.fontSize.small),
   }
+  // Underline linked entries so they read as hyperlinks: without explicit run
+  // properties Word renders ExternalHyperlink text like any plain run.
+  const linkStyle = {
+    ...style,
+    underline: { type: UnderlineType.SINGLE },
+  }
   if (isUrl(value)) {
     return new ExternalHyperlink({
       link: value,
-      children: [new TextRun({ text: stripProtocol(value), ...style })],
+      children: [new TextRun({ text: stripProtocol(value), ...linkStyle })],
     })
   }
   if (isEmail(value)) {
     return new ExternalHyperlink({
       link: `mailto:${value}`,
-      children: [new TextRun({ text: value, ...style })],
+      children: [new TextRun({ text: value, ...linkStyle })],
     })
   }
   return new TextRun({ text: value, ...style })
@@ -439,6 +446,8 @@ export function buildResumeDocument({
           contactBar(data),
           sectionHeading("Technical Skills"),
           skillPills(data.technical_skills),
+          sectionHeading("Soft Skills"),
+          skillPills(data.soft_skills),
           sectionHeading("Work Experience"),
           ...data.work_experience.flatMap(experienceParagraphs),
           metaRow(data),

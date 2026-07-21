@@ -23,6 +23,8 @@ describe("buildResumeDocument", () => {
       resumeFixture.summary,
       "Technical Skills",
       "Punch Cards",
+      "Soft Skills",
+      "Analytical Rigor",
       "Work Experience",
       "Engine Analyst",
       "Babbage &amp; Co",
@@ -64,6 +66,14 @@ describe("buildResumeDocument", () => {
     expect(rels.includes("https://ada.dev/")).toBe(true)
     expect(rels.includes("mailto:ada@example.com")).toBe(true)
     expect(rels.includes("London")).toBe(false)
+  })
+
+  it("underlines linked contact runs so they read as hyperlinks", async () => {
+    const xml = strFromU8((await unzipDocument())["word/document.xml"])
+    const hyperlinks = xml.match(/<w:hyperlink.*?<\/w:hyperlink>/g) ?? []
+    expect(hyperlinks.length).toBeGreaterThan(0)
+    expect(hyperlinks.every((link) => link.includes("<w:u "))).toBe(true)
+    expect(xml.includes("London")).toBe(true) // plain runs stay un-linked
   })
 
   it("applies the theme: shading, caps headings, kept-together entries", async () => {

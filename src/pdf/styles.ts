@@ -59,6 +59,11 @@ export const styles = StyleSheet.create({
     color: tokens.colors.onAccent,
     textDecoration: "none",
   },
+  contactLink: {
+    fontSize: tokens.fontSize.small,
+    color: tokens.colors.onAccent,
+    textDecoration: "underline",
+  },
 
   // Sections
   section: {

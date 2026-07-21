@@ -99,11 +99,23 @@
   border-bottom: 1px solid var(--border);
 }
 
+.downloadGroup {
+  position: fixed;
+  right: max(24px, env(safe-area-inset-right));
+  bottom: max(24px, env(safe-area-inset-bottom));
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 10px;
+}
+
 .downloadButton {
   appearance: none;
   display: inline-flex;
   border: 2px solid var(--accent);
   align-items: center;
+  justify-content: center;
   cursor: pointer;
   gap: 8px;
   background: var(--bg);
@@ -123,8 +135,19 @@
   flex-shrink: 0;
 }
 
+@keyframes borderPulse {
+  from {
+    border-color: var(--accent);
+  }
+  to {
+    border-color: var(--accent2);
+  }
+}
+
 .downloadButton:hover:not(:disabled) {
-  animation: glowPulse 0.5s infinite alternate;
+  animation:
+    glowPulse 0.5s infinite alternate,
+    borderPulse 1.2s ease-in-out infinite alternate;
 }
 
 .downloadButton:disabled {
@@ -175,6 +198,10 @@
   }
 
   .utility {
+    display: none;
+  }
+
+  .downloadGroup {
     display: none;
   }
 }

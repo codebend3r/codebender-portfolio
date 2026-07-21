@@ -30,6 +30,16 @@ export function ResumePDF({ data }: Props) {
           </View>
         </Section>
 
+        <Section heading="Soft Skills">
+          <View style={styles.skillsList}>
+            {data.soft_skills.map((skill) => (
+              <Text key={skill} style={styles.skillPill}>
+                {skill}
+              </Text>
+            ))}
+          </View>
+        </Section>
+
         <Section heading="Work Experience">
           {data.work_experience.map((entry, i) => (
             <ExperienceEntry key={`${entry.company}-${i}`} entry={entry} />
@@ -95,7 +105,7 @@ function ResumeHeader({ data }: { data: Data }) {
         {data.contact.map((entry, i) => {
           if (isUrl(entry.value)) {
             return (
-              <Link key={i} style={styles.contactItem} src={entry.value}>
+              <Link key={i} style={styles.contactLink} src={entry.value}>
                 {stripProtocol(entry.value)}
               </Link>
             )
@@ -104,7 +114,7 @@ function ResumeHeader({ data }: { data: Data }) {
             return (
               <Link
                 key={i}
-                style={styles.contactItem}
+                style={styles.contactLink}
                 src={`mailto:${entry.value}`}
               >
                 {entry.value}

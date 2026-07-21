@@ -41,6 +41,7 @@ type Data = {
   summary: string
   technical_skills: string[]
   skill_descriptions: string[]
+  soft_skills: string[]
   work_experience: Experience[]
   awards: Award[]
   languages: Language[]

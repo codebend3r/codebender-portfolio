@@ -19,7 +19,7 @@ describe("SectionNavComponent", () => {
     const { root } = await render()
     const links = [...root.querySelectorAll("a.item")]
 
-    expect(links.length).toBe(7)
+    expect(links.length).toBe(8)
     expect(links[0]?.getAttribute("href") ?? "").toBe("#summary")
     expect(links[1]?.getAttribute("href") ?? "").toBe("#technical-skills")
   })
@@ -34,7 +34,7 @@ describe("SectionNavComponent", () => {
   it("shows chip numbers for numbered sections and a dot for summary", async () => {
     const { root } = await render()
 
-    expect(root.querySelectorAll(".num").length).toBe(6)
+    expect(root.querySelectorAll(".num").length).toBe(7)
     expect(root.querySelectorAll(".dot").length).toBe(1)
     expect(
       [...root.querySelectorAll(".num")][0]?.textContent?.trim() ?? ""
