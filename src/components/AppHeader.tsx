@@ -2,9 +2,11 @@ import styles from "@components/AppHeader.module.css"
 import { Header } from "@components/Header"
 import { WeatherClock } from "@components/WeatherClock"
 
+import { type DocumentFormat } from "@utils/documentFileName"
+
 type Props = {
-  onDownload: () => void
-  isGenerating: boolean
+  onDownload: (format: DocumentFormat) => void
+  generatingFormat: DocumentFormat | null
 }
 
 function DownloadIcon() {
@@ -28,24 +30,39 @@ function DownloadIcon() {
   )
 }
 
-export function AppHeader({ onDownload, isGenerating }: Props) {
+export function AppHeader({ onDownload, generatingFormat }: Props) {
+  const isGenerating = generatingFormat !== null
+
   return (
-    <header className={styles.bar}>
-      <div className={styles.inner}>
-        <div className={styles.utility}>
-          <WeatherClock />
-          <button
-            className={styles.downloadButton}
-            onClick={onDownload}
-            disabled={isGenerating}
-            aria-busy={isGenerating}
-          >
-            <DownloadIcon />
-            {isGenerating ? "Generating…" : "Download CV"}
-          </button>
+    <>
+      <header className={styles.bar}>
+        <div className={styles.inner}>
+          <div className={styles.utility}>
+            <WeatherClock />
+          </div>
+          <Header />
         </div>
-        <Header />
+      </header>
+      <div className={styles.downloadGroup}>
+        <button
+          className={styles.downloadButton}
+          onClick={() => onDownload("pdf")}
+          disabled={isGenerating}
+          aria-busy={generatingFormat === "pdf"}
+        >
+          <DownloadIcon />
+          {generatingFormat === "pdf" ? "Generating…" : "Download PDF CV"}
+        </button>
+        <button
+          className={styles.downloadButton}
+          onClick={() => onDownload("docx")}
+          disabled={isGenerating}
+          aria-busy={generatingFormat === "docx"}
+        >
+          <DownloadIcon />
+          {generatingFormat === "docx" ? "Generating…" : "Download Word CV"}
+        </button>
       </div>
-    </header>
+    </>
   )
 }

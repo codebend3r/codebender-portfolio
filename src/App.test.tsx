@@ -5,13 +5,20 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 
 import resume from "@data/resume.json"
 
-const { generateResumePdfMock, downloadBlobMock } = vi.hoisted(() => ({
-  generateResumePdfMock: vi.fn().mockResolvedValue(new Blob()),
-  downloadBlobMock: vi.fn(),
-}))
+const { generateResumePdfMock, generateResumeDocxMock, downloadBlobMock } =
+  vi.hoisted(() => ({
+    generateResumePdfMock: vi.fn().mockResolvedValue(new Blob()),
+    generateResumeDocxMock: vi.fn().mockResolvedValue(new Blob()),
+    downloadBlobMock: vi.fn(),
+  }))
 
 vi.mock("@pdf", () => ({
   generateResumePdf: generateResumePdfMock,
+  downloadBlob: downloadBlobMock,
+}))
+
+vi.mock("@docx", () => ({
+  generateResumeDocx: generateResumeDocxMock,
   downloadBlob: downloadBlobMock,
 }))
 
@@ -31,6 +38,8 @@ describe("App", () => {
   beforeEach(() => {
     generateResumePdfMock.mockClear()
     generateResumePdfMock.mockResolvedValue(new Blob())
+    generateResumeDocxMock.mockClear()
+    generateResumeDocxMock.mockResolvedValue(new Blob())
     downloadBlobMock.mockClear()
   })
 
@@ -77,21 +86,36 @@ describe("App", () => {
     expect(screen.queryByText(/· Summary$/)).not.toBeInTheDocument()
   })
 
-  it("renders an enabled download button by default", () => {
+  it("renders enabled PDF and Word download buttons by default", () => {
     render(<App />)
-    const button = screen.getByRole("button", { name: "Download CV" })
-    expect(button).toBeEnabled()
-    expect(button).toHaveAttribute("aria-busy", "false")
+    for (const name of ["Download PDF CV", "Download Word CV"]) {
+      const button = screen.getByRole("button", { name })
+      expect(button).toBeEnabled()
+      expect(button).toHaveAttribute("aria-busy", "false")
+    }
   })
 
   it("generates a PDF and triggers a download when clicked", async () => {
     const user = userEvent.setup()
     render(<App />)
-    await user.click(screen.getByRole("button", { name: "Download CV" }))
+    await user.click(screen.getByRole("button", { name: "Download PDF CV" }))
     await waitFor(() => expect(generateResumePdfMock).toHaveBeenCalledTimes(1))
+    expect(generateResumeDocxMock).not.toHaveBeenCalled()
     expect(downloadBlobMock).toHaveBeenCalledTimes(1)
     expect(downloadBlobMock.mock.calls[0][1]).toBe(
       "CJ Rivas - Senior Frontend Engineer + Architect.pdf"
+    )
+  })
+
+  it("generates a Word document and triggers a download when clicked", async () => {
+    const user = userEvent.setup()
+    render(<App />)
+    await user.click(screen.getByRole("button", { name: "Download Word CV" }))
+    await waitFor(() => expect(generateResumeDocxMock).toHaveBeenCalledTimes(1))
+    expect(generateResumePdfMock).not.toHaveBeenCalled()
+    expect(downloadBlobMock).toHaveBeenCalledTimes(1)
+    expect(downloadBlobMock.mock.calls[0][1]).toBe(
+      "CJ Rivas - Senior Frontend Engineer + Architect.docx"
     )
   })
 
@@ -106,20 +130,24 @@ describe("App", () => {
 
     const user = userEvent.setup()
     render(<App />)
-    const button = screen.getByRole("button", { name: "Download CV" })
-    await user.click(button)
+    await user.click(screen.getByRole("button", { name: "Download PDF CV" }))
 
     await waitFor(() => {
       expect(screen.getByRole("button", { name: "Generating…" })).toBeDisabled()
     })
+    expect(
+      screen.getByRole("button", { name: "Download Word CV" })
+    ).toBeDisabled()
 
     resolveGenerate(new Blob())
     await waitFor(() => {
-      expect(screen.getByRole("button", { name: "Download CV" })).toBeEnabled()
+      expect(
+        screen.getByRole("button", { name: "Download PDF CV" })
+      ).toBeEnabled()
     })
   })
 
-  it("ignores a second click while a PDF generation is in flight", async () => {
+  it("ignores a second click while a generation is in flight", async () => {
     let resolveGenerate: (blob: Blob) => void = () => {}
     generateResumePdfMock.mockImplementationOnce(
       () =>
@@ -130,8 +158,7 @@ describe("App", () => {
 
     const user = userEvent.setup()
     render(<App />)
-    const button = screen.getByRole("button", { name: "Download CV" })
-    await user.click(button)
+    await user.click(screen.getByRole("button", { name: "Download PDF CV" }))
     await waitFor(() => {
       expect(screen.getByRole("button", { name: "Generating…" })).toBeDisabled()
     })
@@ -141,21 +168,25 @@ describe("App", () => {
 
     resolveGenerate(new Blob())
     await waitFor(() => {
-      expect(screen.getByRole("button", { name: "Download CV" })).toBeEnabled()
+      expect(
+        screen.getByRole("button", { name: "Download PDF CV" })
+      ).toBeEnabled()
     })
   })
 
-  it("logs and recovers when PDF generation fails", async () => {
+  it("logs and recovers when document generation fails", async () => {
     const error = new Error("nope")
     generateResumePdfMock.mockRejectedValueOnce(error)
     const consoleError = vi.spyOn(console, "error").mockImplementation(() => {})
 
     const user = userEvent.setup()
     render(<App />)
-    await user.click(screen.getByRole("button", { name: "Download CV" }))
+    await user.click(screen.getByRole("button", { name: "Download PDF CV" }))
     await waitFor(() => expect(consoleError).toHaveBeenCalled())
-    expect(consoleError.mock.calls[0][0]).toBe("PDF generation failed:")
-    expect(screen.getByRole("button", { name: "Download CV" })).toBeEnabled()
+    expect(consoleError.mock.calls[0][0]).toBe("Document generation failed:")
+    expect(
+      screen.getByRole("button", { name: "Download PDF CV" })
+    ).toBeEnabled()
     expect(downloadBlobMock).not.toHaveBeenCalled()
 
     consoleError.mockRestore()

@@ -16,34 +16,40 @@ import { WorkExperience } from "@components/WorkExperience"
 
 import { useStore } from "@state/useStore"
 
-import { documentFileName } from "@utils/documentFileName"
+import { type DocumentFormat, documentFileName } from "@utils/documentFileName"
 
 import styles from "@app/App.module.css"
 
 export default function App() {
-  const [isGenerating, setIsGenerating] = useState(false)
+  const [generatingFormat, setGeneratingFormat] =
+    useState<DocumentFormat | null>(null)
 
-  const onDownload = useCallback(async () => {
-    if (isGenerating) return
-    setIsGenerating(true)
-    try {
-      const { generateResumePdf, downloadBlob } = await import("@pdf")
-      const data = useStore.getState()
-      const blob = await generateResumePdf(data)
-      downloadBlob(
-        blob,
-        documentFileName({
+  const onDownload = useCallback(
+    async (format: DocumentFormat) => {
+      if (generatingFormat) return
+      setGeneratingFormat(format)
+      try {
+        const data = useStore.getState()
+        const filename = documentFileName({
           name: data.name,
           label: data.title,
-          extension: "pdf",
+          extension: format,
         })
-      )
-    } catch (err) {
-      console.error("PDF generation failed:", err)
-    } finally {
-      setIsGenerating(false)
-    }
-  }, [isGenerating])
+        if (format === "docx") {
+          const { generateResumeDocx, downloadBlob } = await import("@docx")
+          downloadBlob(await generateResumeDocx(data), filename)
+        } else {
+          const { generateResumePdf, downloadBlob } = await import("@pdf")
+          downloadBlob(await generateResumePdf(data), filename)
+        }
+      } catch (err) {
+        console.error("Document generation failed:", err)
+      } finally {
+        setGeneratingFormat(null)
+      }
+    },
+    [generatingFormat]
+  )
 
   return (
     <>
@@ -51,7 +57,10 @@ export default function App() {
       <Weather />
       <SectionNav />
       <div id="resume-root" className={styles.resumeRoot}>
-        <AppHeader onDownload={onDownload} isGenerating={isGenerating} />
+        <AppHeader
+          onDownload={onDownload}
+          generatingFormat={generatingFormat}
+        />
 
         <div className={styles.container}>
           <main className={styles.main}>

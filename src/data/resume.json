@@ -50,7 +50,6 @@
     "React Native/Expo",
     "Supabase",
     "Serverless/Edge Functions",
-    "Local-First/CRDTs",
     "Web Performance/Core Web Vitals",
     "Frontend Observability/OpenTelemetry",
     "Web Security/CSP/OWASP",
@@ -79,7 +78,6 @@
     "Cross-platform React targeting iOS, Android, web, and desktop from a single codebase. Expo layers on managed builds, over-the-air updates, and native APIs without leaving TypeScript.",
     "An open-source Postgres backend with auth, storage, realtime, and edge functions. A fast path from schema to production for full-stack TypeScript applications.",
     "Backend logic deployed as managed functions in the cloud or at the CDN edge. Scales to zero, deploys with the frontend, and keeps latency close to the user.",
-    "Building offline-capable, sync-native apps where data lives on the client and merges conflict-free via CRDTs. Delivers instant interactions and resilience without a round-trip to the server.",
     "Profiling and optimizing for Core Web Vitals: LCP, INP, and CLS. Covers bundle analysis, code splitting, image and font strategies, and real-user monitoring to keep experiences fast at scale.",
     "Instrumenting frontends with distributed tracing, error tracking, and real-user metrics via OpenTelemetry and tools like Sentry. Turns production behavior into actionable signals.",
     "Hardening frontends against XSS, CSRF, and supply-chain attacks with Content Security Policy, Trusted Types, and OWASP practices. Treats security as a design constraint, not a patch.",
@@ -104,11 +102,13 @@
       "schedule": "full-time",
       "arrangement": "contract",
       "achievements": [
-        "Developed interactive React components integrated with a proprietary CMS, boosting reader engagement and streamlining content management.",
+        "Built the frontend for an AI-assisted search experience on a national news property, integrating an in-house model API, implementing the design specs end to end, and optimizing perceived performance so results felt instant despite model latency.",
+        "Developed interactive React components integrated with a proprietary CMS on a consumer news property serving millions of monthly readers, improving reader engagement and streamlining editorial workflows.",
+        "Built a Storybook-based design system for React components, strengthening consistency and team collaboration.",
         "Embedded AI tooling into daily development and code reviews, raising code quality and cutting review turnaround time.",
         "Improved frontend maintainability through targeted refactoring and expanded unit test coverage.",
-        "Built a Storybook-based design system for React components, strengthening consistency and team collaboration.",
-        "Collaborated with cross-functional teams to deliver high-quality features on schedule."
+        "Integrated Sentry.io error monitoring into the frontend stack, surfacing production issues in real time and reducing time-to-resolution on reader-facing bugs.",
+        "Partnered with product, design, editorial, and backend teams to ship reader-facing features on schedule across high-traffic surfaces."
       ]
     },
     {
