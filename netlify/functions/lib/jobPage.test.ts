@@ -1,6 +1,25 @@
-import { afterEach, describe, expect, it, vi } from "vitest"
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 
-import { JobPageError, extractPostingText, fetchPostingText } from "./jobPage"
+import {
+  JobPageError,
+  extractPostingText,
+  fetchPostingText,
+  isBlockedAddress,
+} from "./jobPage"
+
+// Hoisted so the mock factory below can reference it despite vi.mock hoisting.
+// Typed to the `{ all: true }` overload so mockResolvedValue accepts an array.
+const { mockLookup } = vi.hoisted(() => ({
+  mockLookup:
+    vi.fn<
+      (hostname: string, options: unknown) => Promise<{ address: string }[]>
+    >(),
+}))
+
+vi.mock("node:dns/promises", () => ({
+  lookup: mockLookup,
+  default: { lookup: mockLookup },
+}))
 
 describe("extractPostingText", () => {
   it("strips tags and keeps visible text", () => {
@@ -51,32 +70,79 @@ describe("extractPostingText", () => {
   })
 })
 
-function mockFetch(init: {
+describe("isBlockedAddress", () => {
+  it("blocks the cloud metadata endpoint", () => {
+    expect(isBlockedAddress("169.254.169.254")).toBe(true)
+  })
+
+  it("blocks loopback and RFC-1918 ranges", () => {
+    expect(isBlockedAddress("127.0.0.1")).toBe(true)
+    expect(isBlockedAddress("10.1.2.3")).toBe(true)
+    expect(isBlockedAddress("172.16.5.5")).toBe(true)
+    expect(isBlockedAddress("192.168.1.1")).toBe(true)
+    expect(isBlockedAddress("100.64.0.1")).toBe(true)
+  })
+
+  it("blocks IPv6 loopback, unique-local, link-local, and mapped v4", () => {
+    expect(isBlockedAddress("::1")).toBe(true)
+    expect(isBlockedAddress("fd00::1")).toBe(true)
+    expect(isBlockedAddress("fe80::1")).toBe(true)
+    expect(isBlockedAddress("::ffff:169.254.169.254")).toBe(true)
+  })
+
+  it("allows ordinary public addresses", () => {
+    expect(isBlockedAddress("93.184.216.34")).toBe(false)
+    expect(isBlockedAddress("8.8.8.8")).toBe(false)
+    expect(isBlockedAddress("2606:4700:4700::1111")).toBe(false)
+  })
+})
+
+type FetchResult = {
   status?: number
   contentType?: string
+  location?: string
   body?: string
   reject?: boolean
-}) {
+}
+
+// Queue one result per fetch call so redirect chains can be simulated.
+function mockFetchSequence(results: FetchResult[]) {
+  const queue = [...results]
   vi.stubGlobal(
     "fetch",
     vi.fn(async () => {
+      const init = queue.shift() ?? {}
       if (init.reject) throw new TypeError("fetch failed")
+      const status = init.status ?? 200
+      const headers = new Headers({
+        "content-type": init.contentType ?? "text/html; charset=utf-8",
+      })
+      if (init.location) headers.set("location", init.location)
       return {
-        ok: (init.status ?? 200) < 400,
-        status: init.status ?? 200,
-        headers: new Headers({
-          "content-type": init.contentType ?? "text/html; charset=utf-8",
-        }),
+        ok: status >= 200 && status < 400,
+        status,
+        type: "default",
+        headers,
         text: async () => init.body ?? "",
       }
     })
   )
 }
 
+function mockFetch(init: FetchResult) {
+  mockFetchSequence([init])
+}
+
 const LONG_POSTING = `<body><p>${"We are hiring a senior engineer. ".repeat(20)}</p></body>`
+
+beforeEach(() => {
+  // Default: every host resolves to a public address.
+  mockLookup.mockResolvedValue([{ address: "93.184.216.34" }])
+})
 
 afterEach(() => {
   vi.unstubAllGlobals()
+  vi.clearAllMocks()
 })
 
 describe("fetchPostingText", () => {
@@ -114,6 +180,43 @@ describe("fetchPostingText", () => {
     })
     await expect(fetchPostingText("https://jobs.example/spa")).rejects.toThrow(
       /paste the posting text/i
+    )
+  })
+
+  it("refuses a url that resolves to a private address", async () => {
+    mockLookup.mockResolvedValue([{ address: "169.254.169.254" }])
+    mockFetch({ body: LONG_POSTING })
+    await expect(
+      fetchPostingText("https://metadata.evil.example/")
+    ).rejects.toThrow(/non-public address/)
+  })
+
+  it("re-validates the host on each redirect hop", async () => {
+    // Public host 301-redirects to a host that resolves to the metadata IP.
+    mockLookup
+      .mockResolvedValueOnce([{ address: "93.184.216.34" }])
+      .mockResolvedValueOnce([{ address: "169.254.169.254" }])
+    mockFetchSequence([
+      { status: 301, location: "https://internal.evil.example/" },
+      { body: LONG_POSTING },
+    ])
+    await expect(
+      fetchPostingText("https://jobs.example/redirect")
+    ).rejects.toThrow(/non-public address/)
+  })
+
+  it("follows a redirect to another public host", async () => {
+    mockFetchSequence([
+      { status: 302, location: "https://jobs.example/final" },
+      { body: LONG_POSTING },
+    ])
+    const text = await fetchPostingText("https://jobs.example/start")
+    expect(text).toContain("We are hiring a senior engineer.")
+  })
+
+  it("refuses a non-http protocol", async () => {
+    await expect(fetchPostingText("file:///etc/passwd")).rejects.toThrow(
+      JobPageError
     )
   })
 })
