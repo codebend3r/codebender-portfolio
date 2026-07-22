@@ -49,12 +49,14 @@ export default async (req: Request): Promise<void> => {
   const jobs = getStore({ name: "generate-jobs", consistency: "strong" })
   const write = (job: GenerateJob) => jobs.setJSON(parsed.jobId, job)
 
-  await write({ status: "pending" })
-
+  // Check the password before the first blob write so an unauthenticated
+  // caller can neither seed nor overwrite a job blob under an arbitrary id.
   if (!validatePassword(parsed.password, process.env.GENERATE_PASSWORD ?? "")) {
     await write({ status: "error", error: "wrong password" })
     return
   }
+
+  await write({ status: "pending" })
 
   try {
     const input = await resolveInput(parsed.input)
