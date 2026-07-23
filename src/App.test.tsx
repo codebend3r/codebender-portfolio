@@ -103,7 +103,7 @@ describe("App", () => {
     expect(generateResumeDocxMock).not.toHaveBeenCalled()
     expect(downloadBlobMock).toHaveBeenCalledTimes(1)
     expect(downloadBlobMock.mock.calls[0][1]).toBe(
-      "CJ Rivas - Senior Frontend Engineer + Architect.pdf"
+      "CJ Rivas - Staff Frontend Engineer + Architect.pdf"
     )
   })
 
@@ -115,7 +115,7 @@ describe("App", () => {
     expect(generateResumePdfMock).not.toHaveBeenCalled()
     expect(downloadBlobMock).toHaveBeenCalledTimes(1)
     expect(downloadBlobMock.mock.calls[0][1]).toBe(
-      "CJ Rivas - Senior Frontend Engineer + Architect.docx"
+      "CJ Rivas - Staff Frontend Engineer + Architect.docx"
     )
   })
 

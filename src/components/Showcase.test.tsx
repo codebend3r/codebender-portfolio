@@ -15,12 +15,36 @@ describe("Showcase", () => {
 
   it("renders one linked card per showcase item", () => {
     render(<Showcase />)
-    for (const item of resume.showcase) {
-      const link = screen.getByRole("link", { name: new RegExp(item.name) })
-      expect(link).toHaveAttribute("href", item.url)
+    const links = screen.getAllByRole("link")
+    resume.showcase.forEach((item) => {
+      const card = links.find((link) => link.getAttribute("href") === item.url)
+      expect(card).toBeDefined()
+      expect(card).toHaveAttribute("target", "_blank")
+      expect(card).toHaveAttribute("rel", expect.stringContaining("noopener"))
+    })
+  })
+
+  it("renders a hover overlay on every card", () => {
+    render(<Showcase />)
+    expect(screen.getAllByText("View site")).toHaveLength(
+      resume.showcase.length
+    )
+  })
+
+  it("renders a GitHub overlay link for side projects only", () => {
+    render(<Showcase />)
+    const showcase: Showcase[] = resume.showcase
+    const withRepo = showcase.filter((item) => !!item.repo)
+    expect(withRepo.length).toBeGreaterThan(0)
+    expect(screen.getAllByText("View code")).toHaveLength(withRepo.length)
+    withRepo.forEach((item) => {
+      const link = screen.getByRole("link", {
+        name: `${item.name} source code on GitHub`,
+      })
+      expect(link).toHaveAttribute("href", item.repo ?? "")
       expect(link).toHaveAttribute("target", "_blank")
       expect(link).toHaveAttribute("rel", expect.stringContaining("noopener"))
-    }
+    })
   })
 
   it("renders period, domain, description, and tags for the first card", () => {

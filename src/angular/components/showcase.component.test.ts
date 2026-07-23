@@ -52,6 +52,34 @@ describe("ShowcaseComponent", () => {
     expect(card?.querySelectorAll(".tag").length).toBe(item?.tags.length ?? 0)
   })
 
+  it("renders a hover overlay on every card", async () => {
+    const root = await render()
+    const overlays = [...root.querySelectorAll(".overlay .siteHalf")]
+
+    expect(overlays.length).toBe(resume.showcase.length)
+    overlays.forEach((half) => {
+      expect(half.textContent?.trim() ?? "").toBe("View site")
+    })
+  })
+
+  it("renders a repo overlay half and hit link for side projects only", async () => {
+    const root = await render()
+    const showcase: Showcase[] = resume.showcase
+    const withRepo = showcase.filter((item) => !!item.repo)
+    const repoHalves = [...root.querySelectorAll(".repoHalf")]
+    const repoLinks = [...root.querySelectorAll("a.repoHit")]
+
+    expect(withRepo.length).toBeGreaterThan(0)
+    expect(repoHalves.length).toBe(withRepo.length)
+    expect(repoHalves[0]?.textContent?.trim() ?? "").toBe("View code")
+    expect(repoLinks.length).toBe(withRepo.length)
+    expect(repoLinks[0]?.getAttribute("href") ?? "").toBe(
+      withRepo[0]?.repo ?? ""
+    )
+    expect(repoLinks[0]?.getAttribute("target") ?? "").toBe("_blank")
+    expect(repoLinks[0]?.getAttribute("rel") ?? "").toContain("noopener")
+  })
+
   it("gives each screenshot a non-empty alt", async () => {
     const root = await render()
     const images = [...root.querySelectorAll(".shot img")]
