@@ -17,7 +17,7 @@ import { ResumeDataService } from "@ngapp/services/resume-data.service"
     <app-section title="Selected Work" [index]="index()" [eyebrow]="eyebrow()">
       <ul class="grid">
         @for (item of showcase; track item.url) {
-          <li>
+          <li class="cardWrap">
             <a
               class="card"
               [href]="item.url"
@@ -53,6 +53,26 @@ import { ResumeDataService } from "@ngapp/services/resume-data.service"
                 </span>
               </span>
             </a>
+            <span class="overlay" aria-hidden="true">
+              <span
+                class="overlayHalf siteHalf"
+                [class.siteHalfSplit]="!!item.repo"
+              >
+                View site
+              </span>
+              @if (!!item.repo) {
+                <span class="overlayHalf repoHalf"> View code </span>
+              }
+            </span>
+            @if (!!item.repo) {
+              <a
+                class="repoHit"
+                [href]="item.repo"
+                target="_blank"
+                rel="noopener noreferrer"
+                [attr.aria-label]="item.name + ' source code on GitHub'"
+              ></a>
+            }
           </li>
         }
       </ul>

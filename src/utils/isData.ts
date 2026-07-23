@@ -109,14 +109,17 @@ function showcaseItemError(item: Record<string, unknown>): string | null {
   ]
   const missing = stringKeys.find((key) => typeof item[key] !== "string")
   if (missing !== undefined) return `${missing} must be a string`
+  if (item.repo !== undefined && typeof item.repo !== "string") {
+    return "repo must be a string when present"
+  }
   if (!isStringArray(item.tags)) return "tags must be an array of strings"
   return null
 }
 
 // Returns the first structural problem in `value`, or `null` when it is a
 // complete, correctly typed resume. Optional fields (`schedule`,
-// `arrangement`, `education.details`) may be absent but must be valid when
-// present. Unknown extra keys are ignored.
+// `arrangement`, `education.details`, `showcase.repo`) may be absent but
+// must be valid when present. Unknown extra keys are ignored.
 export function firstError(value: unknown): string | null {
   if (!isRecord(value)) return "Resume must be a JSON object"
   return (

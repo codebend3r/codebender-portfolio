@@ -26,12 +26,12 @@
       "value": "https://linkedin.com/in/chesterrivas/"
     }
   ],
-  "title": "Senior Frontend Engineer + Architect",
-  "summary": "Experienced Senior Frontend Engineer + Architect with nearly 20 years in the field, specializing in React and AI technologies. Committed to driving innovation through AI-powered development, with a proven record of leading initiatives that boost user engagement.",
+  "title": "Staff Frontend Engineer + Architect",
+  "summary": "Staff Frontend Engineer and Architect with 20 years of experience shipping consumer products at national scale. Deep specialization in React, TypeScript, and Next.js, with hands-on depth in AI-powered product experiences: LLM integrations, streaming UIs, MCP tooling, and agentic workflows. Has led frontend teams, mentored engineers at every level, and owned products end to end, from architecture and design systems through full-stack delivery and production operations.",
   "technical_skills": [
     "TypeScript/JavaScript",
     "React",
-    "AI Tooling/LLMs/MCP/Agents",
+    "AI Engineering/LLMs/MCP/Agents",
     "Next.js",
     "Vue.js",
     "Node.js",
@@ -59,7 +59,7 @@
   "skill_descriptions": [
     "A strongly typed superset of JavaScript that adds static type checking and modern language features. Essential for scaling large codebases, improving editor tooling, and catching bugs at compile time.",
     "A component-based library for building declarative user interfaces. Uses a virtual DOM and hooks-based composition to manage state and side effects with predictable rendering.",
-    "Integrating large language models, agentic workflows, and Model Context Protocol tooling into production apps. Pairs prompt engineering, retrieval, and agent design with AI coding assistants like Claude, Codex, and Cursor in daily development.",
+    "Building AI-powered product experiences in production: LLM integrations, retrieval-augmented generation, streaming UIs, Model Context Protocol tooling, and agentic workflows. Pairs prompt engineering and evals with AI coding assistants like Claude Code, Codex, and Cursor in daily development.",
     "A React meta-framework with server-side rendering, file-based routing, and full-stack capabilities. Optimized for performance via the App Router, React Server Components, and edge deployment.",
     "A progressive JavaScript framework featuring a reactive data model and single-file components. Balances approachable templating with a powerful composition API for scalable apps.",
     "JavaScript runtime built on V8 for high-performance, event-driven server applications. Enables fullstack JS, CLI tooling, and scalable I/O with a vast npm ecosystem.",
@@ -85,6 +85,7 @@
     "Interfaces built to WCAG standards: semantic markup, keyboard navigation, ARIA, and screen-reader support. Treats accessibility as a baseline of quality, not an afterthought."
   ],
   "soft_skills": [
+    "Technical Leadership",
     "Technical Communication",
     "Cross-Functional Collaboration",
     "Mentorship & Code Review",
@@ -102,10 +103,11 @@
       "schedule": "full-time",
       "arrangement": "contract",
       "achievements": [
-        "Built the frontend for an AI-assisted search experience on a national news property, integrating an in-house model API, implementing the design specs end to end, and optimizing perceived performance so results felt instant despite model latency.",
+        "Owned the frontend architecture and delivery of an AI-assisted search experience on a national news property, integrating an in-house model API, streaming responses into the UI, and optimizing perceived performance so results felt instant despite model latency.",
         "Developed interactive React components integrated with a proprietary CMS on a consumer news property serving millions of monthly readers, improving reader engagement and streamlining editorial workflows.",
         "Built a Storybook-based design system for React components, strengthening consistency and team collaboration.",
-        "Embedded AI tooling into daily development and code reviews, raising code quality and cutting review turnaround time.",
+        "Drove adoption of AI-assisted development across the team, embedding tools like Claude Code and Cursor into daily workflows and code review with clear guardrails, raising code quality and cutting review turnaround time.",
+        "Mentored engineers through pairing, code review, and architecture discussions, and helped set frontend standards adopted across teams.",
         "Improved frontend maintainability through targeted refactoring and expanded unit test coverage.",
         "Integrated Sentry.io error monitoring into the frontend stack, surfacing production issues in real time and reducing time-to-resolution on reader-facing bugs.",
         "Partnered with product, design, editorial, and backend teams to ship reader-facing features on schedule across high-traffic surfaces."
@@ -118,28 +120,16 @@
       "schedule": "part-time",
       "arrangement": "contract",
       "achievements": [
-        "Served as the sole full-stack developer for two Next.js/React/Prisma/Sanity news sites (iPolitics and QP Briefing), owning the backend, CI/CD, and infrastructure end-to-end.",
+        "Serve as the sole full-stack developer for two Next.js/React/Prisma/Sanity news sites (iPolitics and QP Briefing), owning the frontend, backend, CI/CD, and infrastructure end-to-end.",
         "Diagnosed and resolved Sanity.io CMS issues, keeping both newsrooms publishing without interruption.",
         "Led a tiered TypeScript migration of both codebases, backed by Vitest test coverage.",
         "Implemented TanStack Query, Zustand, and Zod for data fetching, global state, and schema validation across a consistent, well-organized React codebase."
       ]
     },
     {
-      "role": "Principal Robot",
-      "company": "Robots and Pencils",
-      "period": "06/2024 - 09/2024",
-      "schedule": "full-time",
-      "arrangement": "contract",
-      "achievements": [
-        "Managed the ASU project lifecycle end-to-end, implementing new features and ensuring timely delivery.",
-        "Conducted pull request reviews, upholding code quality and reinforcing team best practices.",
-        "Identified and implemented UI/UX improvements, refining features based on user testing feedback to sharpen interface performance."
-      ]
-    },
-    {
       "role": "Senior Frontend Engineer",
       "company": "XP Ventures Labs",
-      "period": "03/2024 - 05/2024",
+      "period": "01/2024 - 09/2024",
       "schedule": "full-time",
       "arrangement": "contract",
       "achievements": [
@@ -157,7 +147,7 @@
       "schedule": "full-time",
       "arrangement": "contract",
       "achievements": [
-        "Served as Frontend Lead Architect for homegeniusrealestate.com, leading frontend development from scratch to production with Next.js, TypeScript, GraphQL, and Nest.js.",
+        "Served as Frontend Lead Architect for homegeniusrealestate.com, owning the frontend end to end from zero to production with Next.js, TypeScript, GraphQL, and Nest.js.",
         "Delivered the complete real estate platform to market in under one year.",
         "Designed a scalable React design system with Storybook for component-driven development.",
         "Managed an NX monorepo with Docker and enforced standards through code reviews and mentoring.",
@@ -215,7 +205,7 @@
       "arrangement": "contract",
       "achievements": [
         "Planned and developed new frontend features for the admin app, enabling efficient user management.",
-        "Migrated the app from its legacy React architecture to a custom framework built on React Hooks.",
+        "Migrated the app from its legacy React architecture to a modern hooks-based architecture.",
         "Optimized UI experience and performance through webpack chunking, lazy loading, and in-memory data caching.",
         "Mentored new team members and demoed new features to stakeholders.",
         "Maintained the CI workflow and created custom bash scripts to streamline the development process."
@@ -226,7 +216,7 @@
       "company": "Toronto Star",
       "period": "12/2018 - 08/2019",
       "schedule": "full-time",
-      "arrangement": "contract",
+      "arrangement": "permanent",
       "achievements": [
         "Maintained and enhanced thestar.com in React, leading development of a new responsive main menu.",
         "Acted as lead developer, owning pull request reviews and merges to uphold code quality, site performance, and user experience.",
@@ -241,7 +231,7 @@
       "company": "The Globe and Mail",
       "period": "05/2016 - 04/2018",
       "schedule": "full-time",
-      "arrangement": "permanent",
+      "arrangement": "contract",
       "achievements": [
         "Developed and maintained website features using vanilla JavaScript.",
         "Collaborated with the frontend team to build highly performant, responsive components.",
@@ -256,7 +246,7 @@
       "company": "theScore",
       "period": "01/2016 - 05/2016",
       "schedule": "full-time",
-      "arrangement": "contract",
+      "arrangement": "permanent",
       "achievements": [
         "Developed a fantasy sports application using Ember.js, delivering interactive features for end users.",
         "Collaborated within an agile team environment, contributing to iterative development and sprint planning.",
@@ -314,12 +304,8 @@
       "arrangement": "permanent",
       "achievements": [
         "Architected a global Flash framework that powered Research Now's custom survey tooling across international markets.",
-        "Engaged directly with clients to gather requirements and scope custom development work.",
-        "Owned the architecture and visual design of all Flash and Flex applications.",
-        "Led the North American Flash team and mentored a junior Flash developer across most project deliveries.",
-        "Built custom interactive survey applications tailored to client research objectives.",
+        "Led the North American Flash team, mentored junior developers, and engaged directly with clients to gather requirements and scope custom work.",
         "Authored a proprietary ActionScript 3 library grounded in object-oriented principles to standardize internal development.",
-        "Refactored core classes and components to maximize reusability across the project portfolio.",
         "Delivered a Flex-based real-time survey reporting application that surfaced live respondent insights."
       ]
     }
@@ -354,12 +340,31 @@
   ],
   "showcase": [
     {
+      "name": "The Globe and Mail",
+      "domain": "theglobeandmail.com",
+      "url": "https://www.theglobeandmail.com/news-assistant/",
+      "role": "Senior Frontend Engineer",
+      "period": "2024 - 2026",
+      "description": "Owned the frontend for the Globe's AI-powered News Assistant, plus interactive React components and a Storybook design system integrated with a proprietary CMS, boosting reader engagement.",
+      "image": "/showcase/globe-and-mail.png",
+      "tags": [
+        "React",
+        "TypeScript",
+        "AI/LLM",
+        "Zustand",
+        "CMS",
+        "Storybook",
+        "Design System",
+        "Styled Components"
+      ]
+    },
+    {
       "name": "QP Briefing",
       "domain": "qpbriefing.com",
       "url": "https://www.qpbriefing.com",
       "role": "Fullstack Engineer",
       "period": "2023 - Present",
-      "description": "Sole full-stack developer for the QP Briefing news site on Next.js, React, Prisma, and Sanity CMS; owned the backend, CI/CD, and infrastructure.",
+      "description": "Sole full-stack developer for the QP Briefing news site on Next.js, React, Prisma, and Sanity CMS; owns the backend, CI/CD, and infrastructure.",
       "image": "/showcase/qp-briefing.png",
       "tags": [
         "Next.js",
@@ -369,7 +374,8 @@
         "Vitest",
         "Prisma",
         "CMS",
-        "Sanity"
+        "Sanity",
+        "SCSS Modules"
       ]
     },
     {
@@ -388,24 +394,66 @@
         "React Testing Library",
         "GraphQL",
         "E2E Testing",
-        "Storybook"
+        "Storybook",
+        "Emotion"
       ]
     },
     {
-      "name": "The Globe and Mail",
-      "domain": "theglobeandmail.com",
-      "url": "https://www.theglobeandmail.com/news-assistant/",
-      "role": "Senior Frontend Engineer",
-      "period": "2024 - 2026",
-      "description": "Built interactive React components and a Storybook design system integrated with a proprietary CMS, boosting reader engagement.",
-      "image": "/showcase/globe-and-mail.png",
+      "name": "Kasane",
+      "domain": "kasane-guide.netlify.app",
+      "url": "https://kasane-guide.netlify.app",
+      "repo": "https://github.com/codebend3r/kasane",
+      "role": "Creator (Side Project)",
+      "period": "2026",
+      "description": "A cross-platform guide that maps which anime episodes cover which manga chapters and back. Built once with Expo and React Native for web, iOS, Android, and desktop, sourcing series data from the AniList GraphQL API.",
+      "image": "/showcase/kasane.png",
       "tags": [
-        "React",
+        "Expo",
         "TypeScript",
+        "React Native",
+        "GraphQL",
         "Zustand",
-        "CMS",
-        "Storybook",
-        "Design System"
+        "RN StyleSheet"
+      ]
+    },
+    {
+      "name": "The Known World",
+      "domain": "theknownworld.netlify.app",
+      "url": "https://theknownworld.netlify.app",
+      "repo": "https://github.com/codebend3r/the-known-world",
+      "role": "Creator (Side Project)",
+      "period": "2026",
+      "description": "An interactive atlas of George R. R. Martin's world of Ice and Fire, with a pannable SVG map, a timeline, and the rolls of the great houses. Statically generated with Next.js from Zod-validated markdown.",
+      "image": "/showcase/the-known-world.png",
+      "tags": ["Next.js", "React", "TypeScript", "Zod", "SCSS Modules"]
+    },
+    {
+      "name": "PokeMax",
+      "domain": "thepokemax.netlify.app",
+      "url": "https://thepokemax.netlify.app",
+      "repo": "https://github.com/codebend3r/pokemax",
+      "role": "Creator (Side Project)",
+      "period": "2026",
+      "description": "A retro CRT-terminal-styled Pokédex covering all 1,022 species across Gen I - IX, with generation, type, and alt-form filters, full stat, move, and evolution cards, and competitive builds sourced live from Smogon.",
+      "image": "/showcase/pokemax.png",
+      "tags": ["React", "TypeScript", "Vite", "Vitest", "Vanilla CSS"]
+    },
+    {
+      "name": "Court Vision",
+      "domain": "court-vizion.netlify.app",
+      "url": "https://court-vizion.netlify.app",
+      "repo": "https://github.com/codebend3r/court-vision",
+      "role": "Creator (Side Project)",
+      "period": "2026",
+      "description": "A fantasy basketball tool that pulls NBA player stats and tracks performance over recent windows to surface who is heating up, with a searchable player table and per-player trend charts.",
+      "image": "/showcase/court-vision.png",
+      "tags": [
+        "Next.js",
+        "TypeScript",
+        "Prisma",
+        "Supabase",
+        "Recharts",
+        "SCSS Modules"
       ]
     },
     {
@@ -422,28 +470,9 @@
         "Unit Testing",
         "Redux",
         "E2E Testing",
-        "Design System"
+        "Design System",
+        "SCSS + BEM"
       ]
-    },
-    {
-      "name": "The Known World",
-      "domain": "theknownworld.netlify.app",
-      "url": "https://theknownworld.netlify.app",
-      "role": "Creator (Side Project)",
-      "period": "2026",
-      "description": "An interactive atlas of George R. R. Martin's world of Ice and Fire, with a pannable SVG map, a timeline, and the rolls of the great houses. Statically generated with Next.js from Zod-validated markdown.",
-      "image": "/showcase/the-known-world.png",
-      "tags": ["Next.js", "React", "TypeScript", "Zod"]
-    },
-    {
-      "name": "Kasane",
-      "domain": "kasane-guide.netlify.app",
-      "url": "https://kasane-guide.netlify.app",
-      "role": "Creator (Side Project)",
-      "period": "2026",
-      "description": "A cross-platform guide that maps which anime episodes cover which manga chapters and back. Built once with Expo and React Native for web, iOS, Android, and desktop, sourcing series data from the AniList GraphQL API.",
-      "image": "/showcase/kasane.png",
-      "tags": ["Expo", "TypeScript", "React Native", "GraphQL", "Zustand"]
     }
   ]
 }

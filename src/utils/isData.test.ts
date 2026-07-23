@@ -84,6 +84,18 @@ describe("isData nested items", () => {
     expect(firstError(bad)).toContain("details")
   })
 
+  it("allows an absent optional showcase repo but rejects a non-string", () => {
+    const good = base()
+    Reflect.deleteProperty(good.showcase[0], "repo")
+    expect(isData(good)).toBe(true)
+
+    const bad = base()
+    Reflect.set(bad.showcase[0], "repo", 7)
+    expect(firstError(bad)).toBe(
+      '"showcase[0]" repo must be a string when present'
+    )
+  })
+
   it("rejects a showcase entry with non-string tags", () => {
     const data = base()
     data.showcase[0] = {

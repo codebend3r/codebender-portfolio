@@ -84,8 +84,8 @@ describe("WorkExperience", () => {
     expect(
       screen.getAllByText("1 year 9 months").length
     ).toBeGreaterThanOrEqual(1)
-    // 06/2024 - 09/2024 counts 4 calendar months
-    expect(screen.getAllByText("4 months").length).toBeGreaterThanOrEqual(1)
+    // 01/2024 - 09/2024 counts 9 calendar months
+    expect(screen.getAllByText("9 months").length).toBeGreaterThanOrEqual(1)
   })
 })
 

@@ -25,6 +25,8 @@ type Showcase = {
   name: string
   domain: string
   url: string
+  // Source repository, present on side projects only.
+  repo?: string
   role: string
   period: string
   description: string

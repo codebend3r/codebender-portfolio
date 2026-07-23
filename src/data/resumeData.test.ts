@@ -12,6 +12,6 @@ describe("resumeData", () => {
 
   it("keeps every base field intact", () => {
     expect(resumeData.name).toBe("CJ Rivas")
-    expect(resumeData.work_experience.length).toBe(16)
+    expect(resumeData.work_experience.length).toBe(15)
   })
 })

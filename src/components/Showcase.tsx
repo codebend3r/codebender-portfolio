@@ -78,6 +78,15 @@ export function Showcase({
                           ariaLabel={`Showcase ${i + 1} role`}
                         />
                       </span>
+                      {!!item.repo && (
+                        <span className={styles.role}>
+                          <EditableText
+                            value={item.repo}
+                            path={["showcase", i, "repo"]}
+                            ariaLabel={`Showcase ${i + 1} repo`}
+                          />
+                        </span>
+                      )}
                       <span className={styles.description}>
                         <EditableText
                           value={item.description}
@@ -146,7 +155,7 @@ export function Showcase({
                 )}
               </SortableItem>
             ) : (
-              <li key={item.url}>
+              <li key={item.url} className={styles.cardWrap}>
                 <a
                   className={styles.card}
                   href={item.url}
@@ -186,6 +195,31 @@ export function Showcase({
                     </span>
                   </span>
                 </a>
+                <span className={styles.overlay} aria-hidden>
+                  <span
+                    className={`${styles.overlayHalf} ${styles.siteHalf} ${
+                      item.repo ? styles.siteHalfSplit : ""
+                    }`}
+                  >
+                    View site
+                  </span>
+                  {!!item.repo && (
+                    <span
+                      className={`${styles.overlayHalf} ${styles.repoHalf}`}
+                    >
+                      View code
+                    </span>
+                  )}
+                </span>
+                {!!item.repo && (
+                  <a
+                    className={styles.repoHit}
+                    href={item.repo}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`${item.name} source code on GitHub`}
+                  />
+                )}
               </li>
             )
           )}
