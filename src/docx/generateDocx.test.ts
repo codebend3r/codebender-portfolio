@@ -6,6 +6,9 @@ import { resumeFixture } from "@app/test/resumeFixture"
 vi.mock("@docx/fonts", () => ({
   loadDocxFonts: vi.fn().mockResolvedValue([]),
 }))
+vi.mock("@docx/assets", () => ({
+  loadDocxLogo: vi.fn().mockResolvedValue(new Uint8Array(64)),
+}))
 
 describe("generateResumeDocx", () => {
   it("resolves to a non-empty .docx blob", async () => {

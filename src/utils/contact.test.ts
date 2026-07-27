@@ -2,8 +2,12 @@ import { describe, expect, it } from "vitest"
 
 import {
   contactHref,
+  contactIconKind,
+  isDirectContactKind,
   isEmail,
+  isLocationEntry,
   isPhone,
+  isSocialContactKind,
   isUrl,
   stripProtocol,
 } from "@utils/contact"
@@ -94,5 +98,79 @@ describe("stripProtocol", () => {
 
   it("leaves protocol-less values unchanged", () => {
     expect(stripProtocol("example.com/path")).toBe("example.com/path")
+  })
+})
+
+describe("contactIconKind", () => {
+  it("returns github for a github.com URL", () => {
+    expect(contactIconKind("https://github.com/codebend3r")).toBe("github")
+  })
+
+  it("returns linkedin for a linkedin.com URL", () => {
+    expect(contactIconKind("https://linkedin.com/in/chesterrivas/")).toBe(
+      "linkedin"
+    )
+  })
+
+  it("returns site for any other URL", () => {
+    expect(contactIconKind("https://codebender-portoflio.netlify.app/")).toBe(
+      "site"
+    )
+  })
+
+  it("returns email for an email address", () => {
+    expect(contactIconKind("cj@example.com")).toBe("email")
+  })
+
+  it("returns phone for a phone number", () => {
+    expect(contactIconKind("416-555-0123")).toBe("phone")
+  })
+
+  it("returns null for plain text like a location", () => {
+    expect(contactIconKind("Toronto, ON")).toBeNull()
+  })
+})
+
+describe("isDirectContactKind", () => {
+  it.each(["email", "phone"] as const)("returns true for %s", (kind) => {
+    expect(isDirectContactKind(kind)).toBe(true)
+  })
+
+  it.each(["github", "linkedin", "site", null] as const)(
+    "returns false for %s",
+    (kind) => {
+      expect(isDirectContactKind(kind)).toBe(false)
+    }
+  )
+})
+
+describe("isSocialContactKind", () => {
+  it.each(["github", "linkedin", "site"] as const)(
+    "returns true for %s",
+    (kind) => {
+      expect(isSocialContactKind(kind)).toBe(true)
+    }
+  )
+
+  it.each(["email", "phone", null] as const)("returns false for %s", (kind) => {
+    expect(isSocialContactKind(kind)).toBe(false)
+  })
+})
+
+describe("isLocationEntry", () => {
+  it("returns true for a Location label", () => {
+    expect(isLocationEntry({ label: "Location", value: "Mississauga" })).toBe(
+      true
+    )
+  })
+
+  it("is case-insensitive", () => {
+    expect(isLocationEntry({ label: "location", value: "London" })).toBe(true)
+  })
+
+  it("returns false for other labels", () => {
+    expect(
+      isLocationEntry({ label: "GitHub", value: "https://github.com" })
+    ).toBe(false)
   })
 })

@@ -1,11 +1,40 @@
 import { Fragment, type ReactNode } from "react"
 
-import { Document, Link, Page, Text, View } from "@react-pdf/renderer"
+import {
+  Circle,
+  Document,
+  Image,
+  Link,
+  Page,
+  Path,
+  Rect,
+  Svg,
+  Text,
+  View,
+} from "@react-pdf/renderer"
 import { tokens } from "@theme/tokens"
+
+import Logo from "@assets/robot-logo.png"
 
 import { styles } from "@pdf/styles"
 
-import { isUrl, stripProtocol } from "@utils/contact"
+import {
+  EMAIL_ICON_PATH,
+  EMAIL_ICON_RECT,
+  GITHUB_ICON_PATH,
+  ICON_VIEWBOX,
+  LINKEDIN_ICON_CIRCLE,
+  LINKEDIN_ICON_PATH,
+  LINKEDIN_ICON_RECT,
+  PHONE_ICON_PATH,
+} from "@utils/brandIcons"
+import {
+  contactHref,
+  contactIconKind,
+  isDirectContactKind,
+  isLocationEntry,
+  isSocialContactKind,
+} from "@utils/contact"
 import { employmentParts } from "@utils/employment"
 
 type Props = { data: Data }
@@ -94,6 +123,13 @@ export function ResumePDF({ data }: Props) {
 }
 
 function ResumeHeader({ data }: { data: Data }) {
+  const contact = data.contact.filter((entry) => !isLocationEntry(entry))
+  const social = contact.filter((entry) =>
+    isSocialContactKind(contactIconKind(entry.value))
+  )
+  const direct = contact.filter(
+    (entry) => !isSocialContactKind(contactIconKind(entry.value))
+  )
   return (
     <View>
       <View style={styles.header}>
@@ -102,33 +138,109 @@ function ResumeHeader({ data }: { data: Data }) {
         <Text style={styles.summary}>{data.summary}</Text>
       </View>
       <View style={styles.contactBar}>
-        {data.contact.map((entry, i) => {
-          if (isUrl(entry.value)) {
-            return (
-              <Link key={i} style={styles.contactLink} src={entry.value}>
-                {stripProtocol(entry.value)}
-              </Link>
-            )
-          }
-          if (entry.value.includes("@")) {
-            return (
-              <Link
-                key={i}
-                style={styles.contactLink}
-                src={`mailto:${entry.value}`}
-              >
-                {entry.value}
-              </Link>
-            )
-          }
-          return (
-            <Text key={i} style={styles.contactItem}>
-              {entry.value}
-            </Text>
-          )
-        })}
+        <View style={styles.contactGroup}>
+          {/* Keyed by index: labels are user-editable and default to a
+              shared "Link", so they are not unique. */}
+          {direct.map((entry, i) => (
+            <Fragment key={i}>
+              {i > 0 && <Text style={styles.contactSep}>{"•"}</Text>}
+              <DirectContact entry={entry} />
+            </Fragment>
+          ))}
+        </View>
+        <View style={styles.contactGroup}>
+          {social.map((entry, i) => (
+            <SocialContact key={i} entry={entry} />
+          ))}
+        </View>
       </View>
     </View>
+  )
+}
+
+// Direct contact methods (email, phone) render as an icon + the readable
+// value, so it can be read or copied at a glance, not just clicked.
+function DirectContact({ entry }: { entry: ContactEntry }) {
+  const kind = contactIconKind(entry.value)
+  if (!isDirectContactKind(kind)) {
+    return <Text style={styles.contactItem}>{entry.value}</Text>
+  }
+  const href = contactHref(entry.value) ?? entry.value
+  return (
+    <Link style={styles.contactLinkRow} src={href}>
+      <ContactSvgIcon kind={kind} />
+      <Text style={styles.contactLink}>{entry.value}</Text>
+    </Link>
+  )
+}
+
+// Web/social links (portfolio, GitHub, LinkedIn) render icon-only — the
+// destination doesn't need spelling out, unlike an email or phone number.
+function SocialContact({ entry }: { entry: ContactEntry }) {
+  const kind = contactIconKind(entry.value)
+  if (!isSocialContactKind(kind)) return null
+  if (kind === "site") {
+    return (
+      <Link src={entry.value}>
+        <Image src={Logo} style={styles.contactIcon} />
+      </Link>
+    )
+  }
+  return (
+    <Link src={entry.value}>
+      <ContactSvgIcon kind={kind} />
+    </Link>
+  )
+}
+
+function ContactSvgIcon({
+  kind,
+}: {
+  kind: "email" | "phone" | "github" | "linkedin"
+}) {
+  const strokeProps = {
+    stroke: tokens.colors.onAccent,
+    strokeWidth: 2,
+    strokeLinecap: "round" as const,
+    strokeLinejoin: "round" as const,
+    fill: "none",
+  }
+  return (
+    <Svg viewBox={ICON_VIEWBOX} style={styles.contactIcon}>
+      {kind === "email" && (
+        <>
+          <Rect
+            x={EMAIL_ICON_RECT.x}
+            y={EMAIL_ICON_RECT.y}
+            width={EMAIL_ICON_RECT.width}
+            height={EMAIL_ICON_RECT.height}
+            rx={EMAIL_ICON_RECT.rx}
+            {...strokeProps}
+          />
+          <Path d={EMAIL_ICON_PATH} {...strokeProps} />
+        </>
+      )}
+      {kind === "phone" && <Path d={PHONE_ICON_PATH} {...strokeProps} />}
+      {kind === "github" && <Path d={GITHUB_ICON_PATH} {...strokeProps} />}
+      {kind === "linkedin" && (
+        <>
+          <Path d={LINKEDIN_ICON_PATH} {...strokeProps} />
+          <Rect
+            x={LINKEDIN_ICON_RECT.x}
+            y={LINKEDIN_ICON_RECT.y}
+            width={LINKEDIN_ICON_RECT.width}
+            height={LINKEDIN_ICON_RECT.height}
+            {...strokeProps}
+          />
+          <Circle
+            cx={LINKEDIN_ICON_CIRCLE.cx}
+            cy={LINKEDIN_ICON_CIRCLE.cy}
+            r={LINKEDIN_ICON_CIRCLE.r}
+            {...strokeProps}
+          />
+        </>
+      )}
+    </Svg>
   )
 }
 
