@@ -55,9 +55,9 @@ describe("normalizeData employment backfill", () => {
 
   it("backfills schedule and arrangement from the base resume stint", () => {
     const result = normalizeData(stripped())
-    expect(result.work_experience[0].schedule).toBe("full-time")
+    expect(result.work_experience[0].schedule).toBe("part-time")
     expect(result.work_experience[0].arrangement).toBe("contract")
-    expect(result.work_experience[1].schedule).toBe("part-time")
+    expect(result.work_experience[1].schedule).toBe("full-time")
     expect(result.work_experience[1].arrangement).toBe("contract")
   })
 

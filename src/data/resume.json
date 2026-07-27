@@ -97,6 +97,24 @@
   ],
   "work_experience": [
     {
+      "role": "Founder + Principal Engineer",
+      "company": "Codebender Inc.",
+      "period": "01/2011 - Present",
+      "schedule": "part-time",
+      "arrangement": "contract",
+      "achievements": [
+        "Founded and operate an incorporated software practice, delivering senior and lead-level frontend engagements to clients across news, finance, real estate, telecom, and enterprise SaaS while running a continuous self-directed product and R&D track alongside them.",
+        "Design and ship full products end to end, from data modelling and API design through frontend architecture, design systems, testing, CI/CD, and production deployment, working primarily in React, Next.js App Router with React Server Components, and strict TypeScript.",
+        "Use Supabase as the default backend, standardizing on Postgres with row level security, auth, and edge functions, and keeping schema migrations version-controlled alongside application code so environments stay reproducible.",
+        "Work as an agentic developer, decomposing features into specifications and executable plans, then driving them through coding agents in small, reviewable increments with tests as the contract and every diff reviewed line by line before it lands.",
+        "Build the harness that makes agentic development safe on real codebases: committed convention files, custom agent skills, MCP integrations that expose repository, schema, and design-system context directly to tooling, and pre-commit gates that enforce formatting, type checking, linting, and tests.",
+        "Establish and enforce a consistent engineering standard across every project: strict TypeScript, schema validation at the boundaries, co-located unit and integration coverage, referential-integrity checks in CI, and single-command quality gates run before any handoff.",
+        "Ship cross-platform from single codebases, targeting web, iOS, Android, and desktop where a product warrants it, and deploy static and edge-rendered sites with image optimization and Core Web Vitals budgets in place.",
+        "Use the practice as a proving ground for emerging tooling ahead of client adoption, evaluating new runtimes, linters, build systems, rendering models, and agentic workflows, and forming grounded opinions on what earns a place in production.",
+        "Integrate LLM capability into product surfaces, covering streaming responses, structured output, tool use, and retrieval, with attention to perceived performance, graceful degradation, and cost."
+      ]
+    },
+    {
       "role": "Senior Frontend Engineer",
       "company": "The Globe and Mail",
       "period": "09/2024 - 05/2026",
@@ -163,12 +181,13 @@
       "schedule": "full-time",
       "arrangement": "permanent",
       "achievements": [
-        "Collaborated directly with the CTO as Frontend Architect, migrating React JavaScript components to TypeScript across projects to improve maintainability and type safety.",
-        "Overhauled the webpack configuration and migrated builds to Vite and esbuild, cutting build times significantly.",
-        "Conducted performance testing and implemented key frontend optimizations.",
-        "Implemented an NX monorepo with custom bash scripts, streamlining the development workflow.",
-        "Optimized GitHub workflows through parallelization and smart caching.",
-        "Prototyped experimental modules and components to explore emerging frontend approaches."
+        "Partnered directly with the CTO as frontend architect, setting technical direction and standards across multiple product codebases.",
+        "Led a cross-project migration of React JavaScript components to TypeScript, establishing type-safety conventions that improved maintainability and reduced runtime defects.",
+        "Rebuilt the build pipeline, replacing legacy webpack configuration with Vite and esbuild and cutting build times substantially.",
+        "Consolidated projects into an Nx monorepo with custom tooling scripts, standardizing dependency management and streamlining the development workflow.",
+        "Optimized CI workflows through job parallelization and dependency caching, shortening feedback loops for the entire team.",
+        "Profiled frontend performance and implemented targeted optimizations against measured bottlenecks rather than assumed ones.",
+        "Prototyped experimental modules and components to evaluate emerging frontend approaches ahead of production adoption."
       ]
     },
     {
@@ -191,10 +210,10 @@
       "schedule": "full-time",
       "arrangement": "contract",
       "achievements": [
-        "Engineered a real-time stock trading application leveraging React Hooks, TypeScript, and RxJS to deliver reactive market data streams.",
-        "Authored comprehensive unit test coverage across React components to safeguard performance and stability.",
-        "Established code quality standards by integrating ESLint and Prettier into the development workflow.",
-        "Strengthened the DevOps pipeline with additional automated checks, accelerating build times and improving deployment confidence."
+        "Engineered a real-time equities trading interface on React Hooks, TypeScript, and RxJS, modelling live market data as reactive streams with predictable update and cancellation behaviour.",
+        "Authored comprehensive unit coverage across React components to protect correctness and stability in a low-latency, high-consequence environment.",
+        "Established team code quality standards, integrating ESLint and Prettier into the development workflow and enforcing them automatically.",
+        "Strengthened the DevOps pipeline with additional automated checks, accelerating builds and raising deployment confidence."
       ]
     },
     {
@@ -204,11 +223,11 @@
       "schedule": "full-time",
       "arrangement": "contract",
       "achievements": [
-        "Planned and developed new frontend features for the admin app, enabling efficient user management.",
-        "Migrated the app from its legacy React architecture to a modern hooks-based architecture.",
-        "Optimized UI experience and performance through webpack chunking, lazy loading, and in-memory data caching.",
-        "Mentored new team members and demoed new features to stakeholders.",
-        "Maintained the CI workflow and created custom bash scripts to streamline the development process."
+        "Led frontend development on an internal administration platform, planning and delivering user-management capability end to end.",
+        "Migrated the application from a legacy React architecture to a modern hooks-based architecture, reducing complexity and easing ongoing feature delivery.",
+        "Improved measured and perceived performance through webpack chunking, lazy loading, and in-memory caching of frequently accessed data.",
+        "Mentored incoming engineers and presented feature demos directly to stakeholders.",
+        "Owned the CI workflow and authored custom tooling scripts that removed repetitive work from the development cycle."
       ]
     },
     {
@@ -218,12 +237,12 @@
       "schedule": "full-time",
       "arrangement": "permanent",
       "achievements": [
-        "Maintained and enhanced thestar.com in React, leading development of a new responsive main menu.",
-        "Acted as lead developer, owning pull request reviews and merges to uphold code quality, site performance, and user experience.",
-        "Introduced E2E testing integrated with Jenkins and real-time error monitoring with Sentry.io.",
-        "Identified workflow issues and proposed solutions to optimize team processes.",
-        "Interviewed frontend developer candidates to help build a strong team.",
-        "Worked in an agile, continuous-delivery environment, consistently meeting project deadlines."
+        "Led frontend development on thestar.com, a national news property, owning delivery of a new responsive primary navigation experience.",
+        "Acted as final reviewer on pull requests and merges, holding the line on code quality, site performance, and user experience.",
+        "Introduced E2E testing into the Jenkins pipeline and real-time error monitoring with Sentry, shortening time-to-detection on production issues.",
+        "Diagnosed workflow bottlenecks and drove process changes adopted across the team.",
+        "Interviewed frontend engineering candidates and contributed to hiring decisions.",
+        "Delivered consistently against deadlines in an agile, continuous-delivery environment."
       ]
     },
     {
@@ -233,12 +252,12 @@
       "schedule": "full-time",
       "arrangement": "contract",
       "achievements": [
-        "Developed and maintained website features using vanilla JavaScript.",
-        "Collaborated with the frontend team to build highly performant, responsive components.",
-        "Implemented accessible semantic markup and advanced analytics to enhance the user experience.",
-        "Participated in code reviews and documented UI best practices and code standards to uphold quality.",
-        "Increased unit test coverage, improving code stability and reducing bugs.",
-        "Presented a Git workflow session to the internal team, increasing team efficiency."
+        "Built and maintained reader-facing features on a national news property in vanilla JavaScript, working without a framework in a large legacy codebase.",
+        "Collaborated with the frontend team to deliver highly performant, responsive components across high-traffic surfaces.",
+        "Implemented accessible semantic markup and advanced analytics instrumentation, improving both usability and editorial visibility into reader behaviour.",
+        "Participated in code review and authored UI best-practice and code-standard documentation that became team reference material.",
+        "Expanded unit test coverage across the codebase, improving stability and reducing regression defects.",
+        "Delivered an internal Git workflow session to the engineering team, raising consistency and reducing friction in day-to-day development."
       ]
     },
     {
@@ -248,10 +267,10 @@
       "schedule": "full-time",
       "arrangement": "permanent",
       "achievements": [
-        "Developed a fantasy sports application using Ember.js, delivering interactive features for end users.",
-        "Collaborated within an agile team environment, contributing to iterative development and sprint planning.",
-        "Conducted code reviews on pull requests and supported continuous integration workflows to uphold code quality.",
-        "Expanded backend proficiency by self-studying Ruby on Rails, broadening full-stack capabilities."
+        "Built interactive features for a consumer fantasy sports application in Ember.js, working within the framework's routing-driven architecture and conventions.",
+        "Contributed to iterative delivery in an agile team, participating in sprint planning and scoping.",
+        "Reviewed pull requests and supported continuous integration workflows to uphold code quality.",
+        "Expanded into server-side development through self-directed study of Ruby on Rails, broadening full-stack range beyond the frontend."
       ]
     },
     {
@@ -261,11 +280,12 @@
       "schedule": "full-time",
       "arrangement": "contract",
       "achievements": [
-        "Developed a Rogers web application and established AngularJS coding conventions adopted by all developers.",
-        "Conducted technical interviews to assess candidates' AngularJS expertise, ensuring strong additions to the team.",
-        "Designed an AngularJS module framework that facilitated collaboration and was adopted across multiple teams.",
-        "Expanded Bootstrap's AngularUI directives and documented frontend solutions, ensuring all code was thoroughly unit tested.",
-        "Built custom Node and Gulp modules and mentored junior developers through hands-on code pairing."
+        "Led frontend development on a consumer-facing Rogers web application, establishing the AngularJS coding conventions subsequently adopted by every developer on the project.",
+        "Designed a modular AngularJS framework that standardized how features were built and was adopted across multiple teams beyond the original project.",
+        "Extended Bootstrap's AngularUI directives and documented frontend solutions, ensuring all delivered code carried unit test coverage.",
+        "Built custom Node and Gulp modules to automate the build and development workflow.",
+        "Conducted technical interviews assessing AngularJS depth, contributing directly to hiring decisions for the team.",
+        "Mentored junior developers through hands-on pairing and code review, raising the technical baseline across the group."
       ]
     },
     {
@@ -275,11 +295,11 @@
       "schedule": "full-time",
       "arrangement": "permanent",
       "achievements": [
-        "Served as the sole frontend specialist for a company-wide computer and server monitoring application built with AngularJS.",
-        "Implemented a Test-Driven Development (TDD) workflow using Jasmine, Karma, and Protractor.",
-        "Contributed shell scripts for continuous integration in Bamboo.",
-        "Consumed a proprietary RESTful API layer to build out the graphical user interface.",
-        "Owned all frontend build tooling, including custom Gulp tasks."
+        "Served as the sole frontend specialist on a company-wide infrastructure and server monitoring platform built in AngularJS, owning every frontend decision on the product.",
+        "Established a test-driven development workflow using Jasmine, Karma, and Protractor, bringing automated verification to a codebase that previously had none.",
+        "Consumed a proprietary RESTful API layer to build out the operator-facing interface for monitoring and alerting.",
+        "Owned all frontend build tooling, authoring custom Gulp tasks to standardize the development and release process.",
+        "Contributed shell scripts to the Bamboo continuous integration pipeline, automating steps previously performed by hand."
       ]
     },
     {
@@ -289,11 +309,11 @@
       "schedule": "full-time",
       "arrangement": "permanent",
       "achievements": [
-        "Contributed to the development of Kobo's Instant Reader web application, built on the SproutCore JavaScript framework.",
-        "Diagnosed and resolved frontend defects while delivering new features across the reading experience.",
-        "Partnered with the design and UX team to implement responsive layouts that performed consistently across all supported platforms.",
-        "Maintained and iterated on kobobooks.com, working in lockstep with backend engineers to ship full-scale, site-wide improvements.",
-        "Collaborated cross-functionally with adjacent teams to investigate issues and research new feature opportunities."
+        "Contributed to Kobo's Instant Reader web application, built on the SproutCore framework, delivering features across the core reading experience for a global consumer product.",
+        "Diagnosed and resolved frontend defects across the reading experience while shipping new capability in parallel.",
+        "Partnered with design and UX to implement responsive layouts that behaved consistently across every supported platform and device class.",
+        "Maintained and iterated on kobobooks.com, working in lockstep with backend engineers to deliver site-wide improvements.",
+        "Collaborated across adjacent teams to investigate production issues and scope new feature opportunities."
       ]
     },
     {
@@ -303,10 +323,11 @@
       "schedule": "full-time",
       "arrangement": "permanent",
       "achievements": [
-        "Architected a global Flash framework that powered Research Now's custom survey tooling across international markets.",
-        "Led the North American Flash team, mentored junior developers, and engaged directly with clients to gather requirements and scope custom work.",
-        "Authored a proprietary ActionScript 3 library grounded in object-oriented principles to standardize internal development.",
-        "Delivered a Flex-based real-time survey reporting application that surfaced live respondent insights."
+        "Architected a global Flash framework that powered the company's custom survey tooling across international markets, standardizing delivery across regions.",
+        "Led the North American Flash team, mentoring junior developers and setting the technical standards the team built against.",
+        "Engaged directly with clients to gather requirements and scope custom work, translating commercial needs into technical delivery plans.",
+        "Authored a proprietary ActionScript 3 library grounded in object-oriented principles, eliminating duplicated effort across internal projects.",
+        "Delivered a Flex-based real-time reporting application that surfaced live respondent data to stakeholders as surveys ran."
       ]
     }
   ],

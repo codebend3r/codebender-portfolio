@@ -55,7 +55,7 @@ describe("WorkExperienceComponent", () => {
     const root = await render()
     const first = root.querySelector(".item")
     expect(first?.querySelector(".employment")?.textContent?.trim() ?? "").toBe(
-      "Full-time · Contract"
+      "Part-time · Contract"
     )
   })
 
