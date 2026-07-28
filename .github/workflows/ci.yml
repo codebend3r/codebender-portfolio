@@ -45,14 +45,14 @@ jobs:
       - name: 💅 Format check
         run: bun format:check
 
-      - name: 🔍 Lint
+      - name: 🧠 Typecheck
+        run: bun typecheck
+
+      - name: 🔍 Lint TS
         run: bun lint:ts
 
       - name: 🎨 Lint CSS
         run: bun lint:css
-
-      - name: 🧠 Typecheck
-        run: bun typecheck
 
       - name: 🧪 Test
         run: bun run test
