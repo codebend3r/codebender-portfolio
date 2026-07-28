@@ -1,9 +1,10 @@
 import { act, render, screen, waitFor } from "@testing-library/react"
-import { fetchWeatherDetails } from "@weather"
-import type { WeatherDetails } from "@weather"
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 
 import { WeatherClock } from "@components/WeatherClock"
+
+import { fetchWeatherDetails } from "@weather"
+import type { WeatherDetails } from "@weather"
 
 vi.mock("@weather", () => ({
   fetchWeatherDetails: vi.fn(),

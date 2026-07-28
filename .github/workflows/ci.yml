@@ -26,13 +26,16 @@ jobs:
         run: bun install --frozen-lockfile
 
       - name: Type check
-        run: bun ts:check
+        run: bun run ts:check
 
-      - name: Prettier
-        run: bun prettier:check
+      - name: Format check
+        run: bun run format:check
 
       - name: Lint
-        run: bun lint
+        run: bun run lint
+
+      - name: Lint CSS
+        run: bun run lint:css
 
       - name: Test
         run: bun run test

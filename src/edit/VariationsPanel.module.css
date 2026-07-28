@@ -116,6 +116,9 @@
   padding-bottom: 32px;
 }
 
+/* `.footer` is a sibling of the list that holds `.row`, so `.footer button` and
+   `.row button:not(.entry)` never match the same element and cannot conflict. */
+/* stylelint-disable-next-line no-descending-specificity */
 .footer button {
   font: inherit;
   display: flex;

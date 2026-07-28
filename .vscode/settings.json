@@ -1,7 +1,7 @@
 {
   "git.ignoreLimitWarning": true,
   "editor.formatOnSave": false,
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.defaultFormatter": "oxc.oxc-vscode",
   "editor.codeActionsOnSave": {
     "source.organizeImports": "never",
     "source.sortImports": "never",
@@ -12,16 +12,8 @@
   "typescript.preferences.importModuleSpecifierEnding": "minimal",
   "javascript.preferences.importModuleSpecifier": "non-relative",
   "typescript.preferences.importModuleSpecifier": "non-relative",
-  "eslint.enable": true,
-  "eslint.validate": [
-    "javascript",
-    "javascriptreact",
-    "typescript",
-    "typescriptreact"
-  ],
-  "cSpell.words": [
-    "darkvar",
-    "onclone",
-    "pagebreak"
-  ],
+  "oxc.enable": true,
+  "oxc.lint.run": "onType",
+  "oxc.fmt.experimental": true,
+  "cSpell.words": ["darkvar", "onclone", "oxfmt", "oxlint", "pagebreak", "tsgo"]
 }

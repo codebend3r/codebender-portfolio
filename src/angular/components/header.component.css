@@ -10,10 +10,6 @@
   grid-template-columns: minmax(0, 1fr);
 }
 
-.stacked .contact {
-  justify-self: start;
-}
-
 .brand {
   display: grid;
   grid-template-columns: auto 1fr;
@@ -52,6 +48,11 @@
   color: var(--muted);
   font-family: var(--font-mono);
   font-size: var(--header-meta-size, 16px);
+}
+
+/* Owner pages stack the brand and contact rows, so contact aligns left. */
+.stacked .contact {
+  justify-self: start;
 }
 
 .contactEdit {

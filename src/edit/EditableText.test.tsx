@@ -3,8 +3,8 @@ import { beforeEach, describe, expect, it } from "vitest"
 
 import resume from "@data/resume.json"
 
-import { EditProvider } from "@edit/EditContext"
 import { EditableText } from "@edit/EditableText"
+import { EditProvider } from "@edit/EditContext"
 
 import { useStore } from "@state/useStore"
 

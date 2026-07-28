@@ -1,5 +1,6 @@
-import { generateResumeDocx } from "@docx/generateDocx"
 import { describe, expect, it, vi } from "vitest"
+
+import { generateResumeDocx } from "@docx/generateDocx"
 
 import { resumeFixture } from "@app/test/resumeFixture"
 

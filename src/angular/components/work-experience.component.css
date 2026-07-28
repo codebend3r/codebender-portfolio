@@ -24,11 +24,6 @@
   border-radius: 2px;
 }
 
-.item > .header,
-.item > .bullets {
-  grid-column: 2;
-}
-
 .item h3 {
   margin: 0;
   font-family: var(--font-role);
@@ -76,6 +71,14 @@
 .bullets {
   margin: 0;
   padding: 0;
+}
+
+/* Grid placement for the item's children. Kept after the base rules above so
+   specificity ascends in source order; these set only `grid-column`, which no
+   base rule declares. */
+.item > .header,
+.item > .bullets {
+  grid-column: 2;
 }
 
 @media (max-width: 700px) {

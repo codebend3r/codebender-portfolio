@@ -1,8 +1,9 @@
 import { TestBed } from "@angular/core/testing"
-import { fetchWeather, getWeatherOverride } from "@weather"
 import { beforeEach, describe, expect, it, vi } from "vitest"
 
 import { WeatherComponent } from "@ngapp/components/weather.component"
+
+import { fetchWeather, getWeatherOverride } from "@weather"
 
 vi.mock("@weather", () => ({
   getWeatherOverride: vi.fn(() => null),

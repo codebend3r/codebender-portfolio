@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/consistent-type-imports */
+/* oxlint-disable typescript/consistent-type-imports */
 /// <reference types="vite/client" />
 
 // Supabase credentials; both are publishable values, safe in the client

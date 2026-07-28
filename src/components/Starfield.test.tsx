@@ -44,9 +44,7 @@ describe("Starfield", () => {
   })
 
   it("coalesces back-to-back scrolls into a single `requestAnimationFrame`", () => {
-    const rafSpy = vi
-      .spyOn(window, "requestAnimationFrame")
-      .mockReturnValue(1 as unknown as number)
+    const rafSpy = vi.spyOn(window, "requestAnimationFrame").mockReturnValue(1)
     render(<Starfield />)
     window.dispatchEvent(new Event("scroll"))
     window.dispatchEvent(new Event("scroll"))

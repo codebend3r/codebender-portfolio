@@ -1,0 +1,18 @@
+{
+  "extends": ["gale:recommended"],
+  "rules": {
+    "declaration-block-no-duplicate-properties": [
+      true,
+      { "ignore": ["consecutive-duplicates-with-different-values"] }
+    ],
+    "length-zero-no-unit": [true, { "ignore": ["custom-properties"] }],
+    "property-no-unknown": [true, { "ignoreProperties": ["animation-range"] }],
+    "selector-pseudo-class-no-unknown": [
+      true,
+      { "ignorePseudoClasses": ["global", "local"] }
+    ],
+    "declaration-no-important": null,
+    "property-no-vendor-prefix": null,
+    "value-keyword-case": null
+  }
+}
