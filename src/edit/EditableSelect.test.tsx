@@ -1,8 +1,8 @@
 import { fireEvent, render, screen } from "@testing-library/react"
 import { describe, expect, it, vi } from "vitest"
 
-import { EditProvider } from "@edit/EditContext"
 import { EditableSelect } from "@edit/EditableSelect"
+import { EditProvider } from "@edit/EditContext"
 
 const OPTIONS = [
   { value: "full-time", label: "Full-time" },

@@ -1,11 +1,11 @@
 import { useEffect, useMemo, useState } from "react"
 
-import { fetchWeather, getWeatherOverride } from "@weather"
-import type { Weather as WeatherKind } from "@weather"
-
 import styles from "@components/Weather.module.css"
 
 import { makeDrops } from "@utils/particles"
+
+import { fetchWeather, getWeatherOverride } from "@weather"
+import type { Weather as WeatherKind } from "@weather"
 
 const RAIN_COUNT = 140
 const SNOW_COUNT = 90
@@ -60,7 +60,7 @@ export function Weather() {
   useEffect(() => {
     if (override) return
     let cancelled = false
-    fetchWeather().then((result) => {
+    void fetchWeather().then((result) => {
       if (!cancelled) setWeather(result)
     })
     return () => {

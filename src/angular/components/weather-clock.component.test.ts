@@ -1,8 +1,9 @@
 import { TestBed } from "@angular/core/testing"
-import { fetchWeatherDetails } from "@weather"
 import { beforeEach, describe, expect, it, vi } from "vitest"
 
 import { WeatherClockComponent } from "@ngapp/components/weather-clock.component"
+
+import { fetchWeatherDetails } from "@weather"
 
 vi.mock("@weather", () => ({
   fetchWeatherDetails: vi.fn(async () => null),

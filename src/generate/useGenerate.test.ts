@@ -70,7 +70,10 @@ describe("useGenerate", () => {
     expect(result.current.error).toBeNull()
 
     const post = calls[0]
-    const body = JSON.parse(String(post.init?.body)) as GenerateJobRequest
+    const rawBody = post.init?.body
+    const body = JSON.parse(
+      typeof rawBody === "string" ? rawBody : ""
+    ) as GenerateJobRequest
     expect(body.jobId).toMatch(/^[0-9a-f-]{36}$/)
     expect(body.input).toEqual(req.input)
     expect(calls[1].url).toContain(`generate-status?id=${body.jobId}`)

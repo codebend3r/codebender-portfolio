@@ -99,6 +99,17 @@
     opacity 0.2s ease;
 }
 
+.generateButton:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.generateButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
 .generateButton:hover:not(:disabled) {
   transform: translateY(-2px);
   box-shadow:
@@ -109,17 +120,6 @@
 
 .generateButton:active:not(:disabled) {
   transform: translateY(0);
-}
-
-.generateButton:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 3px;
-}
-
-.generateButton:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-  box-shadow: none;
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -1,8 +1,10 @@
+import { Buffer } from "buffer"
+
 import sansRegular from "@docx/fonts/SourceSans3-Regular.ttf?url"
 import serifRegular from "@docx/fonts/SourceSerif4-Regular.ttf?url"
 import serifSemibold from "@docx/fonts/SourceSerif4-Semibold.ttf?url"
+
 import { tokens } from "@theme/tokens"
-import { Buffer } from "buffer"
 
 export type DocxFont = { name: string; data: Buffer }
 

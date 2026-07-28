@@ -1,4 +1,3 @@
-import { tokens } from "@theme/tokens"
 import { Buffer } from "buffer"
 import {
   AlignmentType,
@@ -21,6 +20,8 @@ import {
   UnderlineType,
   WidthType,
 } from "docx"
+
+import { tokens } from "@theme/tokens"
 
 import {
   TRANSPARENT_PNG_BASE64,

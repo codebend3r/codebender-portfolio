@@ -19,9 +19,9 @@ import {
 import { CSS } from "@dnd-kit/utilities"
 
 import { useEditing } from "@edit/EditContext"
-import styles from "@edit/SortableList.module.css"
 import { SortableItemImplContext } from "@edit/sortableContext"
 import type { SortableItemProps } from "@edit/sortableContext"
+import styles from "@edit/SortableList.module.css"
 
 export function makeDragEndHandler(
   onReorder: (from: number, to: number) => void,

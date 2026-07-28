@@ -144,15 +144,15 @@
   }
 }
 
+.downloadButton:disabled {
+  cursor: progress;
+  opacity: 0.7;
+}
+
 .downloadButton:hover:not(:disabled) {
   animation:
     glowPulse 0.5s infinite alternate,
     borderPulse 1.2s ease-in-out infinite alternate;
-}
-
-.downloadButton:disabled {
-  cursor: progress;
-  opacity: 0.7;
 }
 
 @media (max-width: 700px) {

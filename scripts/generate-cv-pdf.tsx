@@ -3,13 +3,14 @@
 // tsconfig path aliases and TSX natively. React runs here at build time only —
 // the `/angular-version` route itself stays React-free.
 import { Font, renderToBuffer } from "@react-pdf/renderer"
-import { tokens } from "@theme/tokens"
 import { mkdir } from "node:fs/promises"
 import path from "node:path"
 
 import { resumeData } from "@data/resumeData"
 
 import { ResumePDF } from "@pdf/ResumePDF"
+
+import { tokens } from "@theme/tokens"
 
 import { documentFileName } from "@utils/documentFileName"
 import { normalizeData } from "@utils/normalizeData"

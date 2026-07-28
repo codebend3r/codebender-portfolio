@@ -1,5 +1,5 @@
-import { useEditing } from "@edit/EditContext"
 import styles from "@edit/EditableText.module.css"
+import { useEditing } from "@edit/EditContext"
 
 export function EditableSelect({
   value,

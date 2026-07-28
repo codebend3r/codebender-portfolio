@@ -1,7 +1,6 @@
 import type { ReactElement } from "react"
 import { isValidElement } from "react"
 
-import App from "@App"
 import { describe, expect, it } from "vitest"
 
 import { AuthGate } from "@components/AuthGate"
@@ -11,6 +10,7 @@ import EditResumeApp from "@edit/EditResumeApp"
 
 import GenerateApp from "@generate/GenerateApp"
 
+import App from "@App"
 import { pageForRoute } from "@app/pageForRoute"
 
 // Pulls the single child element out of a wrapper without rendering it.

@@ -33,8 +33,8 @@ function mockJobFetch(job: GenerateJob | Promise<GenerateJob>) {
   vi.stubGlobal(
     "fetch",
     vi.fn(async (url: string, init?: RequestInit) => {
-      calls.push({ url: String(url), init })
-      if (String(url).includes("generate-status")) {
+      calls.push({ url, init })
+      if (url.includes("generate-status")) {
         return { ok: true, status: 200, json: () => Promise.resolve(job) }
       }
       return { ok: true, status: 202, json: async () => ({}) }
@@ -45,7 +45,8 @@ function mockJobFetch(job: GenerateJob | Promise<GenerateJob>) {
 
 function postedBody(calls: FetchCall[]): GenerateJobRequest {
   const post = calls.find((c) => !c.url.includes("generate-status"))
-  return JSON.parse(String(post?.init?.body)) as GenerateJobRequest
+  const body = post?.init?.body
+  return JSON.parse(typeof body === "string" ? body : "") as GenerateJobRequest
 }
 
 beforeAll(async () => {

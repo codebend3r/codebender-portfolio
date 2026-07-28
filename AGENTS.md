@@ -9,18 +9,18 @@ Package manager is **bun** (see `packageManager` in `package.json`). Use `bun <s
 - `bun dev` — Vite dev server
 - `bun run build` — production build (note: `bun build` invokes Bun's bundler, not Vite; always use `bun run build`)
 - `bun preview` — preview the built output
-- `bun lint` / `bun lint:fix` — ESLint (flat config)
-- `bun prettier` / `bun prettier:check` — Prettier write / check
-- `bun ts:check` — `tsc` type check (no emit)
-- `bun system-check` — runs `prettier:check`, `lint`, `build` sequentially via `npm-run-all`
-
-No test runner is configured.
+- `bun lint` / `bun lint:fix` — Oxlint (`.oxlintrc.json`), including type-aware rules
+- `bun lint:css` / `bun lint:css:fix` — Gale over `src/**/*.css` (`gale.json`)
+- `bun format` / `bun format:check` — Oxfmt write / check (`.oxfmtrc.json`)
+- `bun ts:check` — `tsgo --noEmit` type check across all three tsconfig projects
+- `bun test` / `bun test:watch` / `bun test:coverage` — Vitest
+- `bun system-check` — runs `format:check`, `ts:check`, `lint`, `lint:css`, `test`, `build` sequentially via `npm-run-all`
 
 ### Git hooks
 
 Husky runs on every commit and push:
 
-- **pre-commit** (`.husky/pre-commit`): `ts:check` → `prettier` (write) → `lint` → `build`. The commit will fail if any step fails. Note that `prettier` _writes_ changes — if formatting was off, the hook fixes the files but does not auto-stage them, so re-stage and recommit.
+- **pre-commit** (`.husky/pre-commit`): `format:check` → `ts:check` → `lint` → `lint:css` → `test`. The commit will fail if any step fails. `format:check` does not write, so run `bun format` yourself if formatting is off.
 - **pre-push** (`.husky/pre-push`): `bun run build`, then prints the last 10 commits.
 
 ## Architecture
@@ -47,7 +47,7 @@ Aliases are declared in **two places that must stay in sync**: `vite.config.ts` 
 
 ### Code style enforced by tooling
 
-- Prettier: no semicolons, double quotes, 2-space indent, `printWidth: 80`, `trailingComma: "es5"`.
-- Import order is enforced by `@trivago/prettier-plugin-sort-imports` with custom groups (react/next first, then third-party, then `@components`, `@data`, `@state`, `@styles`, etc., then relative). Groups are separated by blank lines. Running `bun prettier` will reorder imports.
-- ESLint enforces `@typescript-eslint/consistent-type-imports` — type-only imports must use `import type`.
+- Oxfmt: no semicolons, double quotes, 2-space indent, `printWidth: 80`, `trailingComma: "es5"`.
+- Import order is enforced by Oxfmt's `sortImports` with custom groups (react/next first, then third-party, then `@components`, `@data`, `@state`, `@styles`, etc., then relative). Groups are separated by blank lines. Running `bun format` will reorder imports.
+- Oxlint enforces `typescript/consistent-type-imports` — type-only imports must use `import type`.
 - `_`-prefixed unused vars are ignored by the unused-vars rule.

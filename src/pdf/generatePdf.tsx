@@ -1,7 +1,7 @@
 import { pdf } from "@react-pdf/renderer"
 
-import { ResumePDF } from "@pdf/ResumePDF"
 import { registerPdfFonts } from "@pdf/fonts"
+import { ResumePDF } from "@pdf/ResumePDF"
 
 export async function generateResumePdf(data: Data): Promise<Blob> {
   registerPdfFonts()

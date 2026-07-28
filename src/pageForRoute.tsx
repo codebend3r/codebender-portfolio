@@ -1,7 +1,5 @@
 import type { ReactElement } from "react"
 
-import App from "@App"
-
 import { AuthGate } from "@components/AuthGate"
 import { LoginPage } from "@components/LoginPage"
 
@@ -10,6 +8,8 @@ import EditResumeApp from "@edit/EditResumeApp"
 import GenerateApp from "@generate/GenerateApp"
 
 import type { Route } from "@utils/routeFor"
+
+import App from "@App"
 
 // One page per route; private pages wrap themselves in AuthGate. Record
 // keys keep this exhaustive — adding a Route without a page is a type error.

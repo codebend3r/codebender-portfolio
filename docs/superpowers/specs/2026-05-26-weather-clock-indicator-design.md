@@ -29,12 +29,7 @@ Add a new `fetchWeatherDetails()` alongside the existing `fetchWeather()`. Exist
 
 ```ts
 export type WeatherCondition =
-  | "clear"
-  | "cloudy"
-  | "rain"
-  | "snow"
-  | "storm"
-  | "unknown"
+  "clear" | "cloudy" | "rain" | "snow" | "storm" | "unknown"
 
 export type WeatherDetails = {
   condition: WeatherCondition

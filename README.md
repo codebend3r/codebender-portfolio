@@ -101,9 +101,11 @@ Each work experience entry also shows a computed, human-readable duration (e.g. 
 | **Webfonts**        | `@fontsource/inter`, `@fontsource/source-serif-4` | Self-hosted, no external font requests; Source Serif 4 double-embedded for PDF output             |
 | **Weather data**    | Open-Meteo (free, no key)                         | WMO weather codes via `current_weather`                                                           |
 | **Testing**         | Vitest 4 + Testing Library + jsdom                | Component + util tests colocated next to source                                                   |
-| **Lint / format**   | ESLint 9 (flat config) + Prettier                 | `@trivago/prettier-plugin-sort-imports` enforces import groups                                    |
-| **Type checking**   | `tsc --noEmit`                                    | Runs on every commit                                                                              |
-| **Git hooks**       | Husky                                             | `pre-commit`: prettier check → ts:check → lint → test                                             |
+| **Lint**            | Oxlint (Rust) + type-aware rules via tsgolint     | `.oxlintrc.json`; replaces ESLint, `typescript-eslint`, `react`, `react-hooks`, `jsx-a11y`        |
+| **Format**          | Oxfmt (Rust)                                      | `.oxfmtrc.json`; formats JS/TS/JSON/YAML/Markdown/CSS and sorts imports — replaces Prettier       |
+| **CSS lint**        | Gale (Rust)                                       | `gale.json`; Stylelint-compatible rules over `src/**/*.css`                                       |
+| **Type checking**   | `tsgo --noEmit` (`@typescript/native-preview`)    | Go port of `tsc`; runs on every commit                                                            |
+| **Git hooks**       | Husky                                             | `pre-commit`: format:check → ts:check → lint → lint:css → test                                    |
 | **Package manager** | Bun                                               | `packageManager` field pinned in `package.json`                                                   |
 | **Deploy**          | Netlify                                           | Project: [`codebend3r`](https://app.netlify.com/projects/codebend3r)                              |
 
@@ -199,11 +201,12 @@ bun dev          # http://localhost:4242
 | `bun dev`                                           | Vite dev server on port `4242`                                                          |
 | `bun run build`                                     | Production build (note: `bun build` invokes Bun's bundler — always use `bun run build`) |
 | `bun preview`                                       | Preview the built output                                                                |
-| `bun lint` / `bun lint:fix`                         | ESLint (flat config)                                                                    |
-| `bun prettier` / `bun prettier:check`               | Prettier write / check                                                                  |
-| `bun ts:check`                                      | TypeScript type check (no emit)                                                         |
+| `bun lint` / `bun lint:fix`                         | Oxlint, including type-aware rules                                                      |
+| `bun lint:css` / `bun lint:css:fix`                 | Gale over `src/**/*.css`                                                                |
+| `bun format` / `bun format:check`                   | Oxfmt write / check                                                                     |
+| `bun ts:check`                                      | tsgo type check (no emit), all three tsconfig projects                                  |
 | `bun test` / `bun test:watch` / `bun test:coverage` | Vitest                                                                                  |
-| `bun system-check`                                  | `prettier:check` → `ts:check` → `lint` → `test` → `build`                               |
+| `bun system-check`                                  | `format:check` → `ts:check` → `lint` → `lint:css` → `test` → `build`                    |
 
 ---
 
@@ -211,7 +214,7 @@ bun dev          # http://localhost:4242
 
 Husky runs on every commit and push:
 
-- **pre-commit** — `prettier:check` → `ts:check` → `lint` → `test`. The commit fails if any step fails. Because `prettier:check` does not write, run `bun prettier` yourself first if formatting is off.
+- **pre-commit** — `format:check` → `ts:check` → `lint` → `lint:css` → `test`. The commit fails if any step fails. Because `format:check` does not write, run `bun format` yourself first if formatting is off.
 - **pre-push** — `bun run build`, then prints the last 10 commits as a sanity check. Push fails if the build fails, so deps must be installed (`bun install`) before pushing.
 
 ---
@@ -219,6 +222,54 @@ Husky runs on every commit and push:
 ## Code style
 
 - No semicolons, double quotes, 2-space indent, `printWidth: 80`, `trailingComma: "es5"`.
-- Import order is enforced by `@trivago/prettier-plugin-sort-imports` with custom groups (react first → third-party → `@components`/`@data`/`@edit`/`@pdf`/`@state`/`@styles` → relative). Groups are blank-line separated.
-- ESLint enforces `@typescript-eslint/consistent-type-imports` — type-only imports must use `import type`.
+- Import order is enforced by Oxfmt's `sortImports` with custom groups (react first → third-party → `@components`/`@data`/`@edit`/`@pdf`/`@state`/`@styles` → relative). Groups are blank-line separated.
+- Oxlint enforces `typescript/consistent-type-imports` — type-only imports must use `import type`.
 - `_`-prefixed unused vars are ignored.
+
+---
+
+## Toolchain
+
+Lint, format, CSS lint, and type check are all Rust/Go binaries. The whole
+quality gate (`format:check` + `ts:check` + `lint` + `lint:css`) runs in about
+three seconds.
+
+| Concern    | Tool                           | Config           |
+| ---------- | ------------------------------ | ---------------- |
+| Lint       | `oxlint` (+ `oxlint-tsgolint`) | `.oxlintrc.json` |
+| Format     | `oxfmt`                        | `.oxfmtrc.json`  |
+| CSS lint   | `gale`                         | `gale.json`      |
+| Type check | `tsgo`                         | `tsconfig*.json` |
+
+Every tool version is pinned exactly; upgrade deliberately, not automatically.
+
+### Editor setup
+
+Install the [Oxc extension](https://marketplace.visualstudio.com/items?itemName=oxc.oxc-vscode)
+(`oxc.oxc-vscode`) — it provides both Oxlint diagnostics and Oxfmt formatting.
+`.vscode/extensions.json` recommends it and flags the old ESLint/Prettier/
+Stylelint extensions as unwanted, since they would fight the new tools. Gale
+ships an LSP server (`gale --lsp`) for editors that support one; there is no
+VS Code extension yet, so CSS lint feedback comes from `bun lint:css`.
+
+### Rules deliberately turned off
+
+These are not oversights — each one is wrong for this codebase:
+
+| Rule                             | Why it is off                                                                                                                                                                                                                                         |
+| -------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `react/react-compiler`           | Oxlint bundles all 14 React Compiler rules into one, and it false-positives on `useStore.getState()` (Zustand) in 8 components. Per-rule suppression is impossible until Oxc splits them. `react/rules-of-hooks` and `react/exhaustive-deps` stay on. |
+| `typescript/no-misused-promises` | Flags every `onClick={asyncFn}`; React handles async handlers fine.                                                                                                                                                                                   |
+| `typescript/require-await`       | 36 hits, nearly all async test helpers. Noise.                                                                                                                                                                                                        |
+| `property-no-vendor-prefix`      | `-webkit-backdrop-filter` is still required for Safari.                                                                                                                                                                                               |
+| `value-keyword-case`             | Gale flags font-family names (`Arial`, `Roboto`) as keywords; lowercasing them is wrong.                                                                                                                                                              |
+| `declaration-no-important`       | `@media print { .no-print { display: none !important } }` is a legitimate use.                                                                                                                                                                        |
+
+`typescript/prefer-nullish-coalescing` runs with `ignorePrimitives.string`,
+because `inputError || error` on strings is intentional falsy-checking and `??`
+would change behaviour.
+
+> **Note:** Gale is at `0.1.x` and cannot resolve npm-package `extends` — a
+> config extending `stylelint-config-standard` silently lints **nothing**. This
+> repo extends the built-in `gale:recommended` preset instead. Re-check when
+> Gale reaches 1.0.

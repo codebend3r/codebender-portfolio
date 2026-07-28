@@ -2,6 +2,12 @@ node_modules
 dist
 coverage
 package-lock.json
+
+# Emitted by the composite tsconfig.node.json project during `ts:check`
+*.tsbuildinfo
+
+# Gale's incremental lint cache (only written with `gale --cache`)
+.gale_cache
 # Local Netlify folder
 .netlify
 

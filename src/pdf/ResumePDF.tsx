@@ -12,11 +12,12 @@ import {
   Text,
   View,
 } from "@react-pdf/renderer"
-import { tokens } from "@theme/tokens"
 
 import Logo from "@assets/robot-logo.png"
 
 import { styles } from "@pdf/styles"
+
+import { tokens } from "@theme/tokens"
 
 import {
   EMAIL_ICON_PATH,

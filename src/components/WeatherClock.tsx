@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react"
 
+import styles from "@components/WeatherClock.module.css"
+
 import { fetchWeatherDetails } from "@weather"
 import type { WeatherCondition, WeatherDetails } from "@weather"
-
-import styles from "@components/WeatherClock.module.css"
 
 const CONDITION_ICON: Record<WeatherCondition, string> = {
   clear: "☀️",
@@ -31,7 +31,7 @@ export function WeatherClock() {
 
   useEffect(() => {
     let cancelled = false
-    fetchWeatherDetails().then((result) => {
+    void fetchWeatherDetails().then((result) => {
       if (!cancelled) setDetails(result)
     })
     return () => {

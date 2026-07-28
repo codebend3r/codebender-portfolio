@@ -5,9 +5,9 @@ import hl from "@components/DiffHighlight.module.css"
 import { Section } from "@components/Section"
 import styles from "@components/WorkExperience.module.css"
 
-import { useEditing } from "@edit/EditContext"
 import { EditableSelect } from "@edit/EditableSelect"
 import { EditableText } from "@edit/EditableText"
+import { useEditing } from "@edit/EditContext"
 import { SortableItem, SortableList } from "@edit/SortableList"
 import sortStyles from "@edit/SortableList.module.css"
 

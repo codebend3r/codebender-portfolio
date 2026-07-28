@@ -32,7 +32,6 @@ export function SortableItem(props: SortableItemProps) {
   const Impl = useContext(SortableItemImplContext)
   // Impl is a module-level component provided via context by the lazy chunk,
   // not a component created during this render, so its state is stable.
-  // eslint-disable-next-line react-hooks/static-components
   if (Impl) return <Impl {...props} />
   const { as: As = "li", className, wrapperProps, children } = props
   return (

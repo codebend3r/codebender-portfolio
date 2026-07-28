@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+/* oxlint-disable typescript/no-explicit-any */
 
 // Local type shim for @svgr/rollup so we can call it in vite.config.ts
 // If upstream publishes types, remove this.

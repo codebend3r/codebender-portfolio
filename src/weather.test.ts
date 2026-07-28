@@ -1,10 +1,11 @@
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
+
 import {
   conditionFromCode,
   fetchWeather,
   fetchWeatherDetails,
   getWeatherOverride,
 } from "@weather"
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 
 function setSearch(query: string) {
   window.history.replaceState({}, "", query ? `/?${query}` : "/")
@@ -56,10 +57,10 @@ describe("fetchWeather", () => {
               heading: null,
               speed: null,
               toJSON: () => ({}),
-            } as GeolocationCoordinates,
+            },
             timestamp: Date.now(),
             toJSON: () => ({}),
-          } as GeolocationPosition)
+          })
         },
       },
     })
@@ -198,10 +199,10 @@ describe("fetchWeatherDetails", () => {
               heading: null,
               speed: null,
               toJSON: () => ({}),
-            } as GeolocationCoordinates,
+            },
             timestamp: Date.now(),
             toJSON: () => ({}),
-          } as GeolocationPosition)
+          })
         },
       },
     })
@@ -284,10 +285,10 @@ describe("fetchWeatherDetails", () => {
             heading: null,
             speed: null,
             toJSON: () => ({}),
-          } as GeolocationCoordinates,
+          },
           timestamp: Date.now(),
           toJSON: () => ({}),
-        } as GeolocationPosition)
+        })
       }
     )
     Object.defineProperty(navigator, "geolocation", {

@@ -1,9 +1,10 @@
-import App from "@App"
 import { render, screen, waitFor } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 
 import resume from "@data/resume.json"
+
+import App from "@App"
 
 const { generateResumePdfMock, generateResumeDocxMock, downloadBlobMock } =
   vi.hoisted(() => ({

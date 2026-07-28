@@ -5,7 +5,7 @@ import { useVariations } from "@state/useVariations"
 
 import { mergeVariations } from "@utils/mergeVariations"
 
-import type { Json, Tables, TablesInsert } from "@app/types/database.types"
+import type { Tables, TablesInsert } from "@app/types/database.types"
 
 type VariationRow = Tables<"resume_variations">
 
@@ -32,7 +32,7 @@ const rowToVariation = (row: VariationRow): Variation => ({
 const variationToRow = (v: Variation): TablesInsert<"resume_variations"> => ({
   id: v.id,
   name: v.name,
-  data: v.data as unknown as Json,
+  data: v.data,
   hash: v.hash ?? null,
   source_preview: v.sourcePreview ?? null,
   origin: v.origin ?? null,

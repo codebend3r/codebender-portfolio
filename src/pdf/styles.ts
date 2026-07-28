@@ -1,4 +1,5 @@
 import { StyleSheet } from "@react-pdf/renderer"
+
 import { tokens } from "@theme/tokens"
 
 export const styles = StyleSheet.create({

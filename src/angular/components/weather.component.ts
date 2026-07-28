@@ -5,10 +5,11 @@ import {
   inject,
   signal,
 } from "@angular/core"
-import { fetchWeather, getWeatherOverride } from "@weather"
-import type { Weather as WeatherKind } from "@weather"
 
 import { makeDrops } from "@utils/particles"
+
+import { fetchWeather, getWeatherOverride } from "@weather"
+import type { Weather as WeatherKind } from "@weather"
 
 const RAIN_COUNT = 140
 const SNOW_COUNT = 90

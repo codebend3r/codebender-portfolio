@@ -13,12 +13,12 @@ describe("downloadBlob", () => {
     connectedAtClick = false
     // jsdom does not implement object URLs; stub the two statics used.
     vi.stubGlobal("URL", { createObjectURL, revokeObjectURL })
-    vi.spyOn(HTMLAnchorElement.prototype, "click").mockImplementation(function (
-      this: HTMLAnchorElement
-    ) {
-      clicked.push(this)
-      connectedAtClick = this.isConnected
-    })
+    vi.spyOn(HTMLAnchorElement.prototype, "click").mockImplementation(
+      function (this: HTMLAnchorElement) {
+        clicked.push(this)
+        connectedAtClick = this.isConnected
+      }
+    )
   })
 
   afterEach(() => {

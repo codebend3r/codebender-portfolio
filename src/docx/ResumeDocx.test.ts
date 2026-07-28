@@ -1,9 +1,10 @@
-import { buildResumeDocument } from "@docx/ResumeDocx"
-import type { DocxFont } from "@docx/fonts"
 import { Buffer } from "buffer"
 import { Packer } from "docx"
 import { strFromU8, unzipSync } from "fflate"
 import { describe, expect, it } from "vitest"
+
+import type { DocxFont } from "@docx/fonts"
+import { buildResumeDocument } from "@docx/ResumeDocx"
 
 import { resumeFixture } from "@app/test/resumeFixture"
 

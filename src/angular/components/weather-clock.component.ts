@@ -6,6 +6,7 @@ import {
   inject,
   signal,
 } from "@angular/core"
+
 import { fetchWeatherDetails } from "@weather"
 import type { WeatherCondition, WeatherDetails } from "@weather"
 
