@@ -2,7 +2,8 @@
   "permissions": {
     "allow": [
       "Bash(git push *)",
-      "Bash(gh pr edit 26 --body ' *)"
+      "Bash(gh pr edit 26 --body ' *)",
+      "Bash(gh pr *)"
     ]
   }
 }
