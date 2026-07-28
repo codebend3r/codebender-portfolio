@@ -45,7 +45,7 @@ export default defineConfig({
     maxWorkers: 4,
     setupFiles: ["./src/test/setup.ts", "./src/angular/test-setup.ts"],
     css: false,
-    reporters: ["tree"],
+    reporters: ["dot"],
     include: [
       "src/**/*.{test,spec}.{ts,tsx}",
       "netlify/functions/**/*.test.ts",

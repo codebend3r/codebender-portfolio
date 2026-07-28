@@ -64,6 +64,26 @@ export const styles = StyleSheet.create({
     color: tokens.colors.onAccent,
     textDecoration: "underline",
   },
+  contactIcon: {
+    width: 11,
+    height: 11,
+  },
+  // Two clusters — direct contact methods, web/social icons — pushed to
+  // opposite ends of the bar by the parent's space-between.
+  contactGroup: {
+    flexDirection: "row",
+    alignItems: "center",
+    columnGap: tokens.spacing.md,
+  },
+  contactLinkRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    columnGap: 4,
+  },
+  contactSep: {
+    fontSize: tokens.fontSize.small,
+    color: tokens.colors.onAccentMuted,
+  },
 
   // Sections
   section: {

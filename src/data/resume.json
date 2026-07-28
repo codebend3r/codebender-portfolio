@@ -103,15 +103,15 @@
       "schedule": "part-time",
       "arrangement": "contract",
       "achievements": [
-        "Founded and operate an incorporated software practice, delivering senior and lead-level frontend engagements to clients across news, finance, real estate, telecom, and enterprise SaaS while running a continuous self-directed product and R&D track alongside them.",
-        "Design and ship full products end to end, from data modelling and API design through frontend architecture, design systems, testing, CI/CD, and production deployment, working primarily in React, Next.js App Router with React Server Components, and strict TypeScript.",
-        "Use Supabase as the default backend, standardizing on Postgres with row level security, auth, and edge functions, and keeping schema migrations version-controlled alongside application code so environments stay reproducible.",
-        "Work as an agentic developer, decomposing features into specifications and executable plans, then driving them through coding agents in small, reviewable increments with tests as the contract and every diff reviewed line by line before it lands.",
-        "Build the harness that makes agentic development safe on real codebases: committed convention files, custom agent skills, MCP integrations that expose repository, schema, and design-system context directly to tooling, and pre-commit gates that enforce formatting, type checking, linting, and tests.",
-        "Establish and enforce a consistent engineering standard across every project: strict TypeScript, schema validation at the boundaries, co-located unit and integration coverage, referential-integrity checks in CI, and single-command quality gates run before any handoff.",
-        "Ship cross-platform from single codebases, targeting web, iOS, Android, and desktop where a product warrants it, and deploy static and edge-rendered sites with image optimization and Core Web Vitals budgets in place.",
-        "Use the practice as a proving ground for emerging tooling ahead of client adoption, evaluating new runtimes, linters, build systems, rendering models, and agentic workflows, and forming grounded opinions on what earns a place in production.",
-        "Integrate LLM capability into product surfaces, covering streaming responses, structured output, tool use, and retrieval, with attention to perceived performance, graceful degradation, and cost."
+        "Founded and run an incorporated software practice, delivering senior/lead frontend engagements across news, finance, real estate, telecom, and SaaS, alongside a self-directed R&D track.",
+        "Ship full products end to end — data modelling, API design, architecture, design systems, testing, CI/CD, deployment — primarily in React, Next.js App Router/RSC, and strict TypeScript.",
+        "Standardize on Supabase as the default backend: Postgres with row-level security, auth, edge functions, and version-controlled schema migrations for reproducible environments.",
+        "Work as an agentic developer: decompose features into specs and plans, drive them through coding agents in small increments with tests as the contract, and review every diff line by line.",
+        "Build the harness for safe agentic development: convention files, agent skills, MCP integrations exposing repo/schema/design-system context, and pre-commit gates for formatting, type checking, linting, and tests.",
+        "Enforce a consistent engineering standard across projects: strict TypeScript, boundary schema validation, co-located test coverage, referential-integrity checks in CI, and single-command quality gates.",
+        "Ship cross-platform from single codebases — web, iOS, Android, desktop where warranted — deploying static/edge-rendered sites with image optimization and Core Web Vitals budgets.",
+        "Use the practice as a proving ground for emerging tooling ahead of client adoption — runtimes, linters, build systems, rendering models, agentic workflows — forming grounded production opinions.",
+        "Integrate LLM capability into product surfaces — streaming, structured output, tool use, retrieval — with attention to perceived performance, graceful degradation, and cost."
       ]
     },
     {

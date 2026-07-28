@@ -1,11 +1,12 @@
 import { tokens } from "@theme/tokens"
-import type { Buffer } from "buffer"
+import { Buffer } from "buffer"
 import {
   AlignmentType,
   BorderStyle,
   Document,
   ExternalHyperlink,
   Footer,
+  ImageRun,
   LineRuleType,
   PageNumber,
   Paragraph,
@@ -21,10 +22,29 @@ import {
   WidthType,
 } from "docx"
 
-import { isEmail, isUrl, stripProtocol } from "@utils/contact"
+import {
+  TRANSPARENT_PNG_BASE64,
+  emailIconSvg,
+  githubIconSvg,
+  linkedinIconSvg,
+  phoneIconSvg,
+} from "@utils/brandIcons"
+import {
+  contactHref,
+  contactIconKind,
+  isDirectContactKind,
+  isLocationEntry,
+  isSocialContactKind,
+} from "@utils/contact"
 import { employmentParts } from "@utils/employment"
 
 type ContactChild = TextRun | ExternalHyperlink
+
+const CONTACT_ICON_SIZE = 12 // px, sits alongside the small contact text
+const CONTACT_ICON_TRANSFORMATION = {
+  width: CONTACT_ICON_SIZE,
+  height: CONTACT_ICON_SIZE,
+}
 
 export type DocxFont = { name: string; data: Buffer }
 
@@ -87,74 +107,196 @@ function headerParagraphs(data: Data): Paragraph[] {
   ]
 }
 
-function contactChild(value: string): ContactChild {
-  const style = {
-    color: hex(tokens.colors.onAccent),
+const contactPlainStyle = {
+  color: hex(tokens.colors.onAccent),
+  size: halfPoints(tokens.fontSize.small),
+}
+// Underline linked text entries so they read as hyperlinks: without explicit
+// run properties Word renders ExternalHyperlink text like any plain run.
+const contactLinkStyle = {
+  ...contactPlainStyle,
+  underline: { type: UnderlineType.SINGLE },
+}
+
+function svgIconRun({
+  svg,
+  name,
+  description,
+}: {
+  svg: string
+  name: string
+  description: string
+}): ImageRun {
+  return new ImageRun({
+    type: "svg",
+    data: Buffer.from(svg, "utf-8"),
+    fallback: {
+      type: "png",
+      data: Buffer.from(TRANSPARENT_PNG_BASE64, "base64"),
+    },
+    transformation: CONTACT_ICON_TRANSFORMATION,
+    altText: { name, description },
+  })
+}
+
+// Email/phone icons sit inline with their readable value.
+function directIconRun(kind: "email" | "phone"): ImageRun {
+  const color = tokens.colors.onAccent
+  if (kind === "email") {
+    return svgIconRun({
+      svg: emailIconSvg(color),
+      name: "Email",
+      description: "Email address",
+    })
+  }
+  return svgIconRun({
+    svg: phoneIconSvg(color),
+    name: "Phone",
+    description: "Phone number",
+  })
+}
+
+// Web/social icons (portfolio, GitHub, LinkedIn) render icon-only, embedded
+// as SVG (Word 2016+ draws it directly; the fallback only matters to legacy
+// viewers). The portfolio link reuses the site's own logo image, passed in
+// as already-fetched bytes.
+function socialIconRun({
+  kind,
+  logo,
+}: {
+  kind: "github" | "linkedin" | "site"
+  logo: Buffer
+}): ImageRun {
+  if (kind === "site") {
+    return new ImageRun({
+      type: "png",
+      data: logo,
+      transformation: CONTACT_ICON_TRANSFORMATION,
+      altText: { name: "Portfolio", description: "Portfolio website" },
+    })
+  }
+  const color = tokens.colors.onAccent
+  const svg = kind === "github" ? githubIconSvg(color) : linkedinIconSvg(color)
+  return svgIconRun({
+    svg,
+    name: kind === "github" ? "GitHub" : "LinkedIn",
+    description: kind === "github" ? "GitHub profile" : "LinkedIn profile",
+  })
+}
+
+function contactSeparatorRun(): TextRun {
+  return new TextRun({
+    text: "   •   ",
+    color: hex(tokens.colors.onAccentMuted),
     size: halfPoints(tokens.fontSize.small),
-  }
-  // Underline linked entries so they read as hyperlinks: without explicit run
-  // properties Word renders ExternalHyperlink text like any plain run.
-  const linkStyle = {
-    ...style,
-    underline: { type: UnderlineType.SINGLE },
-  }
-  if (isUrl(value)) {
-    return new ExternalHyperlink({
-      link: value,
-      children: [new TextRun({ text: stripProtocol(value), ...linkStyle })],
-    })
-  }
-  if (isEmail(value)) {
-    return new ExternalHyperlink({
-      link: `mailto:${value}`,
-      children: [new TextRun({ text: value, ...linkStyle })],
-    })
-  }
-  return new TextRun({ text: value, ...style })
+  })
 }
 
-// Outer contact cells hug their page edge; inner cells center.
-function contactAlignment({ index, count }: { index: number; count: number }) {
-  if (index === 0) return AlignmentType.LEFT
-  if (index === count - 1) return AlignmentType.RIGHT
-  return AlignmentType.CENTER
+// Direct contact methods (email, phone): icon + the readable value, joined
+// by a muted bullet so multiple entries still read as one cluster.
+function directContactRuns(entries: ContactEntry[]): ContactChild[] {
+  return entries.flatMap((entry, i) => {
+    const separator = i > 0 ? [contactSeparatorRun()] : []
+    const kind = contactIconKind(entry.value)
+    if (!isDirectContactKind(kind)) {
+      return [
+        ...separator,
+        new TextRun({ text: entry.value, ...contactPlainStyle }),
+      ]
+    }
+    const href = contactHref(entry.value) ?? entry.value
+    return [
+      ...separator,
+      new ExternalHyperlink({
+        link: href,
+        children: [
+          directIconRun(kind),
+          new TextRun({ text: " " }),
+          new TextRun({ text: entry.value, ...contactLinkStyle }),
+        ],
+      }),
+    ]
+  })
 }
 
-// The PDF's full-bleed contact bar: a borderless single-row table spanning
-// the full page width (negative indent cancels the page margin), one shaded
-// cell per entry, outer cells padded back to the content edge.
-function contactBar(data: Data): Table {
-  const count = data.contact.length
-  const width = Math.floor(PAGE_WIDTH / count)
+// Web/social links: icon-only, evenly spaced.
+function socialContactRuns({
+  entries,
+  logo,
+}: {
+  entries: ContactEntry[]
+  logo: Buffer
+}): ContactChild[] {
+  return entries.flatMap((entry, i) => {
+    const kind = contactIconKind(entry.value)
+    if (!isSocialContactKind(kind)) return []
+    const spacer = i > 0 ? [new TextRun({ text: "  " })] : []
+    return [
+      ...spacer,
+      new ExternalHyperlink({
+        link: entry.value,
+        children: [socialIconRun({ kind, logo })],
+      }),
+    ]
+  })
+}
+
+// Two clusters in a borderless, full-bleed table spanning the full page
+// width (negative indent cancels the page margin): direct contact methods
+// left-aligned in the wider cell, web/social icons right-aligned in the
+// narrower one — the same left/right grouping a flexbox space-between would
+// produce, expressed with Word's table primitives.
+function contactBar({ data, logo }: { data: Data; logo: Buffer }): Table {
+  const contact = data.contact.filter((entry) => !isLocationEntry(entry))
+  const social = contact.filter((entry) =>
+    isSocialContactKind(contactIconKind(entry.value))
+  )
+  const direct = contact.filter(
+    (entry) => !isSocialContactKind(contactIconKind(entry.value))
+  )
+  const leftWidth = Math.round(PAGE_WIDTH * 0.58)
+  const rightWidth = PAGE_WIDTH - leftWidth
   return new Table({
     width: { size: PAGE_WIDTH, type: WidthType.DXA },
     indent: { size: -MARGIN_X, type: WidthType.DXA },
     layout: TableLayoutType.FIXED,
     borders: NO_BORDERS,
-    columnWidths: data.contact.map(() => width),
+    columnWidths: [leftWidth, rightWidth],
     rows: [
       new TableRow({
-        children: data.contact.map(
-          (entry, i) =>
-            new TableCell({
-              shading: {
-                type: ShadingType.CLEAR,
-                fill: hex(tokens.colors.accentDeep),
-              },
-              margins: {
-                top: twips(tokens.spacing.sm),
-                bottom: twips(tokens.spacing.sm),
-                left: i === 0 ? MARGIN_X : twips(tokens.spacing.md),
-                right: i === count - 1 ? MARGIN_X : twips(tokens.spacing.md),
-              },
-              children: [
-                new Paragraph({
-                  alignment: contactAlignment({ index: i, count }),
-                  children: [contactChild(entry.value)],
-                }),
-              ],
-            })
-        ),
+        children: [
+          new TableCell({
+            shading: {
+              type: ShadingType.CLEAR,
+              fill: hex(tokens.colors.accentDeep),
+            },
+            margins: {
+              top: twips(tokens.spacing.sm),
+              bottom: twips(tokens.spacing.sm),
+              left: MARGIN_X,
+              right: twips(tokens.spacing.md),
+            },
+            children: [new Paragraph({ children: directContactRuns(direct) })],
+          }),
+          new TableCell({
+            shading: {
+              type: ShadingType.CLEAR,
+              fill: hex(tokens.colors.accentDeep),
+            },
+            margins: {
+              top: twips(tokens.spacing.sm),
+              bottom: twips(tokens.spacing.sm),
+              left: twips(tokens.spacing.md),
+              right: MARGIN_X,
+            },
+            children: [
+              new Paragraph({
+                alignment: AlignmentType.RIGHT,
+                children: socialContactRuns({ entries: social, logo }),
+              }),
+            ],
+          }),
+        ],
       }),
     ],
   })
@@ -403,9 +545,11 @@ function pageFooter(name: string): Footer {
 export function buildResumeDocument({
   data,
   fonts,
+  logo,
 }: {
   data: Data
   fonts: DocxFont[]
+  logo: Buffer
 }): Document {
   return new Document({
     title: `${data.name} - ${data.title}`,
@@ -443,7 +587,7 @@ export function buildResumeDocument({
         footers: { default: pageFooter(data.name) },
         children: [
           ...headerParagraphs(data),
-          contactBar(data),
+          contactBar({ data, logo }),
           sectionHeading("Technical Skills"),
           skillPills(data.technical_skills),
           sectionHeading("Soft Skills"),
