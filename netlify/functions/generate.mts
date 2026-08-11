@@ -15,10 +15,17 @@ import {
   validatePassword,
 } from "./lib/prompt"
 
-// Background function: Netlify replies 202 immediately and lets the handler
-// run up to 15 minutes. The Claude call can take tens of seconds — past the
-// 10s/26s synchronous limit that killed generation in production. Job state
-// goes to the `generate-jobs` blob store, polled via /generate-status.
+// Background function: Netlify replies 202 immediately and the handler runs
+// detached, past the 10s/26s synchronous limit that killed generation in
+// production. Job state goes to the `generate-jobs` blob store, polled via
+// /generate-status.
+//
+// BUDGET: Netlify documents background functions at up to 15 minutes, but on
+// the Free plan this site runs on they are silently killed at roughly 30s —
+// no error, no log, no blob write. Every path here must reach a terminal blob
+// write well inside 30s, which is why the model below is the fastest tier.
+// A job blob stuck on `pending` is this timeout, not a model failure.
+// See the `netlify-generate` skill.
 export const config: Config = { background: true }
 
 // Resolves the wire input into what the model call accepts: url inputs

@@ -7,6 +7,10 @@ export type GenerateStatus = "idle" | "generating" | "done" | "error"
 const GENERATE_ENDPOINT = "/.netlify/functions/generate"
 const STATUS_ENDPOINT = "/.netlify/functions/generate-status"
 const POLL_INTERVAL_MS = 2_500
+// Client patience only — it does not extend the server's budget. The function
+// is killed at ~30s on the Free plan, so a job still `pending` well before this
+// deadline is already dead and the remaining polls are waiting on nothing.
+// Kept generous so a slow-but-alive run is never cut off by the client.
 const POLL_TIMEOUT_MS = 240_000
 
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
