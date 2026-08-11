@@ -1,31 +1,34 @@
 # AGENTS.md
 
-This file provides guidance to Codex (Codex.ai/code) when working with code in this repository.
+This file provides guidance to Codex when working with code in this repository. `CLAUDE.md` is the companion policy file — this file describes what the codebase _is_, `CLAUDE.md` states how to write code in it. Keep both accurate; see the `docs-accuracy` skill.
 
 ## Commands
 
 Package manager is **bun** (see `packageManager` in `package.json`). Use `bun <script>` rather than `npm`.
 
-- `bun dev` — Vite dev server
-- `bun run build` — production build (note: `bun build` invokes Bun's bundler, not Vite; always use `bun run build`)
+- `bun dev` — regenerates the CV PDF (`generate:cv`), then starts the Vite dev server
+- `bun run build` — production build (note: `bun build` invokes Bun's bundler, not Vite; always use `bun run build`). Three steps: `generate:cv` → `build:vite` → `assert:no-react`
 - `bun preview` — preview the built output
-- `bun lint` / `bun lint:fix` — Oxlint (`.oxlintrc.json`), including type-aware rules
+- `bun lint:ts` / `bun lint:ts:fix` — Oxlint (`.oxlintrc.json`), including type-aware rules
 - `bun lint:css` / `bun lint:css:fix` — Gale over `src/**/*.css` (`gale.json`)
 - `bun format` / `bun format:check` — Oxfmt write / check (`.oxfmtrc.json`)
-- `bun ts:check` — `tsgo --noEmit` type check across all three tsconfig projects
+- `bun typecheck` — `tsgo --noEmit` across all three tsconfig projects (root, `tsconfig.node.json`, `netlify/functions`)
 - `bun test` / `bun test:watch` / `bun test:coverage` — Vitest
-- `bun system-check` — runs `format:check`, `ts:check`, `lint`, `lint:css`, `test`, `build` sequentially via `npm-run-all`
+- `bun check` — `typecheck`, `lint:ts`, `lint:css`, `test` in **parallel** (`run-p`)
+- `bun system-check` — `format:check`, then `check`, then `build` (`run-s`)
+
+Script names drift. When this list disagrees with `"scripts"` in `package.json`, `package.json` wins and this list gets fixed in the same change.
 
 ### Git hooks
 
 Husky runs on every commit and push:
 
-- **pre-commit** (`.husky/pre-commit`): `format:check` → `ts:check` → `lint` → `lint:css` → `test`. The commit will fail if any step fails. `format:check` does not write, so run `bun format` yourself if formatting is off.
+- **pre-commit** (`.husky/pre-commit`): `format:check` → `typecheck` → `lint:ts` → `lint:css` → `test`. The commit will fail if any step fails. `format:check` does not write, so run `bun format` yourself if formatting is off.
 - **pre-push** (`.husky/pre-push`): `bun run build`, then prints the last 10 commits.
 
 ## Architecture
 
-Single-page resume/portfolio. Vite + React 19 + TypeScript, styled with SCSS, state in Zustand.
+Resume/portfolio app. Vite + React 19 + TypeScript, styled with CSS Modules (`*.module.css` — there is no SCSS in this repo), state in Zustand. Routes are resolved in `src/pageForRoute.tsx`: the resume itself, an `/edit` editor (`src/edit/`), and a `/generate` flow (`src/generate/`) backed by Netlify functions. The same resume data also renders to PDF (`src/pdf/`), DOCX (`src/docx/`), and a React-free Angular build (`src/angular/`).
 
 ### Data flow
 
@@ -33,21 +36,25 @@ The resume is **fully data-driven** from `src/data/resume.json`:
 
 1. `src/state/useStore.ts` creates a Zustand store seeded directly from `resume.json` at module load (no async fetch, no setters).
 2. Components (`src/components/*`) call `useStore()` to read their slice — e.g. `Header` reads `name`/`title`/`contact`, `WorkExperience` reads `work_experience`, etc.
-3. Types for the data shape live as **global ambient types** in `src/types/global.d.ts` (`Experience`, `Award`, `Language`, `Education`, `Data`) — referenced without import.
+3. Types for the data shape live as **global ambient types** in `src/types/global.d.ts` (`Data` and its members) — referenced without import.
 
-When adding a new resume section: extend `resume.json` → add a type to `src/types/global.d.ts` → extend `StoreState` in `useStore.ts` → create a component in `src/components/` → mount it in `src/App.tsx`. Note there's also a duplicate `src/assets/resume.json` (unused by the store); the canonical source is `src/data/resume.json`.
+`src/data/resume.json` is the only copy of the resume data; `src/assets/` holds images only.
+
+Adding a resume section touches more than the React tree — the same data renders to PDF, DOCX, and Angular, none of which have a failing test when a field is simply absent. See the `resume-section` skill for the full sequence.
 
 ### Path aliases
 
-Aliases are declared in **two places that must stay in sync**: `vite.config.ts` (runtime resolution) and `tsconfig.json` `paths` (type resolution). Current aliases: `@App`, `@app`, `@data/*`, `@components/*`, `@state/*`, `@styles/*`. Adding a new alias requires editing both files.
+Aliases are declared in **two places that must stay in sync**: `vite.config.ts` (runtime resolution) and `tsconfig.json` `paths` (type resolution). Adding a new alias requires editing both files. Read the current set from those two files rather than from a list here — always use an alias over a relative import, and add one if none fits.
 
 ### Asset imports
 
-`src/vite-env.d.ts` declares modules for `*.png`, `*.svg`, `*.scss`, and `@svgr/rollup`. SVGs can be imported as a URL (default) or — once `@svgr/rollup` is wired in — as a React component via the `ReactComponent` named export. SCSS imports return a class map for CSS Modules; global stylesheets like `src/styles/global.scss` are imported for side effects only.
+`src/vite-env.d.ts` declares modules for `*.png` and `*.svg`, augments `ImportMeta`/`ImportMetaEnv` with the `VITE_SUPABASE_*` vars, and carries a shim for `@svgr/rollup`. SVGs import as a URL by default; the `ReactComponent` named export only works once `@svgr/rollup` is actually installed — the shim silences types but is **not** an install, and the package is not currently in `package.json`.
+
+CSS Modules (`*.module.css`) are typed by `vite/client` and return a class map. The global sheets in `src/styles/` are imported for side effects only.
 
 ### Code style enforced by tooling
 
 - Oxfmt: no semicolons, double quotes, 2-space indent, `printWidth: 80`, `trailingComma: "es5"`.
-- Import order is enforced by Oxfmt's `sortImports` with custom groups (react/next first, then third-party, then `@components`, `@data`, `@state`, `@styles`, etc., then relative). Groups are separated by blank lines. Running `bun format` will reorder imports.
+- Import order is enforced by Oxfmt's `sortImports`: react/next first, then builtin/external, then one group per path alias, then relative, then side-effect imports. The exact group order is the `groups` array in `.oxfmtrc.json` — read it there. Groups are separated by blank lines, and running `bun format` will reorder imports for you.
 - Oxlint enforces `typescript/consistent-type-imports` — type-only imports must use `import type`.
 - `_`-prefixed unused vars are ignored by the unused-vars rule.
