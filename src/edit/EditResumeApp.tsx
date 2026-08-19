@@ -128,7 +128,9 @@ function EditSession({
   )
 
   return (
-    <div className={styles.page}>
+    <div
+      className={`${styles.page}${viewMode === "json" ? ` ${styles.pageJson}` : ""}`}
+    >
       <VariationsPanel
         dirty={dirty}
         onSave={onSave}

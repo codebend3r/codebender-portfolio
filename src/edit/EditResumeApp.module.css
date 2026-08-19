@@ -12,8 +12,22 @@
   padding: 20px 20px 60px;
 }
 
+/* JSON view: pin the page to the viewport so the editor column fills every
+   pixel the sticky panel leaves, instead of collapsing to a min-height. */
+.pageJson {
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+}
+
 @media (max-width: 720px) {
   .page {
     grid-template-columns: 1fr;
+  }
+
+  /* Stacked columns cannot share one viewport; let the page scroll again. */
+  .pageJson {
+    height: auto;
+    overflow: visible;
   }
 }
