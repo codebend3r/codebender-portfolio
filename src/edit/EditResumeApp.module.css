@@ -12,6 +12,31 @@
   padding: 20px 20px 60px;
 }
 
+/* Right column: an optional route notice stacked above the editor, which
+   takes whatever height is left. */
+.editArea {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 0;
+  min-height: 0;
+}
+
+.editArea > :last-child {
+  flex: 1;
+  min-height: 0;
+}
+
+.notice {
+  margin: 0;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  color: var(--accent2);
+  border: 1px solid color-mix(in srgb, var(--accent2) 40%, transparent);
+  background: color-mix(in srgb, var(--accent2) 10%, transparent);
+}
+
 /* JSON view: pin the page to the viewport so the editor column fills every
    pixel the sticky panel leaves, instead of collapsing to a min-height. */
 .pageJson {

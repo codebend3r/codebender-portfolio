@@ -25,13 +25,25 @@ function childElement(el: ReactElement): ReactElement | null {
 
 describe("pageForRoute", () => {
   it("wraps the edit page in an auth gate", () => {
-    const page = pageForRoute("edit")
+    const page = pageForRoute({ route: "edit", variationId: null })
     expect(page.type).toBe(AuthGate)
-    expect(childElement(page)?.type ?? null).toBe(EditResumeApp)
+    const child = childElement(page)
+    expect(child?.type ?? null).toBe(EditResumeApp)
+    expect(child?.props ?? null).toMatchObject({ variationId: null })
+  })
+
+  it("hands the edit page the variation id from the path", () => {
+    const page = pageForRoute({ route: "edit", variationId: "v-1" })
+    expect(childElement(page)?.props ?? null).toMatchObject({
+      variationId: "v-1",
+    })
   })
 
   it("wraps the proximate generate page in an auth gate", () => {
-    const page = pageForRoute("generate-proximate")
+    const page = pageForRoute({
+      route: "generate-proximate",
+      variationId: null,
+    })
     expect(page.type).toBe(AuthGate)
     const child = childElement(page)
     expect(child?.type ?? null).toBe(GenerateApp)
@@ -39,7 +51,7 @@ describe("pageForRoute", () => {
   })
 
   it("wraps the exact generate page in an auth gate", () => {
-    const page = pageForRoute("generate-exact")
+    const page = pageForRoute({ route: "generate-exact", variationId: null })
     expect(page.type).toBe(AuthGate)
     const child = childElement(page)
     expect(child?.type ?? null).toBe(GenerateApp)
@@ -47,14 +59,18 @@ describe("pageForRoute", () => {
   })
 
   it("renders the login page without an auth gate", () => {
-    expect(pageForRoute("login").type).toBe(LoginPage)
+    expect(pageForRoute({ route: "login", variationId: null }).type).toBe(
+      LoginPage
+    )
   })
 
   it("renders the public app for the app route", () => {
-    expect(pageForRoute("app").type).toBe(App)
+    expect(pageForRoute({ route: "app", variationId: null }).type).toBe(App)
   })
 
   it("falls back to the public app for the angular-version route", () => {
-    expect(pageForRoute("angular-version").type).toBe(App)
+    expect(
+      pageForRoute({ route: "angular-version", variationId: null }).type
+    ).toBe(App)
   })
 })

@@ -78,7 +78,7 @@ export class SideMenuComponent {
   private readonly auth = inject(AuthService)
 
   readonly links = LINKS
-  readonly current = routeFor(window.location.pathname)
+  readonly current = routeFor(window.location.pathname).route
   readonly open = signal(false)
 
   readonly visible = computed(

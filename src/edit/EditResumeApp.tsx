@@ -15,6 +15,10 @@ import { resumeData } from "@data/resumeData"
 import { EditProvider } from "@edit/EditContext"
 import styles from "@edit/EditResumeApp.module.css"
 import { JsonEditor } from "@edit/JsonEditor"
+import {
+  useVariationRoute,
+  type VariationRouteStatus,
+} from "@edit/useVariationRoute"
 import { VariationsPanel } from "@edit/VariationsPanel"
 
 import { useStore } from "@state/useStore"
@@ -29,7 +33,12 @@ import appStyles from "@app/App.module.css"
 
 export type EditViewMode = "form" | "json"
 
-export default function EditResumeApp() {
+export default function EditResumeApp({
+  variationId = null,
+}: {
+  variationId?: string | null
+}) {
+  const routeStatus = useVariationRoute(variationId)
   const { variations, activeId } = useVariations()
   const active = variations.find((v) => v.id === activeId)
   const initialData = active?.data ?? resumeData
@@ -48,6 +57,7 @@ export default function EditResumeApp() {
       initialData={initialData}
       viewMode={viewMode}
       onViewMode={setViewMode}
+      routeStatus={routeStatus}
     />
   )
 }
@@ -58,12 +68,14 @@ function EditSession({
   initialData,
   viewMode,
   onViewMode,
+  routeStatus,
 }: {
   activeId: string | null
   activeName: string | null
   initialData: Data
   viewMode: EditViewMode
   onViewMode: (mode: EditViewMode) => void
+  routeStatus: VariationRouteStatus
 }) {
   const { createVariation, saveActive } = useVariations()
   const [dirty, setDirty] = useState(false)
@@ -139,38 +151,46 @@ function EditSession({
         viewMode={viewMode}
         onViewMode={onViewMode}
       />
-      {viewMode === "json" ? (
-        <JsonEditor
-          key={activeId ?? "__base__"}
-          initialData={jsonSeed}
-          onSave={onSave}
-          markDirty={markDirty}
-          persists={editing}
-        />
-      ) : (
-        <EditProvider editing={editing} markDirty={markDirty}>
-          <div
-            id="resume-root"
-            className={`${appStyles.resumeRoot}${editing ? " resume-editing" : ""}`}
-          >
-            <Header stacked />
-            <div className={`${appStyles.container} ${styles.container}`}>
-              <main className={appStyles.main}>
-                <Summary />
-                <TechnicalSkills index={1} eyebrow="Stack" />
-                <SoftSkills index={2} eyebrow="Soft Skills" />
-                <WorkExperience index={3} eyebrow="Experience" />
-                <Showcase index={4} eyebrow="Selected Work" />
-                <div className={appStyles.subgrid}>
-                  <Awards index={5} eyebrow="Recognition" />
-                  <Languages index={6} eyebrow="Languages" />
-                  <Education index={7} eyebrow="Education" />
-                </div>
-              </main>
+      <section className={styles.editArea} aria-label="Resume editor">
+        {routeStatus === "missing" && (
+          <p className={styles.notice} role="status">
+            That link points at a variation this account no longer has — showing
+            the base resume.
+          </p>
+        )}
+        {viewMode === "json" ? (
+          <JsonEditor
+            key={activeId ?? "__base__"}
+            initialData={jsonSeed}
+            onSave={onSave}
+            markDirty={markDirty}
+            persists={editing}
+          />
+        ) : (
+          <EditProvider editing={editing} markDirty={markDirty}>
+            <div
+              id="resume-root"
+              className={`${appStyles.resumeRoot}${editing ? " resume-editing" : ""}`}
+            >
+              <Header stacked />
+              <div className={`${appStyles.container} ${styles.container}`}>
+                <main className={appStyles.main}>
+                  <Summary />
+                  <TechnicalSkills index={1} eyebrow="Stack" />
+                  <SoftSkills index={2} eyebrow="Soft Skills" />
+                  <WorkExperience index={3} eyebrow="Experience" />
+                  <Showcase index={4} eyebrow="Selected Work" />
+                  <div className={appStyles.subgrid}>
+                    <Awards index={5} eyebrow="Recognition" />
+                    <Languages index={6} eyebrow="Languages" />
+                    <Education index={7} eyebrow="Education" />
+                  </div>
+                </main>
+              </div>
             </div>
-          </div>
-        </EditProvider>
-      )}
+          </EditProvider>
+        )}
+      </section>
     </div>
   )
 }
