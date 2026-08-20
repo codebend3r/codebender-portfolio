@@ -1,10 +1,16 @@
 import { act, renderHook } from "@testing-library/react"
-import { beforeEach, describe, expect, it } from "vitest"
+import { beforeEach, describe, expect, it, vi } from "vitest"
 
 import { useVariationRoute } from "@edit/useVariationRoute"
 
 import { useSync } from "@state/useSync"
 import { useVariations } from "@state/useVariations"
+
+// `pending` only exists while a sync could still deliver the id, so the
+// pending/missing split is read off cloudConfigured. Vite inlines that from
+// a local `.env` at transform time, which no runtime env override undoes —
+// pin it here so the suite does not flip on whether `.env` is present.
+vi.mock("@state/supabase", () => ({ cloudConfigured: true, supabase: null }))
 
 const variation = (id: string, name: string): Variation => ({
   id,
