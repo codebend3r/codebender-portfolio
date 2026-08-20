@@ -7,16 +7,16 @@ import EditResumeApp from "@edit/EditResumeApp"
 
 import GenerateApp from "@generate/GenerateApp"
 
-import type { Route } from "@utils/routeFor"
+import type { Route, RouteMatch } from "@utils/routeFor"
 
 import App from "@App"
 
 // One page per route; private pages wrap themselves in AuthGate. Record
 // keys keep this exhaustive — adding a Route without a page is a type error.
-const PAGES: Record<Route, () => ReactElement> = {
-  edit: () => (
+const PAGES: Record<Route, (match: RouteMatch) => ReactElement> = {
+  edit: (match) => (
     <AuthGate>
-      <EditResumeApp />
+      <EditResumeApp variationId={match.variationId} />
     </AuthGate>
   ),
   "generate-proximate": () => (
@@ -36,6 +36,6 @@ const PAGES: Record<Route, () => ReactElement> = {
   app: () => <App />,
 }
 
-export function pageForRoute(route: Route): ReactElement {
-  return PAGES[route]()
+export function pageForRoute(match: RouteMatch): ReactElement {
+  return PAGES[match.route](match)
 }

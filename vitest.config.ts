@@ -31,8 +31,12 @@ export default defineConfig({
   test: {
     globals: false,
     environment: "jsdom",
-    // Force cloud sync off in tests regardless of a local .env; suites that
-    // exercise cloud UI mock @state/supabase explicitly.
+    // Blanks the runtime env so nothing reads a real project by accident.
+    // This does NOT reach `import.meta.env.VITE_*` in src — Vite inlines
+    // those from `.env` at transform time, so a machine with a `.env` still
+    // gets cloudConfigured === true. Any suite whose behaviour depends on
+    // cloudConfigured must mock @state/supabase explicitly, or it passes
+    // locally and fails on CI.
     env: {
       VITE_SUPABASE_URL: "",
       VITE_SUPABASE_ANON_KEY: "",

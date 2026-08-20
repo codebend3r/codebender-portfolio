@@ -17,13 +17,13 @@ import { pageForRoute } from "@app/pageForRoute"
 const rootEl = document.getElementById("root")
 
 if (rootEl) {
-  const route = routeFor(window.location.pathname)
-  if (route === "app") applySky()
+  const match = routeFor(window.location.pathname)
+  if (match.route === "app") applySky()
 
   ReactDOM.createRoot(rootEl).render(
     <React.StrictMode>
       <SideMenu />
-      {pageForRoute(route)}
+      {pageForRoute(match)}
     </React.StrictMode>
   )
 }

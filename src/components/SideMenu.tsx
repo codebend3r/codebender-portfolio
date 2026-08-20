@@ -44,7 +44,7 @@ export function SideMenu() {
 
   if (!cloudConfigured || session === null) return null
 
-  const current = routeFor(window.location.pathname)
+  const current = routeFor(window.location.pathname).route
 
   return (
     <>
