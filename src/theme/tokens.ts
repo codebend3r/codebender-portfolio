@@ -35,6 +35,26 @@ export const tokens = {
     xl: 16,
     xxl: 24,
   },
+  // Unitless line-heights, as a multiple of the font size. react-pdf applies
+  // them directly; ResumeDocx converts them for Word's font-relative "auto"
+  // line rule. Both exporters must read them from here — a line-height that
+  // lives in only one of the two is how the PDF and DOCX drift apart.
+  lineHeight: {
+    body: 1.45,
+    name: 1.1,
+    title: 1.2,
+    summary: 1.4,
+    achievement: 1.3,
+  },
+  // Point measurements that are neither spacing nor type sizes, shared by
+  // the PDF and DOCX renderers for the same reason as `lineHeight`.
+  metrics: {
+    contactIcon: 11,
+    pillPaddingY: 3,
+    timelineIndent: 22,
+    bulletIndent: 10,
+    companyGap: 3,
+  },
   page: {
     paddingTop: 36,
     paddingBottom: 44,

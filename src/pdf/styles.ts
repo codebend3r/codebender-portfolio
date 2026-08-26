@@ -11,7 +11,7 @@ export const styles = StyleSheet.create({
     paddingTop: tokens.page.paddingTop,
     paddingBottom: tokens.page.paddingBottom,
     paddingHorizontal: tokens.page.paddingHorizontal,
-    lineHeight: 1.45,
+    lineHeight: tokens.lineHeight.body,
   },
 
   // Header
@@ -25,19 +25,19 @@ export const styles = StyleSheet.create({
     fontSize: tokens.fontSize.h1,
     fontWeight: 700,
     color: tokens.colors.text,
-    lineHeight: 1.1,
+    lineHeight: tokens.lineHeight.name,
     letterSpacing: 0.2,
   },
   title: {
     fontSize: tokens.fontSize.subtitle,
     fontWeight: 400,
     color: tokens.colors.accent,
-    lineHeight: 1.2,
+    lineHeight: tokens.lineHeight.title,
   },
   summary: {
     fontSize: tokens.fontSize.body,
     color: tokens.colors.text,
-    lineHeight: 1.4,
+    lineHeight: tokens.lineHeight.summary,
     marginTop: tokens.spacing.xs,
   },
 
@@ -66,8 +66,8 @@ export const styles = StyleSheet.create({
     textDecoration: "underline",
   },
   contactIcon: {
-    width: 11,
-    height: 11,
+    width: tokens.metrics.contactIcon,
+    height: tokens.metrics.contactIcon,
   },
   // Two clusters — direct contact methods, web/social icons — pushed to
   // opposite ends of the bar by the parent's space-between.
@@ -111,7 +111,7 @@ export const styles = StyleSheet.create({
   skillPill: {
     fontSize: tokens.fontSize.small,
     paddingHorizontal: tokens.spacing.md,
-    paddingVertical: 3,
+    paddingVertical: tokens.metrics.pillPaddingY,
     borderRadius: 3,
     backgroundColor: tokens.colors.accentDeep,
     color: tokens.colors.onAccent,
@@ -120,7 +120,7 @@ export const styles = StyleSheet.create({
   // Experience
   experience: {
     position: "relative",
-    paddingLeft: 22,
+    paddingLeft: tokens.metrics.timelineIndent,
     marginBottom: tokens.spacing.lg,
   },
   timelineDash: {
@@ -153,7 +153,7 @@ export const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "baseline",
     gap: tokens.spacing.md,
-    marginBottom: 3,
+    marginBottom: tokens.metrics.companyGap,
   },
   company: {
     fontFamily: tokens.font.family,
@@ -168,9 +168,9 @@ export const styles = StyleSheet.create({
   },
   achievement: {
     fontSize: tokens.fontSize.body,
-    paddingLeft: 10,
-    textIndent: -10,
-    lineHeight: 1.3,
+    paddingLeft: tokens.metrics.bulletIndent,
+    textIndent: -tokens.metrics.bulletIndent,
+    lineHeight: tokens.lineHeight.achievement,
     marginBottom: 2,
   },
   bullet: {
