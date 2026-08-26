@@ -42,6 +42,9 @@
 .pageJson {
   height: 100vh;
   height: 100dvh;
+  /* An explicit row instead of relying on `align-content: stretch` to grow the
+     implicit `auto` track, so both columns get the full viewport height. */
+  grid-template-rows: minmax(0, 1fr);
   overflow: hidden;
 }
 
@@ -53,6 +56,7 @@
   /* Stacked columns cannot share one viewport; let the page scroll again. */
   .pageJson {
     height: auto;
+    grid-template-rows: none;
     overflow: visible;
   }
 }
