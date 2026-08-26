@@ -41,22 +41,42 @@ import { employmentParts } from "@utils/employment"
 
 type ContactChild = TextRun | ExternalHyperlink
 
-const CONTACT_ICON_SIZE = 12 // px, sits alongside the small contact text
-const CONTACT_ICON_TRANSFORMATION = {
-  width: CONTACT_ICON_SIZE,
-  height: CONTACT_ICON_SIZE,
-}
-
 export type DocxFont = { name: string; data: Buffer }
 
-// react-pdf styles are in points; Word wants half-points for font sizes and
-// twentieths of a point (twips/dxa) for lengths.
+// react-pdf styles are in points; Word wants half-points for font sizes,
+// twentieths of a point (twips/dxa) for lengths, and pixels at 96dpi for
+// image extents.
 const halfPoints = (pt: number) => Math.round(pt * 2)
 const twips = (pt: number) => Math.round(pt * 20)
+const pixels = (pt: number) => (pt * 96) / 72
 const hex = (color: string) => color.replace("#", "").toUpperCase()
 
-// 240ths of a line, mirroring the PDF's unitless line-heights.
-const lineOf = (lineHeight: number) => Math.round(lineHeight * 240)
+const CONTACT_ICON_TRANSFORMATION = {
+  width: pixels(tokens.metrics.contactIcon),
+  height: pixels(tokens.metrics.contactIcon),
+}
+
+// Word measures a "line" as the font's own default line height, not as the
+// point size the way react-pdf's unitless lineHeight does. Dividing by the
+// face's natural ratio makes a `tokens.lineHeight` value land on the same
+// line pitch in both exporters — without it every paragraph in the DOCX
+// comes out a third more leaded than the PDF, and the drift compounds down
+// the page until the two documents no longer break in the same places.
+const NATURAL_LINE_HEIGHT = {
+  serif: 1.371, // Source Serif 4: (1036 ascent + 335 descent) / 1000 upem
+  sans: 1.326, // Source Sans 3: (1000 ascent + 326 descent) / 1000 upem
+} as const
+
+type Face = keyof typeof NATURAL_LINE_HEIGHT
+
+// 240ths of a line, i.e. what Word's UI calls "Multiple" line spacing.
+const lineOf = ({
+  lineHeight,
+  face = "sans",
+}: {
+  lineHeight: number
+  face?: Face
+}) => Math.round((lineHeight / NATURAL_LINE_HEIGHT[face]) * 240)
 
 const PAGE_WIDTH = twips(612) // LETTER: 8.5in
 const PAGE_HEIGHT = twips(792) // LETTER: 11in
@@ -80,7 +100,11 @@ const NO_BORDERS = {
 function headerParagraphs(data: Data): Paragraph[] {
   return [
     new Paragraph({
-      spacing: { after: twips(tokens.spacing.xs) },
+      spacing: {
+        line: lineOf({ lineHeight: tokens.lineHeight.name, face: "serif" }),
+        lineRule: LineRuleType.AUTO,
+        after: twips(tokens.spacing.xs),
+      },
       children: [
         new TextRun({
           text: data.name,
@@ -92,7 +116,14 @@ function headerParagraphs(data: Data): Paragraph[] {
       ],
     }),
     new Paragraph({
-      spacing: { after: twips(tokens.spacing.xs) },
+      spacing: {
+        line: lineOf({ lineHeight: tokens.lineHeight.title }),
+        lineRule: LineRuleType.AUTO,
+        // The PDF separates the header lines with a 4pt flex gap and then
+        // gives the summary its own 4pt top margin. Word has only the one
+        // gap to spend between the two paragraphs, so it carries both.
+        after: twips(tokens.spacing.xs * 2),
+      },
       children: [
         new TextRun({
           text: data.title,
@@ -102,7 +133,11 @@ function headerParagraphs(data: Data): Paragraph[] {
       ],
     }),
     new Paragraph({
-      spacing: { after: twips(tokens.spacing.lg) },
+      spacing: {
+        line: lineOf({ lineHeight: tokens.lineHeight.summary }),
+        lineRule: LineRuleType.AUTO,
+        after: twips(tokens.spacing.lg),
+      },
       children: [new TextRun({ text: data.summary })],
     }),
   ]
@@ -303,10 +338,19 @@ function contactBar({ data, logo }: { data: Data; logo: Buffer }): Table {
   })
 }
 
-function sectionHeading(text: string): Paragraph {
+// `before` is overridable because the meta row's headings have to absorb the
+// margin its container carries in the PDF — Word tables take no margin of
+// their own.
+function sectionHeading({
+  text,
+  before = tokens.spacing.lg,
+}: {
+  text: string
+  before?: number
+}): Paragraph {
   return new Paragraph({
     spacing: {
-      before: twips(tokens.spacing.lg),
+      before: twips(before),
       after: twips(tokens.spacing.md),
     },
     border: {
@@ -330,14 +374,26 @@ function sectionHeading(text: string): Paragraph {
   })
 }
 
-// Skill pills: shaded runs padded with spaces; extra line spacing keeps
-// wrapped pill rows from touching (Word has no border-radius on runs).
+// Word can neither pad nor round a shaded run, so the PDF pill is emulated:
+// its horizontal padding is spelled with no-break spaces — Source Sans 3's
+// space is 0.2em, so five of them at 8.5pt come to ~8.5pt against the PDF's
+// 8pt — and its vertical padding is folded into the line spacing so wrapped
+// rows land on the same pitch the PDF puts them on.
+const PILL_PADDING = "\u00a0".repeat(5)
+const PILL_ROW_PITCH =
+  tokens.fontSize.small * tokens.lineHeight.body +
+  tokens.metrics.pillPaddingY * 2 +
+  tokens.spacing.xs
+
 function skillPills(skills: string[]): Paragraph {
   return new Paragraph({
-    spacing: { line: lineOf(1.5), lineRule: LineRuleType.AUTO },
+    spacing: {
+      line: lineOf({ lineHeight: PILL_ROW_PITCH / tokens.fontSize.small }),
+      lineRule: LineRuleType.AUTO,
+    },
     children: skills.flatMap((skill, i) => {
       const pill = new TextRun({
-        text: ` ${skill} `,
+        text: `${PILL_PADDING}${skill}${PILL_PADDING}`,
         color: hex(tokens.colors.onAccent),
         size: halfPoints(tokens.fontSize.small),
         shading: {
@@ -345,7 +401,13 @@ function skillPills(skills: string[]): Paragraph {
           fill: hex(tokens.colors.accentDeep),
         },
       })
-      return i === 0 ? [pill] : [new TextRun({ text: "  " }), pill]
+      // A breakable gap so rows still wrap, sized like the PDF's 4pt flex gap
+      // and held at the pill's own size so it never inflates the row height.
+      const gap = new TextRun({
+        text: "  ",
+        size: halfPoints(tokens.fontSize.small),
+      })
+      return i === 0 ? [pill] : [gap, pill]
     }),
   })
 }
@@ -354,7 +416,7 @@ function skillPills(skills: string[]): Paragraph {
 // dash hangs in the gutter, role/period share a line via a right tab stop,
 // and keepNext/keepLines emulate the PDF's wrap={false}.
 function experienceParagraphs(entry: Experience): Paragraph[] {
-  const indent = twips(22)
+  const indent = twips(tokens.metrics.timelineIndent)
   const employment = employmentParts(entry)
   const employmentRun = {
     italics: true,
@@ -394,7 +456,7 @@ function experienceParagraphs(entry: Experience): Paragraph[] {
       keepNext: true,
       keepLines: true,
       indent: { left: indent },
-      spacing: { after: twips(3) },
+      spacing: { after: twips(tokens.metrics.companyGap) },
       tabStops: [{ type: TabStopType.RIGHT, position: CONTENT_WIDTH }],
       children: [
         new TextRun({
@@ -430,13 +492,18 @@ function experienceParagraphs(entry: Experience): Paragraph[] {
         new Paragraph({
           keepNext: i < entry.achievements.length - 1,
           keepLines: true,
-          indent: { left: indent + twips(10), hanging: twips(10) },
+          indent: {
+            left: indent + twips(tokens.metrics.bulletIndent),
+            hanging: twips(tokens.metrics.bulletIndent),
+          },
           spacing: {
-            line: lineOf(1.3),
+            line: lineOf({ lineHeight: tokens.lineHeight.achievement }),
             lineRule: LineRuleType.AUTO,
+            // Every bullet carries the PDF's 2pt gap; the last one also
+            // carries the 12pt margin its experience block sits in.
             after:
               i === entry.achievements.length - 1
-                ? twips(tokens.spacing.lg)
+                ? twips(tokens.spacing.lg + 2)
                 : twips(2),
           },
           children: [
@@ -474,7 +541,12 @@ function metaItemParagraphs({
 
 // Awards / Languages / Education as a borderless three-column table.
 function metaRow(data: Data): Table {
-  const width = Math.floor(CONTENT_WIDTH / 3)
+  // The PDF lays these out as three `flex: 1` columns with a 16pt gap, so
+  // every column's *content* is the same width. A Word column carries its
+  // gap as a cell margin, so the first two have to be that much wider for
+  // the three heading rules to come out equal.
+  const gap = twips(tokens.spacing.xl)
+  const content = Math.floor((CONTENT_WIDTH - gap * 2) / 3)
   const columns: { heading: string; items: Paragraph[] }[] = [
     {
       heading: "Awards",
@@ -502,21 +574,29 @@ function metaRow(data: Data): Table {
     width: { size: CONTENT_WIDTH, type: WidthType.DXA },
     layout: TableLayoutType.FIXED,
     borders: NO_BORDERS,
-    columnWidths: columns.map(() => width),
+    columnWidths: [
+      content + gap,
+      content + gap,
+      CONTENT_WIDTH - (content + gap) * 2,
+    ],
     rows: [
       new TableRow({
-        children: columns.map(
-          ({ heading, items }, i) =>
-            new TableCell({
-              margins: {
-                top: 0,
-                bottom: 0,
-                left: 0,
-                right: i === columns.length - 1 ? 0 : twips(tokens.spacing.xl),
-              },
-              children: [sectionHeading(heading), ...items],
-            })
-        ),
+        children: columns.map(({ heading, items }, i) => {
+          const last = i === columns.length - 1
+          return new TableCell({
+            margins: { top: 0, bottom: 0, left: 0, right: last ? 0 : gap },
+            children: [
+              // In the PDF the meta row's own 16pt top margin stacks on top
+              // of the 12pt each section heading already gets. A Word table
+              // has no margin, so the heading absorbs both.
+              sectionHeading({
+                text: heading,
+                before: tokens.spacing.xl + tokens.spacing.lg,
+              }),
+              ...items,
+            ],
+          })
+        }),
       }),
     ],
   })
@@ -566,7 +646,10 @@ export function buildResumeDocument({
             color: hex(tokens.colors.text),
           },
           paragraph: {
-            spacing: { line: lineOf(1.45), lineRule: LineRuleType.AUTO },
+            spacing: {
+              line: lineOf({ lineHeight: tokens.lineHeight.body }),
+              lineRule: LineRuleType.AUTO,
+            },
           },
         },
       },
@@ -589,11 +672,11 @@ export function buildResumeDocument({
         children: [
           ...headerParagraphs(data),
           contactBar({ data, logo }),
-          sectionHeading("Technical Skills"),
+          sectionHeading({ text: "Technical Skills" }),
           skillPills(data.technical_skills),
-          sectionHeading("Soft Skills"),
+          sectionHeading({ text: "Soft Skills" }),
           skillPills(data.soft_skills),
-          sectionHeading("Work Experience"),
+          sectionHeading({ text: "Work Experience" }),
           ...data.work_experience.flatMap(experienceParagraphs),
           metaRow(data),
         ],

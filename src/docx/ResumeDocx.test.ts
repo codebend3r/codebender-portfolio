@@ -6,6 +6,8 @@ import { describe, expect, it } from "vitest"
 import type { DocxFont } from "@docx/fonts"
 import { buildResumeDocument } from "@docx/ResumeDocx"
 
+import { tokens } from "@theme/tokens"
+
 import { resumeFixture } from "@app/test/resumeFixture"
 
 const logo = Buffer.alloc(64)
@@ -149,6 +151,60 @@ describe("buildResumeDocument", () => {
     expect(footer.includes(resumeFixture.name)).toBe(true)
     expect(footer.includes("PAGE")).toBe(true)
     expect(footer.includes("NUMPAGES")).toBe(true)
+  })
+
+  // Word measures a "line" as the font's own default line height, not as the
+  // point size react-pdf's unitless lineHeight multiplies. Source Sans 3's is
+  // (1000 ascent + 326 descent) / 1000 upem, so a token emitted raw would
+  // over-lead every paragraph by a third and break pagination against the PDF.
+  const SANS_NATURAL_LINE_HEIGHT = 1.326
+
+  it("converts line-heights to Word's font-relative line rule", async () => {
+    const files = await unzipDocument()
+    const expected = Math.round(
+      (tokens.lineHeight.body / SANS_NATURAL_LINE_HEIGHT) * 240
+    )
+    expect(strFromU8(files["word/styles.xml"])).toContain(
+      `w:line="${expected}"`
+    )
+    // Guards the conversion itself, not just the number: emitting the token
+    // unconverted is the specific regression this test exists to catch.
+    expect(expected).toBeLessThan(Math.round(tokens.lineHeight.body * 240))
+  })
+
+  it("sizes the contact icons to the PDF's icon metric", async () => {
+    const xml = strFromU8((await unzipDocument())["word/document.xml"])
+    const extents = [...xml.matchAll(/<wp:extent cx="(\d+)" cy="(\d+)"/g)]
+    expect(extents.length).toBeGreaterThan(0)
+    // 12700 EMU per point, so this reads the rendered size back in the same
+    // units `tokens.metrics` is written in.
+    expect(
+      extents.every(([, cx, cy]) =>
+        [cx, cy].every(
+          (v) => Math.abs(Number(v) / 12700 - tokens.metrics.contactIcon) < 0.01
+        )
+      )
+    ).toBe(true)
+  })
+
+  it("gives the three meta columns equal content width", async () => {
+    const xml = strFromU8((await unzipDocument())["word/document.xml"])
+    // The meta row is the last of the document's two tables (the contact bar
+    // is the first).
+    const tables = xml.match(/<w:tbl>(?:(?!<\/w:tbl>).)*<\/w:tbl>/g) ?? []
+    const meta = tables[tables.length - 1] ?? ""
+    const widths = [...meta.matchAll(/<w:gridCol w:w="(\d+)"/g)].map(([, w]) =>
+      Number(w)
+    )
+    // Each column carries its gutter as a cell margin, so the content box is
+    // the grid width minus that margin — those are what must come out equal.
+    const gutters = [
+      ...meta.matchAll(/<w:right w:type="dxa" w:w="(\d+)"/g),
+    ].map(([, w]) => Number(w))
+    expect(widths).toHaveLength(3)
+    expect(gutters).toHaveLength(3)
+    const content = widths.map((w, i) => w - gutters[i])
+    expect(Math.max(...content) - Math.min(...content)).toBeLessThanOrEqual(2)
   })
 
   it("embeds provided fonts in the font table", async () => {
