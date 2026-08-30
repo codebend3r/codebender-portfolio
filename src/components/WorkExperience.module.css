@@ -133,7 +133,7 @@
   grid-column: 2;
 }
 
-@media (max-width: 700px) {
+@media (width <= 700px) {
   .item {
     grid-template-columns: 2px 1fr;
     column-gap: 10px;

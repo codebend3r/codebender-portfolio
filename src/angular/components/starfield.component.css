@@ -13,5 +13,5 @@
   position: absolute;
   background: var(--text);
   border-radius: 50%;
-  box-shadow: 0 0 4px rgba(230, 235, 245, 0.5);
+  box-shadow: 0 0 4px rgb(230 235 245 / 50%);
 }

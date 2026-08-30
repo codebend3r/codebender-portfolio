@@ -3,10 +3,8 @@ set -e
 
 echo "Running pre-commit checks..."
 
-bun run format:check && \
+bun run format:staged && \
 bun run typecheck && \
-bun run lint:ts && \
-bun run lint:css && \
 bun run test
 
 echo "Committed successfully"

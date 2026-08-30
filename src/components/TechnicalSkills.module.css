@@ -30,7 +30,7 @@
   border-color: var(--accent);
   background: linear-gradient(90deg, #28489a, #6e2aa6);
   box-shadow:
-    0 6px 18px rgba(198, 120, 221, 0.35),
+    0 6px 18px rgb(198 120 221 / 35%),
     0 0 0 1px var(--accent);
 }
 
@@ -82,7 +82,7 @@
     transform 200ms cubic-bezier(0.34, 1.56, 0.64, 1),
     visibility 200ms;
   z-index: 20;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+  box-shadow: 0 10px 30px rgb(0 0 0 / 45%);
 }
 
 .tooltip::after {
@@ -95,7 +95,7 @@
   border-top-color: var(--accent);
 }
 
-@media (max-width: 700px) {
+@media (width <= 700px) {
   .pillList {
     gap: 8px;
   }
@@ -165,7 +165,7 @@
   padding-top: 6px;
 }
 
-@media (max-width: 700px) {
+@media (width <= 700px) {
   .hoverEditorRow {
     grid-template-columns: 1fr;
     gap: 4px;

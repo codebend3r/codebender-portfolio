@@ -35,7 +35,7 @@
 
 .nameInput:focus-visible {
   border-color: var(--accent);
-  box-shadow: 0 0 0 3px rgba(122, 162, 247, 0.25);
+  box-shadow: 0 0 0 3px rgb(122 162 247 / 25%);
 }
 
 .confirm,

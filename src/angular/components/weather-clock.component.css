@@ -23,7 +23,7 @@
   letter-spacing: 0.5px;
 }
 
-@media (max-width: 700px) {
+@media (width <= 700px) {
   .panel {
     flex-wrap: wrap;
     gap: 6px 12px;

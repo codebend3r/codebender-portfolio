@@ -15,8 +15,8 @@
     "generate:cv": "bun scripts/generate-cv-pdf.tsx",
     "lint:ts": "oxlint --type-aware",
     "lint:ts:fix": "oxlint --type-aware --fix",
-    "lint:css": "gale \"src/**/*.css\"",
-    "lint:css:fix": "gale --fix \"src/**/*.css\"",
+    "lint:css": "stylelint \"src/**/*.css\"",
+    "lint:css:fix": "stylelint --fix \"src/**/*.css\"",
     "format": "oxfmt",
     "format:check": "oxfmt --check",
     "format:staged": "lint-staged",
@@ -54,7 +54,6 @@
     "@analogjs/vitest-angular": "2.6.3",
     "@angular/build": "22.0.6",
     "@angular/compiler-cli": "22.0.6",
-    "@lyricalstring/gale": "0.1.5",
     "@netlify/functions": "5.3.0",
     "@testing-library/dom": "10.4.1",
     "@testing-library/jest-dom": "6.9.1",
@@ -69,16 +68,16 @@
     "fflate": "0.8.2",
     "husky": "9.1.7",
     "jsdom": "29.1.1",
+    "lint-staged": "17.4.1",
     "npm-run-all": "4.1.5",
     "oxfmt": "0.61.0",
     "oxlint": "1.76.0",
     "oxlint-tsgolint": "7.0.2001",
+    "stylelint": "17.14.1",
+    "stylelint-config-standard": "40.0.0",
     "typescript": "6.0.3",
     "vite": "8.0.12",
     "vitest": "4.1.6"
   },
-  "packageManager": "bun@1.3.14",
-  "trustedDependencies": [
-    "@lyricalstring/gale"
-  ]
+  "packageManager": "bun@1.3.14"
 }

@@ -38,7 +38,7 @@
 
 .passwordInput:focus-visible {
   border-color: var(--accent);
-  box-shadow: 0 0 0 3px rgba(122, 162, 247, 0.25);
+  box-shadow: 0 0 0 3px rgb(122 162 247 / 25%);
 }
 
 .notice {
@@ -91,8 +91,8 @@
   border-radius: 12px;
   cursor: pointer;
   box-shadow:
-    0 0 18px rgba(122, 162, 247, 0.35),
-    0 6px 24px rgba(11, 14, 20, 0.6);
+    0 0 18px rgb(122 162 247 / 35%),
+    0 6px 24px rgb(11 14 20 / 60%);
   transition:
     transform 0.2s ease,
     box-shadow 0.2s ease,
@@ -113,9 +113,9 @@
 .generateButton:hover:not(:disabled) {
   transform: translateY(-2px);
   box-shadow:
-    0 0 26px rgba(122, 162, 247, 0.5),
-    0 0 40px rgba(198, 120, 221, 0.3),
-    0 10px 28px rgba(11, 14, 20, 0.6);
+    0 0 26px rgb(122 162 247 / 50%),
+    0 0 40px rgb(198 120 221 / 30%),
+    0 10px 28px rgb(11 14 20 / 60%);
 }
 
 .generateButton:active:not(:disabled) {

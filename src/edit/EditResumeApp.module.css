@@ -42,13 +42,14 @@
 .pageJson {
   height: 100vh;
   height: 100dvh;
+
   /* An explicit row instead of relying on `align-content: stretch` to grow the
      implicit `auto` track, so both columns get the full viewport height. */
   grid-template-rows: minmax(0, 1fr);
   overflow: hidden;
 }
 
-@media (max-width: 720px) {
+@media (width <= 720px) {
   .page {
     grid-template-columns: 1fr;
   }

@@ -2,6 +2,7 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
+
   /* Fills the grid area the page hands it; `min-height: 0` lets the flexing
      textarea shrink below its intrinsic size instead of overflowing. */
   height: 100%;
@@ -41,7 +42,7 @@
   font-size: 13px;
   font-family: var(--font-mono);
   white-space: pre-wrap;
-  word-break: break-word;
+  overflow-wrap: break-word;
 }
 
 .error {
@@ -58,6 +59,7 @@
 
 .textarea {
   width: 100%;
+
   /* Flexes rather than a fixed row, so the status message appearing or
      disappearing above it can never change where the textarea lands. */
   flex: 1;
@@ -83,7 +85,7 @@
   border-color: var(--accent);
 }
 
-@media (max-width: 720px) {
+@media (width <= 720px) {
   /* The page scrolls at this width, so the editor needs its own height. */
   .editor {
     height: calc(100vh - 120px);

@@ -4,7 +4,7 @@
   display: grid;
   place-items: center;
   padding: 16px;
-  background: color-mix(in srgb, var(--bg) 30%, rgba(0, 0, 0, 0.55));
+  background: color-mix(in srgb, var(--bg) 30%, rgb(0 0 0 / 55%));
   z-index: 100;
 }
 

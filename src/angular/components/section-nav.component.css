@@ -12,6 +12,7 @@
   padding: 0;
   display: grid;
   gap: 4px;
+
   /* hairline rail connecting the markers */
   background: linear-gradient(var(--border), var(--border)) right 10px top 0 /
     1px 100% no-repeat;
@@ -43,7 +44,7 @@
     transform 0.22s ease;
   padding: 2px 7px;
   border-radius: 999px;
-  background: rgba(11, 14, 20, 0.7);
+  background: rgb(11 14 20 / 70%);
   border: 1px solid transparent;
 }
 
@@ -108,7 +109,7 @@
   color: var(--text);
 }
 
-@media (max-width: 920px) {
+@media (width <= 920px) {
   .nav {
     display: none;
   }

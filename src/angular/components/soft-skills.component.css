@@ -30,6 +30,6 @@
   border-color: var(--accent);
   background: linear-gradient(90deg, #28489a, #6e2aa6);
   box-shadow:
-    0 6px 18px rgba(198, 120, 221, 0.35),
+    0 6px 18px rgb(198 120 221 / 35%),
     0 0 0 1px var(--accent);
 }

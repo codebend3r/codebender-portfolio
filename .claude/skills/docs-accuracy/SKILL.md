@@ -10,7 +10,7 @@ description: Use when editing `CLAUDE.md`, `AGENTS.md`, or `README.md`, when ren
 `CLAUDE.md` and `AGENTS.md` are loaded into the context of every agent session
 before any file is read. A wrong claim in them is not a documentation bug — it is a
 **bad instruction that gets followed**. An agent told "use SCSS modules" in a repo with
-zero SCSS files will create `.module.scss`, and every downstream tool (Gale lints
+zero SCSS files will create `.module.scss`, and every downstream tool (Stylelint lints
 `src/**/*.css` only) silently ignores it.
 
 Docs drift because they describe intent at authoring time and are never re-checked.

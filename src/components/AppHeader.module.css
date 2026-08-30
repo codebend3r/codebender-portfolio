@@ -4,21 +4,25 @@
   inherits: true;
   initial-value: 32px;
 }
+
 @property --header-logo-size {
   syntax: "<length>";
   inherits: true;
   initial-value: 72px;
 }
+
 @property --header-brand-gap {
   syntax: "<length>";
   inherits: true;
   initial-value: 16px;
 }
+
 @property --header-meta-size {
   syntax: "<length>";
   inherits: true;
   initial-value: 16px;
 }
+
 @property --header-pad-y {
   syntax: "<length>";
   inherits: true;
@@ -31,14 +35,11 @@
   z-index: 5;
   width: 100%;
   margin-bottom: 24px;
-  background: linear-gradient(
-    180deg,
-    rgba(11, 14, 20, 0.85),
-    rgba(11, 14, 20, 0.72)
-  );
+  background: linear-gradient(180deg, rgb(11 14 20 / 85%), rgb(11 14 20 / 72%));
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   border-bottom: 1px solid var(--border);
+
   --header-h1-size: 32px;
   --header-logo-size: 72px;
   --header-brand-gap: 16px;
@@ -59,7 +60,7 @@
   }
 }
 
-@media (prefers-reduced-motion: no-preference) and (min-width: 701px) {
+@media (prefers-reduced-motion: no-preference) and (width >= 701px) {
   @supports (animation-timeline: scroll()) {
     .bar {
       animation-name: shrinkHeader;
@@ -74,7 +75,7 @@
 
 @media (hover: none) {
   .bar {
-    background: rgba(11, 14, 20, 0.96);
+    background: rgb(11 14 20 / 96%);
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
   }
@@ -139,6 +140,7 @@
   from {
     border-color: var(--accent);
   }
+
   to {
     border-color: var(--accent2);
   }
@@ -155,13 +157,14 @@
     borderPulse 1.2s ease-in-out infinite alternate;
 }
 
-@media (max-width: 700px) {
+@media (width <= 700px) {
   .bar {
     /* compact, fixed-size bar so the sticky header stays short on phones */
     --header-h1-size: 22px;
     --header-logo-size: 44px;
     --header-brand-gap: 10px;
     --header-meta-size: 12px;
+
     margin-bottom: 16px;
   }
 

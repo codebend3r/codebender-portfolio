@@ -115,7 +115,7 @@
   gap: 10px;
   padding: 9px 12px;
   border-bottom: 1px solid var(--border);
-  background: rgba(255, 255, 255, 0.03);
+  background: rgb(255 255 255 / 3%);
 }
 
 .dots {
@@ -230,9 +230,9 @@
   text-transform: uppercase;
   color: var(--accent);
   padding: 3px 8px;
-  border: 1px solid rgba(122, 162, 247, 0.35);
+  border: 1px solid rgb(122 162 247 / 35%);
   border-radius: 999px;
-  background: rgba(122, 162, 247, 0.08);
+  background: rgb(122 162 247 / 8%);
 }
 
 /* Edit-mode tag card: flat panel chip housing grip, text, remove.
@@ -258,7 +258,7 @@
   padding: 2px 5px;
 }
 
-@media (max-width: 700px) {
+@media (width <= 700px) {
   .grid {
     grid-template-columns: 1fr;
     gap: 14px;

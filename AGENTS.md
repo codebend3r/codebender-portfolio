@@ -10,8 +10,9 @@ Package manager is **bun** (see `packageManager` in `package.json`). Use `bun <s
 - `bun run build` — production build (note: `bun build` invokes Bun's bundler, not Vite; always use `bun run build`). Three steps: `generate:cv` → `build:vite` → `assert:no-react`
 - `bun preview` — preview the built output
 - `bun lint:ts` / `bun lint:ts:fix` — Oxlint (`.oxlintrc.json`), including type-aware rules
-- `bun lint:css` / `bun lint:css:fix` — Gale over `src/**/*.css` (`gale.json`)
+- `bun lint:css` / `bun lint:css:fix` — Stylelint over `src/**/*.css` (`.stylelintrc.json`, extends `stylelint-config-standard`)
 - `bun format` / `bun format:check` — Oxfmt write / check (`.oxfmtrc.json`)
+- `bun format:staged` — lint-staged (`.lintstagedrc.json`): Oxfmt + `oxlint --fix` on staged JS/TS/JSON, `stylelint --fix` on staged CSS
 - `bun typecheck` — `tsgo --noEmit` across all three tsconfig projects (root, `tsconfig.node.json`, `netlify/functions`)
 - `bun test` / `bun test:watch` / `bun test:coverage` — Vitest
 - `bun check` — `typecheck`, `lint:ts`, `lint:css`, `test` in **parallel** (`run-p`)
@@ -23,7 +24,7 @@ Script names drift. When this list disagrees with `"scripts"` in `package.json`,
 
 Husky runs on every commit and push:
 
-- **pre-commit** (`.husky/pre-commit`): `format:check` → `typecheck` → `lint:ts` → `lint:css` → `test`. The commit will fail if any step fails. `format:check` does not write, so run `bun format` yourself if formatting is off.
+- **pre-commit** (`.husky/pre-commit`): `format:staged` → `typecheck` → `test`. lint-staged formats and auto-fixes only the staged files and re-stages them; the full-repo `lint:ts` / `lint:css` gate runs in CI and `bun system-check`. The commit will fail if any step fails.
 - **pre-push** (`.husky/pre-push`): `bun run build`, then prints the last 10 commits.
 
 ## Architecture

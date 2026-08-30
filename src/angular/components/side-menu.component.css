@@ -23,7 +23,7 @@
   position: fixed;
   inset: 0;
   z-index: 95;
-  background: color-mix(in srgb, var(--bg) 30%, rgba(0, 0, 0, 0.55));
+  background: color-mix(in srgb, var(--bg) 30%, rgb(0 0 0 / 55%));
 }
 
 .menu {
@@ -37,6 +37,7 @@
   grid-template-rows: auto 1fr auto;
   gap: 16px;
   padding: 16px;
+
   /* keep the sign-out button clear of the fixed toggle */
   padding-bottom: 72px;
   background: var(--panel);

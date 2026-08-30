@@ -6,8 +6,9 @@ package-lock.json
 # Emitted by the composite tsconfig.node.json project during `ts:check`
 *.tsbuildinfo
 
-# Gale's incremental lint cache (only written with `gale --cache`)
-.gale_cache
+# Stylelint's incremental lint cache (only written with `stylelint --cache`)
+.stylelintcache
+
 # Local Netlify folder
 .netlify
 

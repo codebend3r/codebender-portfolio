@@ -112,6 +112,7 @@
   display: grid;
   gap: 8px;
   flex-shrink: 0;
+
   /* keep the bottom button clear of the fixed menu toggle */
   padding-bottom: 32px;
 }

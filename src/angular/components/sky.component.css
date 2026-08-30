@@ -12,8 +12,8 @@
   right: 10%;
   width: 120px;
   height: 120px;
-  filter: drop-shadow(0 0 28px rgba(255, 250, 220, 0.35))
-    drop-shadow(0 0 60px rgba(180, 200, 255, 0.2));
+  filter: drop-shadow(0 0 28px rgb(255 250 220 / 35%))
+    drop-shadow(0 0 60px rgb(180 200 255 / 20%));
 }
 
 .moonSprite {
@@ -43,7 +43,8 @@
   right: 12%;
   width: 140px;
   height: 140px;
-  --sun-glow: rgba(255, 210, 90, 0.75);
+
+  --sun-glow: rgb(255 210 90 / 75%);
 }
 
 .sunDawn {
@@ -51,7 +52,8 @@
   left: 12%;
   width: 180px;
   height: 180px;
-  --sun-glow: rgba(255, 150, 160, 0.7);
+
+  --sun-glow: rgb(255 150 160 / 70%);
 }
 
 .sunDusk {
@@ -59,7 +61,8 @@
   right: 12%;
   width: 180px;
   height: 180px;
-  --sun-glow: rgba(255, 120, 90, 0.75);
+
+  --sun-glow: rgb(255 120 90 / 75%);
 }
 
 .clouds {

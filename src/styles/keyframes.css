@@ -2,6 +2,7 @@
   0% {
     transform: translate3d(0, 0, 0);
   }
+
   100% {
     transform: translate3d(var(--cloud-drift, 0), 0, 0);
   }
@@ -11,6 +12,7 @@
   0% {
     transform: translate3d(0, -10vh, 0);
   }
+
   100% {
     transform: translate3d(2vw, 115vh, 0);
   }
@@ -20,9 +22,11 @@
   0% {
     transform: translate3d(0, -5vh, 0);
   }
+
   50% {
     transform: translate3d(4vw, 55vh, 0);
   }
+
   100% {
     transform: translate3d(-2vw, 110vh, 0);
   }
@@ -33,6 +37,7 @@
     filter: drop-shadow(0 0 8px var(--sun-glow))
       drop-shadow(0 0 18px var(--sun-glow));
   }
+
   100% {
     filter: drop-shadow(0 0 20px var(--sun-glow))
       drop-shadow(0 0 44px var(--sun-glow));
@@ -46,6 +51,7 @@
       0 0 10px var(--accent),
       0 0 15px var(--accent);
   }
+
   100% {
     box-shadow:
       0 0 15px var(--accent2),
