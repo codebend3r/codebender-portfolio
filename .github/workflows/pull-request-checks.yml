@@ -13,8 +13,8 @@ concurrency:
   cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 
 jobs:
-  pull-request-checks:
-    name: 🚦 Pull request checks
+  system-check:
+    name: 🚦 System check
     runs-on: ubuntu-latest
     timeout-minutes: 10
 
