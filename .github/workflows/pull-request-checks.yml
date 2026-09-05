@@ -1,9 +1,9 @@
-name: CI
+name: 🧪 Pull Request Checks
 
 on:
-  push:
-    branches: [main]
   pull_request:
+  push:
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -13,8 +13,8 @@ concurrency:
   cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 
 jobs:
-  system-check:
-    name: 🚦 System check
+  pull-request-checks:
+    name: 🚦 Pull request checks
     runs-on: ubuntu-latest
     timeout-minutes: 10
 
