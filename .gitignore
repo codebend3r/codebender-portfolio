@@ -20,3 +20,6 @@ deno.lock
 
 .env
 public/cv/
+
+# Local knowledge-graph output (graphify skill)
+graphify-out/
