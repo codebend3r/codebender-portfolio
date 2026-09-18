@@ -44,7 +44,9 @@ function manualChunks(id: string) {
 
 export default defineConfig({
   plugins: [
-    angular({ tsconfig: path.resolve(__dirname, "tsconfig.angular.json") }),
+    angular({
+      tsconfig: path.resolve(import.meta.dirname, "tsconfig.angular.json"),
+    }),
     react(),
   ],
   server: {
@@ -52,22 +54,22 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      "@App": path.resolve(__dirname, "src/App.tsx"),
-      "@app": path.resolve(__dirname, "src"),
-      "@ngapp": path.resolve(__dirname, "src/angular"),
-      "@assets": path.resolve(__dirname, "src/assets"),
-      "@components": path.resolve(__dirname, "src/components"),
-      "@data": path.resolve(__dirname, "src/data"),
-      "@docx": path.resolve(__dirname, "src/docx"),
-      "@edit": path.resolve(__dirname, "src/edit"),
-      "@generate": path.resolve(__dirname, "src/generate"),
-      "@pdf": path.resolve(__dirname, "src/pdf"),
-      "@sky": path.resolve(__dirname, "src/sky.ts"),
-      "@state": path.resolve(__dirname, "src/state"),
-      "@styles": path.resolve(__dirname, "src/styles"),
-      "@theme": path.resolve(__dirname, "src/theme"),
-      "@utils": path.resolve(__dirname, "src/utils"),
-      "@weather": path.resolve(__dirname, "src/weather.ts"),
+      "@App": path.resolve(import.meta.dirname, "src/App.tsx"),
+      "@app": path.resolve(import.meta.dirname, "src"),
+      "@ngapp": path.resolve(import.meta.dirname, "src/angular"),
+      "@assets": path.resolve(import.meta.dirname, "src/assets"),
+      "@components": path.resolve(import.meta.dirname, "src/components"),
+      "@data": path.resolve(import.meta.dirname, "src/data"),
+      "@docx": path.resolve(import.meta.dirname, "src/docx"),
+      "@edit": path.resolve(import.meta.dirname, "src/edit"),
+      "@generate": path.resolve(import.meta.dirname, "src/generate"),
+      "@pdf": path.resolve(import.meta.dirname, "src/pdf"),
+      "@sky": path.resolve(import.meta.dirname, "src/sky.ts"),
+      "@state": path.resolve(import.meta.dirname, "src/state"),
+      "@styles": path.resolve(import.meta.dirname, "src/styles"),
+      "@theme": path.resolve(import.meta.dirname, "src/theme"),
+      "@utils": path.resolve(import.meta.dirname, "src/utils"),
+      "@weather": path.resolve(import.meta.dirname, "src/weather.ts"),
     },
   },
   build: {
@@ -78,8 +80,11 @@ export default defineConfig({
     },
     rollupOptions: {
       input: {
-        main: path.resolve(__dirname, "index.html"),
-        angularVersion: path.resolve(__dirname, "angular-version/index.html"),
+        main: path.resolve(import.meta.dirname, "index.html"),
+        angularVersion: path.resolve(
+          import.meta.dirname,
+          "angular-version/index.html"
+        ),
       },
       output: {
         manualChunks,
