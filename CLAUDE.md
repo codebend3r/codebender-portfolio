@@ -13,7 +13,7 @@ Operating rules for this repo.
 ## Tooling
 
 - All scripts run through Bun: `bun install`, `bun dev`, `bun run test`, `bun run build`, `bun lint:ts`, `bun lint:css`, `bun typecheck`. Never invoke npm or yarn. The full list lives in `package.json` `scripts` — check there rather than trusting this line.
-- `bun system-check` is the gate: `format:check`, `typecheck`, `lint:ts`, `lint:css`, `spellcheck`, `test`, then `build`, run in sequence via `bun run --sequential`. There is no separate `check` script.
+- `bun system-check` is the gate: `format:check`, `typecheck`, `lint:ts`, `lint:css`, `lint:actions`, `spellcheck`, `test`, then `build`, run in sequence via `bun run --sequential`. There is no separate `check` script.
 - Pin every `package.json` dependency to an exact version, with no `^` or `~`.
 
 ## Typescript
