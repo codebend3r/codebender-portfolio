@@ -13,7 +13,7 @@ Operating rules for this repo.
 ## Tooling
 
 - All scripts run through Bun: `bun install`, `bun dev`, `bun run test`, `bun run build`, `bun lint:ts`, `bun lint:css`, `bun typecheck`. Never invoke npm or yarn. The full list lives in `package.json` `scripts` — check there rather than trusting this line.
-- `bun system-check` is the gate: `format:check`, then `check` (`typecheck` + `lint:ts` + `lint:css` + `test` in parallel), then `build`.
+- `bun system-check` is the gate: `format:check`, `typecheck`, `lint:ts`, `lint:css`, `spellcheck`, `test`, then `build`, run in sequence via `bun run --sequential`. There is no separate `check` script.
 - Pin every `package.json` dependency to an exact version, with no `^` or `~`.
 
 ## Typescript
@@ -35,7 +35,7 @@ Operating rules for this repo.
 - Use a container driven approach, meaning the container will define the width and height and the children will be positioned within it, this means if/when the children are moved to different containers they may be laid out differently depending on what the container specifies
 - Prefer using CSS display grid for layout with the gap property for spacing between grid items; avoid using margins for spacing
 - Second preferred display value is flex
-- Avoid using plain divs; meaing divs with no class or id defined
+- Avoid using plain divs; meaning divs with no class or id defined
 - Always use token values from `src/styles/tokens.css` when defining font sizes, colors, and other design tokens like padding, margin, gap, and border radius
 
 ## Code style

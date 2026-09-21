@@ -69,7 +69,7 @@ const NATURAL_LINE_HEIGHT = {
 
 type Face = keyof typeof NATURAL_LINE_HEIGHT
 
-// 240ths of a line, i.e. what Word's UI calls "Multiple" line spacing.
+// units of 1/240 of a line, i.e. what Word's UI calls "Multiple" line spacing.
 const lineOf = ({
   lineHeight,
   face = "sans",

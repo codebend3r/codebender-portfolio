@@ -103,7 +103,7 @@ Each work experience entry also shows a computed, human-readable duration (e.g. 
 | **Testing**         | Vitest 4 + Testing Library + jsdom                | Component + util tests colocated next to source                                                   |
 | **Lint**            | Oxlint (Rust) + type-aware rules via tsgolint     | `.oxlintrc.json`; replaces ESLint, `typescript-eslint`, `react`, `react-hooks`, `jsx-a11y`        |
 | **Format**          | Oxfmt (Rust)                                      | `.oxfmtrc.json`; formats JS/TS/JSON/YAML/Markdown/CSS and sorts imports — replaces Prettier       |
-| **CSS lint**        | Stylelint 17                                      | `.stylelintrc.json`; extends `stylelint-config-standard` over `src/**/*.css`                      |
+| **CSS lint**        | Gale (Stylelint-compatible, Rust)                 | `.stylelintrc.json`; extends `stylelint-config-standard` over `src/**/*.css`                      |
 | **Type checking**   | `tsgo --noEmit` (`@typescript/native-preview`)    | Go port of `tsc`; runs on every commit                                                            |
 | **Git hooks**       | Husky + lint-staged                               | `pre-commit`: lint-staged (format + lint staged files) → typecheck → test                         |
 | **Package manager** | Bun                                               | `packageManager` field pinned in `package.json`                                                   |
@@ -175,6 +175,8 @@ Configured in **both** `vite.config.ts` (runtime) and `tsconfig.json` (types) �
 
 ## Getting started
 
+Requires Node 26 (see `.nvmrc`) and the Bun version pinned in `package.json`.
+
 ```bash
 bun install
 bun dev          # http://localhost:4242
@@ -201,13 +203,16 @@ bun dev          # http://localhost:4242
 | `bun dev`                                           | Vite dev server on port `4242`                                                          |
 | `bun run build`                                     | Production build (note: `bun build` invokes Bun's bundler — always use `bun run build`) |
 | `bun preview`                                       | Preview the built output                                                                |
-| `bun lint` / `bun lint:fix`                         | Oxlint, including type-aware rules                                                      |
-| `bun lint:css` / `bun lint:css:fix`                 | Stylelint over `src/**/*.css`                                                           |
-| `bun format:staged`                                 | lint-staged: Oxfmt + `oxlint --fix` + `stylelint --fix` over staged files only          |
+| `bun lint:ts` / `bun lint:ts:fix`                   | Oxlint, including type-aware rules                                                      |
+| `bun lint:css` / `bun lint:css:fix`                 | Gale (Stylelint-compatible) over `src/**/*.css`                                         |
+| `bun spellcheck` / `bun spellcheck:fix`             | typos over the whole repo; scope and allowlist in `_typos.toml`                         |
+| `bun format:staged`                                 | lint-staged: Oxfmt + `oxlint --fix` + `gale --fix` over staged files only               |
 | `bun format` / `bun format:check`                   | Oxfmt write / check                                                                     |
-| `bun ts:check`                                      | tsgo type check (no emit), all three tsconfig projects                                  |
+| `bun typecheck`                                     | tsgo type check (no emit), all three tsconfig projects                                  |
 | `bun test` / `bun test:watch` / `bun test:coverage` | Vitest                                                                                  |
-| `bun system-check`                                  | `format:check` → `ts:check` → `lint` → `lint:css` → `test` → `build`                    |
+| `bun system-check`                                  | `format:check` → `typecheck` → `lint:ts` → `lint:css` → `spellcheck` → `test` → `build` |
+
+Multi-step scripts (`build`, `dev`, `system-check`) chain their steps with `bun run --sequential`; there is no `npm-run-all`.
 
 ---
 
@@ -215,7 +220,7 @@ bun dev          # http://localhost:4242
 
 Husky runs on every commit and push:
 
-- **pre-commit** — `format:staged` (lint-staged) → `typecheck` → `test`. lint-staged runs Oxfmt and `oxlint --fix` over staged JS/TS/JSON and `stylelint --fix` over staged CSS, then re-stages what it rewrote, so formatting fixes itself instead of failing the commit. The full-repo `lint:ts` / `lint:css` gate still runs in CI and in `bun system-check`. The commit fails if any step fails.
+- **pre-commit** — `format:staged` (lint-staged) → `typecheck` → `test`. lint-staged runs Oxfmt and `oxlint --fix` over staged JS/TS/JSON and `gale --fix` over staged CSS, then re-stages what it rewrote, so formatting fixes itself instead of failing the commit. The full-repo `lint:ts` / `lint:css` gate still runs in CI and in `bun system-check`. The commit fails if any step fails.
 - **pre-push** — `bun run build`, then prints the last 10 commits as a sanity check. Push fails if the build fails, so deps must be installed (`bun install`) before pushing.
 
 ---
@@ -231,15 +236,16 @@ Husky runs on every commit and push:
 
 ## Toolchain
 
-Lint, format, CSS lint, and type check are all Rust/Go binaries. The whole
-quality gate (`format:check` + `ts:check` + `lint` + `lint:css`) runs in about
-three seconds.
+Lint, format, CSS lint, spellcheck, and type check are all Rust/Go binaries.
+The whole quality gate (`format:check` + `typecheck` + `lint:ts` + `lint:css` +
+`spellcheck`) runs in about three seconds.
 
 | Concern    | Tool                           | Config              |
 | ---------- | ------------------------------ | ------------------- |
 | Lint       | `oxlint` (+ `oxlint-tsgolint`) | `.oxlintrc.json`    |
 | Format     | `oxfmt`                        | `.oxfmtrc.json`     |
-| CSS lint   | `stylelint`                    | `.stylelintrc.json` |
+| CSS lint   | `gale`                         | `.stylelintrc.json` |
+| Spellcheck | `typos`                        | `_typos.toml`       |
 | Type check | `tsgo`                         | `tsconfig*.json`    |
 
 Every tool version is pinned exactly; upgrade deliberately, not automatically.
@@ -250,8 +256,8 @@ Install the [Oxc extension](https://marketplace.visualstudio.com/items?itemName=
 (`oxc.oxc-vscode`) — it provides both Oxlint diagnostics and Oxfmt formatting.
 `.vscode/extensions.json` recommends it and flags the old ESLint/Prettier
 extensions as unwanted, since they would fight the new tools. CSS lint feedback
-comes from the [Stylelint extension](https://marketplace.visualstudio.com/items?itemName=stylelint.vscode-stylelint)
-(`stylelint.vscode-stylelint`) or from `bun lint:css`.
+comes from `bun lint:css`; Gale also ships an LSP server (`gale --lsp`) for
+editor integration.
 
 ### Rules deliberately turned off
 

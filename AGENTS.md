@@ -4,19 +4,19 @@ This file provides guidance to Codex when working with code in this repository. 
 
 ## Commands
 
-Package manager is **bun** (see `packageManager` in `package.json`). Use `bun <script>` rather than `npm`.
+Package manager is **bun** (see `packageManager` in `package.json`). Use `bun <script>` rather than `npm`. Node version is pinned in `.nvmrc` and `engines.node`; both must stay in sync.
 
 - `bun dev` — regenerates the CV PDF (`generate:cv`), then starts the Vite dev server
-- `bun run build` — production build (note: `bun build` invokes Bun's bundler, not Vite; always use `bun run build`). Three steps: `generate:cv` → `build:vite` → `assert:no-react`
+- `bun run build` — production build (note: `bun build` invokes Bun's bundler, not Vite; always use `bun run build`). Three steps via `bun run --sequential`: `generate:cv` → `build:vite` → `assert:no-react`
 - `bun preview` — preview the built output
 - `bun lint:ts` / `bun lint:ts:fix` — Oxlint (`.oxlintrc.json`), including type-aware rules
-- `bun lint:css` / `bun lint:css:fix` — Stylelint over `src/**/*.css` (`.stylelintrc.json`, extends `stylelint-config-standard`)
+- `bun lint:css` / `bun lint:css:fix` — Gale (`@codebend3r/gale`, a Stylelint-compatible Rust linter) over `src/**/*.css`; reads `.stylelintrc.json`, which extends `stylelint-config-standard`
+- `bun spellcheck` / `bun spellcheck:fix` — typos (`@ocular-d/typos-bin`) over the whole repo; it skips binaries and `.gitignore`d paths, and `_typos.toml` holds the exclude list and word allowlist
 - `bun format` / `bun format:check` — Oxfmt write / check (`.oxfmtrc.json`)
-- `bun format:staged` — lint-staged (`.lintstagedrc.json`): Oxfmt + `oxlint --fix` on staged JS/TS/JSON, `stylelint --fix` on staged CSS
+- `bun format:staged` — lint-staged (`.lintstagedrc.json`): Oxfmt + `oxlint --fix` on staged JS/TS/JSON, `gale --fix` on staged CSS
 - `bun typecheck` — `tsgo --noEmit` across all three tsconfig projects (root, `tsconfig.node.json`, `netlify/functions`)
 - `bun test` / `bun test:watch` / `bun test:coverage` — Vitest
-- `bun check` — `typecheck`, `lint:ts`, `lint:css`, `test` in **parallel** (`run-p`)
-- `bun system-check` — `format:check`, then `check`, then `build` (`run-s`)
+- `bun system-check` — `format:check` → `typecheck` → `lint:ts` → `lint:css` → `spellcheck` → `test` → `build`, in sequence via `bun run --sequential`
 
 Script names drift. When this list disagrees with `"scripts"` in `package.json`, `package.json` wins and this list gets fixed in the same change.
 

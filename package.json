@@ -4,19 +4,21 @@
   "private": true,
   "type": "module",
   "engines": {
-    "node": ">=24.18.0"
+    "node": ">=26.9.0"
   },
   "scripts": {
     "assert:no-react": "bun scripts/assert-no-react.mjs",
-    "build": "run-s generate:cv build:vite assert:no-react",
+    "build": "bun run --sequential generate:cv build:vite assert:no-react",
     "build:vite": "vite build",
-    "dev": "run-s generate:cv dev:vite",
+    "dev": "bun run --sequential generate:cv dev:vite",
     "dev:vite": "vite",
     "generate:cv": "bun scripts/generate-cv-pdf.tsx",
     "lint:ts": "oxlint --type-aware",
     "lint:ts:fix": "oxlint --type-aware --fix",
-    "lint:css": "stylelint \"src/**/*.css\"",
-    "lint:css:fix": "stylelint --fix \"src/**/*.css\"",
+    "lint:css": "gale \"src/**/*.css\"",
+    "lint:css:fix": "gale --fix \"src/**/*.css\"",
+    "spellcheck": "typos .",
+    "spellcheck:fix": "typos --write-changes .",
     "format": "oxfmt",
     "format:check": "oxfmt --check",
     "format:staged": "lint-staged",
@@ -26,8 +28,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
-    "check": "run-p --aggregate-output --print-label typecheck lint:ts lint:css test",
-    "system-check": "run-s format:check check build"
+    "system-check": "bun run --sequential format:check typecheck lint:ts lint:css spellcheck test build"
   },
   "dependencies": {
     "@angular/common": "22.1.7",
@@ -54,7 +55,9 @@
     "@analogjs/vitest-angular": "2.7.2",
     "@angular/build": "22.1.8",
     "@angular/compiler-cli": "22.1.7",
+    "@codebend3r/gale": "0.2.4",
     "@netlify/functions": "6.0.0",
+    "@ocular-d/typos-bin": "1.50.2",
     "@testing-library/dom": "10.4.2",
     "@testing-library/jest-dom": "7.0.1",
     "@testing-library/react": "16.3.3",
@@ -69,15 +72,16 @@
     "husky": "9.1.7",
     "jsdom": "30.1.0",
     "lint-staged": "17.5.1",
-    "npm-run-all": "4.1.5",
     "oxfmt": "0.68.0",
     "oxlint": "1.83.0",
     "oxlint-tsgolint": "7.0.2001",
-    "stylelint": "17.15.0",
     "stylelint-config-standard": "40.0.0",
     "typescript": "6.0.3",
     "vite": "8.3.0",
     "vitest": "5.0.1"
   },
-  "packageManager": "bun@1.4.2"
+  "packageManager": "bun@1.4.2",
+  "trustedDependencies": [
+    "@ocular-d/typos-bin"
+  ]
 }

@@ -52,6 +52,9 @@ jobs:
       - name: 🎨 Lint CSS
         run: bun lint:css
 
+      - name: 🔤 Spellcheck
+        run: bun spellcheck
+
       - name: 🧪 Test
         run: bun run test
 

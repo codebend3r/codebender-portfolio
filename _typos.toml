@@ -1,0 +1,10 @@
+# Config for `typos` (`@ocular-d/typos-bin`); run via `bun spellcheck`.
+# `typos` already skips binaries and anything matched by `.gitignore`.
+
+[files]
+# Historical plan/spec records from past work — frozen, not maintained prose.
+extend-exclude = ["docs/superpowers/"]
+
+[default.extend-words]
+# Accepted alternate spelling of "unparsable"; used in test descriptions.
+unparseable = "unparseable"
