@@ -1,10 +1,9 @@
+/* `height: 100%` fills the grid area the page hands it; `min-height: 0` lets
+   the flexing textarea shrink below its intrinsic size instead of overflowing. */
 .editor {
   display: flex;
   flex-direction: column;
   gap: 12px;
-
-  /* Fills the grid area the page hands it; `min-height: 0` lets the flexing
-     textarea shrink below its intrinsic size instead of overflowing. */
   height: 100%;
   min-height: 0;
 }

@@ -38,7 +38,7 @@ each. Run the command; do not reason from memory.
 | Claim class | Verify with |
 |---|---|
 | Script names (`bun <x>`) | `bun run --silent 2>&1 \| head -40`, or read `"scripts"` in `package.json` |
-| Script *composition* (what `system-check` runs) | read the script value; `run-s`/`run-p` chains nest |
+| Script *composition* (what `system-check` runs) | read the script value; `bun run --sequential` chains nest |
 | Path aliases | `grep -A25 'alias' vite.config.ts` **and** `grep -A25 '"paths"' tsconfig.json` |
 | Styling system | `git ls-files \| grep -cE '\.scss$'` vs `git ls-files \| grep -c 'module\.css$'` |
 | Token file location | `ls src/styles/` |
@@ -46,7 +46,7 @@ each. Run the command; do not reason from memory.
 | Asset module declarations | `cat src/vite-env.d.ts` |
 | A file "exists" / "is duplicated" | `ls <path>` or `git ls-files <path>` |
 | Git hook steps | `cat .husky/pre-commit .husky/pre-push` |
-| CI steps | `cat .github/workflows/ci.yml` |
+| CI steps | `cat .github/workflows/*.yml` |
 | Test co-location shape | `git ls-files src \| grep '\.test\.' \| head` |
 | A dependency being "wired in" | `grep '<pkg>' package.json` — a `declare module` shim is **not** an install |
 
@@ -107,5 +107,5 @@ Enumerate only when the list is short, stable, and load-bearing.
 - [ ] Styling-system claims match `git ls-files` counts
 - [ ] Alias claims either match both config files or point at them instead of listing
 - [ ] Ambient-type claims match `src/types/global.d.ts`
-- [ ] Hook/CI step claims match `.husky/*` and `.github/workflows/ci.yml`
+- [ ] Hook/CI step claims match `.husky/*` and `.github/workflows/*.yml`
 - [ ] Any code comment the change proved wrong is fixed in the same commit
