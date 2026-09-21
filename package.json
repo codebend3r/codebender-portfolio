@@ -17,6 +17,7 @@
     "lint:ts:fix": "oxlint --type-aware --fix",
     "lint:css": "gale \"src/**/*.css\"",
     "lint:css:fix": "gale --fix \"src/**/*.css\"",
+    "lint:actions": "github-actionlint",
     "spellcheck": "typos .",
     "spellcheck:fix": "typos --write-changes .",
     "format": "oxfmt",
@@ -28,7 +29,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
-    "system-check": "bun run --sequential format:check typecheck lint:ts lint:css spellcheck test build"
+    "system-check": "bun run --sequential format:check typecheck lint:ts lint:css lint:actions spellcheck test build"
   },
   "dependencies": {
     "@angular/common": "22.1.7",
@@ -69,6 +70,7 @@
     "@vitejs/plugin-react": "6.1.1",
     "@vitest/coverage-v8": "5.0.1",
     "fflate": "0.8.3",
+    "github-actionlint": "1.7.12",
     "husky": "9.1.7",
     "jsdom": "30.1.0",
     "lint-staged": "17.5.1",

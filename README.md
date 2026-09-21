@@ -198,19 +198,20 @@ bun dev          # http://localhost:4242
 
 ## Scripts
 
-| Script                                              | What it does                                                                            |
-| --------------------------------------------------- | --------------------------------------------------------------------------------------- |
-| `bun dev`                                           | Vite dev server on port `4242`                                                          |
-| `bun run build`                                     | Production build (note: `bun build` invokes Bun's bundler — always use `bun run build`) |
-| `bun preview`                                       | Preview the built output                                                                |
-| `bun lint:ts` / `bun lint:ts:fix`                   | Oxlint, including type-aware rules                                                      |
-| `bun lint:css` / `bun lint:css:fix`                 | Gale (Stylelint-compatible) over `src/**/*.css`                                         |
-| `bun spellcheck` / `bun spellcheck:fix`             | typos over the whole repo; scope and allowlist in `_typos.toml`                         |
-| `bun format:staged`                                 | lint-staged: Oxfmt + `oxlint --fix` + `gale --fix` over staged files only               |
-| `bun format` / `bun format:check`                   | Oxfmt write / check                                                                     |
-| `bun typecheck`                                     | tsgo type check (no emit), all three tsconfig projects                                  |
-| `bun test` / `bun test:watch` / `bun test:coverage` | Vitest                                                                                  |
-| `bun system-check`                                  | `format:check` → `typecheck` → `lint:ts` → `lint:css` → `spellcheck` → `test` → `build` |
+| Script                                              | What it does                                                                                             |
+| --------------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| `bun dev`                                           | Vite dev server on port `4242`                                                                           |
+| `bun run build`                                     | Production build (note: `bun build` invokes Bun's bundler — always use `bun run build`)                  |
+| `bun preview`                                       | Preview the built output                                                                                 |
+| `bun lint:ts` / `bun lint:ts:fix`                   | Oxlint, including type-aware rules                                                                       |
+| `bun lint:css` / `bun lint:css:fix`                 | Gale (Stylelint-compatible) over `src/**/*.css`                                                          |
+| `bun lint:actions`                                  | actionlint over `.github/workflows`                                                                      |
+| `bun spellcheck` / `bun spellcheck:fix`             | typos over the whole repo; scope and allowlist in `_typos.toml`                                          |
+| `bun format:staged`                                 | lint-staged: Oxfmt + `oxlint --fix` + `gale --fix` over staged files only                                |
+| `bun format` / `bun format:check`                   | Oxfmt write / check                                                                                      |
+| `bun typecheck`                                     | tsgo type check (no emit), all three tsconfig projects                                                   |
+| `bun test` / `bun test:watch` / `bun test:coverage` | Vitest                                                                                                   |
+| `bun system-check`                                  | `format:check` → `typecheck` → `lint:ts` → `lint:css` → `lint:actions` → `spellcheck` → `test` → `build` |
 
 Multi-step scripts (`build`, `dev`, `system-check`) chain their steps with `bun run --sequential`; there is no `npm-run-all`.
 
@@ -238,13 +239,14 @@ Husky runs on every commit and push:
 
 Lint, format, CSS lint, spellcheck, and type check are all Rust/Go binaries.
 The whole quality gate (`format:check` + `typecheck` + `lint:ts` + `lint:css` +
-`spellcheck`) runs in about three seconds.
+`lint:actions` + `spellcheck`) runs in about three seconds.
 
 | Concern    | Tool                           | Config              |
 | ---------- | ------------------------------ | ------------------- |
 | Lint       | `oxlint` (+ `oxlint-tsgolint`) | `.oxlintrc.json`    |
 | Format     | `oxfmt`                        | `.oxfmtrc.json`     |
 | CSS lint   | `gale`                         | `.stylelintrc.json` |
+| Workflows  | `actionlint`                   | defaults            |
 | Spellcheck | `typos`                        | `_typos.toml`       |
 | Type check | `tsgo`                         | `tsconfig*.json`    |
 

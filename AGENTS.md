@@ -11,12 +11,13 @@ Package manager is **bun** (see `packageManager` in `package.json`). Use `bun <s
 - `bun preview` — preview the built output
 - `bun lint:ts` / `bun lint:ts:fix` — Oxlint (`.oxlintrc.json`), including type-aware rules
 - `bun lint:css` / `bun lint:css:fix` — Gale (`@codebend3r/gale`, a Stylelint-compatible Rust linter) over `src/**/*.css`; reads `.stylelintrc.json`, which extends `stylelint-config-standard`
+- `bun lint:actions` — actionlint (`github-actionlint`, the official `rhysd/actionlint` binary) over `.github/workflows`; no config file, defaults only
 - `bun spellcheck` / `bun spellcheck:fix` — typos (`@ocular-d/typos-bin`) over the whole repo; it skips binaries and `.gitignore`d paths, and `_typos.toml` holds the exclude list and word allowlist
 - `bun format` / `bun format:check` — Oxfmt write / check (`.oxfmtrc.json`)
 - `bun format:staged` — lint-staged (`.lintstagedrc.json`): Oxfmt + `oxlint --fix` on staged JS/TS/JSON, `gale --fix` on staged CSS
 - `bun typecheck` — `tsgo --noEmit` across all three tsconfig projects (root, `tsconfig.node.json`, `netlify/functions`)
 - `bun test` / `bun test:watch` / `bun test:coverage` — Vitest
-- `bun system-check` — `format:check` → `typecheck` → `lint:ts` → `lint:css` → `spellcheck` → `test` → `build`, in sequence via `bun run --sequential`
+- `bun system-check` — `format:check` → `typecheck` → `lint:ts` → `lint:css` → `lint:actions` → `spellcheck` → `test` → `build`, in sequence via `bun run --sequential`
 
 Script names drift. When this list disagrees with `"scripts"` in `package.json`, `package.json` wins and this list gets fixed in the same change.
 
