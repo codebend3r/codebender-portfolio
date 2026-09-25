@@ -1,0 +1,178 @@
+/* Amber overrides on top of the shared Section panel: the one deliberately
+   loud element on the page, so the side-project practice reads as its own
+   thing next to employment. */
+.cbSection {
+  background: linear-gradient(var(--cb-bg), var(--cb-bg)), var(--panel-overlay);
+  border-color: var(--cb-edge);
+  gap: 26px;
+}
+
+.cbChip {
+  color: var(--cb-ink);
+  border-color: var(--cb-edge);
+  background: var(--cb-bg);
+}
+
+.cbChipDot {
+  background: var(--cb);
+  box-shadow: 0 0 8px var(--cb);
+}
+
+.intro {
+  display: grid;
+  gap: 8px;
+}
+
+.title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(40px, 5vw, 60px);
+  line-height: 1;
+}
+
+.tagline {
+  margin: 0;
+  max-width: 66ch;
+  font-size: 16.5px;
+  color: var(--text-secondary);
+  text-wrap: pretty;
+}
+
+/* Pillars: a 1px-gap grid where the gap color is the amber edge, so the
+   cells read as one ruled slab instead of four floating cards. */
+.pillars {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1px;
+  background: var(--cb-edge);
+  border: 1px solid var(--cb-edge);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.pillar {
+  background: var(--panel);
+  padding: 18px 20px;
+  display: grid;
+  gap: 6px;
+  align-content: start;
+}
+
+.pillarNum {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--cb-ink);
+}
+
+.pillarTitle {
+  font-size: 15.5px;
+  font-weight: 600;
+}
+
+.pillarBody {
+  font-size: 14px;
+  color: var(--muted);
+  text-wrap: pretty;
+}
+
+.projects {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 400px), 1fr));
+  gap: 24px;
+}
+
+.project {
+  display: grid;
+  gap: 12px;
+  align-content: start;
+}
+
+.shot {
+  display: block;
+  aspect-ratio: 16 / 10;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid var(--cb-edge);
+  transition: border-color 0.3s ease;
+}
+
+.shot:hover,
+.shot:focus-visible {
+  border-color: var(--cb);
+  outline: none;
+}
+
+.shot img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+  display: block;
+}
+
+.projectHead {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: baseline;
+  flex-wrap: wrap;
+}
+
+.projectName {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 28px;
+  line-height: 1.1;
+}
+
+.projectLinks {
+  display: flex;
+  gap: 14px;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.projectLinks a {
+  color: var(--cb-ink);
+}
+
+.projectDescription {
+  margin: 0;
+  font-size: 15px;
+  color: var(--text-secondary);
+  text-wrap: pretty;
+}
+
+.projectTags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.projectTag {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  color: var(--cb-ink);
+  background: var(--cb-bg);
+  border: 1px solid var(--cb-edge);
+  padding: 2px 8px;
+  border-radius: 5px;
+}
+
+@media (width <= 700px) {
+  .cbSection {
+    gap: 18px;
+  }
+
+  .title {
+    font-size: clamp(32px, 9vw, 40px);
+  }
+}

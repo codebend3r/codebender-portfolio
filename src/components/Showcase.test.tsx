@@ -5,6 +5,11 @@ import { Showcase } from "@components/Showcase"
 
 import resume from "@data/resume.json"
 
+// The public showcase renders client engagements only; side projects
+// (entries with a repo) belong to the Codebender section.
+const clientWork = resume.showcase.filter((item) => !item.repo)
+const sideProjects = resume.showcase.filter((item) => !!item.repo)
+
 describe("Showcase", () => {
   it("renders inside a Selected Work section", () => {
     render(<Showcase />)
@@ -13,62 +18,51 @@ describe("Showcase", () => {
     ).toBeInTheDocument()
   })
 
-  it("renders one linked card per showcase item", () => {
+  it("renders one linked card per client engagement", () => {
     render(<Showcase />)
-    const links = screen.getAllByRole("link")
-    resume.showcase.forEach((item) => {
-      const card = links.find((link) => link.getAttribute("href") === item.url)
-      expect(card).toBeDefined()
+    expect(clientWork.length).toBeGreaterThan(0)
+    clientWork.forEach((item) => {
+      const card = screen.getByRole("link", {
+        name: `${item.name} — live site`,
+      })
+      expect(card).toHaveAttribute("href", item.url)
       expect(card).toHaveAttribute("target", "_blank")
       expect(card).toHaveAttribute("rel", expect.stringContaining("noopener"))
     })
   })
 
-  it("renders a hover overlay on every card", () => {
+  it("does not render side projects", () => {
     render(<Showcase />)
-    expect(screen.getAllByText("View site")).toHaveLength(
-      resume.showcase.length
-    )
-  })
-
-  it("renders a GitHub overlay link for side projects only", () => {
-    render(<Showcase />)
-    const showcase: Showcase[] = resume.showcase
-    const withRepo = showcase.filter((item) => !!item.repo)
-    expect(withRepo.length).toBeGreaterThan(0)
-    expect(screen.getAllByText("View code")).toHaveLength(withRepo.length)
-    withRepo.forEach((item) => {
-      const link = screen.getByRole("link", {
-        name: `${item.name} source code on GitHub`,
-      })
-      expect(link).toHaveAttribute("href", item.repo ?? "")
-      expect(link).toHaveAttribute("target", "_blank")
-      expect(link).toHaveAttribute("rel", expect.stringContaining("noopener"))
+    expect(sideProjects.length).toBeGreaterThan(0)
+    sideProjects.forEach((item) => {
+      expect(
+        screen.queryByRole("heading", { level: 3, name: item.name })
+      ).not.toBeInTheDocument()
     })
   })
 
-  it("renders period, domain, description, and tags for the first card", () => {
+  it("renders name, period, role, and description for the first card", () => {
     render(<Showcase />)
-    const first = resume.showcase[0]
-    const card = screen.getByRole("link", { name: new RegExp(first.name) })
-    expect(within(card).getByText(first.period)).toBeInTheDocument()
-    expect(within(card).getByText(first.domain)).toBeInTheDocument()
-    expect(within(card).getByText(first.description)).toBeInTheDocument()
-    for (const tag of first.tags) {
-      expect(within(card).getByText(tag)).toBeInTheDocument()
-    }
+    const first = clientWork[0]
+    const heading = screen.getByRole("heading", { level: 3, name: first.name })
+    const card = heading.closest("li")
+    expect(card).not.toBeNull()
+    expect(within(card!).getByText(first.period)).toBeInTheDocument()
+    expect(within(card!).getByText(first.role)).toBeInTheDocument()
+    expect(within(card!).getByText(first.description)).toBeInTheDocument()
   })
 
   it("gives each screenshot a non-empty alt", () => {
     render(<Showcase />)
-    const first = resume.showcase[0]
-    expect(
-      screen.getByRole("img", { name: `${first.name} website` })
-    ).toBeInTheDocument()
+    clientWork.forEach((item) => {
+      expect(
+        screen.getByRole("img", { name: `${item.name} screenshot` })
+      ).toBeInTheDocument()
+    })
   })
 
   it("renders a numbered eyebrow chip when index and eyebrow are passed", () => {
-    render(<Showcase index={3} eyebrow="Selected Work" />)
-    expect(screen.getByText("03 · Selected Work")).toBeInTheDocument()
+    render(<Showcase index={4} eyebrow="Selected Client Work" />)
+    expect(screen.getByText("04 · Selected Client Work")).toBeInTheDocument()
   })
 })

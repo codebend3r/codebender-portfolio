@@ -6,9 +6,9 @@ import { SectionNav } from "@components/SectionNav"
 const SECTIONS = [
   { id: "summary", label: "Summary" },
   { id: "technical-skills", label: "Stack" },
-  { id: "soft-skills", label: "Soft Skills" },
   { id: "work-experience", label: "Experience" },
-  { id: "selected-work", label: "Selected Work" },
+  { id: "codebender", label: "Codebender Inc." },
+  { id: "selected-work", label: "Client Work" },
   { id: "awards", label: "Recognition" },
   { id: "languages", label: "Languages" },
   { id: "education", label: "Education" },

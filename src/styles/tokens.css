@@ -1,35 +1,82 @@
-:root {
-  --bg: #0b0e14;
+/* Theme tokens. `data-theme` on <html> (set by applySky in src/sky.ts)
+   selects the set; the dark block doubles as the no-JS default. The sky
+   backdrop vars (--bg, --glow1, --glow2) are repainted per sky phase by
+   applySky, so their values here are only the first-paint fallback. */
+:root,
+:root[data-theme="dark"] {
+  --bg: #070b1a;
+  --glow1: none;
+  --glow2: none;
+  --bar: rgb(9 12 24 / 80%);
   --panel: #111622;
-  --text: #e6ebf5;
-  --muted: #9aa4b2;
-  --accent: #7aa2f7;
+  --panel-overlay: linear-gradient(rgb(14 19 34 / 74%), rgb(14 19 34 / 74%));
+  --panel-edge: rgb(143 176 255 / 16%);
+  --border: rgb(143 176 255 / 12%);
+  --text: #e8ecf5;
+  --text-secondary: #c3cbda;
+  --muted: #97a2b6;
+  --accent: #8fb0ff;
   --accent2: #c678dd;
-  --border: #1b2233;
+  --accent-ink: #0a0f1e;
+  --chip: rgb(143 176 255 / 8%);
+  --chip-edge: rgb(143 176 255 / 20%);
+  --shadow: 0 10px 30px rgb(0 0 0 / 40%);
 
   /* Dark-theme variants of `tokens.colors.employment` (print hexes live in
      src/theme/tokens.ts); same hue semantics, brightened for this bg. */
   --employment-full-time: #7dcfff;
-  --employment-part-time: #bb9af7;
+  --employment-part-time: #c3a4ff;
   --employment-contract: #e0af68;
   --employment-permanent: #9ece6a;
-  --panel-overlay: linear-gradient(
-    180deg,
-    rgb(17 22 34 / 78%),
-    rgb(11 14 20 / 82%)
-  );
-  --panel-edge: rgb(122 162 247 / 22%);
+
+  /* Codebender Inc. identity: the amber side-project track. */
+  --cb: #e8b86b;
+  --cb-ink: #f3cf94;
+  --cb-bg: rgb(232 184 107 / 9%);
+  --cb-edge: rgb(232 184 107 / 30%);
+
+  /* Layout + typography, theme-independent. */
   --cloud-drift: 0vw;
-  --glow1: none;
-  --glow2: none;
-  --font-display:
-    "Space Grotesk", system-ui, -apple-system, "Segoe UI", Roboto, Arial,
-    sans-serif;
+  --font-display: "Instrument Serif", Georgia, "Times New Roman", serif;
   --font-mono:
-    "Space Mono", ui-monospace, SFMono-Regular, Menlo, Consolas,
+    "Geist Mono", ui-monospace, SFMono-Regular, Menlo, Consolas,
     "Liberation Mono", monospace;
   --font-body:
-    "Space Grotesk", system-ui, -apple-system, "Segoe UI", Roboto, Arial,
-    "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji", sans-serif;
+    Geist, system-ui, -apple-system, "Segoe UI", Roboto, Arial, "Noto Sans",
+    "Apple Color Emoji", "Segoe UI Emoji", sans-serif;
   --font-role: "Instrument Serif", Georgia, "Times New Roman", serif;
+}
+
+:root[data-theme="light"] {
+  --bg: #7fb3ea;
+  --bar: rgb(246 249 253 / 82%);
+  --panel: #f6f9fd;
+  --panel-overlay: linear-gradient(
+    rgb(255 255 255 / 80%),
+    rgb(255 255 255 / 80%)
+  );
+  --panel-edge: rgb(255 255 255 / 90%);
+  --border: rgb(20 32 58 / 10%);
+  --text: #14203a;
+  --text-secondary: #2e3b56;
+  --muted: #55627c;
+  --accent: #2f5fd0;
+  --accent2: #8b3fb8;
+  --accent-ink: #fff;
+  --chip: rgb(47 95 208 / 6%);
+  --chip-edge: rgb(47 95 208 / 18%);
+  --shadow: 0 10px 30px rgb(30 60 110 / 14%);
+
+  /* Light theme reuses the print employment palette (src/theme/tokens.ts):
+     those hexes were tuned for pale backgrounds. Change both together. */
+  --employment-full-time: #2f6da0;
+  --employment-part-time: #6b45c9;
+  --employment-contract: #a8681f;
+  --employment-permanent: #3d7a4f;
+
+  /* Codebender Inc. identity, darkened for pale panels. */
+  --cb: #d9922e;
+  --cb-ink: #8a4f00;
+  --cb-bg: rgb(217 146 46 / 10%);
+  --cb-edge: rgb(217 146 46 / 35%);
 }

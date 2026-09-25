@@ -48,9 +48,17 @@ A live indicator shows the current local date, time, weather emoji, and temperat
 
 A floating nav tracks scroll position via `IntersectionObserver` and highlights the section currently in view, with numbered chips mirroring the sections mounted in `App.tsx`. Clicking a link smooth-scrolls to the section (instant if `prefers-reduced-motion` is set).
 
-### Selected Work showcase
+### Light / Dark / Auto theme
 
-A grid of project cards (browser-chrome framing, screenshot, domain badge, role, period, description, tag pills) linking out to live projects — sourced from the `showcase` array in `resume.json`.
+A segmented control in the header switches between light, dark, and auto themes. Auto follows the sky: light during day and dawn, dark at dusk and night. The choice persists to `localStorage`, `?theme=light|dark|auto` overrides it for stable screenshots, and every color token in `src/styles/tokens.css` is defined per theme under `data-theme` on `<html>`.
+
+### Career map
+
+A three-lane Gantt chart at the top of Work Experience plots every stint as a bar on a shared year axis — full-time and part-time employment above the always-running Codebender Inc. side-project track. Bars, ranges, and ticks are computed from the `period` strings in `resume.json` (`src/utils/careerMap.ts`).
+
+### Codebender Inc. + Selected Client Work
+
+The showcase splits by one rule — entries with a `repo` are side projects, entries without are client engagements. Side projects render in an amber-tinted Codebender Inc. section (practice intro, four "how it works" pillars, project cards with Live/Code links); client work renders as a grid of flat image-led cards (screenshot, role, period, description). Both source from the `showcase` array in `resume.json`.
 
 ### One-click PDF export
 
@@ -121,6 +129,9 @@ src/
 │   ├── AppHeader.tsx        ← Sticky-on-scroll wrapper; mounts <Header /> + <WeatherClock /> + Download CV button
 │   ├── Header.tsx           ← Identity + contact line (email, phone, location, GitHub, LinkedIn)
 │   ├── SectionNav.tsx       ← Floating nav; highlights active section via IntersectionObserver
+│   ├── CareerMap.tsx        ← Three-lane Gantt of the career computed from `period` strings
+│   ├── Codebender.tsx       ← Amber side-project section: pillars + project cards (repo-carrying showcase entries)
+│   ├── ThemeToggle.tsx      ← Light/Dark/Auto segmented control persisted via `useTheme`
 │   ├── Sky.tsx              ← Time-of-day clouds, sun, moon (PNG sprite); swaps to <Starfield /> at night
 │   ├── Starfield.tsx        ← Parallax 3-layer night sky (160 + 80 + 30 stars)
 │   ├── Weather.tsx          ← Rain (140 drops) / snow (90 flakes) overlay; pure CSS animation
@@ -154,7 +165,7 @@ src/
 │   ├── tokens.css           ← :root CSS custom properties (--bg, --accent, --cloud-drift, …)
 │   ├── keyframes.css         ← cloudDrift, rainFall, snowFall, glowPulse
 │   └── global.css            ← resets + @media print rules
-├── sky.ts                    ← getCurrentSky(), applySky(), URL override parsing
+├── sky.ts                    ← getCurrentSky(), applySky() (theme-aware palettes), URL override parsing
 ├── weather.ts                ← Open-Meteo fetcher, WMO code mapping, URL override parsing
 ├── utils/
 │   ├── dom-utils.ts           ← DOM helpers

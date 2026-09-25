@@ -21,6 +21,11 @@ type Experience = {
   // Ongoing work held alongside the main career (a practice, side
   // projects); rendered apart from the chronological timeline.
   side_project?: boolean
+  // Compact company label for the career-map bar; omitted for stints too
+  // short to carry a readable label.
+  short?: string
+  // Screen-only technology chips shown under the role's achievements.
+  tags?: string[]
   achievements: string[]
 }
 

@@ -1,0 +1,122 @@
+.map {
+  margin: 0;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px 20px 14px;
+  display: grid;
+  gap: 14px;
+}
+
+.head {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.title {
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.legend {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.key {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.swatch {
+  width: 12px;
+  height: 8px;
+  border-radius: 2px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 110px minmax(0, 1fr);
+  gap: 10px 14px;
+  align-items: center;
+  font-size: 12px;
+}
+
+.laneLabel {
+  color: var(--muted);
+}
+
+.sideLaneLabel {
+  color: var(--cb-ink);
+  font-weight: 500;
+}
+
+.lane {
+  position: relative;
+  height: 28px;
+}
+
+.bar {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  border-radius: 3px;
+  box-shadow: 0 0 0 1px var(--panel);
+  overflow: hidden;
+  color: var(--accent-ink);
+  font-weight: 500;
+  font-size: 11px;
+  line-height: 28px;
+  padding-left: 5px;
+  white-space: nowrap;
+}
+
+.fullTime {
+  background: var(--accent);
+}
+
+.partTime {
+  background: var(--employment-part-time);
+}
+
+.side {
+  background: var(--cb);
+  color: #1a1204;
+  padding-left: 8px;
+}
+
+.ticks {
+  position: relative;
+  height: 18px;
+  border-top: 1px solid var(--border);
+}
+
+.tick {
+  position: absolute;
+  top: 4px;
+  transform: translateX(-50%);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--muted);
+}
+
+@media (width <= 700px) {
+  .map {
+    padding: 14px 14px 10px;
+  }
+
+  .grid {
+    grid-template-columns: 72px minmax(0, 1fr);
+    gap: 8px 10px;
+    font-size: 11px;
+  }
+
+  .bar {
+    font-size: 0;
+  }
+}

@@ -1,5 +1,6 @@
 import styles from "@components/AppHeader.module.css"
 import { Header } from "@components/Header"
+import { ThemeToggle } from "@components/ThemeToggle"
 import { WeatherClock } from "@components/WeatherClock"
 
 import { type DocumentFormat } from "@utils/documentFileName"
@@ -14,8 +15,8 @@ function DownloadIcon() {
     <svg
       className={styles.downloadIcon}
       viewBox="0 0 24 24"
-      width="18"
-      height="18"
+      width="16"
+      height="16"
       fill="none"
       stroke="currentColor"
       strokeWidth="2"
@@ -30,39 +31,38 @@ function DownloadIcon() {
   )
 }
 
+const FORMAT_LABEL: Record<DocumentFormat, string> = {
+  pdf: "PDF CV",
+  docx: "Word CV",
+}
+
 export function AppHeader({ onDownload, generatingFormat }: Props) {
   const isGenerating = generatingFormat !== null
 
   return (
-    <>
-      <header className={styles.bar}>
-        <div className={styles.inner}>
-          <div className={styles.utility}>
-            <WeatherClock />
+    <header className={styles.bar}>
+      <div className={styles.inner}>
+        <div className={styles.utility}>
+          <WeatherClock />
+          <div className={styles.actions}>
+            <ThemeToggle />
+            {(["pdf", "docx"] satisfies DocumentFormat[]).map((format) => (
+              <button
+                key={format}
+                className={styles.downloadButton}
+                onClick={() => onDownload(format)}
+                disabled={isGenerating}
+                aria-busy={generatingFormat === format}
+                aria-label={`Download ${FORMAT_LABEL[format]}`}
+              >
+                <DownloadIcon />
+                {FORMAT_LABEL[format]}
+              </button>
+            ))}
           </div>
-          <Header />
         </div>
-      </header>
-      <div className={styles.downloadGroup}>
-        <button
-          className={styles.downloadButton}
-          onClick={() => onDownload("pdf")}
-          disabled={isGenerating}
-          aria-busy={generatingFormat === "pdf"}
-        >
-          <DownloadIcon />
-          {generatingFormat === "pdf" ? "Generating…" : "Download PDF CV"}
-        </button>
-        <button
-          className={styles.downloadButton}
-          onClick={() => onDownload("docx")}
-          disabled={isGenerating}
-          aria-busy={generatingFormat === "docx"}
-        >
-          <DownloadIcon />
-          {generatingFormat === "docx" ? "Generating…" : "Download Word CV"}
-        </button>
+        <Header />
       </div>
-    </>
+    </header>
   )
 }

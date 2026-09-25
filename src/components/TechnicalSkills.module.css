@@ -9,29 +9,24 @@
 
 .pill {
   position: relative;
-  background: linear-gradient(90deg, #1e3a7a, #5a2086);
-  border: 1px solid var(--border);
-  padding: 8px 12px;
+  background: var(--chip);
+  border: 1px solid var(--chip-edge);
+  padding: 6px 12px;
   border-radius: 999px;
-  font-family: var(--font-mono);
-  font-weight: 600;
+  font-weight: 500;
   font-size: 14px;
-  color: var(--text);
+  color: var(--text-secondary);
   cursor: default;
   transition:
     transform 220ms cubic-bezier(0.34, 1.56, 0.64, 1),
-    box-shadow 220ms ease,
-    border-color 220ms ease,
-    background 220ms ease;
+    color 220ms ease,
+    border-color 220ms ease;
 }
 
 .pill:hover {
-  transform: translateY(-3px) scale(1.06);
+  transform: translateY(-2px);
   border-color: var(--accent);
-  background: linear-gradient(90deg, #28489a, #6e2aa6);
-  box-shadow:
-    0 6px 18px rgb(198 120 221 / 35%),
-    0 0 0 1px var(--accent);
+  color: var(--text);
 }
 
 .pill:hover > [data-skill-tooltip] {
@@ -114,9 +109,8 @@
    the text being edited. Overrides the base :hover rules by specificity. */
 :global(.resume-editing) .pill:hover {
   transform: none;
-  border-color: var(--border);
-  background: linear-gradient(90deg, #1e3a7a, #5a2086);
-  box-shadow: none;
+  border-color: var(--chip-edge);
+  color: var(--text-secondary);
 }
 
 :global(.resume-editing) .pill:hover > [data-skill-tooltip] {

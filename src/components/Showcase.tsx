@@ -8,6 +8,8 @@ import sortStyles from "@edit/SortableList.module.css"
 
 import { useStore } from "@state/useStore"
 
+import { isSideProjectShowcase } from "@utils/showcase"
+
 export function Showcase({
   index,
   eyebrow,
@@ -24,6 +26,13 @@ export function Showcase({
     markDirty()
   }
 
+  // The public page shows client engagements only — side projects live in
+  // the Codebender section. The editor keeps every entry editable, and `i`
+  // stays the store index so edit paths keep lining up.
+  const rows = showcase
+    .map((item, i) => ({ item, i }))
+    .filter(({ item }) => editing || !isSideProjectShowcase(item))
+
   return (
     <Section title="Selected Work" index={index} eyebrow={eyebrow}>
       <SortableList
@@ -31,7 +40,7 @@ export function Showcase({
         onReorder={(from, to) => store.reorder(["showcase"], from, to)}
       >
         <ul className={styles.grid}>
-          {showcase.map((item, i) =>
+          {rows.map(({ item, i }) =>
             editing ? (
               <SortableItem key={i} index={i} label={`showcase ${i + 1}`}>
                 {(handle) => (
@@ -155,71 +164,28 @@ export function Showcase({
                 )}
               </SortableItem>
             ) : (
-              <li key={item.url} className={styles.cardWrap}>
+              <li key={item.url} className={styles.clientCard}>
                 <a
-                  className={styles.card}
+                  className={styles.clientShot}
                   href={item.url}
                   target="_blank"
                   rel="noopener noreferrer"
+                  aria-label={`${item.name} — live site`}
                 >
-                  <span className={styles.frame} aria-hidden>
-                    <span className={styles.dots}>
-                      <span className={styles.dot} />
-                      <span className={styles.dot} />
-                      <span className={styles.dot} />
-                    </span>
-                    <span className={styles.domain}>{item.domain}</span>
-                  </span>
-                  <span className={styles.shot}>
-                    <img
-                      src={item.image}
-                      alt={`${item.name} website`}
-                      loading="lazy"
-                    />
-                  </span>
-                  <span className={styles.body}>
-                    <span className={styles.titleRow}>
-                      <h3 className={styles.name}>{item.name}</h3>
-                      <span className={styles.period}>{item.period}</span>
-                    </span>
-                    <span className={styles.role}>{item.role}</span>
-                    <span className={styles.description}>
-                      {item.description}
-                    </span>
-                    <span className={styles.tags}>
-                      {item.tags.map((tag) => (
-                        <span key={tag} className={styles.tag}>
-                          {tag}
-                        </span>
-                      ))}
-                    </span>
-                  </span>
-                </a>
-                <span className={styles.overlay} aria-hidden>
-                  <span
-                    className={`${styles.overlayHalf} ${styles.siteHalf} ${
-                      item.repo ? styles.siteHalfSplit : ""
-                    }`}
-                  >
-                    View site
-                  </span>
-                  {!!item.repo && (
-                    <span
-                      className={`${styles.overlayHalf} ${styles.repoHalf}`}
-                    >
-                      View code
-                    </span>
-                  )}
-                </span>
-                {!!item.repo && (
-                  <a
-                    className={styles.repoHit}
-                    href={item.repo}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={`${item.name} source code on GitHub`}
+                  <img
+                    src={item.image}
+                    alt={`${item.name} screenshot`}
+                    loading="lazy"
                   />
-                )}
+                </a>
+                <span className={styles.clientHead}>
+                  <h3 className={styles.clientName}>{item.name}</h3>
+                  <span className={styles.clientPeriod}>{item.period}</span>
+                </span>
+                <span className={styles.clientRole}>{item.role}</span>
+                <span className={styles.clientDescription}>
+                  {item.description}
+                </span>
               </li>
             )
           )}

@@ -44,7 +44,7 @@
     transform 0.22s ease;
   padding: 2px 7px;
   border-radius: 999px;
-  background: rgb(11 14 20 / 70%);
+  background: var(--bar);
   border: 1px solid transparent;
 }
 

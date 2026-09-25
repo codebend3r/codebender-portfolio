@@ -17,9 +17,17 @@ describe("WorkExperience", () => {
     ).toBeInTheDocument()
   })
 
-  it("renders one entry per work_experience item", () => {
+  const mainJobs = resume.work_experience.filter((job) => !job.side_project)
+
+  it("renders one entry per employment item, hiding side projects", () => {
     render(<WorkExperience />)
-    for (const job of resume.work_experience) {
+    expect(
+      screen.queryByRole("heading", {
+        level: 3,
+        name: "Founder + Principal Engineer",
+      })
+    ).not.toBeInTheDocument()
+    for (const job of mainJobs) {
       const role = screen.getAllByRole("heading", { level: 3, name: job.role })
       expect(role.length).toBeGreaterThanOrEqual(1)
       expect(screen.getAllByText(job.company).length).toBeGreaterThanOrEqual(1)
@@ -29,7 +37,7 @@ describe("WorkExperience", () => {
 
   it("renders all achievements for the first role", () => {
     render(<WorkExperience />)
-    const first = resume.work_experience[0]
+    const first = mainJobs[0]
     const headings = screen.getAllByRole("heading", {
       level: 3,
       name: first.role,
@@ -64,18 +72,43 @@ describe("WorkExperience", () => {
 
   it("colours each employment value with its CSS variable", () => {
     render(<WorkExperience />)
+    // The career map reuses these words as lane/legend labels, so look at
+    // styled occurrences only.
+    const styled = (name: string) =>
+      screen
+        .getAllByText(name)
+        .map((el) => el.getAttribute("style") ?? "")
+        .filter((style) => style.includes("--employment-"))
+    expect(styled("Full-time")[0]).toContain("--employment-full-time")
+    expect(styled("Part-time")[0]).toContain("--employment-part-time")
+    expect(styled("Contract")[0]).toContain("--employment-contract")
+    expect(styled("Permanent")[0]).toContain("--employment-permanent")
+  })
+
+  it("renders the career map with one bar per dated entry", () => {
+    render(<WorkExperience />)
+    expect(screen.getByText("Career map")).toBeInTheDocument()
     expect(
-      screen.getAllByText("Full-time")[0].getAttribute("style") ?? ""
-    ).toContain("--employment-full-time")
-    expect(
-      screen.getAllByText("Part-time")[0].getAttribute("style") ?? ""
-    ).toContain("--employment-part-time")
-    expect(
-      screen.getAllByText("Contract")[0].getAttribute("style") ?? ""
-    ).toContain("--employment-contract")
-    expect(
-      screen.getAllByText("Permanent")[0].getAttribute("style") ?? ""
-    ).toContain("--employment-permanent")
+      screen.getByTitle("Codebender Inc. · 01/2011 - Present")
+    ).toBeInTheDocument()
+    for (const job of mainJobs) {
+      expect(
+        screen.getByTitle(`${job.company} · ${job.period}`)
+      ).toBeInTheDocument()
+    }
+  })
+
+  it("renders technology tags for roles that declare them", () => {
+    render(<WorkExperience />)
+    const headings = screen.getAllByRole("heading", {
+      level: 3,
+      name: mainJobs[0].role,
+    })
+    const card = headings[0].closest("li")
+    expect(card).not.toBeNull()
+    for (const tag of mainJobs[0].tags ?? []) {
+      expect(within(card!).getByText(tag)).toBeInTheDocument()
+    }
   })
 
   it("shows a human-readable duration next to each period", () => {

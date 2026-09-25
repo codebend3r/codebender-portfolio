@@ -1,0 +1,41 @@
+.group {
+  display: flex;
+  gap: 2px;
+  padding: 3px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--chip);
+}
+
+.option {
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 500;
+  border: 0;
+  cursor: pointer;
+  padding: 5px 12px;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--muted);
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.option:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+  border: 0;
+}
+
+.active {
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+
+@media (width <= 700px) {
+  .option {
+    padding: 4px 10px;
+    font-size: 11px;
+  }
+}
