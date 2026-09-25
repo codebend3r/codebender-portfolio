@@ -98,7 +98,6 @@ Then look at the actual artifacts — the tests prove a key is *referenced*, not
 *renders legibly*:
 
 ```bash
-bun run generate:cv    # writes the CV PDF; open it
 bun dev                # screen; add ?sky=day for a stable background
 ```
 

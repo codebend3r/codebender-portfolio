@@ -6,8 +6,8 @@ This file provides guidance to Codex when working with code in this repository. 
 
 Package manager is **bun** (see `packageManager` in `package.json`). Use `bun <script>` rather than `npm`. Node version is pinned in `.nvmrc` and `engines.node`; both must stay in sync.
 
-- `bun dev` — regenerates the CV PDF (`generate:cv`), then starts the Vite dev server
-- `bun run build` — production build (note: `bun build` invokes Bun's bundler, not Vite; always use `bun run build`). Three steps via `bun run --sequential`: `generate:cv` → `build:vite` → `assert:no-react`
+- `bun dev` — starts the Vite dev server
+- `bun run build` — production build (note: `bun build` invokes Bun's bundler, not Vite; always use `bun run build`). Two steps via `bun run --sequential`: `build:vite` → `assert:no-react`
 - `bun preview` — preview the built output
 - `bun lint:ts` / `bun lint:ts:fix` — Oxlint (`.oxlintrc.json`), including type-aware rules
 - `bun lint:css` / `bun lint:css:fix` — Gale (`@codebend3r/gale`, a Stylelint-compatible Rust linter) over `src/**/*.css`; reads `.stylelintrc.json`, which extends `stylelint-config-standard`

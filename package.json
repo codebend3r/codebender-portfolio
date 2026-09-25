@@ -8,11 +8,9 @@
   },
   "scripts": {
     "assert:no-react": "bun scripts/assert-no-react.mjs",
-    "build": "bun run --sequential generate:cv build:vite assert:no-react",
+    "build": "bun run --sequential build:vite assert:no-react",
     "build:vite": "vite build",
-    "dev": "bun run --sequential generate:cv dev:vite",
-    "dev:vite": "vite",
-    "generate:cv": "bun scripts/generate-cv-pdf.tsx",
+    "dev": "vite",
     "lint": "bun run --sequential lint:ts lint:css lint:actions",
     "lint:ts": "oxlint",
     "lint:ts:fix": "oxlint --fix",

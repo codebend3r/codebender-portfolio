@@ -5,8 +5,6 @@ import resume from "@data/resume.json"
 
 import { AppHeaderComponent } from "@ngapp/components/app-header.component"
 
-import { documentFileName } from "@utils/documentFileName"
-
 vi.mock("@weather", () => ({
   fetchWeatherDetails: vi.fn(async () => null),
 }))
@@ -29,21 +27,5 @@ describe("AppHeaderComponent", () => {
     expect(root.querySelector("app-header h1")?.textContent ?? "").toContain(
       resume.name
     )
-  })
-
-  it("links Download CV to the build-time PDF", async () => {
-    const root = await render()
-    const link = root.querySelector("a.downloadButton")
-    const expected = `/cv/${encodeURIComponent(
-      documentFileName({
-        name: resume.name,
-        label: resume.title,
-        extension: "pdf",
-      })
-    )}`
-
-    expect(link?.getAttribute("href") ?? "").toBe(expected)
-    expect(link?.hasAttribute("download")).toBe(true)
-    expect(link?.textContent ?? "").toContain("Download CV")
   })
 })
