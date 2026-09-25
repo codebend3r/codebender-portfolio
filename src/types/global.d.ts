@@ -18,6 +18,9 @@ type Experience = {
   period: string
   schedule?: EmploymentSchedule
   arrangement?: EmploymentArrangement
+  // Ongoing work held alongside the main career (a practice, side
+  // projects); rendered apart from the chronological timeline.
+  side_project?: boolean
   achievements: string[]
 }
 

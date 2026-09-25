@@ -104,6 +104,7 @@
       "period": "01/2011 - Present",
       "schedule": "part-time",
       "arrangement": "contract",
+      "side_project": true,
       "achievements": [
         "Founded and run an incorporated software practice, delivering senior/lead frontend engagements across news, finance, real estate, telecom, and SaaS, alongside a self-directed R&D track.",
         "Ship full products end to end — data modelling, API design, architecture, design systems, testing, CI/CD, deployment — primarily in React, Next.js App Router/RSC, Nest.js, and strict TypeScript.",

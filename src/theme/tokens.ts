@@ -8,6 +8,8 @@ export const tokens = {
     onAccent: "#ffffff",
     onAccentMuted: "#c4d2dc",
     border: "#d6dce2",
+    // Faint wash of `employment["part-time"]` behind the side-work track.
+    sideTint: "#f6f3fa",
     rule: "#c9d2da",
     // One colour per employment value so document exporters render every
     // schedule/arrangement combination as the same colour pair.
