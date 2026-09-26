@@ -41,7 +41,7 @@ Operating rules for this repo.
 ## Code style
 
 - Always use front-end development best practices
-- Prefer `reduce` over `for` loops when possible. Never use `for/in` or `for/of` loops; reach for `Array.prototype` methods (`map`, `filter`, `reduce`, `flatMap`, etc.) when the value is an array.
+- Prefer `reduce` over `for` loops when possible. Never use `for/in` or `for/of` loops; reach for `Array.prototype` methods (`map`, `filter`, `reduce`, `flatMap`, etc.) when the value is an array. Exception: test files may use `for/of` for assertion loops.
 - Never write nested ternaries (enforced by the `no-nested-ternary` Oxlint rule). Use early returns, lookup maps, or extracted functions instead.
 - Prefer double-bang (`!!value`) for boolean conversion.
 - Prefer optional chaining (`?.`). When optional chaining is used, ALWAYS pair it with nullish coalescing (`??`) to supply a fallback.

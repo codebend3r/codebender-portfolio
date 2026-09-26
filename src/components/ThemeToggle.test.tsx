@@ -22,9 +22,9 @@ describe("ThemeToggle", () => {
   it("renders a labelled group with all three options", () => {
     render(<ThemeToggle />)
     const group = screen.getByRole("group", { name: "Color theme" })
-    ;["Light", "Dark", "Auto"].forEach((label) => {
+    for (const label of ["Light", "Dark", "Auto"]) {
       expect(screen.getByRole("button", { name: label })).toBeInTheDocument()
-    })
+    }
     expect(group).toContainElement(screen.getByRole("button", { name: "Auto" }))
   })
 
