@@ -86,7 +86,7 @@
 
 .side {
   background: var(--cb);
-  color: #1a1204;
+  color: var(--cb-contrast);
   padding-left: 8px;
 }
 

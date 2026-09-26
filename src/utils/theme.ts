@@ -1,3 +1,4 @@
+import { overrideFromSearch } from "@utils/searchOverride"
 import type { Sky } from "@utils/skyForHour"
 
 export type Theme = "light" | "dark"
@@ -43,8 +44,7 @@ export function storeThemeChoice(choice: ThemeChoice): void {
 
 // Mirrors the ?sky= and ?weather= overrides for stable screenshots.
 export function getThemeOverride(): ThemeChoice | null {
-  const value = new URLSearchParams(window.location.search).get("theme")
-  return isThemeChoice(value) ? value : null
+  return overrideFromSearch({ key: "theme", guard: isThemeChoice })
 }
 
 // First-paint choice: the ?theme= override wins for the session but is

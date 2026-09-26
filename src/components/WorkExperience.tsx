@@ -58,6 +58,7 @@ export function WorkExperience({
           {rows.map(({ w, wi }) => {
             const duration = experienceDuration(w.period)
             const employment = employmentParts(w)
+            const tags = w.tags ?? []
             return (
               <SortableItem key={wi} index={wi} label={`experience ${wi + 1}`}>
                 {(experienceHandle) => (
@@ -229,9 +230,9 @@ export function WorkExperience({
                         + Add achievement
                       </button>
                     )}
-                    {!editing && !!w.tags?.length && (
+                    {!editing && !!tags.length && (
                       <ul className={styles.tags}>
-                        {w.tags.map((tag) => (
+                        {tags.map((tag) => (
                           <li key={tag} className={styles.tag}>
                             {tag}
                           </li>

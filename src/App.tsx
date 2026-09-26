@@ -28,10 +28,13 @@ export default function App() {
     useState<DocumentFormat | null>(null)
   const themeChoice = useTheme((state) => state.choice)
 
-  // Repaint the backdrop and data-theme tokens whenever the choice changes;
-  // Entry.tsx ran the first applySky before mount.
+  // Repaint the backdrop and data-theme tokens whenever the choice changes
+  // (Entry.tsx ran the first applySky before mount), and keep re-resolving
+  // on a clock so an open page in Auto follows the sky across dawn/dusk.
   useEffect(() => {
     applySky(themeChoice)
+    const id = window.setInterval(() => applySky(themeChoice), 30_000)
+    return () => window.clearInterval(id)
   }, [themeChoice])
 
   const onDownload = useCallback(
@@ -77,7 +80,7 @@ export default function App() {
             <Summary />
             <TechnicalSkills index={1} eyebrow="Stack" />
             <WorkExperience index={2} eyebrow="Experience" />
-            <Codebender index={3} eyebrow="Side Projects · Since 2011" />
+            <Codebender index={3} eyebrow="Side Projects · 2011 – Present" />
             <Showcase index={4} eyebrow="Selected Client Work" />
 
             <div className={styles.subgrid}>

@@ -41,6 +41,11 @@ export function AppHeader({ onDownload, generatingFormat }: Props) {
 
   return (
     <header className={styles.bar}>
+      {/* Announces the async generation state; visually the buttons only
+          disable, which a screen reader would otherwise miss. */}
+      <span className={styles.srStatus} role="status">
+        {isGenerating ? `Generating ${FORMAT_LABEL[generatingFormat]}…` : ""}
+      </span>
       <div className={styles.inner}>
         <div className={styles.utility}>
           <WeatherClock />

@@ -11,14 +11,14 @@ const sideProjects = resume.showcase.filter((item) => !!item.repo)
 describe("Codebender", () => {
   it("renders the amber section under the #codebender anchor", () => {
     const { container } = render(
-      <Codebender index={3} eyebrow="Side Projects · Since 2011" />
+      <Codebender index={3} eyebrow="Side Projects · 2011 – Present" />
     )
     expect(container.querySelector("#codebender")).not.toBeNull()
     expect(
       screen.getByRole("heading", { level: 2, name: "Codebender Inc." })
     ).toBeInTheDocument()
     expect(
-      screen.getByText("03 · Side Projects · Since 2011")
+      screen.getByText("03 · Side Projects · 2011 – Present")
     ).toBeInTheDocument()
   })
 

@@ -15,7 +15,7 @@ type Slot = {
 
 const toSlots = (entries: readonly Experience[]): Slot[] =>
   entries.flatMap((entry) => {
-    const bounds = periodBounds(entry.period)
+    const bounds = periodBounds({ period: entry.period })
     return bounds ? [{ entry, bounds }] : []
   })
 
@@ -39,7 +39,7 @@ function Lane({
       <span className={labelClass ?? styles.laneLabel}>{label}</span>
       <span className={styles.lane}>
         {slots.map(({ entry, bounds }) => {
-          const bar = barFor(bounds, range)
+          const bar = barFor({ bounds, range })
           const text = sideLabel
             ? `Side projects · ${Math.floor(bounds.start)} → now`
             : (entry.short ?? "")
@@ -120,7 +120,7 @@ export function CareerMap() {
         />
         <span className={styles.laneLabel} />
         <span className={styles.ticks}>
-          {yearTicks(range).map((tick) => (
+          {yearTicks({ range }).map((tick) => (
             <span
               key={tick.year}
               className={styles.tick}

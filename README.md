@@ -126,7 +126,7 @@ src/
 ├── App.tsx                  ← Composes Sky + Weather + SectionNav + AppHeader + read-only sections
 ├── Entry.tsx                ← React root; routes "/edit-resume" → <EditResumeApp />, else <App />
 ├── components/              ← Flat directory — each component is a .tsx + .module.css (+ .test.tsx) triple
-│   ├── AppHeader.tsx        ← Sticky-on-scroll wrapper; mounts <Header /> + <WeatherClock /> + Download CV button
+│   ├── AppHeader.tsx        ← Sticky bar; mounts <WeatherClock /> + <ThemeToggle /> + PDF/Word download buttons + <Header />
 │   ├── Header.tsx           ← Identity + contact line (email, phone, location, GitHub, LinkedIn)
 │   ├── SectionNav.tsx       ← Floating nav; highlights active section via IntersectionObserver
 │   ├── CareerMap.tsx        ← Three-lane Gantt of the career computed from `period` strings

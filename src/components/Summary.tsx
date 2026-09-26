@@ -12,7 +12,7 @@ import { partitionExperience } from "@utils/employment"
 
 const earliestYear = (entries: readonly Experience[]): number | null => {
   const starts = entries.flatMap((entry) => {
-    const bounds = periodBounds(entry.period)
+    const bounds = periodBounds({ period: entry.period })
     return bounds ? [Math.floor(bounds.start)] : []
   })
   return starts.length ? Math.min(...starts) : null

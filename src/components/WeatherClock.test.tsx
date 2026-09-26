@@ -36,12 +36,20 @@ describe("WeatherClock", () => {
     expect(screen.getByText(/1:42/)).toBeInTheDocument()
   })
 
-  it("renders the weather row when fetch resolves", async () => {
+  it("renders a bare temperature for calm conditions", async () => {
     mockedFetch.mockResolvedValue({ condition: "cloudy", temperature: 18.4 })
     render(<WeatherClock />)
 
-    await waitFor(() => expect(screen.getByText(/18°C/)).toBeInTheDocument())
-    expect(screen.getByText(/☁️/)).toBeInTheDocument()
+    await waitFor(() => expect(screen.getByText("18°C")).toBeInTheDocument())
+  })
+
+  it("labels precipitation next to the temperature", async () => {
+    mockedFetch.mockResolvedValue({ condition: "rain", temperature: 7.6 })
+    render(<WeatherClock />)
+
+    await waitFor(() =>
+      expect(screen.getByText("8°C · Rain")).toBeInTheDocument()
+    )
   })
 
   it("re-renders the time after a minute elapses", async () => {

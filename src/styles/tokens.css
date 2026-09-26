@@ -29,8 +29,10 @@
   --employment-contract: #e0af68;
   --employment-permanent: #9ece6a;
 
-  /* Codebender Inc. identity: the amber side-project track. */
+  /* Codebender Inc. identity: the amber side-project track. `--cb-contrast`
+     is the near-black ink readable on the amber bar in both themes. */
   --cb: #e8b86b;
+  --cb-contrast: #1a1204;
   --cb-ink: #f3cf94;
   --cb-bg: rgb(232 184 107 / 9%);
   --cb-edge: rgb(232 184 107 / 30%);

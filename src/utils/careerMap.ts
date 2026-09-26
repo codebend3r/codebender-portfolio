@@ -10,10 +10,13 @@ export type PeriodBounds = {
 // Turns "09/2024 - 05/2026" or "11/2023 - Present" into fractional-year
 // bounds for the career map. Returns null when the period cannot be parsed
 // or is empty/backwards.
-export function periodBounds(
-  period: string,
-  now: Date = new Date()
-): PeriodBounds | null {
+export function periodBounds({
+  period,
+  now = new Date(),
+}: {
+  period: string
+  now?: Date
+}): PeriodBounds | null {
   const match = period.trim().match(PERIOD_PATTERN)
   if (!match) return null
   const [, startMonth, startYear, present, endMonth, endYear] = match
@@ -46,7 +49,13 @@ export type CareerBar = {
   widthPct: number
 }
 
-export function barFor(bounds: PeriodBounds, range: CareerRange): CareerBar {
+export function barFor({
+  bounds,
+  range,
+}: {
+  bounds: PeriodBounds
+  range: CareerRange
+}): CareerBar {
   const span = range.last - range.first
   return {
     leftPct: ((bounds.start - range.first) / span) * 100,
@@ -59,7 +68,13 @@ export type YearTick = {
   leftPct: number
 }
 
-export function yearTicks(range: CareerRange, step = 3): YearTick[] {
+export function yearTicks({
+  range,
+  step = 3,
+}: {
+  range: CareerRange
+  step?: number
+}): YearTick[] {
   const span = range.last - range.first
   const count = Math.floor((range.last - 1 - range.first) / step) + 1
   return Array.from({ length: count }, (_, i) => {

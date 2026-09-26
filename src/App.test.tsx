@@ -56,7 +56,7 @@ describe("App", () => {
     expect(
       screen.getByRole("heading", { level: 1, name: resume.name })
     ).toBeInTheDocument()
-    for (const title of [
+    ;[
       "Summary",
       "Technical Skills",
       "Work Experience",
@@ -65,23 +65,23 @@ describe("App", () => {
       "Awards",
       "Languages",
       "Education",
-    ]) {
+    ].forEach((title) => {
       expect(
         screen.getByRole("heading", { level: 2, name: title })
       ).toBeInTheDocument()
-    }
+    })
 
-    for (const chip of [
+    ;[
       "01 · Stack",
       "02 · Experience",
-      "03 · Side Projects · Since 2011",
+      "03 · Side Projects · 2011 – Present",
       "04 · Selected Client Work",
       "05 · Recognition",
       "06 · Languages",
       "07 · Education",
-    ]) {
+    ].forEach((chip) => {
       expect(screen.getByText(chip)).toBeInTheDocument()
-    }
+    })
 
     expect(screen.queryByText(/^00 ·/)).not.toBeInTheDocument()
     expect(screen.queryByText(/· Summary$/)).not.toBeInTheDocument()
@@ -89,11 +89,11 @@ describe("App", () => {
 
   it("renders enabled PDF and Word download buttons by default", () => {
     render(<App />)
-    for (const name of ["Download PDF CV", "Download Word CV"]) {
+    ;["Download PDF CV", "Download Word CV"].forEach((name) => {
       const button = screen.getByRole("button", { name })
       expect(button).toBeEnabled()
       expect(button).toHaveAttribute("aria-busy", "false")
-    }
+    })
   })
 
   it("generates a PDF and triggers a download when clicked", async () => {

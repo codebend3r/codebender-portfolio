@@ -27,12 +27,12 @@ describe("WorkExperience", () => {
         name: "Founder + Principal Engineer",
       })
     ).not.toBeInTheDocument()
-    for (const job of mainJobs) {
+    mainJobs.forEach((job) => {
       const role = screen.getAllByRole("heading", { level: 3, name: job.role })
       expect(role.length).toBeGreaterThanOrEqual(1)
       expect(screen.getAllByText(job.company).length).toBeGreaterThanOrEqual(1)
       expect(screen.getByText(job.period)).toBeInTheDocument()
-    }
+    })
   })
 
   it("renders all achievements for the first role", () => {
@@ -43,9 +43,9 @@ describe("WorkExperience", () => {
       name: first.role,
     })
     const card = headings[0].closest("li")!
-    for (const line of first.achievements) {
+    first.achievements.forEach((line) => {
       expect(within(card).getByText(line)).toBeInTheDocument()
-    }
+    })
   })
 
   it("renders a numbered eyebrow chip when index and eyebrow are passed", () => {
@@ -91,11 +91,11 @@ describe("WorkExperience", () => {
     expect(
       screen.getByTitle("Codebender Inc. · 01/2011 - Present")
     ).toBeInTheDocument()
-    for (const job of mainJobs) {
+    mainJobs.forEach((job) => {
       expect(
         screen.getByTitle(`${job.company} · ${job.period}`)
       ).toBeInTheDocument()
-    }
+    })
   })
 
   it("renders technology tags for roles that declare them", () => {
@@ -106,9 +106,9 @@ describe("WorkExperience", () => {
     })
     const card = headings[0].closest("li")
     expect(card).not.toBeNull()
-    for (const tag of mainJobs[0].tags ?? []) {
+    ;(mainJobs[0].tags ?? []).forEach((tag) => {
       expect(within(card!).getByText(tag)).toBeInTheDocument()
-    }
+    })
   })
 
   it("shows a human-readable duration next to each period", () => {

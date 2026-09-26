@@ -34,8 +34,8 @@ describe("CareerMap", () => {
     render(<CareerMap />)
     const bar = screen.getByTitle("Codebender Inc. · 01/2011 - Present")
     const style = bar.getAttribute("style") ?? ""
-    const left = Number(/left: ([\d.]+)%/.exec(style)?.[1])
-    const width = Number(/width: ([\d.]+)%/.exec(style)?.[1])
+    const left = Number(/left: ([\d.]+)%/.exec(style)?.[1] ?? Number.NaN)
+    const width = Number(/width: ([\d.]+)%/.exec(style)?.[1] ?? Number.NaN)
     expect(left).toBeGreaterThan(0)
     expect(width).toBeGreaterThan(0)
     expect(left + width).toBeLessThanOrEqual(100)

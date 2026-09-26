@@ -1,3 +1,4 @@
+import { overrideFromSearch } from "@utils/searchOverride"
 import { isSky, skyForHour } from "@utils/skyForHour"
 import type { Sky } from "@utils/skyForHour"
 import { getStartupThemeChoice, resolveTheme } from "@utils/theme"
@@ -76,19 +77,16 @@ const PALETTES: Record<Theme, Record<Sky, Palette>> = {
   },
 }
 
-function getOverride(): Sky | null {
-  const value = new URLSearchParams(window.location.search).get("sky")
-  return isSky(value) ? value : null
-}
-
 export function getCurrentSky(): Sky {
-  return getOverride() ?? skyForHour(new Date().getHours())
+  return (
+    overrideFromSearch({ key: "sky", guard: isSky }) ??
+    skyForHour(new Date().getHours())
+  )
 }
 
-// This module stays framework-free: the Angular entry imports it too, and
-// `assert:no-react` fails the build if React (via zustand) sneaks in. The
-// React side passes the store's choice in; the default reads the same
-// storage the store seeds from.
+// The React side passes the store's choice in; the default reads the same
+// storage the store seeds from, so a first paint before the store exists
+// resolves identically.
 
 // Applies the resolved theme + sky palette to the document: `data-theme`
 // switches every token in tokens.css, the palette vars paint the backdrop.
