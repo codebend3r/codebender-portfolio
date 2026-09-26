@@ -10,6 +10,12 @@ Operating rules for this repo.
 - Do not create a PR until I tell you to.
 - Do not create a branch until I tell you to.
 
+## Branches
+
+- Branch names are always kebab-case: lowercase `a-z`, digits, and `-` only (e.g. `recruiter-chat-spec`).
+- Flat structure only. Never use `/` or folder-style prefixes: no `cjr/`, `feat/`, `fix/`, or any other namespace.
+- Name the change, not the author, ticket, or date.
+
 ## Tooling
 
 - All scripts run through Bun: `bun install`, `bun dev`, `bun run test`, `bun run build`, `bun lint:ts`, `bun lint:css`, `bun typecheck`. Never invoke npm or yarn. The full list lives in `package.json` `scripts` — check there rather than trusting this line.
