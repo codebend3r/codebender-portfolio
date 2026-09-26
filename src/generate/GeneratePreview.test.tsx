@@ -85,7 +85,9 @@ describe("GeneratePreview", () => {
     const generated = data()
     generated.title = "Design Systems Lead"
     generated.summary = "Rewritten summary for the posting"
-    generated.work_experience[0].achievements[0] = "Fabricated bullet"
+    // Entry 0 is the side-project practice, which the public preview
+    // renders in the Codebender section; use the first employment entry.
+    generated.work_experience[1].achievements[0] = "Fabricated bullet"
     generated.technical_skills = ["Turborepo", ...generated.technical_skills]
     render(
       <GeneratePreview
@@ -117,7 +119,7 @@ describe("GeneratePreview", () => {
         onDiscard={() => {}}
       />
     )
-    const untouched = (resume as Data).work_experience[0].achievements[0]
+    const untouched = (resume as Data).work_experience[1].achievements[0]
     expect(
       screen.getByText(untouched).closest("li")?.className ?? ""
     ).not.toContain("modified")

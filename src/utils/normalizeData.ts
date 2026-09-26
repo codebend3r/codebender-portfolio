@@ -51,6 +51,7 @@ function backfillEmployment(data: Data): Data {
         ...entry,
         schedule: entry.schedule ?? base?.schedule,
         arrangement: entry.arrangement ?? base?.arrangement,
+        side_project: entry.side_project ?? base?.side_project,
       }
     }),
   }

@@ -7,6 +7,7 @@ import {
   isEmploymentArrangement,
   isEmploymentSchedule,
   narrowEmployment,
+  partitionExperience,
   scheduleOptions,
 } from "@utils/employment"
 
@@ -105,6 +106,42 @@ describe("narrowEmployment", () => {
     })
     expect(entry.schedule).toBeUndefined()
     expect(entry.arrangement).toBeUndefined()
+  })
+
+  it("keeps a true side_project flag", () => {
+    expect(narrowEmployment({ ...base, side_project: true }).side_project).toBe(
+      true
+    )
+  })
+
+  it("drops a non-boolean side_project flag", () => {
+    expect(
+      narrowEmployment({ ...base, side_project: "yes" }).side_project
+    ).toBeUndefined()
+  })
+})
+
+describe("partitionExperience", () => {
+  const entry = (company: string, side_project?: boolean): Experience => ({
+    role: "Engineer",
+    company,
+    period: "2020 - 2021",
+    side_project,
+    achievements: [],
+  })
+
+  it("splits side work from the main career, preserving order", () => {
+    const tracks = partitionExperience([
+      entry("Practice", true),
+      entry("First"),
+      entry("Second", false),
+    ])
+    expect(tracks.main.map((e) => e.company)).toEqual(["First", "Second"])
+    expect(tracks.side.map((e) => e.company)).toEqual(["Practice"])
+  })
+
+  it("returns empty tracks for no entries", () => {
+    expect(partitionExperience([])).toEqual({ main: [], side: [] })
   })
 })
 

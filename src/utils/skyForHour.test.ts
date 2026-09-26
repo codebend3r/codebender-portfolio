@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
 
-import { skyForHour } from "@utils/skyForHour"
+import { isSky, skyForHour } from "@utils/skyForHour"
 
 describe("skyForHour", () => {
   it.each([
@@ -17,5 +17,21 @@ describe("skyForHour", () => {
     [23, "night"],
   ] as const)("maps hour %i to %s", (hour, expected) => {
     expect(skyForHour(hour)).toBe(expected)
+  })
+})
+
+describe("isSky", () => {
+  it("accepts the sky literals", () => {
+    expect(isSky("night")).toBe(true)
+    expect(isSky("dawn")).toBe(true)
+    expect(isSky("day")).toBe(true)
+    expect(isSky("dusk")).toBe(true)
+  })
+
+  it("rejects other values", () => {
+    expect(isSky("noon")).toBe(false)
+    expect(isSky("")).toBe(false)
+    expect(isSky(null)).toBe(false)
+    expect(isSky(4)).toBe(false)
   })
 })

@@ -1,5 +1,6 @@
 import { Fragment } from "react"
 
+import { CareerMap } from "@components/CareerMap"
 import { useDiff } from "@components/DiffContext"
 import hl from "@components/DiffHighlight.module.css"
 import { Section } from "@components/Section"
@@ -39,22 +40,31 @@ export function WorkExperience({
     markDirty()
   }
 
+  // The public page shows side-project work in its own Codebender section;
+  // the editor keeps every entry so all of them stay editable. `wi` stays
+  // the store index either way so edit paths and diff lookups line up.
+  const rows = work_experience
+    .map((w, wi) => ({ w, wi }))
+    .filter(({ w }) => editing || !w.side_project)
+
   return (
     <Section title="Work Experience" index={index} eyebrow={eyebrow}>
+      {!editing && <CareerMap />}
       <SortableList
         count={work_experience.length}
         onReorder={(from, to) => store.reorder(["work_experience"], from, to)}
       >
         <ul className={styles.timeline}>
-          {work_experience.map((w, wi) => {
+          {rows.map(({ w, wi }) => {
             const duration = experienceDuration(w.period)
             const employment = employmentParts(w)
+            const tags = w.tags ?? []
             return (
               <SortableItem key={wi} index={wi} label={`experience ${wi + 1}`}>
                 {(experienceHandle) => (
                   <div className={styles.item}>
                     <div className={styles.header}>
-                      <div>
+                      <div className={styles.roleBlock}>
                         <h3>
                           <EditableText
                             value={w.role}
@@ -219,6 +229,15 @@ export function WorkExperience({
                       >
                         + Add achievement
                       </button>
+                    )}
+                    {!editing && !!tags.length && (
+                      <ul className={styles.tags}>
+                        {tags.map((tag) => (
+                          <li key={tag} className={styles.tag}>
+                            {tag}
+                          </li>
+                        ))}
+                      </ul>
                     )}
                   </div>
                 )}

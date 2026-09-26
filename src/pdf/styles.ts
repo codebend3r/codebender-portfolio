@@ -176,6 +176,16 @@ export const styles = StyleSheet.create({
   bullet: {
     color: tokens.colors.accent,
   },
+  // Side work runs alongside the whole career, so it drops the timeline
+  // dash for a continuous rule down the entry, in the part-time colour.
+  sideExperience: {
+    paddingLeft: tokens.spacing.lg,
+    paddingRight: tokens.spacing.md,
+    paddingVertical: tokens.spacing.md,
+    borderLeftWidth: 2,
+    borderLeftColor: tokens.colors.employment["part-time"],
+    backgroundColor: tokens.colors.sideTint,
+  },
 
   // Meta (awards / languages / education)
   metaRow: {

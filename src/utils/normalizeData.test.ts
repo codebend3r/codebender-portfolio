@@ -61,6 +61,12 @@ describe("normalizeData employment backfill", () => {
     expect(result.work_experience[1].arrangement).toBe("contract")
   })
 
+  it("backfills the side_project flag from the base resume stint", () => {
+    const result = normalizeData(stripped())
+    expect(result.work_experience[0].side_project).toBe(true)
+    expect(result.work_experience[1].side_project).toBeUndefined()
+  })
+
   it("leaves stints unknown to the base resume unset", () => {
     const data = stripped()
     data.work_experience[0] = {

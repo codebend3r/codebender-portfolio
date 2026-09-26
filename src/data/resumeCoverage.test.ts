@@ -4,8 +4,8 @@ import { describe, expect, it } from "vitest"
 
 import { resumeData } from "@data/resumeData"
 
-// The same resume data renders through four independent pipelines. Only the
-// screen one is visible while editing — the other three drop an unreferenced
+// The same resume data renders through three independent pipelines. Only the
+// screen one is visible while editing — the other two drop an unreferenced
 // key silently, with every test still green and the build still clean.
 //
 // This suite closes that gap: every top-level key in `resume.json` must be
@@ -32,10 +32,6 @@ const TARGETS: Target[] = [
   { name: "react", sources: () => sourcesIn("src/components", ".tsx") },
   { name: "pdf", sources: () => fileAt("src/pdf/ResumePDF.tsx") },
   { name: "docx", sources: () => fileAt("src/docx/ResumeDocx.ts") },
-  {
-    name: "angular",
-    sources: () => sourcesIn("src/angular/components", ".ts"),
-  },
 ]
 
 // A key listed here is deliberately absent from that target. Add an entry only

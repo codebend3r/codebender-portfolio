@@ -5,13 +5,12 @@ import styles from "@components/WeatherClock.module.css"
 import { fetchWeatherDetails } from "@weather"
 import type { WeatherCondition, WeatherDetails } from "@weather"
 
-const CONDITION_ICON: Record<WeatherCondition, string> = {
-  clear: "☀️",
-  cloudy: "☁️",
-  rain: "🌧️",
-  snow: "❄️",
-  storm: "⛈️",
-  unknown: "❓",
+// Only precipitation earns a word next to the temperature; calm conditions
+// read as just "18°C", matching the v2 header mock.
+const CONDITION_LABEL: Partial<Record<WeatherCondition, string>> = {
+  rain: "Rain",
+  snow: "Snow",
+  storm: "Storm",
 }
 
 const DATE_FORMAT: Intl.DateTimeFormatOptions = {
@@ -23,6 +22,12 @@ const DATE_FORMAT: Intl.DateTimeFormatOptions = {
 const TIME_FORMAT: Intl.DateTimeFormatOptions = {
   hour: "numeric",
   minute: "2-digit",
+}
+
+function weatherLabel(details: WeatherDetails): string {
+  const label = CONDITION_LABEL[details.condition] ?? null
+  const temperature = `${Math.round(details.temperature)}°C`
+  return label ? `${temperature} · ${label}` : temperature
 }
 
 export function WeatherClock() {
@@ -46,18 +51,13 @@ export function WeatherClock() {
 
   return (
     <div className={styles.panel} aria-label="Local weather and time">
-      {details && (
-        <div className={styles.weather}>
-          <span aria-hidden="true">{CONDITION_ICON[details.condition]}</span>{" "}
-          {Math.round(details.temperature)}°C
-        </div>
-      )}
       <div className={styles.date}>
         {now.toLocaleDateString(undefined, DATE_FORMAT)}
       </div>
       <div className={styles.time}>
         {now.toLocaleTimeString(undefined, TIME_FORMAT)}
       </div>
+      {details && <div className={styles.weather}>{weatherLabel(details)}</div>}
     </div>
   )
 }

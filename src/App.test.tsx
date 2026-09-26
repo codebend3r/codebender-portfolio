@@ -59,8 +59,8 @@ describe("App", () => {
     for (const title of [
       "Summary",
       "Technical Skills",
-      "Soft Skills",
       "Work Experience",
+      "Codebender Inc.",
       "Selected Work",
       "Awards",
       "Languages",
@@ -73,9 +73,9 @@ describe("App", () => {
 
     for (const chip of [
       "01 · Stack",
-      "02 · Soft Skills",
-      "03 · Experience",
-      "04 · Selected Work",
+      "02 · Experience",
+      "03 · Side Projects · 2011 – Present",
+      "04 · Selected Client Work",
       "05 · Recognition",
       "06 · Languages",
       "07 · Education",
@@ -134,11 +134,19 @@ describe("App", () => {
     await user.click(screen.getByRole("button", { name: "Download PDF CV" }))
 
     await waitFor(() => {
-      expect(screen.getByRole("button", { name: "Generating…" })).toBeDisabled()
+      expect(
+        screen.getByRole("button", { name: "Download PDF CV" })
+      ).toBeDisabled()
     })
+    expect(
+      screen.getByRole("button", { name: "Download PDF CV" })
+    ).toHaveAttribute("aria-busy", "true")
     expect(
       screen.getByRole("button", { name: "Download Word CV" })
     ).toBeDisabled()
+    expect(
+      screen.getByRole("button", { name: "Download Word CV" })
+    ).toHaveAttribute("aria-busy", "false")
 
     resolveGenerate(new Blob())
     await waitFor(() => {
@@ -161,10 +169,12 @@ describe("App", () => {
     render(<App />)
     await user.click(screen.getByRole("button", { name: "Download PDF CV" }))
     await waitFor(() => {
-      expect(screen.getByRole("button", { name: "Generating…" })).toBeDisabled()
+      expect(
+        screen.getByRole("button", { name: "Download PDF CV" })
+      ).toBeDisabled()
     })
 
-    await user.click(screen.getByRole("button", { name: "Generating…" }))
+    await user.click(screen.getByRole("button", { name: "Download PDF CV" }))
     expect(generateResumePdfMock).toHaveBeenCalledTimes(1)
 
     resolveGenerate(new Blob())

@@ -6,8 +6,8 @@ This file provides guidance to Codex when working with code in this repository. 
 
 Package manager is **bun** (see `packageManager` in `package.json`). Use `bun <script>` rather than `npm`. Node version is pinned in `.nvmrc` and `engines.node`; both must stay in sync.
 
-- `bun dev` — regenerates the CV PDF (`generate:cv`), then starts the Vite dev server
-- `bun run build` — production build (note: `bun build` invokes Bun's bundler, not Vite; always use `bun run build`). Three steps via `bun run --sequential`: `generate:cv` → `build:vite` → `assert:no-react`
+- `bun dev` — starts the Vite dev server
+- `bun run build` — production build (note: `bun build` invokes Bun's bundler, not Vite; always use `bun run build`)
 - `bun preview` — preview the built output
 - `bun lint:ts` / `bun lint:ts:fix` — Oxlint (`.oxlintrc.json`), including type-aware rules
 - `bun lint:css` / `bun lint:css:fix` — Gale (`@codebend3r/gale`, a Stylelint-compatible Rust linter) over `src/**/*.css`; reads `.stylelintrc.json`, which extends `stylelint-config-standard`
@@ -30,7 +30,7 @@ Husky runs on every commit and push:
 
 ## Architecture
 
-Resume/portfolio app. Vite + React 19 + TypeScript, styled with CSS Modules (`*.module.css` — there is no SCSS in this repo), state in Zustand. Routes are resolved in `src/pageForRoute.tsx`: the resume itself, an `/edit` editor (`src/edit/`), and a `/generate` flow (`src/generate/`) backed by Netlify functions. The same resume data also renders to PDF (`src/pdf/`), DOCX (`src/docx/`), and a React-free Angular build (`src/angular/`).
+Resume/portfolio app. Vite + React 19 + TypeScript, styled with CSS Modules (`*.module.css` — there is no SCSS in this repo), state in Zustand. Routes are resolved in `src/pageForRoute.tsx`: the resume itself, an `/edit` editor (`src/edit/`), and a `/generate` flow (`src/generate/`) backed by Netlify functions. The same resume data also renders to PDF (`src/pdf/`) and DOCX (`src/docx/`).
 
 ### Data flow
 
@@ -42,7 +42,7 @@ The resume is **fully data-driven** from `src/data/resume.json`:
 
 `src/data/resume.json` is the only copy of the resume data; `src/assets/` holds images only.
 
-Adding a resume section touches more than the React tree — the same data renders to PDF, DOCX, and Angular, none of which have a failing test when a field is simply absent. See the `resume-section` skill for the full sequence.
+Adding a resume section touches more than the React tree — the same data renders to PDF and DOCX, neither of which has a failing test when a field is simply absent. See the `resume-section` skill for the full sequence.
 
 ### Path aliases
 

@@ -8,9 +8,9 @@ type NavItem = { id: string; label: string; num?: string }
 const ITEMS: NavItem[] = [
   { id: "summary", label: "Summary" },
   { id: "technical-skills", label: "Stack", num: "01" },
-  { id: "soft-skills", label: "Soft Skills", num: "02" },
-  { id: "work-experience", label: "Experience", num: "03" },
-  { id: "selected-work", label: "Selected Work", num: "04" },
+  { id: "work-experience", label: "Experience", num: "02" },
+  { id: "codebender", label: "Codebender Inc.", num: "03" },
+  { id: "selected-work", label: "Client Work", num: "04" },
   { id: "awards", label: "Recognition", num: "05" },
   { id: "languages", label: "Languages", num: "06" },
   { id: "education", label: "Education", num: "07" },

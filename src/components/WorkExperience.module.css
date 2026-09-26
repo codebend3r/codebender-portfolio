@@ -3,33 +3,30 @@
   padding: 0;
   margin: 0;
   display: grid;
-  gap: 40px;
 }
 
 .item {
   background: transparent;
-  border: none;
+  border-top: 1px solid var(--border);
   border-radius: 0;
-  padding: 0;
+  padding: 22px 0 24px;
   display: grid;
-  grid-template-columns: 3px 1fr;
-  gap: 14px;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 12px;
 }
 
-.item::before {
-  content: "";
-  grid-column: 1;
-  grid-row: 1 / -1;
-  background: linear-gradient(180deg, var(--accent) 0%, transparent 100%);
-  border-radius: 2px;
+.roleBlock {
+  display: grid;
+  gap: 2px;
+  padding-left: 14px;
+  border-left: 2px solid var(--chip-edge);
 }
 
 .item h3 {
   margin: 0;
   font-family: var(--font-role);
-  font-style: italic;
   font-weight: 400;
-  font-size: 28px;
+  font-size: 30px;
   line-height: 1.1;
   letter-spacing: 0.2px;
   color: var(--text);
@@ -50,9 +47,11 @@
 .period {
   display: grid;
   gap: 2px;
-  color: var(--accent2);
+  justify-items: end;
+  color: var(--text-secondary);
   font-family: var(--font-mono);
-  font-weight: 700;
+  font-size: 13px;
+  font-weight: 500;
   white-space: nowrap;
 }
 
@@ -82,7 +81,30 @@
 
 .bullets {
   margin: 0;
+  padding: 0 0 0 18px;
+  display: grid;
+  gap: 6px;
+  color: var(--text-secondary);
+  max-width: 78ch;
+}
+
+.tags {
+  list-style: none;
+  margin: 6px 0 0;
   padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.tag {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  color: var(--text-secondary);
+  background: var(--chip);
+  border: 1px solid var(--chip-edge);
+  padding: 2px 8px;
+  border-radius: 5px;
 }
 
 .rowControls {
@@ -123,20 +145,9 @@
   border-color: var(--accent);
 }
 
-/* Grid placement for the item's children. Kept after the base rules above so
-   specificity ascends in source order; these set only `grid-column`, which no
-   base rule declares. */
-.item > .header,
-.item > .bullets,
-.item > .rowControls,
-.item > .addButton {
-  grid-column: 2;
-}
-
 @media (width <= 700px) {
   .item {
-    grid-template-columns: 2px 1fr;
-    column-gap: 10px;
+    padding: 16px 0 18px;
   }
 
   .item h3 {
@@ -151,7 +162,8 @@
   }
 
   .period {
-    font-size: 13px;
+    font-size: 12px;
+    justify-items: start;
     white-space: normal;
   }
 

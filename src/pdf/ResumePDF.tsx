@@ -36,11 +36,12 @@ import {
   isLocationEntry,
   isSocialContactKind,
 } from "@utils/contact"
-import { employmentParts } from "@utils/employment"
+import { employmentParts, partitionExperience } from "@utils/employment"
 
 type Props = { data: Data }
 
 export function ResumePDF({ data }: Props) {
+  const tracks = partitionExperience(data.work_experience)
   return (
     <Document
       title={`${data.name} - ${data.title}`}
@@ -71,12 +72,26 @@ export function ResumePDF({ data }: Props) {
         </Section>
 
         <Section heading="Work Experience">
-          {data.work_experience.map((entry, i) => (
+          {tracks.main.map((entry, i) => (
             <ExperienceEntry key={`${entry.company}-${i}`} entry={entry} />
           ))}
         </Section>
 
-        <View style={styles.metaRow}>
+        {!!tracks.side.length && (
+          <Section heading="Side Projects & Part-Time Work">
+            {tracks.side.map((entry, i) => (
+              <ExperienceEntry
+                key={`${entry.company}-${i}`}
+                entry={entry}
+                side
+              />
+            ))}
+          </Section>
+        )}
+
+        {/* wrap={false}: keep the headings with their entries rather than
+            stranding them at the foot of a page. */}
+        <View style={styles.metaRow} wrap={false}>
           <View style={styles.metaColumn}>
             <Section heading="Awards">
               {data.awards.map((award) => (
@@ -260,13 +275,24 @@ function Section({
   )
 }
 
-function ExperienceEntry({ entry }: { entry: Experience }) {
+function ExperienceEntry({
+  entry,
+  side = false,
+}: {
+  entry: Experience
+  side?: boolean
+}) {
   const employment = employmentParts(entry)
   // wrap={false} keeps the whole entry on one page: when it does not fit
   // in the remaining space it moves to the next page instead of splitting.
   return (
-    <View style={styles.experience} wrap={false}>
-      <View style={styles.timelineDash} />
+    <View
+      style={
+        side ? [styles.experience, styles.sideExperience] : styles.experience
+      }
+      wrap={false}
+    >
+      {!side && <View style={styles.timelineDash} />}
       <View style={styles.experienceHeader}>
         <Text style={styles.role}>{entry.role}</Text>
         <Text style={styles.period}>{entry.period}</Text>

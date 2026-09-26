@@ -29,9 +29,13 @@ export const arrangementOptions: readonly EmploymentOption[] = ARRANGEMENTS.map(
   (value) => ({ value, label: LABELS[value] })
 )
 
-type RawExperience = Omit<Experience, "schedule" | "arrangement"> & {
+type RawExperience = Omit<
+  Experience,
+  "schedule" | "arrangement" | "side_project"
+> & {
   schedule?: unknown
   arrangement?: unknown
+  side_project?: unknown
 }
 
 // Narrows a JSON-sourced entry (schedule/arrangement inferred as `string`)
@@ -42,6 +46,7 @@ export const narrowEmployment = (entry: RawExperience): Experience => ({
   arrangement: isEmploymentArrangement(entry.arrangement)
     ? entry.arrangement
     : undefined,
+  side_project: entry.side_project === true ? true : undefined,
 })
 
 type EmploymentPart = {
@@ -67,3 +72,18 @@ export const formatEmployment = (
     .join(" · ")
   return label || null
 }
+
+type ExperienceTracks = { main: Experience[]; side: Experience[] }
+
+// Splits the chronological career from ongoing side work so renderers can
+// set the side track apart. Order within each track is preserved.
+export const partitionExperience = (
+  entries: readonly Experience[]
+): ExperienceTracks =>
+  entries.reduce<ExperienceTracks>(
+    (tracks, entry) =>
+      entry.side_project
+        ? { ...tracks, side: [...tracks.side, entry] }
+        : { ...tracks, main: [...tracks.main, entry] },
+    { main: [], side: [] }
+  )

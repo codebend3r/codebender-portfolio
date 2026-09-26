@@ -1,20 +1,23 @@
-import { useCallback, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 
 import { AppHeader } from "@components/AppHeader"
 import { Awards } from "@components/Awards"
+import { Codebender } from "@components/Codebender"
 import { Education } from "@components/Education"
 import { Footer } from "@components/Footer"
 import { Languages } from "@components/Languages"
 import { SectionNav } from "@components/SectionNav"
 import { Showcase } from "@components/Showcase"
 import { Sky } from "@components/Sky"
-import { SoftSkills } from "@components/SoftSkills"
 import { Summary } from "@components/Summary"
 import { TechnicalSkills } from "@components/TechnicalSkills"
 import { Weather } from "@components/Weather"
 import { WorkExperience } from "@components/WorkExperience"
 
+import { applySky } from "@sky"
+
 import { useStore } from "@state/useStore"
+import { useTheme } from "@state/useTheme"
 
 import { type DocumentFormat, documentFileName } from "@utils/documentFileName"
 
@@ -23,6 +26,16 @@ import styles from "@app/App.module.css"
 export default function App() {
   const [generatingFormat, setGeneratingFormat] =
     useState<DocumentFormat | null>(null)
+  const themeChoice = useTheme((state) => state.choice)
+
+  // Repaint the backdrop and data-theme tokens whenever the choice changes
+  // (Entry.tsx ran the first applySky before mount), and keep re-resolving
+  // on a clock so an open page in Auto follows the sky across dawn/dusk.
+  useEffect(() => {
+    applySky(themeChoice)
+    const id = window.setInterval(() => applySky(themeChoice), 30_000)
+    return () => window.clearInterval(id)
+  }, [themeChoice])
 
   const onDownload = useCallback(
     async (format: DocumentFormat) => {
@@ -66,9 +79,9 @@ export default function App() {
           <main className={styles.main}>
             <Summary />
             <TechnicalSkills index={1} eyebrow="Stack" />
-            <SoftSkills index={2} eyebrow="Soft Skills" />
-            <WorkExperience index={3} eyebrow="Experience" />
-            <Showcase index={4} eyebrow="Selected Work" />
+            <WorkExperience index={2} eyebrow="Experience" />
+            <Codebender index={3} eyebrow="Side Projects · 2011 – Present" />
+            <Showcase index={4} eyebrow="Selected Client Work" />
 
             <div className={styles.subgrid}>
               <Awards index={5} eyebrow="Recognition" />

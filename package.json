@@ -7,12 +7,8 @@
     "node": ">=26.9.0"
   },
   "scripts": {
-    "assert:no-react": "bun scripts/assert-no-react.mjs",
-    "build": "bun run --sequential generate:cv build:vite assert:no-react",
-    "build:vite": "vite build",
-    "dev": "bun run --sequential generate:cv dev:vite",
-    "dev:vite": "vite",
-    "generate:cv": "bun scripts/generate-cv-pdf.tsx",
+    "build": "vite build",
+    "dev": "vite",
     "lint": "bun run --sequential lint:ts lint:css lint:actions",
     "lint:ts": "oxlint",
     "lint:ts:fix": "oxlint --fix",
@@ -33,10 +29,6 @@
     "system-check": "bun run --sequential format:check typecheck lint spellcheck test build"
   },
   "dependencies": {
-    "@angular/common": "22.1.7",
-    "@angular/compiler": "22.1.7",
-    "@angular/core": "22.1.7",
-    "@angular/platform-browser": "22.1.7",
     "@anthropic-ai/sdk": "0.126.0",
     "@dnd-kit/core": "6.3.1",
     "@dnd-kit/sortable": "10.0.0",
@@ -53,10 +45,6 @@
     "zustand": "5.0.15"
   },
   "devDependencies": {
-    "@analogjs/vite-plugin-angular": "2.7.2",
-    "@analogjs/vitest-angular": "2.7.2",
-    "@angular/build": "22.1.8",
-    "@angular/compiler-cli": "22.1.7",
     "@codebend3r/gale": "0.2.4",
     "@netlify/functions": "6.0.0",
     "@ocular-d/typos-bin": "1.50.2",

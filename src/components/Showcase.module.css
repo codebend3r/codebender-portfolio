@@ -230,9 +230,9 @@
   text-transform: uppercase;
   color: var(--accent);
   padding: 3px 8px;
-  border: 1px solid rgb(122 162 247 / 35%);
+  border: 1px solid var(--chip-edge);
   border-radius: 999px;
-  background: rgb(122 162 247 / 8%);
+  background: var(--chip);
 }
 
 /* Edit-mode tag card: flat panel chip housing grip, text, remove.
@@ -279,4 +279,69 @@
   .repoHit {
     display: none;
   }
+}
+
+/* Public client-work cards: flat image-led cards per the v2 redesign. The
+   framed browser-chrome card above remains for the edit route. */
+.clientCard {
+  display: grid;
+  gap: 10px;
+  align-content: start;
+}
+
+.clientShot {
+  display: block;
+  aspect-ratio: 16 / 10;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  transition: border-color 0.3s ease;
+}
+
+.clientShot:hover,
+.clientShot:focus-visible {
+  border-color: var(--accent);
+  outline: none;
+}
+
+.clientShot img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+  display: block;
+}
+
+.clientHead {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: baseline;
+  flex-wrap: wrap;
+}
+
+.clientName {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 26px;
+  line-height: 1.1;
+}
+
+.clientPeriod {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.clientRole {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--accent);
+}
+
+.clientDescription {
+  font-size: 15px;
+  color: var(--text-secondary);
+  text-wrap: pretty;
 }
