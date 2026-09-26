@@ -15,7 +15,6 @@
     "paths": {
       "@App": ["./src/App.tsx"],
       "@app/*": ["./src/*"],
-      "@ngapp/*": ["./src/angular/*"],
       "@assets/*": ["./src/assets/*"],
       "@components/*": ["./src/components/*"],
       "@data/*": ["./src/data/*"],

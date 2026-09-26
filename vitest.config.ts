@@ -1,20 +1,13 @@
-import angular from "@analogjs/vite-plugin-angular"
 import react from "@vitejs/plugin-react"
 import path from "node:path"
 import { defineConfig } from "vitest/config"
 
 export default defineConfig({
-  plugins: [
-    angular({
-      tsconfig: path.resolve(import.meta.dirname, "tsconfig.angular.json"),
-    }),
-    react(),
-  ],
+  plugins: [react()],
   resolve: {
     alias: {
       "@App": path.resolve(import.meta.dirname, "src/App.tsx"),
       "@app": path.resolve(import.meta.dirname, "src"),
-      "@ngapp": path.resolve(import.meta.dirname, "src/angular"),
       "@assets": path.resolve(import.meta.dirname, "src/assets"),
       "@components": path.resolve(import.meta.dirname, "src/components"),
       "@data": path.resolve(import.meta.dirname, "src/data"),
@@ -45,11 +38,11 @@ export default defineConfig({
     },
     // On CI's low-core runners, Vitest's CPU-based default collapses to a
     // single worker, which serializes all 80 files into one process and lets
-    // module-level state (the Zustand store, Angular's TestBed/vi.mock
+    // module-level state (the Zustand store, vi.mock
     // singletons) bleed across files. Pin a floor above 1 so files always
     // get separate, isolated processes.
     maxWorkers: 4,
-    setupFiles: ["./src/test/setup.ts", "./src/angular/test-setup.ts"],
+    setupFiles: ["./src/test/setup.ts"],
     css: false,
     reporters: ["dot"],
     include: [

@@ -3,7 +3,6 @@ export type Route =
   | "generate-exact"
   | "edit"
   | "login"
-  | "angular-version"
   | "app"
 
 export type RouteMatch = {
@@ -17,8 +16,6 @@ const EXACT = new Map<string, Route>([
   ["/generate-proximate", "generate-proximate"],
   ["/generate-exact", "generate-exact"],
   ["/login", "login"],
-  ["/angular-version", "angular-version"],
-  ["/angular-version/", "angular-version"],
 ])
 
 const EDIT_CHILD = /^\/edit-resume\/([^/]+)\/?$/

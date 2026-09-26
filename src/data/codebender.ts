@@ -1,6 +1,6 @@
 // Screen copy for the Codebender Inc. section. This is portfolio-page
 // framing, not resume content, so it lives here instead of resume.json
-// (which feeds the PDF/DOCX/Angular targets too).
+// (which feeds the PDF and DOCX targets too).
 
 export type CodebenderPillar = {
   title: string

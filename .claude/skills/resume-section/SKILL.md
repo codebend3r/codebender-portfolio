@@ -1,6 +1,6 @@
 ---
 name: resume-section
-description: Use when adding, removing, or reshaping anything in `src/data/resume.json` — a new section, a new field on an existing section, or a renamed key. The same data renders to four independent targets (React, PDF, DOCX, Angular) and a missing field fails silently in three of them.
+description: Use when adding, removing, or reshaping anything in `src/data/resume.json` — a new section, a new field on an existing section, or a renamed key. The same data renders to three independent targets (React, PDF, DOCX) and a missing field fails silently in two of them.
 ---
 
 # Changing Resume Data
@@ -8,16 +8,15 @@ description: Use when adding, removing, or reshaping anything in `src/data/resum
 ## Overview
 
 `src/data/resume.json` is the single source of truth for a resume that renders through
-**four independent pipelines**:
+**three independent pipelines**:
 
 | Target | Entry point | Failure mode when a field is missed |
 |---|---|---|
 | React (screen) | `src/components/*` mounted in `src/App.tsx` | visible immediately |
 | PDF | `src/pdf/ResumePDF.tsx` | field silently absent from the download |
 | DOCX | `src/docx/ResumeDocx.ts` | field silently absent from the download |
-| Angular | `src/angular/components/*` | field silently absent from `/angular-version` |
 
-Only the first is visible while you work. The other three render correctly, pass their
+Only the first is visible while you work. The other two render correctly, pass their
 tests, build clean, and quietly drop your new field — because **no test asserts that a
 key in `resume.json` reaches any particular target**. Nothing is red. The data is just
 gone.
@@ -47,9 +46,7 @@ Work top to bottom. Each step is a real file, not a category.
    **not** `src/styles/tokens.css`.
 8. **`src/docx/ResumeDocx.ts`** — Word rendering. Structurally unlike the PDF: paragraph
    and run builders, not components.
-9. **`src/angular/components/<section>.component.ts`** + `.css` — the React-free mirror.
-   Co-locate its `.test.ts` too.
-10. **Tests** — a sibling test per file touched, plus register the new key in
+9. **Tests** — a sibling test per file touched, plus register the new key in
     `src/data/resumeCoverage.test.ts` (below).
 
 ## The Coverage Test Is the Backstop
@@ -91,7 +88,7 @@ tying the employment colors to their print counterparts — respect it.
 ```bash
 bun run test           # includes the coverage test
 bun typecheck          # ambient types reach all three tsconfig projects
-bun run build          # also runs assert:no-react over the Angular entry
+bun run build          # production build
 ```
 
 Then look at the actual artifacts — the tests prove a key is *referenced*, not that it
@@ -105,9 +102,8 @@ bun dev                # screen; add ?sky=day for a stable background
 
 | Thought | Reality |
 |---|---|
-| "It shows up on the page, I'm done" | Screen is 1 of 4 targets. Check PDF, DOCX, Angular. |
+| "It shows up on the page, I'm done" | Screen is 1 of 3 targets. Check PDF and DOCX. |
 | "Tests pass, so every target has it" | Without the coverage test, nothing asserts that. That's the trap. |
-| "The Angular version is a demo, it can lag" | It ships at `/angular-version` and is build-gated by `assert:no-react`. Keep it level. |
 | "I'll add a `StoreState` field" | There is no `StoreState`. The type is `ResumeStore` in `global.d.ts`. |
 | "I'll format the date inline in the PDF too" | Put it in `src/utils/` and import it in all four. See `employmentParts`. |
 | "Print can reuse `--accent` from `tokens.css`" | Print reads `src/theme/tokens.ts`. CSS custom properties don't exist in `@react-pdf` or `docx`. |
@@ -125,7 +121,6 @@ bun dev                # screen; add ?sky=day for a stable background
 - [ ] mounted in `App.tsx` with contiguous `index`
 - [ ] rendered in `src/pdf/ResumePDF.tsx`
 - [ ] rendered in `src/docx/ResumeDocx.ts`
-- [ ] rendered in `src/angular/components/` + sibling test
 - [ ] shared formatting extracted to `src/utils/` and used by all four
 - [ ] key registered in `src/data/resumeCoverage.test.ts` (rendered, or omitted with a reason)
 - [ ] `bun run test`, `bun typecheck`, `bun run build` all pass
