@@ -1,5 +1,4 @@
-const PERIOD_PATTERN =
-  /^(\d{1,2})\/(\d{4})\s*-\s*(?:(present)|(\d{1,2})\/(\d{4}))$/i
+import { parsePeriod } from "@utils/period"
 
 export type PeriodBounds = {
   // Fractional years; `end` is exclusive so a one-month stint has width.
@@ -17,14 +16,13 @@ export function periodBounds({
   period: string
   now?: Date
 }): PeriodBounds | null {
-  const match = period.trim().match(PERIOD_PATTERN)
-  if (!match) return null
-  const [, startMonth, startYear, present, endMonth, endYear] = match
+  const parsed = parsePeriod({ period, now })
+  if (!parsed) return null
 
-  const start = Number(startYear) + (Number(startMonth) - 1) / 12
-  const end = present
-    ? now.getFullYear() + (now.getMonth() + 1) / 12
-    : Number(endYear) + Number(endMonth) / 12
+  // Convert month indexes (0-indexed months) to fractional years
+  // The end index is inclusive, so we add 1 to make it exclusive
+  const start = parsed.start / 12
+  const end = (parsed.end + 1) / 12
 
   return end > start ? { start, end } : null
 }
