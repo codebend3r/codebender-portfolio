@@ -9,6 +9,7 @@ export default defineConfig({
       "@App": path.resolve(import.meta.dirname, "src/App.tsx"),
       "@app": path.resolve(import.meta.dirname, "src"),
       "@assets": path.resolve(import.meta.dirname, "src/assets"),
+      "@chat": path.resolve(import.meta.dirname, "src/chat"),
       "@components": path.resolve(import.meta.dirname, "src/components"),
       "@data": path.resolve(import.meta.dirname, "src/data"),
       "@docx": path.resolve(import.meta.dirname, "src/docx"),
@@ -35,6 +36,7 @@ export default defineConfig({
     env: {
       VITE_SUPABASE_URL: "",
       VITE_SUPABASE_ANON_KEY: "",
+      VITE_CHAT_ENABLED: "",
     },
     // On CI's low-core runners, Vitest's CPU-based default collapses to a
     // single worker, which serializes all 80 files into one process and lets

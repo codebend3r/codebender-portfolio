@@ -49,6 +49,7 @@ export default defineConfig({
       "@App": path.resolve(import.meta.dirname, "src/App.tsx"),
       "@app": path.resolve(import.meta.dirname, "src"),
       "@assets": path.resolve(import.meta.dirname, "src/assets"),
+      "@chat": path.resolve(import.meta.dirname, "src/chat"),
       "@components": path.resolve(import.meta.dirname, "src/components"),
       "@data": path.resolve(import.meta.dirname, "src/data"),
       "@docx": path.resolve(import.meta.dirname, "src/docx"),

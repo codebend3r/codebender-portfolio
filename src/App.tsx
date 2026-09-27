@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useState } from "react"
 
+import { ChatLauncher } from "@chat/ChatLauncher"
+
 import { AppHeader } from "@components/AppHeader"
 import { Awards } from "@components/Awards"
 import { Codebender } from "@components/Codebender"
@@ -68,6 +70,7 @@ export default function App() {
     <>
       <Sky />
       <Weather />
+      <ChatLauncher />
       <SectionNav />
       <div id="resume-root" className={styles.resumeRoot}>
         <AppHeader
