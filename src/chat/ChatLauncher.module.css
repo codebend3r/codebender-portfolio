@@ -1,0 +1,48 @@
+.launcher {
+  position: fixed;
+  right: 1.5rem;
+  bottom: 1.5rem;
+  z-index: 3;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  background: var(--panel-overlay);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent);
+  border-radius: var(--radius-pill);
+  padding: var(--space-2) var(--space-4);
+  color: var(--text);
+  font-size: 0.9375rem;
+  box-shadow: var(--shadow);
+  transition: border-color 0.2s ease;
+}
+
+.launcher:hover {
+  border-color: color-mix(in srgb, var(--accent) 70%, transparent);
+}
+
+.launcher:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+/* `.launcher`'s own `display` would otherwise beat the UA stylesheet's
+   `[hidden] { display: none }` (author rules win regardless of matching
+   specificity), so restate it here with the attribute selector added. */
+.launcher[hidden] {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .launcher {
+    transition: none;
+  }
+}
+
+.avatar {
+  width: 1.75rem;
+  height: 1.75rem;
+  color: var(--accent);
+  flex-shrink: 0;
+}
