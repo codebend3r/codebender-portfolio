@@ -1,0 +1,21 @@
+# Git hooks, installed by `lefthook install` via the `prepare` script.
+# `piped: true` runs jobs in order and stops at the first failure.
+# https://lefthook.dev/configuration/
+
+pre-commit:
+  piped: true
+  jobs:
+    - name: format staged
+      run: bun run format:staged
+    - name: typecheck
+      run: bun run typecheck
+    - name: test
+      run: bun run test
+
+pre-push:
+  piped: true
+  jobs:
+    - name: fetch and prune
+      run: git fetch -p
+    - name: recent commits
+      run: git --no-pager log --decorate --oneline -n 10

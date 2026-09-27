@@ -117,7 +117,7 @@ Each work experience entry also shows a computed, human-readable duration (e.g. 
 | **Format**          | Oxfmt (Rust)                                      | `.oxfmtrc.json`; formats JS/TS/JSON/YAML/Markdown/CSS and sorts imports — replaces Prettier       |
 | **CSS lint**        | Gale (Stylelint-compatible, Rust)                 | `.stylelintrc.json`; extends `stylelint-config-standard` over `src/**/*.css`                      |
 | **Type checking**   | `tsgo --noEmit` (`@typescript/native-preview`)    | Go port of `tsc`; runs on every commit                                                            |
-| **Git hooks**       | Husky + lint-staged                               | `pre-commit`: lint-staged (format + lint staged files) → typecheck → test                         |
+| **Git hooks**       | Lefthook + lint-staged                            | `lefthook.yml`; `pre-commit`: lint-staged (format + lint staged files) → typecheck → test         |
 | **Package manager** | Bun                                               | `packageManager` field pinned in `package.json`                                                   |
 | **Deploy**          | Netlify                                           | Project: [`codebend3r`](https://app.netlify.com/projects/codebend3r)                              |
 
@@ -233,10 +233,12 @@ Multi-step scripts (`build`, `dev`, `system-check`) chain their steps with `bun 
 
 ## Git hooks
 
-Husky runs on every commit and push:
+[Lefthook](https://lefthook.dev) runs on every commit and push. Hooks are declared in `lefthook.yml` and installed into `.git/hooks` by the `prepare` script on `bun install`. Each hook is `piped`, so jobs run in order and stop at the first failure.
 
 - **pre-commit** — `format:staged` (lint-staged) → `typecheck` → `test`. lint-staged runs Oxfmt and `oxlint --fix` over staged JS/TS/JSON and `gale --fix` over staged CSS, then re-stages what it rewrote, so formatting fixes itself instead of failing the commit. The full-repo `lint:ts` / `lint:css` gate still runs in CI and in `bun system-check`. The commit fails if any step fails.
-- **pre-push** — `bun run build`, then prints the last 10 commits as a sanity check. Push fails if the build fails, so deps must be installed (`bun install`) before pushing.
+- **pre-push** — `git fetch -p` to prune deleted remote branches, then prints the last 10 commits as a sanity check.
+
+Skip hooks for a single command with `LEFTHOOK=0 git commit ...`.
 
 ---
 

@@ -23,10 +23,10 @@ Script names drift. When this list disagrees with `"scripts"` in `package.json`,
 
 ### Git hooks
 
-Husky runs on every commit and push:
+Lefthook (`lefthook.yml`) runs on every commit and push. The `prepare` script runs `lefthook install --reset-hooks-path` on `bun install`, which writes the hooks into `.git/hooks` and unsets any `core.hooksPath` override (Husky pointed it at `.husky/_`). Both hooks are `piped`: jobs run in order and stop at the first failure.
 
-- **pre-commit** (`.husky/pre-commit`): `format:staged` → `typecheck` → `test`. lint-staged formats and auto-fixes only the staged files and re-stages them; the full-repo `lint:ts` / `lint:css` gate runs in CI and `bun system-check`. The commit will fail if any step fails.
-- **pre-push** (`.husky/pre-push`): `bun run build`, then prints the last 10 commits.
+- **pre-commit**: `format:staged` → `typecheck` → `test`. lint-staged formats and auto-fixes only the staged files and re-stages them; the full-repo `lint:ts` / `lint:css` gate runs in CI and `bun system-check`. The commit will fail if any step fails.
+- **pre-push**: `git fetch -p`, then prints the last 10 commits.
 
 ## Architecture
 

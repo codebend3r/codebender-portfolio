@@ -71,7 +71,7 @@ Not:
 
 ### 4. Backtick file names, paths, functions, identifiers, symbols, variables
 
-Anything that names a code artifact gets backticks — in the subject **and** body. Examples: `` `resume.json` ``, `` `useStore` ``, `` `Header.tsx` ``, `` `src/state/useStore.ts` ``, `` `@components/*` ``, `` `bun run build` ``, `` `--coverage` ``, `` `tsconfig.json` ``, `` `.husky/pre-commit` ``.
+Anything that names a code artifact gets backticks — in the subject **and** body. Examples: `` `resume.json` ``, `` `useStore` ``, `` `Header.tsx` ``, `` `src/state/useStore.ts` ``, `` `@components/*` ``, `` `bun run build` ``, `` `--coverage` ``, `` `tsconfig.json` ``, `` `lefthook.yml` ``.
 
 This applies to: file names, paths, function/method/hook names, type/component names, env vars, package names, CLI commands, config keys, path aliases, npm/bun script names, CSS variables, and any literal code token.
 
