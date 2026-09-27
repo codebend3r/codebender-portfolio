@@ -21,7 +21,14 @@ export const config: Config = {
   rateLimit: { windowLimit: 10, windowSize: 60, aggregateBy: ["ip", "domain"] },
 }
 
-const CHAT_MODEL: Anthropic.Model = "claude-opus-5"
+// claude-opus-5 was the spec's original choice, but manual testing against
+// the real API showed it roughly 10x slower than claude-sonnet-5 on trivial
+// replies (12.3s vs 1.1s first byte) and outright timing out (~33s) on
+// prompts that trigger a decline (off-topic requests, prompt injection) —
+// exactly the kind of message this bot needs to handle reliably. Sonnet
+// answered every manual test case correctly and quickly; switched for
+// reliability, not cost.
+const CHAT_MODEL: Anthropic.Model = "claude-sonnet-5"
 const MAX_TOKENS = 2_000
 
 function json(status: number, body: { error: string }): Response {
