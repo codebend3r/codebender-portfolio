@@ -1,84 +1,60 @@
 import raw from "@data/recruiterNotes.json"
 
-type RecruiterNotes = {
-  overlaps: Array<{
-    companies: [string, string]
-    note: string
-  }>
-  facts: Array<{
-    topic: string
-    answer: string
-  }>
+type RecruiterOverlapNote = {
+  companies: [string, string]
+  note: string
 }
 
-type RawRecruiterNotes = unknown
+type RecruiterFact = {
+  topic: string
+  answer: string
+}
+
+type RecruiterNotes = {
+  overlaps: RecruiterOverlapNote[]
+  facts: RecruiterFact[]
+}
+
+function isOverlapEntry(value: unknown): value is RecruiterOverlapNote {
+  if (typeof value !== "object" || value === null) return false
+  if (!("companies" in value) || !("note" in value)) return false
+
+  const { companies, note } = value
+  if (
+    !Array.isArray(companies) ||
+    companies.length !== 2 ||
+    !companies.every((company: unknown) => typeof company === "string")
+  ) {
+    return false
+  }
+  return typeof note === "string"
+}
+
+function isFactEntry(value: unknown): value is RecruiterFact {
+  if (typeof value !== "object" || value === null) return false
+  if (!("topic" in value) || !("answer" in value)) return false
+
+  const { topic, answer } = value
+  return typeof topic === "string" && typeof answer === "string"
+}
 
 // Narrows JSON-sourced notes to the literal shape without casts
-export const isRecruiterNotes = (
-  value: RawRecruiterNotes
-): value is RecruiterNotes => {
+export const isRecruiterNotes = (value: unknown): value is RecruiterNotes => {
   if (typeof value !== "object" || value === null) return false
+  if (!("overlaps" in value) || !Array.isArray(value.overlaps)) return false
+  if (!value.overlaps.every(isOverlapEntry)) return false
+  if (!("facts" in value) || !Array.isArray(value.facts)) return false
+  if (!value.facts.every(isFactEntry)) return false
 
-  // Check overlaps
-  if (!("overlaps" in value)) return false
-  if (!Array.isArray(value.overlaps)) return false
-  if (
-    !value.overlaps.every((item: unknown) => {
-      if (typeof item !== "object" || item === null) return false
-      if (!("companies" in item) || !("note" in item)) return false
-
-      // companies must be an array of exactly 2 strings
-      if (
-        !Array.isArray(item.companies) ||
-        item.companies.length !== 2 ||
-        !item.companies.every((c: unknown) => typeof c === "string")
-      ) {
-        return false
-      }
-
-      // note must be a string
-      if (typeof item.note !== "string") return false
-
-      return true
-    })
-  ) {
-    return false
-  }
-
-  // Check facts
-  if (!("facts" in value)) return false
-  if (!Array.isArray(value.facts)) return false
-  if (
-    !value.facts.every((item: unknown) => {
-      if (typeof item !== "object" || item === null) return false
-      if (!("topic" in item) || !("answer" in item)) return false
-
-      // topic and answer must be strings
-      if (typeof item.topic !== "string" || typeof item.answer !== "string") {
-        return false
-      }
-
-      return true
-    })
-  ) {
-    return false
-  }
-
-  // Ensure only overlaps and facts keys are present
+  // Reject any shape carrying more than these two known keys.
   const keys = Object.keys(value)
-  if (
-    keys.length !== 2 ||
-    !keys.includes("overlaps") ||
-    !keys.includes("facts")
-  ) {
-    return false
-  }
-
-  return true
+  return (
+    keys.length === 2 && keys.includes("overlaps") && keys.includes("facts")
+  )
 }
 
-export const recruiterNotes: RecruiterNotes = isRecruiterNotes(raw)
-  ? raw
-  : (() => {
-      throw new Error("recruiterNotes.json failed validation")
-    })()
+if (!isRecruiterNotes(raw)) {
+  throw new Error("recruiterNotes.json failed validation")
+}
+
+export const recruiterNotes: RecruiterNotes = raw
