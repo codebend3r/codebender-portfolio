@@ -15,7 +15,6 @@ function baseChat(overrides: Partial<UseChatResult> = {}): UseChatResult {
   return {
     status: "idle",
     messages: [],
-    errorMessage: null,
     errorKind: null,
     send: vi.fn().mockResolvedValue(undefined),
     stop: vi.fn(),
@@ -246,16 +245,13 @@ describe("ChatPanel", () => {
     ["offline" as const, "You're offline."],
     ["generic" as const, "That answer didn't come through."],
   ])("shows the right alert copy for %s", (kind, expectedBold) => {
-    chatState = baseChat({ errorMessage: "irrelevant prose", errorKind: kind })
+    chatState = baseChat({ errorKind: kind })
     render(<Harness />)
     expect(screen.getByRole("alert")).toHaveTextContent(expectedBold)
   })
 
   it("shows Email CJ / Copy email actions on the limit alert", () => {
-    chatState = baseChat({
-      errorMessage: "You've reached today's question limit. Reach CJ directly.",
-      errorKind: "limit",
-    })
+    chatState = baseChat({ errorKind: "limit" })
     render(<Harness />)
     expect(screen.getByRole("link", { name: "Email CJ" })).toHaveAttribute(
       "href",
@@ -267,10 +263,7 @@ describe("ChatPanel", () => {
   })
 
   it("shows a Try again action on the generic alert that retries", async () => {
-    chatState = baseChat({
-      errorMessage: "That message couldn't be sent.",
-      errorKind: "generic",
-    })
+    chatState = baseChat({ errorKind: "generic" })
     const user = userEvent.setup()
     render(<Harness />)
     await user.click(screen.getByRole("button", { name: "Try again" }))

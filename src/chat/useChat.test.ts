@@ -97,7 +97,7 @@ describe("useChat", () => {
     const { result } = renderHook(() => useChat())
     expect(result.current.status).toBe("idle")
     expect(result.current.messages).toEqual([])
-    expect(result.current.errorMessage).toBeNull()
+    expect(result.current.errorKind).toBeNull()
   })
 
   it("streams deltas and ends done on the happy path", async () => {
@@ -111,7 +111,7 @@ describe("useChat", () => {
     await act(() => result.current.send({ text: "Tell me about Varicent" }))
 
     expect(result.current.status).toBe("idle")
-    expect(result.current.errorMessage).toBeNull()
+    expect(result.current.errorKind).toBeNull()
     const user = result.current.messages.find((m) => m.role === "user")
     expect(user).toMatchObject({
       status: "sent",
@@ -135,30 +135,21 @@ describe("useChat", () => {
   })
 
   it.each([
-    [400, "That message couldn't be sent."],
-    [
-      429,
-      "You've reached today's question limit. Reach CJ directly at cj.rivas.dev@gmail.com.",
-    ],
-    [
-      503,
-      "The assistant is resting for today. Reach CJ directly at cj.rivas.dev@gmail.com.",
-    ],
-  ])(
-    "maps a %i response to its wire-protocol message",
-    async (status, message) => {
-      mockErrorFetch(status)
-      const { result } = renderHook(() => useChat())
-      await act(() => result.current.send({ text: "hello" }))
+    [400, "generic"],
+    [429, "limit"],
+    [503, "resting"],
+  ] as const)("maps a %i response to its error kind", async (status, kind) => {
+    mockErrorFetch(status)
+    const { result } = renderHook(() => useChat())
+    await act(() => result.current.send({ text: "hello" }))
 
-      expect(result.current.status).toBe("error")
-      expect(result.current.errorMessage).toBe(message)
-      // The question did reach the server; it's not retryable-as-failed.
-      const user = result.current.messages.find((m) => m.role === "user")
-      expect(user?.status).toBe("sent")
-      expect(assistantOf(result.current.messages)).toBeUndefined()
-    }
-  )
+    expect(result.current.status).toBe("error")
+    expect(result.current.errorKind).toBe(kind)
+    // The question did reach the server; it's not retryable-as-failed.
+    const user = result.current.messages.find((m) => m.role === "user")
+    expect(user?.status).toBe("sent")
+    expect(assistantOf(result.current.messages)).toBeUndefined()
+  })
 
   it("keeps partial text and records the message when a stream error event arrives", async () => {
     mockStreamFetch([
@@ -174,7 +165,7 @@ describe("useChat", () => {
     expect(assistant?.errorMessage).toBe("upstream fell over")
     // A mid-stream error is recorded on the message, not as a top-level error.
     expect(result.current.status).toBe("idle")
-    expect(result.current.errorMessage).toBeNull()
+    expect(result.current.errorKind).toBeNull()
   })
 
   it("marks the user message failed when the fetch itself rejects (offline)", async () => {
@@ -183,7 +174,7 @@ describe("useChat", () => {
     await act(() => result.current.send({ text: "hi" }))
 
     expect(result.current.status).toBe("error")
-    expect(result.current.errorMessage).toMatch(/offline/i)
+    expect(result.current.errorKind).toBe("offline")
     const user = result.current.messages.find((m) => m.role === "user")
     expect(user?.status).toBe("failed")
     expect(assistantOf(result.current.messages)).toBeUndefined()
@@ -253,7 +244,7 @@ describe("useChat", () => {
     act(() => result.current.reset())
     expect(result.current.messages).toEqual([])
     expect(result.current.status).toBe("idle")
-    expect(result.current.errorMessage).toBeNull()
+    expect(result.current.errorKind).toBeNull()
   })
 
   it("retry() resends the last user message, replacing what followed it", async () => {

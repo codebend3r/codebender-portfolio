@@ -46,11 +46,11 @@ export type UseChatResult = {
   status: ChatStatus
   messages: ChatMessage[]
   // Set when `status` is "error": a top-level failure before any answer
-  // streamed (non-2xx response, or the fetch itself rejected). A stream
-  // `error` event, by contrast, is recorded on the assistant message itself
-  // (see `ChatAssistantMessage.errorMessage`) and does not set either of
-  // these two fields.
-  errorMessage: string | null
+  // streamed (non-2xx response, or the fetch itself rejected). Only
+  // classifies *which* alert to show — `Composer.tsx`'s `ALERT_COPY` is the
+  // single source of truth for the actual user-facing text per kind. A
+  // stream `error` event, by contrast, is recorded on the assistant message
+  // itself (see `ChatAssistantMessage.errorMessage`) and does not set this.
   errorKind: ChatErrorKind | null
   send: (args: { text: string }) => Promise<void>
   // Aborts the in-flight request, if any; the streaming assistant message is
@@ -67,41 +67,19 @@ function mintId(): string {
   return crypto.randomUUID()
 }
 
-// Maps a non-2xx status to the copy from the design spec's wire-protocol
-// table (400/429/503) and its `ChatErrorKind`; anything else falls back to
-// the 400 copy/kind, since it is not a status `parseChatRequest`/the usage
-// gate would ever produce.
-function alertForStatus(status: number): {
-  message: string
-  kind: ChatErrorKind
-} {
-  if (status === 429) {
-    return {
-      message:
-        "You've reached today's question limit. Reach CJ directly at cj.rivas.dev@gmail.com.",
-      kind: "limit",
-    }
-  }
-  if (status === 503) {
-    return {
-      message:
-        "The assistant is resting for today. Reach CJ directly at cj.rivas.dev@gmail.com.",
-      kind: "resting",
-    }
-  }
-  return { message: "That message couldn't be sent.", kind: "generic" }
+// Maps a non-2xx status to its `ChatErrorKind`, per the design spec's
+// wire-protocol table (400/429/503); anything else falls back to the 400
+// kind, since it is not a status `parseChatRequest`/the usage gate would
+// ever produce.
+function errorKindForStatus(status: number): ChatErrorKind {
+  if (status === 429) return "limit"
+  if (status === 503) return "resting"
+  return "generic"
 }
 
-const OFFLINE_ALERT: { message: string; kind: ChatErrorKind } = {
-  message:
-    "You're offline. Your question is still in the box; send it again when you're back.",
-  kind: "offline",
-}
-
-const STREAM_ENDED_ALERT: { message: string; kind: ChatErrorKind } = {
-  message: "That answer didn't come through.",
-  kind: "generic",
-}
+// Shown on the assistant message itself when a stream ends without a
+// terminal `done`/`error` event.
+const STREAM_ENDED_MESSAGE = "That answer didn't come through."
 
 function toWireMessages(
   messages: ChatMessage[]
@@ -117,17 +95,8 @@ function toWireMessages(
 export function useChat(): UseChatResult {
   const [status, setStatus] = useState<ChatStatus>("idle")
   const [messages, setMessages] = useState<ChatMessage[]>([])
-  const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const [errorKind, setErrorKind] = useState<ChatErrorKind | null>(null)
   const abortRef = useRef<AbortController | null>(null)
-
-  const setAlert = useCallback(
-    (alert: { message: string; kind: ChatErrorKind } | null) => {
-      setErrorMessage(alert?.message ?? null)
-      setErrorKind(alert?.kind ?? null)
-    },
-    []
-  )
 
   const updateAssistant = useCallback(
     (
@@ -181,7 +150,7 @@ export function useChat(): UseChatResult {
 
       setMessages([...history, userMessage, assistantMessage])
       setStatus("streaming")
-      setAlert(null)
+      setErrorKind(null)
 
       const controller = new AbortController()
       abortRef.current = controller
@@ -199,14 +168,14 @@ export function useChat(): UseChatResult {
         if (!response.ok) {
           dropMessage(assistantId)
           setStatus("error")
-          setAlert(alertForStatus(response.status))
+          setErrorKind(errorKindForStatus(response.status))
           return
         }
 
         if (!response.body) {
           dropMessage(assistantId)
           setStatus("error")
-          setAlert(STREAM_ENDED_ALERT)
+          setErrorKind("generic")
           return
         }
 
@@ -257,7 +226,7 @@ export function useChat(): UseChatResult {
               ? {
                   ...message,
                   status: "error",
-                  errorMessage: STREAM_ENDED_ALERT.message,
+                  errorMessage: STREAM_ENDED_MESSAGE,
                 }
               : message
           )
@@ -277,12 +246,12 @@ export function useChat(): UseChatResult {
         markUserFailed(userId)
         dropMessage(assistantId)
         setStatus("error")
-        setAlert(OFFLINE_ALERT)
+        setErrorKind("offline")
       } finally {
         abortRef.current = null
       }
     },
-    [dropMessage, markUserFailed, setAlert, updateAssistant]
+    [dropMessage, markUserFailed, updateAssistant]
   )
 
   const send = useCallback(
@@ -317,13 +286,12 @@ export function useChat(): UseChatResult {
     abortRef.current = null
     setMessages([])
     setStatus("idle")
-    setAlert(null)
-  }, [setAlert])
+    setErrorKind(null)
+  }, [])
 
   return {
     status,
     messages,
-    errorMessage,
     errorKind,
     send,
     stop,
