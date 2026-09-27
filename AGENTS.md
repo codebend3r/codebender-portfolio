@@ -9,14 +9,15 @@ Package manager is **bun** (see `packageManager` in `package.json`). Use `bun <s
 - `bun dev` — starts the Vite dev server
 - `bun run build` — production build (note: `bun build` invokes Bun's bundler, not Vite; always use `bun run build`)
 - `bun preview` — preview the built output
-- `bun lint:ts` / `bun lint:ts:fix` — Oxlint (`.oxlintrc.json`), including type-aware rules
+- `bun lint`: `lint:ts` → `lint:css` → `lint:actions`, in sequence via `bun run --sequential`
+- `bun lint:ts` / `bun lint:ts:fix`: Oxlint (`.oxlintrc.json`); runs without `--type-aware`, so the type-aware rules in the config are dormant
 - `bun lint:css` / `bun lint:css:fix` — Gale (`@codebend3r/gale`, a Stylelint-compatible Rust linter) over `src/**/*.css`; reads `.stylelintrc.json`, which extends `stylelint-config-standard`
 - `bun lint:actions` — actionlint (`github-actionlint`, the official `rhysd/actionlint` binary) over `.github/workflows`; no config file, defaults only
 - `bun spellcheck` / `bun spellcheck:fix` — typos (`@ocular-d/typos-bin`) over the whole repo; it skips binaries and `.gitignore`d paths, and `_typos.toml` holds the exclude list and word allowlist
 - `bun format` / `bun format:check` — Oxfmt write / check (`.oxfmtrc.json`)
 - `bun format:staged`: lint-staged (`lint-staged.config.ts`, `--concurrent false`): `oxlint --fix` on staged JS/TS, `gale --fix` on staged CSS, Oxfmt on every type `format:check` covers, actionlint on staged workflows, typos on everything staged
 - `bun typecheck` — `tsgo --noEmit` across all three tsconfig projects (root, `tsconfig.node.json`, `netlify/functions`)
-- `bun test` / `bun test:watch` / `bun test:coverage` — Vitest
+- `bun run test` / `bun test:watch` / `bun test:coverage`: Vitest (bare `bun test` starts Bun's own runner, not Vitest)
 - `bun system-check` — `format:check` → `typecheck` → `lint:ts` → `lint:css` → `lint:actions` → `spellcheck` → `test` → `build`, in sequence via `bun run --sequential`
 
 Script names drift. When this list disagrees with `"scripts"` in `package.json`, `package.json` wins and this list gets fixed in the same change.

@@ -1,6 +1,6 @@
 # CJ Rivas — Portfolio
 
-> A single-page resume & portfolio for a Senior Frontend Engineer + Architect. Built as a showcase of modern React patterns, with a living, time-of-day sky, a live weather overlay driven by the visitor's location, a native PDF export pipeline, and a full drag-and-drop resume editor with saved variations.
+> A single-page resume & portfolio for a Senior Frontend Engineer + Architect. Built as a showcase of modern React patterns, with a living, time-of-day sky, a live weather overlay driven by the visitor's location, native PDF and Word export, a full drag-and-drop resume editor with saved variations, and a flow that tailors the resume to a job posting.
 
 ![CJ Rivas portfolio at day](docs/screenshots/hero-day.png)
 
@@ -18,7 +18,7 @@ The background ambient palette changes based on the visitor's local hour. Four d
 
 - 9 cloud shapes pulled from a single 3×3 PNG sprite sheet (`src/assets/clouds.png`), randomized across two parallax layers.
 - Each cloud has an independent drift animation (`@keyframes cloudDrift`) and reacts to page scroll via `requestAnimationFrame` for buttery parallax.
-- The sun and moon are also rendered from the same sprite sheet, with per-sky positioning.
+- The sun and moon come from their own 3×3 sprite sheets (`src/assets/sun.png`, `src/assets/moon.png`), with a different sun cell and position per sky.
 - Night swaps the clouds layer for a three-layer parallax `<Starfield />` (160 + 80 + 30 stars, each layer scrolling at a different speed) and a soft glowing moon.
 
 Force a state with `?sky=day|dawn|dusk|night` — handy for screenshots and demos.
@@ -41,8 +41,8 @@ A live indicator shows the current local date, time, weather emoji, and temperat
 
 ![sticky header](docs/screenshots/sticky-header.png)
 
-- The `AppHeader` uses `IntersectionObserver` on a sentinel `<div>` to detect when it sticks to the top of the viewport, then `data-stuck` triggers a compact layout (smaller logo + title, tightened spacing).
-- Clock ticks once per minute via `setInterval`, weather fetched once per session.
+- The `AppHeader` bar is `position: sticky`. A CSS scroll-driven animation (`animation-timeline: scroll(root)`) shrinks it into a compact layout (smaller logo and title, tighter padding) between 100px and 150px of scroll, with no JS. Narrow viewports, `prefers-reduced-motion`, and browsers without scroll-driven animations keep the full-size header.
+- Clock ticks once per minute via `setInterval`; weather is fetched once on page load, not polled.
 
 ### Section navigation
 
@@ -64,20 +64,29 @@ A Claude-powered chatbot (`/api/chat`) answers questions from recruiters about C
 
 The showcase splits by one rule — entries with a `repo` are side projects, entries without are client engagements. Side projects render in an amber-tinted Codebender Inc. section (practice intro, four "how it works" pillars, project cards with Live/Code links); client work renders as a grid of flat image-led cards (screenshot, role, period, description). Both source from the `showcase` array in `resume.json`.
 
-### One-click PDF export
+### One-click PDF and Word export
 
-A "Download CV" button generates a single-page PDF entirely client-side using [`@react-pdf/renderer`](https://react-pdf.org): `src/pdf/ResumePDF.tsx` mirrors the on-page layout with a dedicated set of design tokens (`src/pdf/tokens.ts`), and `src/pdf/fonts.ts` embeds Source Serif 4 (regular/italic/semibold/bold) via `Font.register` so the PDF's typography matches the page. `@react-pdf/renderer` and its `fontkit` dependency are dynamically imported (`import("@pdf")`) so they never ship in the main bundle — only users who click download (or generate a PDF from the editor) pay for that chunk.
+The header's **PDF CV** and **Word CV** buttons build the resume entirely client-side. Both generators are dynamically imported, so they never ship in the main bundle; only users who download (or export from the editor) pay for those chunks.
+
+- **PDF** uses [`@react-pdf/renderer`](https://react-pdf.org). `src/pdf/ResumePDF.tsx` mirrors the on-page layout using the print token source `src/theme/tokens.ts`, and `src/pdf/fonts.ts` embeds Source Serif 4 and Source Sans 3 (from `@fontsource`) via `Font.register`. The renderer and its `fontkit` dependency load through `import("@pdf")`.
+- **Word** uses [`docx`](https://docx.js.org). `src/docx/ResumeDocx.ts` builds the document with Source Serif 4 and Source Sans 3 TTFs embedded from `src/docx/fonts/`, loaded through `import("@docx")`.
+- Filenames come from `documentFileName()`: `<name> - <title>.pdf` (or `.docx`).
 
 ### Resume editor & variations
 
 ![resume editor](docs/screenshots/edit-resume.png)
 
-Visiting `/edit-resume` mounts the same component tree in an editing context (`EditProvider`) instead of the read-only page:
+Visiting `/edit-resume` (or `/edit-resume/:id` for a specific variation) mounts the same component tree in an editing context (`EditProvider`) instead of the read-only page. When Supabase is configured, the route sits behind `AuthGate` and the owner signs in at `/login`:
 
 - Every text field becomes an inline, auto-growing `<input>`/`<textarea>` (`EditableText`) that writes straight to the Zustand store via a generic `setPath(path, value)`.
-- Lists — skills, achievements, showcase items, tags — get add/remove buttons and drag-to-reorder handles powered by `@dnd-kit`. The drag machinery is lazy-loaded (`SortableListImpl`) so the public-facing page never downloads it.
-- A **Variations** side panel lets you fork the base resume into named, independently-editable copies persisted to `localStorage` (Zustand `persist` middleware, `src/state/useVariations.ts`). Switch between "Base (original)" and any saved variation, rename or delete variations, and an unsaved-changes guard (`beforeunload`) warns before you navigate away with a dirty edit.
-- "Generate PDF" produces a PDF scoped to whichever variation is currently active, with the filename slugified from the variation's name (e.g. `cj_rivas_backend_leaning.pdf`).
+- Lists (contact entries, skills, work history, showcase items and their tags, awards, languages, education) get add/remove buttons and drag-to-reorder handles powered by `@dnd-kit`. The drag machinery is lazy-loaded (`SortableListImpl`) so the public-facing page never downloads it.
+- A **Variations** side panel lets you fork the base resume into named, independently-editable copies persisted to `localStorage` (Zustand `persist` middleware, `src/state/useVariations.ts`) and, when signed in, synced to a Supabase `resume_variations` table (`src/state/useSync.ts`). Switch between "Base (original)" and any saved variation, rename or delete variations, and an unsaved-changes guard (`beforeunload`) warns before you navigate away with a dirty edit.
+- **Generate PDF** and **Generate Word** export whichever variation is active, named `<name> - <variation name>` (e.g. `CJ Rivas - Backend Leaning.pdf`).
+- A JSON editor (`JsonEditor`) edits the active resume as raw JSON, validated on apply.
+
+### Tailored variations from a job posting
+
+`/generate-proximate` and `/generate-exact` (owner-only, behind `AuthGate`) take a pasted job posting (text, link, or screenshot) and ask Claude to tailor the base resume into a new variation; the base resume is never modified. Proximate mode stays close to the real history, while exact mode rewrites to cover every requirement. The preview highlights every line that differs from the base resume (`DiffContext`) so each change can be reviewed before saving. Generation runs in a Netlify background function (`netlify/functions/generate.mts`) that the client polls through `generate-status`.
 
 ### Data-driven content
 
@@ -102,24 +111,27 @@ Each work experience entry also shows a computed, human-readable duration (e.g. 
 
 ## Tech stack
 
-| Layer               | Choice                                            | Why                                                                                                                           |
-| ------------------- | ------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
-| **Build / dev**     | Vite 8                                            | Instant HMR, native ESM, fast cold starts                                                                                     |
-| **UI framework**    | React 19 + TypeScript 6                           | `useId`, automatic batching, modern types                                                                                     |
-| **State**           | Zustand 5                                         | Tiny, no boilerplate; resume store seeded from JSON, variations store persisted to `localStorage`                             |
-| **Styling**         | CSS Modules + design tokens                       | Scoped class names, no runtime, readable in DevTools (`Header_logo__a3f2`)                                                    |
-| **PDF export**      | `@react-pdf/renderer`                             | Declarative React → PDF, embedded webfonts, runs entirely client-side, lazy-loaded chunk                                      |
-| **Drag & drop**     | `@dnd-kit/core` + `sortable` + `utilities`        | Accessible reordering in the resume editor; lazy-loaded, absent from the public page                                          |
-| **Webfonts**        | `@fontsource/inter`, `@fontsource/source-serif-4` | Self-hosted, no external font requests; Source Serif 4 double-embedded for PDF output                                         |
-| **Weather data**    | Open-Meteo (free, no key)                         | WMO weather codes via `current_weather`                                                                                       |
-| **Testing**         | Vitest 4 + Testing Library + jsdom                | Component + util tests colocated next to source                                                                               |
-| **Lint**            | Oxlint (Rust) + type-aware rules via tsgolint     | `.oxlintrc.json`; replaces ESLint, `typescript-eslint`, `react`, `react-hooks`, `jsx-a11y`                                    |
-| **Format**          | Oxfmt (Rust)                                      | `.oxfmtrc.json`; formats JS/TS/JSON/YAML/Markdown/CSS and sorts imports — replaces Prettier                                   |
-| **CSS lint**        | Gale (Stylelint-compatible, Rust)                 | `.stylelintrc.json`; extends `stylelint-config-standard` over `src/**/*.css`                                                  |
-| **Type checking**   | `tsgo --noEmit` (`@typescript/native-preview`)    | Go port of `tsc`; runs on every commit                                                                                        |
-| **Git hooks**       | Lefthook + lint-staged                            | `lefthook.yml` + `lint-staged.config.ts`; `pre-commit`: lint-staged (fix, format, spellcheck staged files) → typecheck → test |
-| **Package manager** | Bun                                               | `packageManager` field pinned in `package.json`                                                                               |
-| **Deploy**          | Netlify                                           | Project: [`codebend3r`](https://app.netlify.com/projects/codebend3r)                                                          |
+| Layer               | Choice                                            | Why                                                                                                                                         |
+| ------------------- | ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Build / dev**     | Vite 8                                            | Instant HMR, native ESM, fast cold starts                                                                                                   |
+| **UI framework**    | React 19 + TypeScript 6                           | `useId`, automatic batching, modern types                                                                                                   |
+| **State**           | Zustand 5                                         | Tiny, no boilerplate; resume store seeded from JSON, variations store persisted to `localStorage`                                           |
+| **Styling**         | CSS Modules + design tokens                       | Scoped class names, no runtime, readable in DevTools (`Header_logo__a3f2`)                                                                  |
+| **PDF export**      | `@react-pdf/renderer`                             | Declarative React → PDF, embedded webfonts, runs entirely client-side, lazy-loaded chunk                                                    |
+| **Word export**     | `docx`                                            | Builds `.docx` client-side with embedded fonts, lazy-loaded chunk                                                                           |
+| **Drag & drop**     | `@dnd-kit/core` + `sortable` + `utilities`        | Accessible reordering in the resume editor; lazy-loaded, absent from the public page                                                        |
+| **Webfonts**        | Google Fonts + `@fontsource`                      | Instrument Serif, Geist, and Geist Mono on the page (`index.html`); Source Serif 4 and Source Sans 3 files embedded in PDF and Word exports |
+| **Weather data**    | Open-Meteo (free, no key)                         | WMO weather codes via `current_weather`                                                                                                     |
+| **Testing**         | Vitest 5 + Testing Library + jsdom                | Component + util tests colocated next to source                                                                                             |
+| **Lint**            | Oxlint (Rust)                                     | `.oxlintrc.json`; replaces ESLint, `typescript-eslint`, `react`, `react-hooks`, `jsx-a11y`                                                  |
+| **Format**          | Oxfmt (Rust)                                      | `.oxfmtrc.json`; formats JS/TS/JSON/YAML/Markdown/CSS and sorts imports; replaces Prettier                                                  |
+| **CSS lint**        | Gale (Stylelint-compatible, Rust)                 | `.stylelintrc.json`; extends `stylelint-config-standard` over `src/**/*.css`                                                                |
+| **Type checking**   | `tsgo --noEmit` (`@typescript/native-preview`)    | Go port of `tsc`; runs on every commit                                                                                                      |
+| **Git hooks**       | Lefthook + lint-staged                            | `lefthook.yml` + `lint-staged.config.ts`; `pre-commit`: lint-staged (fix, format, spellcheck staged files) → typecheck → test               |
+| **Package manager** | Bun                                               | `packageManager` field pinned in `package.json`                                                                                             |
+| **Auth + sync**     | Supabase                                          | Owner sign-in gates the editor and generate routes; variations sync to a `resume_variations` table                                          |
+| **AI tailoring**    | Claude (`@anthropic-ai/sdk`) on Netlify Functions | Background function turns a job posting into a tailored resume variation                                                                    |
+| **Deploy**          | Netlify                                           | Project: [`codebend3r`](https://app.netlify.com/projects/codebend3r)                                                                        |
 
 ---
 
@@ -127,64 +139,84 @@ Each work experience entry also shows a computed, human-readable duration (e.g. 
 
 ```
 src/
-├── App.tsx                  ← Composes Sky + Weather + SectionNav + AppHeader + read-only sections
-├── Entry.tsx                ← React root; routes "/edit-resume" → <EditResumeApp />, else <App />
-├── components/              ← Flat directory — each component is a .tsx + .module.css (+ .test.tsx) triple
+├── Entry.tsx                ← React root; mounts <SideMenu /> plus the page for the current route
+├── pageForRoute.tsx         ← Route → page map (paths parsed by utils/routeFor.ts); private pages wrap in <AuthGate />
+├── App.tsx                  ← Public page: Sky + Weather + SectionNav + AppHeader + read-only sections
+├── components/              ← Flat directory; components pair a .tsx with a .module.css (+ .test.tsx)
 │   ├── AppHeader.tsx        ← Sticky bar; mounts <WeatherClock /> + <ThemeToggle /> + PDF/Word download buttons + <Header />
 │   ├── Header.tsx           ← Identity + contact line (email, phone, location, GitHub, LinkedIn)
 │   ├── SectionNav.tsx       ← Floating nav; highlights active section via IntersectionObserver
 │   ├── CareerMap.tsx        ← Three-lane Gantt of the career computed from `period` strings
 │   ├── Codebender.tsx       ← Amber side-project section: pillars + project cards (repo-carrying showcase entries)
 │   ├── ThemeToggle.tsx      ← Light/Dark/Auto segmented control persisted via `useTheme`
-│   ├── Sky.tsx              ← Time-of-day clouds, sun, moon (PNG sprite); swaps to <Starfield /> at night
+│   ├── Sky.tsx              ← Time-of-day clouds, sun, moon (PNG sprites); swaps to <Starfield /> at night
 │   ├── Starfield.tsx        ← Parallax 3-layer night sky (160 + 80 + 30 stars)
 │   ├── Weather.tsx          ← Rain (140 drops) / snow (90 flakes) overlay; pure CSS animation
 │   ├── WeatherClock.tsx     ← Live clock + weather emoji + temperature (ticks every minute)
 │   ├── Section.tsx          ← Shared <section> + <h2> wrapper used by all content sections
-│   ├── Summary.tsx  TechnicalSkills.tsx  WorkExperience.tsx  Showcase.tsx
-│   ├── Awards.tsx  Languages.tsx  Education.tsx  Footer.tsx
-├── edit/                    ← Resume editor, mounted only at /edit-resume
+│   ├── SideMenu.tsx         ← Owner navigation drawer; renders only when signed in
+│   ├── AuthGate.tsx         ← Redirects anonymous visitors away from private routes
+│   ├── LoginPage.tsx        ← Owner sign-in form at /login
+│   ├── DiffContext.tsx      ← Lets sections flag lines that differ from the base resume (generate preview)
+│   ├── Summary.tsx  TechnicalSkills.tsx  SoftSkills.tsx  WorkExperience.tsx  Showcase.tsx
+│   └── Awards.tsx  Languages.tsx  Education.tsx  Footer.tsx
+├── edit/                    ← Resume editor, mounted at /edit-resume
 │   ├── EditResumeApp.tsx    ← Renders the resume tree inside EditProvider; owns variation/session state
-│   ├── EditContext.tsx      ← `editing` flag + `markDirty()`, consumed by every section component
+│   ├── EditContext.tsx      ← `EditProvider` + `useEditing()`: editing flag and `markDirty()`
 │   ├── EditableText.tsx     ← Inline auto-growing input/textarea bound to a store path
-│   ├── VariationsPanel.tsx  ← Create/rename/delete/select variations; Save + Generate PDF actions
+│   ├── EditableSelect.tsx   ← <select> bound to a store path
+│   ├── JsonEditor.tsx       ← Raw JSON view of the active resume, validated before applying
+│   ├── VariationsPanel.tsx  ← Create/rename/delete/select/sync variations; Save + Generate PDF/Word actions
 │   ├── RenameModal.tsx      ← Portal-rendered modal for naming/renaming a variation
+│   ├── useVariationRoute.ts ← Keeps /edit-resume/:id and the selected variation in step
 │   ├── SortableList.tsx     ← Public wrapper; lazy-loads dnd-kit only when editing
 │   ├── SortableListImpl.tsx ← Actual @dnd-kit sortable context (lazy chunk)
 │   └── sortableContext.ts   ← Context bridging the lazy dnd-kit implementation into SortableItem
+├── generate/                ← Job posting → tailored variation, at /generate-proximate and /generate-exact
+│   ├── GenerateApp.tsx      ← Page shell: posting input, then a preview of the result
+│   ├── DropArea.tsx         ← Accepts pasted text, a link, or a screenshot
+│   ├── GeneratePreview.tsx  ← Renders the generated resume inside a DiffProvider
+│   └── useGenerate.ts       ← Starts the background job and polls /generate-status
 ├── pdf/                     ← @react-pdf/renderer document, lazy-loaded via `import("@pdf")`
-│   ├── generatePdf.tsx      ← generateResumePdf(data) → Blob; downloadBlob() triggers the browser download
+│   ├── generatePdf.tsx      ← generateResumePdf(data) → Blob
 │   ├── ResumePDF.tsx        ← React-PDF document mirroring the on-page resume layout
-│   ├── fonts.ts             ← Registers Source Serif 4 weights/styles for @react-pdf/renderer
+│   ├── fonts.ts             ← Registers Source Serif 4 + Source Sans 3 for @react-pdf/renderer
 │   ├── styles.ts            ← @react-pdf/renderer StyleSheet definitions
-│   ├── tokens.ts             ← PDF-specific design tokens (fonts, spacing, colors)
-│   └── index.ts              ← Barrel re-exporting generatePdf's public API
+│   └── index.ts             ← Barrel: generateResumePdf + downloadBlob
+├── docx/                    ← Word export via `docx`, lazy-loaded via `import("@docx")`
+│   ├── generateDocx.ts      ← generateResumeDocx(data) → Blob
+│   ├── ResumeDocx.ts        ← Builds the Word document from resume data
+│   ├── fonts.ts  assets.ts  ← Load the embedded TTFs (fonts/) and the logo
+│   └── index.ts             ← Barrel: generateResumeDocx + downloadBlob
+├── theme/tokens.ts          ← Print/export design tokens (colors, fonts, spacing) shared by PDF and Word
 ├── data/
 │   ├── resume.json          ← Single source of truth for resume content (incl. showcase, skill_descriptions)
-│   └── CJ Rivas - Senior Frontend Engineer.pdf  ← Pre-rendered CV (also produced live via Download CV)
+│   ├── resumeData.ts        ← Typed view of resume.json; guards narrow string fields to literal unions
+│   ├── codebender.ts        ← Screen copy + pillars for the Codebender Inc. section
+│   └── CJ Rivas - Senior Frontend Engineer.pdf  ← Pre-rendered CV
 ├── state/
-│   ├── useStore.ts          ← Zustand store, seeded from resume.json; setPath/reorder + add/remove actions
-│   └── useVariations.ts     ← Zustand store (persisted to localStorage) for named resume variations
+│   ├── useStore.ts          ← Zustand store seeded from resumeData; setPath/reorder + add/remove actions
+│   ├── useVariations.ts     ← Zustand store (persisted to localStorage) for named resume variations
+│   ├── useSync.ts           ← Syncs variations with the Supabase `resume_variations` table
+│   ├── supabase.ts          ← Supabase client; null when the env vars are absent
+│   ├── useAuth.ts           ← Supabase session state
+│   └── useTheme.ts          ← Light/Dark/Auto choice
 ├── styles/
-│   ├── tokens.css           ← :root CSS custom properties (--bg, --accent, --cloud-drift, …)
-│   ├── keyframes.css         ← cloudDrift, rainFall, snowFall, glowPulse
-│   └── global.css            ← resets + @media print rules
-├── sky.ts                    ← getCurrentSky(), applySky() (theme-aware palettes), URL override parsing
-├── weather.ts                ← Open-Meteo fetcher, WMO code mapping, URL override parsing
-├── utils/
-│   ├── dom-utils.ts           ← DOM helpers
-│   ├── normalizeData.ts       ← Migrates legacy resume/variation data shapes on load
-│   ├── setPath.ts              ← Generic immutable nested-path update used by the editor
-│   └── experienceDuration.ts   ← Formats a work-experience period into "N years M months"
-├── types/global.d.ts          ← Ambient types: Data, Experience, Award, Language, Education, Showcase, Variation, ResumeStore
-└── test/                       ← Vitest setup
+│   ├── tokens.css           ← :root CSS custom properties, redefined per theme under data-theme
+│   ├── keyframes.css        ← cloudDrift, rainFall, snowFall, sunGlowPulse, glowPulse
+│   └── global.css           ← resets + @media print rules
+├── sky.ts                   ← getCurrentSky(), applySky() (theme-aware palettes), URL override parsing
+├── weather.ts               ← Open-Meteo fetcher, WMO code mapping, URL override parsing
+├── utils/                   ← Pure helpers (routeFor, setPath, normalizeData, experienceDuration, careerMap, documentFileName, …)
+├── types/                   ← global.d.ts (ambient resume types) + database.types.ts (generated Supabase types)
+└── test/                    ← Vitest setup + shared resume fixture
 ```
 
 ### Path aliases
 
 Configured in **both** `vite.config.ts` (runtime) and `tsconfig.json` (types) — they must stay in sync.
 
-`@App`, `@app`, `@assets/*`, `@chat/*`, `@components/*`, `@data/*`, `@docx/*`, `@edit/*`, `@generate/*`, `@pdf/*`, `@sky`, `@state/*`, `@styles/*`, `@theme/*`, `@utils/*`, `@weather`
+`@App`, `@app/*`, `@assets/*`, `@chat` / `@chat/*`, `@components/*`, `@data/*`, `@docx` / `@docx/*`, `@edit/*`, `@generate/*`, `@pdf` / `@pdf/*`, `@sky`, `@state/*`, `@styles/*`, `@theme/*`, `@utils/*`, `@weather`
 
 ---
 
@@ -197,37 +229,40 @@ bun install
 bun dev          # http://localhost:4242
 ```
 
+The public page needs no configuration. Copy `.env.example` to `.env` to turn on the cloud features: `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` enable owner sign-in and variation sync (without them the editor is open and local-only), and `ANTHROPIC_API_KEY` and `GENERATE_PASSWORD` power the generate functions under `netlify dev`.
+
 ### Demo URLs
 
-| URL                                             | Effect                      |
-| ----------------------------------------------- | --------------------------- |
-| `http://localhost:4242/?sky=night`              | Force night sky + starfield |
-| `http://localhost:4242/?sky=dawn`               | Force dawn palette          |
-| `http://localhost:4242/?weather=rain`           | Force rain overlay          |
-| `http://localhost:4242/?weather=snow`           | Force snow overlay          |
-| `http://localhost:4242/?sky=night&weather=snow` | Combine: snowy night        |
-| `http://localhost:4242/edit-resume`             | Open the resume editor      |
+| URL                                             | Effect                                                                |
+| ----------------------------------------------- | --------------------------------------------------------------------- |
+| `http://localhost:4242/?sky=night`              | Force night sky + starfield                                           |
+| `http://localhost:4242/?sky=dawn`               | Force dawn palette                                                    |
+| `http://localhost:4242/?weather=rain`           | Force rain overlay                                                    |
+| `http://localhost:4242/?weather=snow`           | Force snow overlay                                                    |
+| `http://localhost:4242/?sky=night&weather=snow` | Combine: snowy night                                                  |
+| `http://localhost:4242/edit-resume`             | Open the resume editor (sign-in required when Supabase is configured) |
 
 ---
 
 ## Scripts
 
-| Script                                              | What it does                                                                                                                      |
-| --------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
-| `bun dev`                                           | Vite dev server on port `4242`                                                                                                    |
-| `bun run build`                                     | Production build (note: `bun build` invokes Bun's bundler — always use `bun run build`)                                           |
-| `bun preview`                                       | Preview the built output                                                                                                          |
-| `bun lint:ts` / `bun lint:ts:fix`                   | Oxlint, including type-aware rules                                                                                                |
-| `bun lint:css` / `bun lint:css:fix`                 | Gale (Stylelint-compatible) over `src/**/*.css`                                                                                   |
-| `bun lint:actions`                                  | actionlint over `.github/workflows`                                                                                               |
-| `bun spellcheck` / `bun spellcheck:fix`             | typos over the whole repo; scope and allowlist in `_typos.toml`                                                                   |
-| `bun format:staged`                                 | lint-staged (`lint-staged.config.ts`, run with `--concurrent false`): fixers, Oxfmt, actionlint, and typos over staged files only |
-| `bun format` / `bun format:check`                   | Oxfmt write / check                                                                                                               |
-| `bun typecheck`                                     | tsgo type check (no emit), all three tsconfig projects                                                                            |
-| `bun test` / `bun test:watch` / `bun test:coverage` | Vitest                                                                                                                            |
-| `bun system-check`                                  | `format:check` → `typecheck` → `lint:ts` → `lint:css` → `lint:actions` → `spellcheck` → `test` → `build`                          |
+| Script                                                  | What it does                                                                                                                      |
+| ------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| `bun dev`                                               | Vite dev server on port `4242`                                                                                                    |
+| `bun run build`                                         | Production build (note: `bun build` invokes Bun's bundler, so always use `bun run build`)                                         |
+| `bun preview`                                           | Preview the built output                                                                                                          |
+| `bun lint`                                              | `lint:ts` → `lint:css` → `lint:actions`                                                                                           |
+| `bun lint:ts` / `bun lint:ts:fix`                       | Oxlint (`.oxlintrc.json`); type-aware rules are configured but not run (see Toolchain)                                            |
+| `bun lint:css` / `bun lint:css:fix`                     | Gale (Stylelint-compatible) over `src/**/*.css`                                                                                   |
+| `bun lint:actions`                                      | actionlint over `.github/workflows`                                                                                               |
+| `bun spellcheck` / `bun spellcheck:fix`                 | typos over the whole repo; scope and allowlist in `_typos.toml`                                                                   |
+| `bun format:staged`                                     | lint-staged (`lint-staged.config.ts`, run with `--concurrent false`): fixers, Oxfmt, actionlint, and typos over staged files only |
+| `bun format` / `bun format:check`                       | Oxfmt write / check                                                                                                               |
+| `bun typecheck`                                         | tsgo type check (no emit), all three tsconfig projects                                                                            |
+| `bun run test` / `bun test:watch` / `bun test:coverage` | Vitest (bare `bun test` starts Bun's own test runner instead, so keep the `run`)                                                  |
+| `bun system-check`                                      | `format:check` → `typecheck` → `lint` → `spellcheck` → `test` → `build`                                                           |
 
-Multi-step scripts (`build`, `dev`, `system-check`) chain their steps with `bun run --sequential`; there is no `npm-run-all`.
+`lint` and `system-check` chain their steps with `bun run --sequential`; there is no `npm-run-all`.
 
 ---
 
@@ -245,7 +280,7 @@ Skip hooks for a single command with `LEFTHOOK=0 git commit ...`.
 ## Code style
 
 - No semicolons, double quotes, 2-space indent, `printWidth: 80`, `trailingComma: "es5"`.
-- Import order is enforced by Oxfmt's `sortImports` with custom groups (react first → third-party → `@components`/`@data`/`@edit`/`@pdf`/`@state`/`@styles` → relative). Groups are blank-line separated.
+- Import order is enforced by Oxfmt's `sortImports`: `react` first, then third-party packages, then one group per path alias in the order listed in `sortImports.groups` (`.oxfmtrc.json`). Groups are blank-line separated.
 - Oxlint enforces `typescript/consistent-type-imports` — type-only imports must use `import type`.
 - `_`-prefixed unused vars are ignored.
 
@@ -257,14 +292,14 @@ Lint, format, CSS lint, spellcheck, and type check are all Rust/Go binaries.
 The whole quality gate (`format:check` + `typecheck` + `lint:ts` + `lint:css` +
 `lint:actions` + `spellcheck`) runs in about three seconds.
 
-| Concern    | Tool                           | Config              |
-| ---------- | ------------------------------ | ------------------- |
-| Lint       | `oxlint` (+ `oxlint-tsgolint`) | `.oxlintrc.json`    |
-| Format     | `oxfmt`                        | `.oxfmtrc.json`     |
-| CSS lint   | `gale`                         | `.stylelintrc.json` |
-| Workflows  | `actionlint`                   | defaults            |
-| Spellcheck | `typos`                        | `_typos.toml`       |
-| Type check | `tsgo`                         | `tsconfig*.json`    |
+| Concern    | Tool         | Config              |
+| ---------- | ------------ | ------------------- |
+| Lint       | `oxlint`     | `.oxlintrc.json`    |
+| Format     | `oxfmt`      | `.oxfmtrc.json`     |
+| CSS lint   | `gale`       | `.stylelintrc.json` |
+| Workflows  | `actionlint` | defaults            |
+| Spellcheck | `typos`      | `_typos.toml`       |
+| Type check | `tsgo`       | `tsconfig*.json`    |
 
 Every tool version is pinned exactly; upgrade deliberately, not automatically.
 
@@ -281,16 +316,20 @@ editor integration.
 
 These are not oversights — each one is wrong for this codebase:
 
-| Rule                             | Why it is off                                                                                                                                                                                                                                         |
-| -------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `react/react-compiler`           | Oxlint bundles all 14 React Compiler rules into one, and it false-positives on `useStore.getState()` (Zustand) in 8 components. Per-rule suppression is impossible until Oxc splits them. `react/rules-of-hooks` and `react/exhaustive-deps` stay on. |
-| `typescript/no-misused-promises` | Flags every `onClick={asyncFn}`; React handles async handlers fine.                                                                                                                                                                                   |
-| `typescript/require-await`       | 36 hits, nearly all async test helpers. Noise.                                                                                                                                                                                                        |
-| `property-no-vendor-prefix`      | `-webkit-backdrop-filter` is still required for Safari.                                                                                                                                                                                               |
-| `value-keyword-case`             | Stylelint flags font-family names (`Arial`, `Roboto`) as keywords; lowercasing them is wrong.                                                                                                                                                         |
-| `selector-class-pattern`         | CSS Modules class names are camelCase (`styles.sunDusk`), not kebab-case.                                                                                                                                                                             |
-| `keyframes-name-pattern`         | Keyframe names are camelCase (`cloudDrift`) to match the class names that reference them.                                                                                                                                                             |
+| Rule                             | Why it is off                                                                                                                                                                                                                                     |
+| -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `react/react-compiler`           | Oxlint bundles the React Compiler rules into one, and it false-positives on `useStore.getState()` (Zustand). Per-rule suppression is impossible until Oxc splits them. `react/rules-of-hooks` (error) and `react/exhaustive-deps` (warn) stay on. |
+| `typescript/no-misused-promises` | Flags every `onClick={asyncFn}`; React handles async handlers fine.                                                                                                                                                                               |
+| `typescript/require-await`       | Nearly every hit is an async test helper. Noise.                                                                                                                                                                                                  |
+| `property-no-vendor-prefix`      | `-webkit-backdrop-filter` is still required for Safari.                                                                                                                                                                                           |
+| `value-keyword-case`             | Stylelint flags font-family names (`Arial`, `Roboto`) as keywords; lowercasing them is wrong.                                                                                                                                                     |
+| `selector-class-pattern`         | CSS Modules class names are camelCase (`styles.sunDusk`), not kebab-case.                                                                                                                                                                         |
+| `keyframes-name-pattern`         | Keyframe names are camelCase (`cloudDrift`) to match the class names that reference them.                                                                                                                                                         |
 
-`typescript/prefer-nullish-coalescing` runs with `ignorePrimitives.string`,
-because `inputError || error` on strings is intentional falsy-checking and `??`
-would change behaviour.
+`lint:ts` runs Oxlint without `--type-aware`, so the type-aware rules in
+`.oxlintrc.json` (`no-floating-promises`, `await-thenable`,
+`prefer-nullish-coalescing`, …) are configured but dormant. `oxlint-tsgolint`
+stays installed for a manual `bunx oxlint --type-aware` run. When it does run,
+`typescript/prefer-nullish-coalescing` uses `ignorePrimitives.string`, because
+`inputError || error` on strings is intentional falsy-checking and `??` would
+change behaviour.
