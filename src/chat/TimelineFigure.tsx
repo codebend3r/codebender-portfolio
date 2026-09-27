@@ -87,9 +87,13 @@ function arrangementLabel(arrangement?: EmploymentArrangement): string {
   return "—"
 }
 
+// Routes through `arrangementLabel` (same as the list-view table) so a
+// missing `arrangement` reads as "unknown", never as a silently invented
+// "contract" — both views must agree on the same real data.
 function tooltipEmployment(row: TimelineRow): string {
-  const arrangement = row.arrangement ?? "contract"
-  return `${scheduleLabel(row.schedule)}, ${arrangement}`
+  const arrangement = arrangementLabel(row.arrangement)
+  if (arrangement === "—") return scheduleLabel(row.schedule)
+  return `${scheduleLabel(row.schedule)}, ${arrangement.toLowerCase()}`
 }
 
 function buildRows({
