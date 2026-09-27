@@ -62,6 +62,26 @@
   --radius-md: 0.875rem; /* message bubbles, composer field */
   --radius-lg: 1rem; /* panel (matches .section) */
   --radius-pill: 999px; /* launcher, chips */
+
+  /* Stacking scale: every z-index in the app reads one of these, listed in
+     paint order. The page layers share the root stacking context; the
+     header, tooltips, and drag state only compete inside their parent's
+     context (#resume-root, a card, a sortable list). The chat panel opens
+     non-modally on wide viewports (`dialog.show()`, not the top layer), so
+     it needs the highest value to sit above the page and the side menu. */
+  --z-sky: 0;
+  --z-content: 1;
+  --z-weather: 2;
+  --z-dragging: 2;
+  --z-chat-launcher: 3;
+  --z-section-nav: 4;
+  --z-header: 5;
+  --z-tooltip: 20;
+  --z-menu-backdrop: 95;
+  --z-menu: 96;
+  --z-menu-toggle: 97;
+  --z-modal: 100;
+  --z-chat-panel: 110;
 }
 
 :root[data-theme="light"] {

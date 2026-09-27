@@ -3,7 +3,7 @@
   top: 50%;
   right: max(16px, env(safe-area-inset-right));
   transform: translateY(-50%);
-  z-index: 4;
+  z-index: var(--z-section-nav);
 }
 
 .list {
