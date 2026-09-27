@@ -1,34 +1,12 @@
 import { Suspense, lazy, useId, useRef, useState } from "react"
 
+import { RobotAvatar } from "./icons"
+
 import styles from "./ChatLauncher.module.css"
 
 // Only the launcher pill is in the public bundle; the panel (and everything
 // it pulls in — TimelineFigure, parseAnswer, useChat) loads on first open.
 const ChatPanel = lazy(() => import("./ChatPanel"))
-
-function RobotIcon() {
-  return (
-    <svg
-      className={styles.avatar}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.6"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-    >
-      <rect x="4" y="8" width="16" height="11" rx="2.5" />
-      <path d="M12 8V4" />
-      <circle cx="12" cy="3" r="1" />
-      <circle cx="9" cy="13" r="1.3" fill="currentColor" stroke="none" />
-      <circle cx="15" cy="13" r="1.3" fill="currentColor" stroke="none" />
-      <path d="M9 17h6" />
-      <path d="M2 12h2" />
-      <path d="M20 12h2" />
-    </svg>
-  )
-}
 
 // Rendered only behind the VITE_CHAT_ENABLED kill switch (see the recruiter
 // chat design spec's "Abuse and spend controls"). Mounts ChatPanel lazily on
@@ -58,7 +36,7 @@ export function ChatLauncher() {
         aria-controls={dialogId}
         onClick={handleOpen}
       >
-        <RobotIcon />
+        <RobotAvatar className={styles.avatar} />
         Ask about CJ
       </button>
       {hasOpenedOnce && (
