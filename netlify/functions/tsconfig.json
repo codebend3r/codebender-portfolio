@@ -10,7 +10,17 @@
     "skipLibCheck": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "forceConsistentCasingInFileNames": true
+    "forceConsistentCasingInFileNames": true,
+    // Netlify functions themselves use relative imports only (esbuild does
+    // not resolve the app's Vite aliases). These two entries exist solely so
+    // that shared src/ modules pulled in transitively — employmentOverlaps.ts,
+    // experienceId.ts, recruiterNotes.ts — resolve their OWN internal aliased
+    // imports (`@utils/*`, `@data/*`) when this project's typecheck includes
+    // them. Do not import via these aliases from files inside netlify/functions.
+    "paths": {
+      "@utils/*": ["../../src/utils/*"],
+      "@data/*": ["../../src/data/*"]
+    }
   },
   "include": ["./**/*.ts", "./**/*.mts", "../../src/types/global.d.ts"]
 }
