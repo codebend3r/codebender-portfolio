@@ -207,25 +207,24 @@ describe("findOverlaps", () => {
     // Verify we have overlaps
     expect(result.length).toBeGreaterThan(0)
 
-    // Verify overlap kinds exist
+    // Verify overlap kinds exist. There is no "full-time" (2+ month) overlap
+    // in the real resume today — Varicent's start date was corrected to
+    // 02/2021 (from an off-by-one-month 01/2021), turning what used to be a
+    // 2-month full-time overlap with Myplanet into an ordinary same-month
+    // handoff, matching every other role transition in the resume.
     const kinds = new Set(result.map((o) => o.kind))
     expect(kinds.has("part-time")).toBe(true)
     expect(kinds.has("handoff")).toBe(true)
-    expect(kinds.has("full-time")).toBe(true)
+    expect(kinds.has("full-time")).toBe(false)
 
-    // Verify the one 2-month full-time overlap (Varicent/Myplanet)
-    const fullTimeOverlaps = result.filter(
-      (o) => o.kind === "full-time" && o.months >= 2
-    )
-    expect(fullTimeOverlaps.length).toBeGreaterThan(0)
-
-    const varMyplanetOverlap = fullTimeOverlaps.find(
+    const varMyplanetOverlap = result.find(
       (o) =>
         (o.a.company === "Varicent" && o.b.company === "Myplanet") ||
         (o.a.company === "Myplanet" && o.b.company === "Varicent")
     )
     expect(varMyplanetOverlap).toBeDefined()
-    expect(varMyplanetOverlap?.months).toBe(2)
+    expect(varMyplanetOverlap?.kind).toBe("handoff")
+    expect(varMyplanetOverlap?.months).toBe(1)
 
     // Verify Codebender (part-time) overlaps with many
     const codebenderOverlaps = result.filter(

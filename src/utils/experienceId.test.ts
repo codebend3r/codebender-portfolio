@@ -41,7 +41,7 @@ describe("experienceId", () => {
         id: "xp_ventures_labs_2024",
       },
       { company: "Radian", period: "06/2022 - 11/2023", id: "radian_2022" },
-      { company: "Varicent", period: "01/2021 - 06/2022", id: "varicent_2021" },
+      { company: "Varicent", period: "02/2021 - 06/2022", id: "varicent_2021" },
       { company: "Myplanet", period: "12/2020 - 02/2021", id: "myplanet_2020" },
       {
         company: "RBC Capital Markets",
