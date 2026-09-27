@@ -49,6 +49,8 @@ export default async (req: Request, context: Context): Promise<Response> => {
   const messages = parseChatRequest(body)
   if (!messages) return json(400, { error: "invalid request" })
 
+  const today = todayUtc()
+
   const key = visitorKey({
     ip: context.ip,
     salt: process.env.CHAT_HASH_SALT ?? "",
@@ -57,7 +59,7 @@ export default async (req: Request, context: Context): Promise<Response> => {
   const usage = await checkAndCountUsage({
     store: usageStore,
     visitorKey: key,
-    day: todayUtc(),
+    day: today,
   })
   if (!usage.allowed && usage.reason === "visitor") {
     return json(429, { error: "daily question limit reached" })
@@ -76,7 +78,7 @@ export default async (req: Request, context: Context): Promise<Response> => {
   const system = buildChatSystem({
     resume: baseResume,
     notes: recruiterNotes,
-    now: new Date(),
+    today,
   })
 
   const modelStream = client.beta.messages.stream({

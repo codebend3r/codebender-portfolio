@@ -1,14 +1,14 @@
 // Builds the two-block system prompt for /api/chat. Block 1 (frozen
 // instructions + resume + overlaps + owner notes) is marked
 // `cache_control: { type: "ephemeral" }` so repeated requests reuse the
-// cached prefix; block 2 is a small uncached string carrying only today's
-// date, so the date never invalidates the cache.
+// cached prefix; block 2 is a small uncached string carrying only `today`,
+// so the date never invalidates the cache.
 //
-// Block 1 must be byte-identical across calls with different `now` values:
-// nothing here reads the `now` parameter. `findOverlaps` is called without a
-// `now` override too, so it falls back to its own real-clock default — a
-// different value from the caller-supplied `now` — keeping block 1 fully
-// decoupled from this function's `now` argument (see chatPrompt.test.ts).
+// `today` is a plain formatted string, not a `Date`, and only ever appears in
+// block 2 — that keeps the boundary explicit: nothing about block 1 (the
+// resume, or its overlap classification via `findOverlaps`, which always
+// uses its own real-clock default) can depend on it, by construction rather
+// than by convention (see chatPrompt.test.ts).
 import type Anthropic from "@anthropic-ai/sdk"
 
 import type { recruiterNotes } from "../../../src/data/recruiterNotes"
@@ -95,18 +95,16 @@ function serializeNotes(notes: RecruiterNotes): string {
   return JSON.stringify(notes, null, 2)
 }
 
-function formatDate(date: Date): string {
-  return date.toISOString().slice(0, 10)
-}
-
 export function buildChatSystem({
   resume,
   notes,
-  now,
+  today,
 }: {
   resume: Data
   notes: RecruiterNotes
-  now: Date
+  // Already formatted (e.g. "2026-03-14"), not a `Date` — see the module
+  // comment on why this function never receives a clock to compute from.
+  today: string
 }): [Anthropic.Beta.BetaTextBlockParam, Anthropic.Beta.BetaTextBlockParam] {
   const frozen = [
     INSTRUCTIONS,
@@ -132,7 +130,7 @@ export function buildChatSystem({
     },
     {
       type: "text",
-      text: `Today's date: ${formatDate(now)}`,
+      text: `Today's date: ${today}`,
     },
   ]
 }

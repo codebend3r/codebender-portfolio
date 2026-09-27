@@ -6,16 +6,16 @@ import { baseResume } from "./baseResume"
 import { buildChatSystem } from "./chatPrompt"
 
 describe("buildChatSystem", () => {
-  it("keeps block 1 byte-identical across different `now` values", () => {
+  it("keeps block 1 byte-identical across different `today` values", () => {
     const [blockA] = buildChatSystem({
       resume: baseResume,
       notes: recruiterNotes,
-      now: new Date("2020-01-01T00:00:00.000Z"),
+      today: "2020-01-01",
     })
     const [blockB] = buildChatSystem({
       resume: baseResume,
       notes: recruiterNotes,
-      now: new Date("2030-06-15T12:34:56.000Z"),
+      today: "2030-06-15",
     })
     expect(blockA.text).toBe(blockB.text)
   })
@@ -24,17 +24,16 @@ describe("buildChatSystem", () => {
     const [block1] = buildChatSystem({
       resume: baseResume,
       notes: recruiterNotes,
-      now: new Date(),
+      today: "2026-03-14",
     })
     expect(block1.cache_control).toEqual({ type: "ephemeral" })
   })
 
   it("puts today's date only in block 2, uncached", () => {
-    const now = new Date("2026-03-14T00:00:00.000Z")
     const [block1, block2] = buildChatSystem({
       resume: baseResume,
       notes: recruiterNotes,
-      now,
+      today: "2026-03-14",
     })
     expect(block2.cache_control).toBeUndefined()
     expect(block2.text).toContain("2026-03-14")
@@ -45,7 +44,7 @@ describe("buildChatSystem", () => {
     const [block1] = buildChatSystem({
       resume: baseResume,
       notes: recruiterNotes,
-      now: new Date(),
+      today: "2026-03-14",
     })
     baseResume.work_experience.forEach((exp) => {
       expect(block1.text).toContain(exp.company)
@@ -56,7 +55,7 @@ describe("buildChatSystem", () => {
     const [block1] = buildChatSystem({
       resume: baseResume,
       notes: recruiterNotes,
-      now: new Date(),
+      today: "2026-03-14",
     })
     const overlaps = findOverlaps({ experience: baseResume.work_experience })
     overlaps.forEach((overlap) => {
@@ -69,7 +68,7 @@ describe("buildChatSystem", () => {
     const [block1] = buildChatSystem({
       resume: baseResume,
       notes: recruiterNotes,
-      now: new Date(),
+      today: "2026-03-14",
     })
     recruiterNotes.facts.forEach((fact) => {
       expect(block1.text).toContain(fact.answer)
