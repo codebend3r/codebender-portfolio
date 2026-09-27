@@ -3,5 +3,9 @@
   node_bundler = "esbuild"
 
 [dev]
+  # "#custom" marks Vite as the framework server, so `netlify dev` proxies to
+  # it first and only applies the SPA rewrite in public/_redirects on a 404.
+  # Without it, that rewrite swallows Vite's module URLs and the page is blank.
+  framework = "#custom"
   command = "bun dev"
   targetPort = 4242
