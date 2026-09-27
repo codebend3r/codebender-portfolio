@@ -10,5 +10,5 @@
     "strictNullChecks": true,
     "skipLibCheck": true
   },
-  "include": ["vite.config.ts", "src/vite-env.d.ts"]
+  "include": ["vite.config.ts", "lint-staged.config.ts", "src/vite-env.d.ts"]
 }

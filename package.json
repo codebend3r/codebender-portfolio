@@ -19,7 +19,7 @@
     "spellcheck:fix": "typos --write-changes .",
     "format": "oxfmt",
     "format:check": "oxfmt --check",
-    "format:staged": "lint-staged",
+    "format:staged": "lint-staged --concurrent false",
     "preview": "vite preview",
     "prepare": "lefthook install --reset-hooks-path",
     "typecheck": "tsgo --noEmit && tsgo -p tsconfig.node.json --noEmit && tsgo -p netlify/functions --noEmit",

@@ -1,5 +1,0 @@
-{
-  "*.{ts,tsx,js,jsx,mjs,cjs}": ["oxlint --fix", "oxfmt"],
-  "*.css": ["gale --fix", "oxfmt"],
-  "*.{json,md,yml,yaml}": ["oxfmt"]
-}

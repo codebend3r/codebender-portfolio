@@ -102,24 +102,24 @@ Each work experience entry also shows a computed, human-readable duration (e.g. 
 
 ## Tech stack
 
-| Layer               | Choice                                            | Why                                                                                               |
-| ------------------- | ------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
-| **Build / dev**     | Vite 8                                            | Instant HMR, native ESM, fast cold starts                                                         |
-| **UI framework**    | React 19 + TypeScript 6                           | `useId`, automatic batching, modern types                                                         |
-| **State**           | Zustand 5                                         | Tiny, no boilerplate; resume store seeded from JSON, variations store persisted to `localStorage` |
-| **Styling**         | CSS Modules + design tokens                       | Scoped class names, no runtime, readable in DevTools (`Header_logo__a3f2`)                        |
-| **PDF export**      | `@react-pdf/renderer`                             | Declarative React → PDF, embedded webfonts, runs entirely client-side, lazy-loaded chunk          |
-| **Drag & drop**     | `@dnd-kit/core` + `sortable` + `utilities`        | Accessible reordering in the resume editor; lazy-loaded, absent from the public page              |
-| **Webfonts**        | `@fontsource/inter`, `@fontsource/source-serif-4` | Self-hosted, no external font requests; Source Serif 4 double-embedded for PDF output             |
-| **Weather data**    | Open-Meteo (free, no key)                         | WMO weather codes via `current_weather`                                                           |
-| **Testing**         | Vitest 4 + Testing Library + jsdom                | Component + util tests colocated next to source                                                   |
-| **Lint**            | Oxlint (Rust) + type-aware rules via tsgolint     | `.oxlintrc.json`; replaces ESLint, `typescript-eslint`, `react`, `react-hooks`, `jsx-a11y`        |
-| **Format**          | Oxfmt (Rust)                                      | `.oxfmtrc.json`; formats JS/TS/JSON/YAML/Markdown/CSS and sorts imports — replaces Prettier       |
-| **CSS lint**        | Gale (Stylelint-compatible, Rust)                 | `.stylelintrc.json`; extends `stylelint-config-standard` over `src/**/*.css`                      |
-| **Type checking**   | `tsgo --noEmit` (`@typescript/native-preview`)    | Go port of `tsc`; runs on every commit                                                            |
-| **Git hooks**       | Lefthook + lint-staged                            | `lefthook.yml`; `pre-commit`: lint-staged (format + lint staged files) → typecheck → test         |
-| **Package manager** | Bun                                               | `packageManager` field pinned in `package.json`                                                   |
-| **Deploy**          | Netlify                                           | Project: [`codebend3r`](https://app.netlify.com/projects/codebend3r)                              |
+| Layer               | Choice                                            | Why                                                                                                                           |
+| ------------------- | ------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| **Build / dev**     | Vite 8                                            | Instant HMR, native ESM, fast cold starts                                                                                     |
+| **UI framework**    | React 19 + TypeScript 6                           | `useId`, automatic batching, modern types                                                                                     |
+| **State**           | Zustand 5                                         | Tiny, no boilerplate; resume store seeded from JSON, variations store persisted to `localStorage`                             |
+| **Styling**         | CSS Modules + design tokens                       | Scoped class names, no runtime, readable in DevTools (`Header_logo__a3f2`)                                                    |
+| **PDF export**      | `@react-pdf/renderer`                             | Declarative React → PDF, embedded webfonts, runs entirely client-side, lazy-loaded chunk                                      |
+| **Drag & drop**     | `@dnd-kit/core` + `sortable` + `utilities`        | Accessible reordering in the resume editor; lazy-loaded, absent from the public page                                          |
+| **Webfonts**        | `@fontsource/inter`, `@fontsource/source-serif-4` | Self-hosted, no external font requests; Source Serif 4 double-embedded for PDF output                                         |
+| **Weather data**    | Open-Meteo (free, no key)                         | WMO weather codes via `current_weather`                                                                                       |
+| **Testing**         | Vitest 4 + Testing Library + jsdom                | Component + util tests colocated next to source                                                                               |
+| **Lint**            | Oxlint (Rust) + type-aware rules via tsgolint     | `.oxlintrc.json`; replaces ESLint, `typescript-eslint`, `react`, `react-hooks`, `jsx-a11y`                                    |
+| **Format**          | Oxfmt (Rust)                                      | `.oxfmtrc.json`; formats JS/TS/JSON/YAML/Markdown/CSS and sorts imports — replaces Prettier                                   |
+| **CSS lint**        | Gale (Stylelint-compatible, Rust)                 | `.stylelintrc.json`; extends `stylelint-config-standard` over `src/**/*.css`                                                  |
+| **Type checking**   | `tsgo --noEmit` (`@typescript/native-preview`)    | Go port of `tsc`; runs on every commit                                                                                        |
+| **Git hooks**       | Lefthook + lint-staged                            | `lefthook.yml` + `lint-staged.config.ts`; `pre-commit`: lint-staged (fix, format, spellcheck staged files) → typecheck → test |
+| **Package manager** | Bun                                               | `packageManager` field pinned in `package.json`                                                                               |
+| **Deploy**          | Netlify                                           | Project: [`codebend3r`](https://app.netlify.com/projects/codebend3r)                                                          |
 
 ---
 
@@ -212,20 +212,20 @@ bun dev          # http://localhost:4242
 
 ## Scripts
 
-| Script                                              | What it does                                                                                             |
-| --------------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
-| `bun dev`                                           | Vite dev server on port `4242`                                                                           |
-| `bun run build`                                     | Production build (note: `bun build` invokes Bun's bundler — always use `bun run build`)                  |
-| `bun preview`                                       | Preview the built output                                                                                 |
-| `bun lint:ts` / `bun lint:ts:fix`                   | Oxlint, including type-aware rules                                                                       |
-| `bun lint:css` / `bun lint:css:fix`                 | Gale (Stylelint-compatible) over `src/**/*.css`                                                          |
-| `bun lint:actions`                                  | actionlint over `.github/workflows`                                                                      |
-| `bun spellcheck` / `bun spellcheck:fix`             | typos over the whole repo; scope and allowlist in `_typos.toml`                                          |
-| `bun format:staged`                                 | lint-staged: Oxfmt + `oxlint --fix` + `gale --fix` over staged files only                                |
-| `bun format` / `bun format:check`                   | Oxfmt write / check                                                                                      |
-| `bun typecheck`                                     | tsgo type check (no emit), all three tsconfig projects                                                   |
-| `bun test` / `bun test:watch` / `bun test:coverage` | Vitest                                                                                                   |
-| `bun system-check`                                  | `format:check` → `typecheck` → `lint:ts` → `lint:css` → `lint:actions` → `spellcheck` → `test` → `build` |
+| Script                                              | What it does                                                                                                                      |
+| --------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| `bun dev`                                           | Vite dev server on port `4242`                                                                                                    |
+| `bun run build`                                     | Production build (note: `bun build` invokes Bun's bundler — always use `bun run build`)                                           |
+| `bun preview`                                       | Preview the built output                                                                                                          |
+| `bun lint:ts` / `bun lint:ts:fix`                   | Oxlint, including type-aware rules                                                                                                |
+| `bun lint:css` / `bun lint:css:fix`                 | Gale (Stylelint-compatible) over `src/**/*.css`                                                                                   |
+| `bun lint:actions`                                  | actionlint over `.github/workflows`                                                                                               |
+| `bun spellcheck` / `bun spellcheck:fix`             | typos over the whole repo; scope and allowlist in `_typos.toml`                                                                   |
+| `bun format:staged`                                 | lint-staged (`lint-staged.config.ts`, run with `--concurrent false`): fixers, Oxfmt, actionlint, and typos over staged files only |
+| `bun format` / `bun format:check`                   | Oxfmt write / check                                                                                                               |
+| `bun typecheck`                                     | tsgo type check (no emit), all three tsconfig projects                                                                            |
+| `bun test` / `bun test:watch` / `bun test:coverage` | Vitest                                                                                                                            |
+| `bun system-check`                                  | `format:check` → `typecheck` → `lint:ts` → `lint:css` → `lint:actions` → `spellcheck` → `test` → `build`                          |
 
 Multi-step scripts (`build`, `dev`, `system-check`) chain their steps with `bun run --sequential`; there is no `npm-run-all`.
 
@@ -235,8 +235,8 @@ Multi-step scripts (`build`, `dev`, `system-check`) chain their steps with `bun 
 
 [Lefthook](https://lefthook.dev) runs on every commit and push. Hooks are declared in `lefthook.yml` and installed into `.git/hooks` by the `prepare` script on `bun install`. Each hook is `piped`, so jobs run in order and stop at the first failure.
 
-- **pre-commit** — `format:staged` (lint-staged) → `typecheck` → `test`. lint-staged runs Oxfmt and `oxlint --fix` over staged JS/TS/JSON and `gale --fix` over staged CSS, then re-stages what it rewrote, so formatting fixes itself instead of failing the commit. The full-repo `lint:ts` / `lint:css` gate still runs in CI and in `bun system-check`. The commit fails if any step fails.
-- **pre-push** — `git fetch -p` to prune deleted remote branches, then prints the last 10 commits as a sanity check.
+- **pre-commit**: `format:staged` (lint-staged) → `typecheck` → `test`. lint-staged (`lint-staged.config.ts`) mirrors the CI gates on just the staged files: `oxlint --fix` on JS/TS, `gale --fix` on CSS, Oxfmt on everything `format:check` covers, actionlint on workflow files, and typos on every staged file. It re-stages what the fixers rewrote, so formatting fixes itself instead of failing the commit. Globs run one at a time (`--concurrent false`) so the read-only checks never race a fixer. The full-repo `lint:ts` / `lint:css` gate still runs in CI and in `bun system-check`. The commit fails if any step fails.
+- **pre-push**: `bun run build`, then `git fetch -p` to prune deleted remote branches, then prints the last 10 commits as a sanity check. The push fails if the build fails, so run `bun install` first.
 
 Skip hooks for a single command with `LEFTHOOK=0 git commit ...`.
 
