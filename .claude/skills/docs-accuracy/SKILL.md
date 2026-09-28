@@ -45,7 +45,7 @@ each. Run the command; do not reason from memory.
 | Global ambient types | `grep -n '^type' src/types/global.d.ts` |
 | Asset module declarations | `cat src/vite-env.d.ts` |
 | A file "exists" / "is duplicated" | `ls <path>` or `git ls-files <path>` |
-| Git hook steps | `cat .husky/pre-commit .husky/pre-push` |
+| Git hook steps | `cat lefthook.yml` |
 | CI steps | `cat .github/workflows/*.yml` |
 | Test co-location shape | `git ls-files src \| grep '\.test\.' \| head` |
 | A dependency being "wired in" | `grep '<pkg>' package.json` — a `declare module` shim is **not** an install |
@@ -107,5 +107,5 @@ Enumerate only when the list is short, stable, and load-bearing.
 - [ ] Styling-system claims match `git ls-files` counts
 - [ ] Alias claims either match both config files or point at them instead of listing
 - [ ] Ambient-type claims match `src/types/global.d.ts`
-- [ ] Hook/CI step claims match `.husky/*` and `.github/workflows/*.yml`
+- [ ] Hook/CI step claims match `lefthook.yml` and `.github/workflows/*.yml`
 - [ ] Any code comment the change proved wrong is fixed in the same commit
