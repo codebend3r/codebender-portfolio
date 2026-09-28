@@ -6,6 +6,9 @@
 interface ImportMetaEnv {
   readonly VITE_SUPABASE_URL?: string
   readonly VITE_SUPABASE_ANON_KEY?: string
+  // Kill switch for the recruiter chat launcher (see the recruiter chat
+  // design spec). Unset or any value other than "true" hides it.
+  readonly VITE_CHAT_ENABLED?: string
 }
 
 interface ImportMeta {

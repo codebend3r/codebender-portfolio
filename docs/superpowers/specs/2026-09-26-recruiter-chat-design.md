@@ -131,7 +131,7 @@ aliases).
 
 ```ts
 const stream = client.beta.messages.stream({
-  model: CHAT_MODEL, // "claude-opus-5"
+  model: CHAT_MODEL, // "claude-sonnet-5"
   max_tokens: 2_000,
   output_config: { effort: "low" },
   betas: ["server-side-fallback-2026-07-01"],
@@ -141,11 +141,14 @@ const stream = client.beta.messages.stream({
 })
 ```
 
-- **Model:** `claude-opus-5`, held in one `CHAT_MODEL` constant. At `low`
-  effort it is quick and terse, which suits short conversational answers, and
-  answer quality on "explain this career history" questions is the whole
-  feature. Thinking stays at the model default (adaptive); nothing is
-  displayed from it.
+- **Model:** `claude-sonnet-5`, held in one `CHAT_MODEL` constant. The
+  original choice was `claude-opus-5`, but manual testing against the real
+  API showed it roughly 10x slower than `claude-sonnet-5` on trivial replies
+  (12.3s vs 1.1s first byte) and outright timing out (~33s) on prompts that
+  should trigger a decline (off-topic requests, prompt injection) — exactly
+  the messages this bot needs to handle reliably. `claude-sonnet-5` answered
+  every manual test case correctly and quickly. Thinking stays at the model
+  default (adaptive); nothing is displayed from it.
 - **Refusal fallbacks** are enabled (`fallbacks: "default"`) so a
   false-positive safety decline is retried server-side instead of surfacing
   as a dead end.

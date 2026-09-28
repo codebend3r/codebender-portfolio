@@ -2,6 +2,8 @@ import { useEffect, useState } from "react"
 
 import styles from "@components/SectionNav.module.css"
 
+import { prefersReducedMotion } from "@utils/prefersReducedMotion"
+
 type NavItem = { id: string; label: string; num?: string }
 
 // Mirrors the sections mounted in App.tsx; `num` matches each section's chip.
@@ -40,10 +42,10 @@ export function SectionNav() {
     event.preventDefault()
     const el = document.getElementById(id)
     if (!el) return
-    const reduce = window.matchMedia?.(
-      "(prefers-reduced-motion: reduce)"
-    ).matches
-    el.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" })
+    el.scrollIntoView({
+      behavior: prefersReducedMotion() ? "auto" : "smooth",
+      block: "start",
+    })
     setActive(id)
   }
 

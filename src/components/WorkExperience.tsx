@@ -22,6 +22,7 @@ import {
   scheduleOptions,
 } from "@utils/employment"
 import { experienceDuration } from "@utils/experienceDuration"
+import { experienceId } from "@utils/experienceId"
 
 export function WorkExperience({
   index,
@@ -65,7 +66,10 @@ export function WorkExperience({
                   <div className={styles.item}>
                     <div className={styles.header}>
                       <div className={styles.roleBlock}>
-                        <h3>
+                        <h3
+                          id={`exp-${experienceId({ company: w.company, period: w.period })}`}
+                          tabIndex={-1}
+                        >
                           <EditableText
                             value={w.role}
                             path={["work_experience", wi, "role"]}

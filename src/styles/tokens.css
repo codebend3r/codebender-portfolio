@@ -47,6 +47,41 @@
     Geist, system-ui, -apple-system, "Segoe UI", Roboto, Arial, "Noto Sans",
     "Apple Color Emoji", "Segoe UI Emoji", sans-serif;
   --font-role: "Instrument Serif", Georgia, "Times New Roman", serif;
+
+  /* Spacing + radius scale (recruiter chat, 2026-09-26 bot design spec).
+     Theme-independent, so defined once here: this selector already matches
+     both the no-JS default and the light theme (`:root[data-theme="light"]`
+     only overrides colors and doesn't redeclare these), the same way
+     `--cloud-drift`/`--font-*` above are shared across themes. */
+  --space-1: 0.375rem; /* 6px: chip gaps, label to body */
+  --space-2: 0.5rem; /* 8px: starter gaps, composer field gap */
+  --space-3: 0.625rem; /* 10px: avatar to text, paragraph gaps */
+  --space-4: 0.875rem; /* 14px: panel inner padding */
+  --space-5: 1.25rem; /* 20px: gap between messages */
+  --radius-sm: 0.75rem; /* starters, figure, alert */
+  --radius-md: 0.875rem; /* message bubbles, composer field */
+  --radius-lg: 1rem; /* panel (matches .section) */
+  --radius-pill: 999px; /* launcher, chips */
+
+  /* Stacking scale: every z-index in the app reads one of these, listed in
+     paint order. The page layers share the root stacking context; the
+     header, tooltips, and drag state only compete inside their parent's
+     context (#resume-root, a card, a sortable list). The chat panel opens
+     non-modally on wide viewports (`dialog.show()`, not the top layer), so
+     it needs the highest value to sit above the page and the side menu. */
+  --z-sky: 0;
+  --z-content: 1;
+  --z-weather: 2;
+  --z-dragging: 2;
+  --z-chat-launcher: 3;
+  --z-section-nav: 4;
+  --z-header: 5;
+  --z-tooltip: 20;
+  --z-menu-backdrop: 95;
+  --z-menu: 96;
+  --z-menu-toggle: 97;
+  --z-modal: 100;
+  --z-chat-panel: 110;
 }
 
 :root[data-theme="light"] {

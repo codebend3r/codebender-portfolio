@@ -2,7 +2,7 @@
   position: fixed;
   bottom: 16px;
   left: max(16px, env(safe-area-inset-left));
-  z-index: 97;
+  z-index: var(--z-menu-toggle);
   width: 40px;
   height: 40px;
   display: grid;
@@ -22,7 +22,7 @@
 .backdrop {
   position: fixed;
   inset: 0;
-  z-index: 95;
+  z-index: var(--z-menu-backdrop);
   background: color-mix(in srgb, var(--bg) 30%, rgb(0 0 0 / 55%));
 }
 
@@ -31,7 +31,7 @@
   top: 0;
   left: 0;
   bottom: 0;
-  z-index: 96;
+  z-index: var(--z-menu);
   width: 220px;
   display: grid;
   grid-template-rows: auto 1fr auto;

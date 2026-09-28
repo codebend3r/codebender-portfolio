@@ -1,7 +1,7 @@
 .skyStage {
   position: fixed;
   inset: 0;
-  z-index: 0;
+  z-index: var(--z-sky);
   overflow: hidden;
   pointer-events: none;
 }

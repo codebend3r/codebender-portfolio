@@ -33,7 +33,9 @@ export function Codebender({
         {String(index).padStart(2, "0")} · {eyebrow}
       </span>
       <header className={styles.intro}>
-        <h2 className={styles.title}>Codebender Inc.</h2>
+        <h2 id="exp-codebender_inc_2011" className={styles.title}>
+          Codebender Inc.
+        </h2>
         <p className={styles.tagline}>{codebenderIntro}</p>
       </header>
       <ul className={styles.pillars}>

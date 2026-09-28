@@ -56,6 +56,10 @@ A segmented control in the header switches between light, dark, and auto themes.
 
 A three-lane Gantt chart at the top of Work Experience plots every stint as a bar on a shared year axis — full-time and part-time employment above the always-running Codebender Inc. side-project track. Bars, ranges, and ticks are computed from the `period` strings in `resume.json` (`src/utils/careerMap.ts`).
 
+### Recruiter chat
+
+A Claude-powered chatbot (`/api/chat`) answers questions from recruiters about CJ's work history, experience, stack, and in particular the date overlaps that can read as a red flag on a skim. The chat answers only from the resume and owner-authored notes, never invents facts, and hands visitors off to CJ for anything it cannot answer. Answers include source chips that scroll to the cited role on the page and timeline figures visualizing overlaps. Enabled with `VITE_CHAT_ENABLED=true`; the server-side salt for visitor IP hashing is `CHAT_HASH_SALT`. Daily usage is capped per visitor and globally to bound spend.
+
 ### Codebender Inc. + Selected Client Work
 
 The showcase splits by one rule — entries with a `repo` are side projects, entries without are client engagements. Side projects render in an amber-tinted Codebender Inc. section (practice intro, four "how it works" pillars, project cards with Live/Code links); client work renders as a grid of flat image-led cards (screenshot, role, period, description). Both source from the `showcase` array in `resume.json`.
@@ -180,7 +184,7 @@ src/
 
 Configured in **both** `vite.config.ts` (runtime) and `tsconfig.json` (types) — they must stay in sync.
 
-`@App`, `@app`, `@assets/*`, `@components/*`, `@data/*`, `@edit/*`, `@pdf/*`, `@sky`, `@state/*`, `@styles/*`, `@utils/*`, `@weather`
+`@App`, `@app`, `@assets/*`, `@chat/*`, `@components/*`, `@data/*`, `@docx/*`, `@edit/*`, `@generate/*`, `@pdf/*`, `@sky`, `@state/*`, `@styles/*`, `@theme/*`, `@utils/*`, `@weather`
 
 ---
 

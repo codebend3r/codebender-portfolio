@@ -16,6 +16,8 @@
       "@App": ["./src/App.tsx"],
       "@app/*": ["./src/*"],
       "@assets/*": ["./src/assets/*"],
+      "@chat": ["./src/chat"],
+      "@chat/*": ["./src/chat/*"],
       "@components/*": ["./src/components/*"],
       "@data/*": ["./src/data/*"],
       "@docx": ["./src/docx"],
