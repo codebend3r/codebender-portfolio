@@ -1,50 +1,68 @@
 .map {
   margin: 0;
   border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 20px 20px 14px;
+  border-radius: var(--radius-sm);
+  padding: var(--space-5) var(--space-5) var(--space-4);
   display: grid;
-  gap: 14px;
+  gap: var(--space-4);
 }
 
 .head {
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: var(--space-3);
 }
 
 .title {
-  font-size: 15px;
+  font-size: 0.9375rem;
   font-weight: 500;
 }
 
 .legend {
   display: flex;
-  gap: 16px;
+  gap: var(--space-4);
   flex-wrap: wrap;
-  font-size: 12px;
+  font-size: 0.75rem;
   color: var(--muted);
 }
 
 .key {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: var(--space-1);
 }
 
 .swatch {
-  width: 12px;
-  height: 8px;
-  border-radius: 2px;
+  width: 0.75rem;
+  height: 0.5rem;
+  border-radius: var(--radius-xs);
+  background: var(--tone);
+}
+
+/* Track tones: every bar, swatch, popover accent, and axis highlight reads
+   `--tone`, so a track's colour is defined once here. */
+.fullTime {
+  --tone: var(--accent);
+  --tone-ink: var(--accent-ink);
+}
+
+.partTime {
+  --tone: var(--employment-part-time);
+  --tone-ink: var(--accent-ink);
+}
+
+.side {
+  --tone: var(--cb);
+  --tone-ink: var(--cb-contrast);
 }
 
 .grid {
   display: grid;
-  grid-template-columns: 110px minmax(0, 1fr);
-  gap: 10px 14px;
+  grid-template-columns: 6.875rem minmax(0, 1fr);
+  gap: var(--space-3) var(--space-4);
   align-items: center;
-  font-size: 12px;
+  font-size: 0.75rem;
 }
 
 .laneLabel {
@@ -58,62 +76,280 @@
 
 .lane {
   position: relative;
-  height: 28px;
+  height: 1.75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
-.bar {
+.slot {
   position: absolute;
   top: 0;
   bottom: 0;
-  border-radius: 3px;
+  min-width: 0.375rem;
+  display: grid;
+}
+
+.bar {
+  border: 0;
+  border-radius: var(--radius-xs);
+  padding: 0 var(--space-1);
   box-shadow: 0 0 0 1px var(--panel);
   overflow: hidden;
-  color: var(--accent-ink);
+  background: var(--tone);
+  color: var(--tone-ink);
   font-weight: 500;
-  font-size: 11px;
-  line-height: 28px;
-  padding-left: 5px;
+  font-size: 0.6875rem;
+  text-align: start;
   white-space: nowrap;
 }
 
-.fullTime {
-  background: var(--accent);
+.side .bar {
+  padding-inline: var(--space-2);
 }
 
-.partTime {
-  background: var(--employment-part-time);
+.bar:focus-visible {
+  outline: 2px solid var(--text);
+  outline-offset: 2px;
 }
 
-.side {
-  background: var(--cb);
-  color: var(--cb-contrast);
-  padding-left: 8px;
+.slot[data-open="true"] .bar {
+  box-shadow:
+    0 0 0 1px var(--panel),
+    0 0.5rem 1.25rem -0.5rem var(--tone);
+}
+
+/* Focus + context: while one bar is open the rest drop their colour.
+   Grayscale keeps each bar's luminance, so its label keeps its contrast. */
+.grid:has(.slot[data-open="true"]) .slot:not([data-open="true"]) .bar {
+  filter: grayscale(0.85);
+}
+
+.popover {
+  position: absolute;
+  bottom: calc(100% + var(--space-3));
+  left: 0;
+  z-index: var(--z-tooltip);
+  width: min(19rem, calc(100vw - 4rem));
+  display: grid;
+  gap: var(--space-1);
+  padding: var(--space-3) var(--space-4);
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-top: 0.1875rem solid var(--tone);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow);
+  color: var(--text);
+  font-size: 0.75rem;
+  line-height: 1.4;
+  white-space: normal;
+  opacity: 0;
+  visibility: hidden;
+}
+
+/* Bridges the gap down to the bar so the pointer can travel onto the
+   popover without it closing (WCAG 1.4.13, hoverable). */
+.popover::before {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  top: 100%;
+  height: var(--space-3);
+}
+
+.slot[data-open="true"] .popover {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Flipped under the bar when the space above is covered. */
+.popover[data-side="below"] {
+  top: calc(100% + var(--space-3));
+  bottom: auto;
+}
+
+.popover[data-side="below"]::before {
+  top: auto;
+  bottom: 100%;
+}
+
+.caret {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  width: 0.625rem;
+  height: 0.625rem;
+  background: var(--panel);
+  border-right: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+/* Below the bar the caret meets the tone-coloured top border, so it takes
+   the tone too. */
+.popover[data-side="below"] .caret {
+  top: -0.1875rem;
+  background: var(--tone);
+  border-color: var(--tone);
+  transform: translate(-50%, -50%) rotate(225deg);
+}
+
+.popoverRole {
+  margin: 0;
+  font-size: 0.8125rem;
+  font-weight: 600;
+}
+
+.popoverCompany {
+  margin: 0;
+  color: var(--text-secondary);
+}
+
+.popoverMeta {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  color: var(--muted);
+}
+
+.popoverTags {
+  margin: 0;
+  padding: var(--space-1) 0 0;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+}
+
+.popoverTag {
+  padding: 0.0625rem var(--space-1);
+  border: 1px solid var(--chip-edge);
+  border-radius: var(--radius-pill);
+  background: var(--chip);
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  color: var(--text-secondary);
 }
 
 .ticks {
   position: relative;
-  height: 18px;
+  height: 1.125rem;
   border-top: 1px solid var(--border);
+}
+
+/* The open bar's span, projected onto the axis. */
+.range {
+  position: absolute;
+  top: -0.125rem;
+  height: 0.1875rem;
+  min-width: 0.375rem;
+  border-radius: var(--radius-pill);
+  background: var(--tone);
+  opacity: 0;
+}
+
+.range[data-visible="true"] {
+  opacity: 1;
 }
 
 .tick {
   position: absolute;
-  top: 4px;
+  top: 0.25rem;
   transform: translateX(-50%);
   font-family: var(--font-mono);
-  font-size: 10px;
+  font-size: 0.625rem;
   color: var(--muted);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .bar {
+    transition:
+      transform 220ms cubic-bezier(0.34, 1.56, 0.64, 1),
+      box-shadow 220ms ease,
+      filter 220ms ease;
+  }
+
+  .slot[data-open="true"] .bar {
+    transform: translateY(-0.125rem);
+  }
+
+  .popover {
+    transform: translateY(0.375rem) scale(0.96);
+    transition:
+      opacity 160ms ease,
+      transform 260ms cubic-bezier(0.34, 1.56, 0.64, 1),
+      visibility 260ms;
+  }
+
+  .popover[data-side="below"] {
+    transform: translateY(-0.375rem) scale(0.96);
+  }
+
+  .slot[data-open="true"] .popover {
+    transform: none;
+  }
+
+  .range {
+    transition:
+      left 320ms cubic-bezier(0.22, 1, 0.36, 1),
+      width 320ms cubic-bezier(0.22, 1, 0.36, 1),
+      opacity 200ms ease;
+  }
+}
+
+/* The reveal: a sweep crosses the axis left to right and each bar wipes in
+   as it passes (per-bar delay and duration are set inline from its
+   position), with the year ticks rising in step. Screen only, so printing
+   before the map has been scrolled to never prints empty lanes. */
+@media screen and (prefers-reduced-motion: no-preference) {
+  .map[data-reveal="pending"] .bar {
+    clip-path: inset(0 100% 0 0);
+  }
+
+  .map[data-reveal="pending"] .tick {
+    opacity: 0;
+  }
+
+  .map[data-reveal="done"] .bar {
+    animation: careerBarSweep linear backwards;
+  }
+
+  .map[data-reveal="done"] .tick {
+    animation: careerTickRise 400ms ease-out backwards;
+  }
+}
+
+@keyframes careerBarSweep {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+
+  to {
+    clip-path: inset(0);
+  }
+}
+
+@keyframes careerTickRise {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 0.25rem);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(-50%);
+  }
 }
 
 @media (width <= 700px) {
   .map {
-    padding: 14px 14px 10px;
+    padding: var(--space-4) var(--space-4) var(--space-3);
   }
 
   .grid {
-    grid-template-columns: 72px minmax(0, 1fr);
-    gap: 8px 10px;
-    font-size: 11px;
+    grid-template-columns: 4.5rem minmax(0, 1fr);
+    gap: var(--space-2) var(--space-3);
+    font-size: 0.6875rem;
   }
 
   .bar {
