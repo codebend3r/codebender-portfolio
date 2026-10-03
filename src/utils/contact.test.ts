@@ -113,7 +113,7 @@ describe("contactIconKind", () => {
   })
 
   it("returns site for any other URL", () => {
-    expect(contactIconKind("https://codebender-portoflio.netlify.app/")).toBe(
+    expect(contactIconKind("https://codebender-portfolio.netlify.app/")).toBe(
       "site"
     )
   })
