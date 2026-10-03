@@ -131,7 +131,7 @@ Each work experience entry also shows a computed, human-readable duration (e.g. 
 | **Package manager** | Bun                                               | `packageManager` field pinned in `package.json`                                                                                             |
 | **Auth + sync**     | Supabase                                          | Owner sign-in gates the editor and generate routes; variations sync to a `resume_variations` table                                          |
 | **AI tailoring**    | Claude (`@anthropic-ai/sdk`) on Netlify Functions | Background function turns a job posting into a tailored resume variation                                                                    |
-| **Deploy**          | Netlify                                           | Project: [`codebend3r`](https://app.netlify.com/projects/codebend3r)                                                                        |
+| **Deploy**          | Netlify                                           | Project: [`codebender-portfolio`](https://app.netlify.com/projects/codebender-portfolio)                                                    |
 
 ---
 
