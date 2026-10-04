@@ -80,3 +80,37 @@ export function yearTicks({
     return { year, leftPct: ((year - range.first) / span) * 100 }
   })
 }
+
+export type PopoverPlacement = {
+  // Popover's left edge relative to the anchor's left edge, in px.
+  offset: number
+  // Caret position measured from the popover's left edge, in px.
+  caret: number
+}
+
+// Centers a popover over its anchor, then slides it back inside the frame
+// (the career-map card) so bars near either end don't push it off the card.
+// The caret keeps pointing at the anchor's center, clear of the corners.
+export function popoverPlacement({
+  anchor,
+  popoverWidth,
+  frame,
+  inset = 8,
+  caretInset = 14,
+}: {
+  anchor: { left: number; width: number }
+  popoverWidth: number
+  frame: { left: number; right: number }
+  inset?: number
+  caretInset?: number
+}): PopoverPlacement {
+  const center = anchor.left + anchor.width / 2
+  const min = frame.left + inset
+  const max = Math.max(frame.right - inset - popoverWidth, min)
+  const left = Math.min(Math.max(center - popoverWidth / 2, min), max)
+  const caret = Math.min(
+    Math.max(center - left, caretInset),
+    popoverWidth - caretInset
+  )
+  return { offset: left - anchor.left, caret }
+}

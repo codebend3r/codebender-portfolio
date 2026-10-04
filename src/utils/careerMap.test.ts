@@ -1,6 +1,12 @@
 import { describe, expect, it } from "vitest"
 
-import { barFor, careerRange, periodBounds, yearTicks } from "@utils/careerMap"
+import {
+  barFor,
+  careerRange,
+  periodBounds,
+  popoverPlacement,
+  yearTicks,
+} from "@utils/careerMap"
 
 describe("periodBounds", () => {
   it("parses a closed period into fractional years", () => {
@@ -76,5 +82,61 @@ describe("yearTicks", () => {
   it("never emits a tick at or past the exclusive end", () => {
     const ticks = yearTicks({ range: { first: 2020, last: 2023 } })
     expect(ticks.map((tick) => tick.year)).toEqual([2020])
+  })
+})
+
+describe("popoverPlacement", () => {
+  const frame = { left: 0, right: 1000 }
+
+  it("centers the popover over the anchor when it fits", () => {
+    const placement = popoverPlacement({
+      anchor: { left: 400, width: 100 },
+      popoverWidth: 200,
+      frame,
+    })
+    // Centered: popover left = 450 - 100 = 350, i.e. 50px before the anchor.
+    expect(placement.offset).toBe(-50)
+    expect(placement.caret).toBe(100)
+  })
+
+  it("pins to the frame's left inset near the start", () => {
+    const placement = popoverPlacement({
+      anchor: { left: 20, width: 40 },
+      popoverWidth: 200,
+      frame,
+    })
+    // Popover left clamps to 8; the caret still points at the anchor's
+    // center (40), i.e. 32px into the popover.
+    expect(placement.offset).toBe(-12)
+    expect(placement.caret).toBe(32)
+  })
+
+  it("pins to the frame's right inset near the end", () => {
+    const placement = popoverPlacement({
+      anchor: { left: 950, width: 40 },
+      popoverWidth: 200,
+      frame,
+    })
+    // Popover right clamps to 992, so its left is 792.
+    expect(placement.offset).toBe(-158)
+    expect(placement.caret).toBe(178)
+  })
+
+  it("keeps the caret off the popover's rounded corners", () => {
+    const placement = popoverPlacement({
+      anchor: { left: 0, width: 4 },
+      popoverWidth: 200,
+      frame,
+    })
+    expect(placement.caret).toBe(14)
+  })
+
+  it("prefers the left inset when the popover is wider than the frame", () => {
+    const placement = popoverPlacement({
+      anchor: { left: 100, width: 20 },
+      popoverWidth: 300,
+      frame: { left: 0, right: 250 },
+    })
+    expect(placement.offset).toBe(-92)
   })
 })

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
 
-import { parsePeriod } from "@utils/period"
+import { formatPeriod, parsePeriod } from "@utils/period"
 
 describe("parsePeriod", () => {
   it("parses a standard period string", () => {
@@ -59,5 +59,29 @@ describe("parsePeriod", () => {
     // 01/2020 = 2020*12 + 0 = 24240
     expect(result?.start).toBe(24240) // Jan 2020
     expect(result?.end).toBeGreaterThan(24240)
+  })
+})
+
+describe("formatPeriod", () => {
+  it("spells out both ends as short month and year", () => {
+    expect(formatPeriod({ period: "02/2012 - 03/2014" })).toBe(
+      "Feb 2012 – Mar 2014"
+    )
+  })
+
+  it("keeps an open-ended period as Present", () => {
+    expect(formatPeriod({ period: "01/2011 - Present" })).toBe(
+      "Jan 2011 – Present"
+    )
+  })
+
+  it("matches Present case-insensitively", () => {
+    expect(formatPeriod({ period: "12/2020 - present" })).toBe(
+      "Dec 2020 – Present"
+    )
+  })
+
+  it("returns null for unparseable periods", () => {
+    expect(formatPeriod({ period: "2019 to 2021" })).toBeNull()
   })
 })

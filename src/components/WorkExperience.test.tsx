@@ -87,14 +87,17 @@ describe("WorkExperience", () => {
 
   it("renders the career map with one bar per dated entry", () => {
     render(<WorkExperience />)
-    expect(screen.getByText("Career map")).toBeInTheDocument()
+    const map = screen.getByRole("figure", { name: "Career map" })
+    expect(within(map).getAllByRole("button")).toHaveLength(mainJobs.length + 1)
     expect(
-      screen.getByTitle("Codebender Inc. · 01/2011 - Present")
+      within(map).getByRole("button", {
+        name: "Codebender Inc.: Side projects · 2011 → now",
+      })
     ).toBeInTheDocument()
     for (const job of mainJobs) {
       expect(
-        screen.getByTitle(`${job.company} · ${job.period}`)
-      ).toBeInTheDocument()
+        within(map).getAllByRole("button", { name: job.company }).length
+      ).toBeGreaterThan(0)
     }
   })
 
