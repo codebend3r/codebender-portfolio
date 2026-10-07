@@ -107,14 +107,44 @@
       "side_project": true,
       "achievements": [
         "Founded and run an incorporated software practice, delivering senior/lead frontend engagements across news, finance, real estate, telecom, and SaaS, alongside a self-directed R&D track.",
-        "Ship full products end to end — data modelling, API design, architecture, design systems, testing, CI/CD, deployment — primarily in React, Next.js App Router/RSC, Nest.js, and strict TypeScript.",
+        "Deliver full products end to end, owning data modelling, API design, architecture, design systems, testing, CI/CD, and deployment.",
+        "Build primarily with React, Next.js (App Router and React Server Components), Nest.js, and strict TypeScript.",
         "Standardize on Supabase as the default backend: Postgres with row-level security, auth, edge functions, and version-controlled schema migrations for reproducible environments.",
         "Work as an agentic developer: decompose features into specs and plans, drive them through coding agents in small increments with tests as the contract, and review every diff line by line.",
         "Build the harness for safe agentic development: convention files, agent skills, MCP integrations exposing repo/schema/design-system context, and pre-commit gates for formatting, type checking, linting, and tests.",
         "Enforce a consistent engineering standard across projects: strict TypeScript, boundary schema validation, co-located test coverage, referential-integrity checks in CI, and single-command quality gates.",
-        "Ship cross-platform from single codebases — web, iOS, Android, desktop where warranted — deploying static/edge-rendered sites with image optimization and Core Web Vitals budgets.",
-        "Use the practice as a proving ground for emerging tooling ahead of client adoption — runtimes, linters, build systems, rendering models, agentic workflows — forming grounded production opinions.",
-        "Integrate LLM capability into product surfaces — streaming, structured output, tool use, retrieval — with attention to perceived performance, graceful degradation, and cost."
+        "Ship cross-platform applications from a single codebase, targeting web, iOS, Android, and desktop where the product calls for it.",
+        "Deploy static and edge-rendered sites with image optimization and enforced Core Web Vitals budgets.",
+        "Trial emerging tooling such as runtimes, linters, build systems, rendering models, and agentic workflows ahead of client adoption, forming recommendations grounded in production use.",
+        "Integrate LLM capabilities such as streaming, structured output, tool use, and retrieval into product surfaces, balancing perceived performance, graceful degradation, and cost."
+      ]
+    },
+    {
+      "role": "Senior Frontend Engineer",
+      "company": "RBC Codi",
+      "period": "06/2026 - Present",
+      "schedule": "full-time",
+      "arrangement": "contract",
+      "short": "RBC Codi",
+      "tags": [
+        "React",
+        "TypeScript",
+        "Micro Frontends",
+        "Vite",
+        "TanStack Query",
+        "AI/LLM"
+      ],
+      "achievements": [
+        "Lead frontend development of a new initiative within an internal staff application used across every branch.",
+        "Deliver the feature as a React micro frontend, loaded client-side at runtime into the host React single-page application.",
+        "Implement the micro frontend with Vite and Module Federation, using TanStack Query to manage data fetching and caching.",
+        "Define the frontend coding standards for the initiative and uphold them through code review across the team.",
+        "Establish TypeScript conventions built on type guards for runtime narrowing in place of type assertions.",
+        "Guide developers in translating Figma designs into production components, unblocking them on complex implementation details.",
+        "Maintain quality through Vitest unit tests and Playwright end-to-end tests.",
+        "Deliver features through agentic workflows using Claude Code, GitHub Copilot, and Devin (Windsurf).",
+        "Build a library of agent skills that automate repetitive tasks and resolve recurring setup issues, such as configuring MCP servers within the corporate firewall.",
+        "Piloted the BMAD Method for spec-driven, agent-assisted planning and development."
       ]
     },
     {

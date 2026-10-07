@@ -25,6 +25,7 @@ describe("experienceId", () => {
         period: "01/2011 - Present",
         id: "codebender_inc_2011",
       },
+      { company: "RBC Codi", period: "06/2026 - Present", id: "rbc_codi_2026" },
       {
         company: "The Globe and Mail",
         period: "09/2024 - 05/2026",

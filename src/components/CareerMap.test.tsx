@@ -65,7 +65,7 @@ describe("CareerMap", () => {
       screen.getByRole("list", { name: "Employment" })
     ).getAllByRole("button")
     expect(bars[0]).toHaveAccessibleName("Research Now")
-    expect(bars[bars.length - 1]).toHaveAccessibleName("The Globe and Mail")
+    expect(bars[bars.length - 1]).toHaveAccessibleName("RBC Codi")
   })
 
   it("labels the side-project track with its running span", () => {
