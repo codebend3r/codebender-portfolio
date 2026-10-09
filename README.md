@@ -192,8 +192,7 @@ src/
 ├── data/
 │   ├── resume.json          ← Single source of truth for resume content (incl. showcase, skill_descriptions)
 │   ├── resumeData.ts        ← Typed view of resume.json; guards narrow string fields to literal unions
-│   ├── codebender.ts        ← Screen copy + pillars for the Codebender Inc. section
-│   └── CJ Rivas - Senior Frontend Engineer.pdf  ← Pre-rendered CV
+│   └── codebender.ts        ← Screen copy + pillars for the Codebender Inc. section
 ├── state/
 │   ├── useStore.ts          ← Zustand store seeded from resumeData; setPath/reorder + add/remove actions
 │   ├── useVariations.ts     ← Zustand store (persisted to localStorage) for named resume variations

@@ -22,3 +22,8 @@ deno.lock
 
 # Local knowledge-graph output (graphify skill)
 graphify-out/
+
+# PDF and Word CVs are generated at runtime in the browser and downloaded;
+# never commit rendered documents
+*.pdf
+*.docx
