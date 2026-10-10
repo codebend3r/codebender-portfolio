@@ -1,3 +1,5 @@
+// @vitest-environment node
+
 import { beforeAll, describe, expect, it } from "vitest"
 
 import { hashInput } from "@utils/hashInput"

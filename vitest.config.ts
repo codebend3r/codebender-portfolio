@@ -26,6 +26,9 @@ export default defineConfig({
   },
   test: {
     globals: false,
+    // jsdom is the default, but building a window is most of the suite's
+    // runtime. Tests that never touch the DOM start with a
+    // `// @vitest-environment node` docblock to skip it.
     environment: "jsdom",
     // Blanks the runtime env so nothing reads a real project by accident.
     // This does NOT reach `import.meta.env.VITE_*` in src — Vite inlines
