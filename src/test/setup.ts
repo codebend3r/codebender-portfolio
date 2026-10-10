@@ -1,4 +1,5 @@
 import { cleanup } from "@testing-library/react"
+import { ReadableStream } from "node:stream/web"
 import { afterEach, vi } from "vitest"
 
 import "@testing-library/jest-dom/vitest"
@@ -20,6 +21,13 @@ if (typeof globalThis.ResizeObserver === "undefined") {
     disconnect = vi.fn()
   }
   vi.stubGlobal("ResizeObserver", MockResizeObserver)
+}
+
+// jsdom has no web streams, and the `vmThreads` pool doesn't leak Node's into
+// the window; the recruiter chat reads its response body as a ReadableStream.
+// A permanent polyfill, not a stub: tests call `vi.unstubAllGlobals()`.
+if (typeof globalThis.ReadableStream === "undefined") {
+  Object.assign(globalThis, { ReadableStream })
 }
 
 // jsdom doesn't implement <dialog>'s show()/showModal()/close(); the

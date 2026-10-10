@@ -38,11 +38,12 @@ export default defineConfig({
       VITE_SUPABASE_ANON_KEY: "",
       VITE_CHAT_ENABLED: "",
     },
+    // Builds jsdom once per worker instead of once per file, which was over
+    // half the suite's runtime. Each file still gets a fresh VM context, so
+    // module-level state stays isolated per file.
+    pool: "vmThreads",
     // On CI's low-core runners, Vitest's CPU-based default collapses to a
-    // single worker, which serializes all 80 files into one process and lets
-    // module-level state (the Zustand store, vi.mock
-    // singletons) bleed across files. Pin a floor above 1 so files always
-    // get separate, isolated processes.
+    // single worker and runs every file in sequence. Pin a floor above 1.
     maxWorkers: 4,
     setupFiles: ["./src/test/setup.ts"],
     css: false,
