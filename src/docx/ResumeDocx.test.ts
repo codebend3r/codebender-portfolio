@@ -1,5 +1,3 @@
-// @vitest-environment node
-
 import { Buffer } from "buffer"
 import { Packer } from "docx"
 import { strFromU8, unzipSync } from "fflate"

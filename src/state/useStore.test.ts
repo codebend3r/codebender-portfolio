@@ -1,5 +1,3 @@
-// @vitest-environment node
-
 import { beforeEach, describe, expect, it } from "vitest"
 
 import resume from "@data/resume.json"
