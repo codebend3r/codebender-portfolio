@@ -51,6 +51,8 @@ const chunkGroups: Rolldown.CodeSplittingGroup[] = [
 // `@react-pdf/reconciler` bundles three reconciler builds (React <= 18,
 // 19.0-19.1, >= 19.2) and picks one at runtime from `React.version`, so all
 // three ship. Resolve straight to the build this React version uses.
+const RECONCILER_19_2 = "@react-pdf/reconciler/lib/reconciler-33.js"
+
 function reactPdfReconciler(): Plugin {
   const [major = 0, minor = 0] = reactVersion.split(".").map(Number)
   const supportsReact19_2 = major > 19 || (major === 19 && minor >= 2)
@@ -59,16 +61,17 @@ function reactPdfReconciler(): Plugin {
     name: "react-pdf-reconciler",
     apply: "build",
     enforce: "pre",
-    resolveId(source, importer) {
+    async resolveId(source, importer) {
       if (source !== "@react-pdf/reconciler" || !supportsReact19_2) {
         return null
       }
 
-      return this.resolve(
-        "@react-pdf/reconciler/lib/reconciler-33.js",
-        importer,
-        { skipSelf: true }
-      )
+      const resolved = await this.resolve(RECONCILER_19_2, importer, {
+        skipSelf: true,
+      })
+      // Falling back to the package entry would quietly ship all three
+      // builds again, so a renamed file has to fail the build.
+      return resolved ?? this.error(`${RECONCILER_19_2} not found`)
     },
   }
 }
@@ -100,10 +103,6 @@ export default defineConfig({
   },
   build: {
     chunkSizeWarningLimit: 2000,
-    modulePreload: {
-      resolveDependencies: (_filename, deps) =>
-        deps.filter((d) => !d.includes("react-pdf") && !d.includes("dnd-kit")),
-    },
     rolldownOptions: {
       output: {
         codeSplitting: {
