@@ -1,3 +1,5 @@
+// @vitest-environment node
+
 import { describe, expect, it } from "vitest"
 
 import { SPRITE_COUNT, SPRITE_GRID, spritePosition } from "@utils/spriteSheet"

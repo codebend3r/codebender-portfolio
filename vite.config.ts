@@ -1,46 +1,80 @@
+import { version as reactVersion } from "react"
+
 import react from "@vitejs/plugin-react"
 import path from "node:path"
 import { defineConfig } from "vite"
+import type { Plugin, Rolldown } from "vite"
 
-function manualChunks(id: string) {
-  if (id.includes("node_modules")) {
-    if (
-      id.includes("@react-pdf") ||
-      id.includes("fontkit") ||
-      id.includes("@fontsource")
-    ) {
-      return "react-pdf"
-    } else if (
-      id.includes("node_modules/docx/") ||
-      id.includes("node_modules/buffer/") ||
-      id.includes("node_modules/fflate/")
-    ) {
-      // Only reachable through the lazy-loaded Word export on the edit page.
-      return "docx"
-    } else if (id.includes("@dnd-kit")) {
-      // Keep dnd-kit out of the eager `vendor` chunk; it is only reachable
-      // through the lazy-loaded `SortableListImpl` on the edit page.
-      return "dnd-kit"
-    } else if (id.includes("react-dom")) {
-      return "react-dom"
-    } else if (id.includes("react")) {
-      return "react"
-    } else if (id.includes("core-js")) {
-      return "core-js"
-    } else if (id.includes("zustand")) {
-      return "zustand"
-    } else if (id.includes("@supabase")) {
-      return "supabase"
-    } else {
-      return "vendor"
-    }
+// The package that owns a module, by its outermost `node_modules` entry, so a
+// copy nested under another package (`@react-pdf/reconciler` ships its own
+// `scheduler`) stays with that package.
+function packageOf(id: string) {
+  const [, name = ""] =
+    /node_modules[\\/]((?:@[^\\/]+[\\/])?[^\\/]+)/.exec(id) ?? []
+  return name.replace(/\\/g, "/")
+}
+
+function chunkGroup({ name, packages }: { name: string; packages: string[] }) {
+  return {
+    name,
+    test: (id: string) => {
+      const owner = packageOf(id)
+      return packages.some((p) => owner === p || owner.startsWith(`${p}/`))
+    },
   }
+}
 
-  return null
+// Order matters: an earlier group claims a module first, and each group also
+// pulls in its dependencies. React and `buffer` come before the lazy groups
+// that import them; otherwise React lands inside `dnd-kit` (so the entry
+// downloads dnd-kit on every page) and a PDF export downloads all of `docx`
+// just to get `buffer`.
+const chunkGroups: Rolldown.CodeSplittingGroup[] = [
+  chunkGroup({ name: "react", packages: ["react"] }),
+  chunkGroup({ name: "react-dom", packages: ["react-dom", "scheduler"] }),
+  chunkGroup({ name: "zustand", packages: ["zustand"] }),
+  // Shared by the PDF and Word exports, so neither pulls in the other.
+  chunkGroup({ name: "buffer", packages: ["buffer", "base64-js", "ieee754"] }),
+  chunkGroup({
+    name: "react-pdf",
+    packages: ["@react-pdf", "fontkit", "@fontsource"],
+  }),
+  // Only reachable through the lazy-loaded Word export on the edit page.
+  chunkGroup({ name: "docx", packages: ["docx", "fflate"] }),
+  // Only reachable through the lazy-loaded `SortableListImpl` on the edit page.
+  chunkGroup({ name: "dnd-kit", packages: ["@dnd-kit"] }),
+  chunkGroup({ name: "core-js", packages: ["core-js"] }),
+  chunkGroup({ name: "supabase", packages: ["@supabase"] }),
+  { name: "vendor", test: /node_modules[\\/]/ },
+]
+
+// `@react-pdf/reconciler` bundles three reconciler builds (React <= 18,
+// 19.0-19.1, >= 19.2) and picks one at runtime from `React.version`, so all
+// three ship. Resolve straight to the build this React version uses.
+function reactPdfReconciler(): Plugin {
+  const [major = 0, minor = 0] = reactVersion.split(".").map(Number)
+  const supportsReact19_2 = major > 19 || (major === 19 && minor >= 2)
+
+  return {
+    name: "react-pdf-reconciler",
+    apply: "build",
+    enforce: "pre",
+    resolveId(source, importer) {
+      if (source !== "@react-pdf/reconciler" || !supportsReact19_2) {
+        return null
+      }
+
+      return this.resolve(
+        "@react-pdf/reconciler/lib/reconciler-33.js",
+        importer,
+        { skipSelf: true }
+      )
+    },
+  }
 }
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react(), reactPdfReconciler()],
   server: {
     port: 4242,
   },
@@ -70,9 +104,11 @@ export default defineConfig({
       resolveDependencies: (_filename, deps) =>
         deps.filter((d) => !d.includes("react-pdf") && !d.includes("dnd-kit")),
     },
-    rollupOptions: {
+    rolldownOptions: {
       output: {
-        manualChunks,
+        codeSplitting: {
+          groups: chunkGroups,
+        },
       },
     },
   },

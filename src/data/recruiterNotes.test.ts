@@ -1,3 +1,5 @@
+// @vitest-environment node
+
 import { describe, expect, it } from "vitest"
 
 import { isRecruiterNotes, recruiterNotes } from "@data/recruiterNotes"
