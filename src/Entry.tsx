@@ -9,7 +9,6 @@ import { applySky } from "@sky"
 import { routeFor } from "@utils/routeFor"
 
 import "@styles/global.css"
-import "@styles/keyframes.css"
 import "@styles/tokens.css"
 
 import { pageForRoute } from "@app/pageForRoute"

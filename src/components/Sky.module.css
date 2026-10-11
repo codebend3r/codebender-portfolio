@@ -92,3 +92,34 @@
   background-size: 300% 300%;
   image-rendering: pixelated;
 }
+
+@media (prefers-reduced-motion: reduce) {
+  .sunSprite,
+  .cloud {
+    animation-play-state: paused;
+  }
+}
+
+/* Keyframes live beside the classes that use them: CSS Modules hashes both
+   names together, so a global @keyframes would never match. */
+@keyframes sunGlowPulse {
+  0% {
+    filter: drop-shadow(0 0 8px var(--sun-glow))
+      drop-shadow(0 0 18px var(--sun-glow));
+  }
+
+  100% {
+    filter: drop-shadow(0 0 20px var(--sun-glow))
+      drop-shadow(0 0 44px var(--sun-glow));
+  }
+}
+
+@keyframes cloudDrift {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+
+  100% {
+    transform: translate3d(var(--cloud-drift, 0), 0, 0);
+  }
+}

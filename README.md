@@ -202,7 +202,6 @@ src/
 │   └── useTheme.ts          ← Light/Dark/Auto choice
 ├── styles/
 │   ├── tokens.css           ← :root CSS custom properties, redefined per theme under data-theme
-│   ├── keyframes.css        ← cloudDrift, rainFall, snowFall, sunGlowPulse, glowPulse
 │   └── global.css           ← resets + @media print rules
 ├── sky.ts                   ← getCurrentSky(), applySky() (theme-aware palettes), URL override parsing
 ├── weather.ts               ← Open-Meteo fetcher, WMO code mapping, URL override parsing
