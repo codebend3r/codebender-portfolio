@@ -41,3 +41,44 @@
   animation-iteration-count: infinite;
   will-change: transform;
 }
+
+/* White on the light theme's white cards vanishes; a faint cool rim keeps
+   each flake readable without greying it out against the sky. */
+:global(:root[data-theme="light"]) .snowflake {
+  box-shadow: 0 0 1px 0.5px rgb(60 90 140 / 35%);
+}
+
+/* Each particle starts at a random negative delay, so pausing freezes them
+   mid-fall, scattered across the viewport, instead of parking them above it. */
+@media (prefers-reduced-motion: reduce) {
+  .raindrop,
+  .snowflake {
+    animation-play-state: paused;
+  }
+}
+
+/* Keyframes live beside the classes that use them: CSS Modules hashes both
+   names together, so a global @keyframes would never match. */
+@keyframes rainFall {
+  0% {
+    transform: translate3d(0, -10vh, 0);
+  }
+
+  100% {
+    transform: translate3d(2vw, 115vh, 0);
+  }
+}
+
+@keyframes snowFall {
+  0% {
+    transform: translate3d(0, -5vh, 0);
+  }
+
+  50% {
+    transform: translate3d(4vw, 55vh, 0);
+  }
+
+  100% {
+    transform: translate3d(-2vw, 110vh, 0);
+  }
+}
