@@ -11,10 +11,31 @@ concurrency:
   cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 
 jobs:
-  system-check:
-    name: 🚦 System check
+  checks:
+    name: ${{ matrix.name }}
     runs-on: ubuntu-latest
     timeout-minutes: 10
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: 💅 Format check
+            run: bun format:check
+          - name: 🧠 Typecheck
+            run: bun typecheck
+          - name: 🔍 Lint TS
+            run: bun lint:ts
+          - name: 🎨 Lint CSS
+            run: bun lint:css
+          - name: ⚙️ Lint workflows
+            run: bun lint:actions
+          - name: 🔤 Spellcheck
+            run: bun spellcheck
+          - name: 🧪 Test
+            run: bun run test
+          - name: 🏗️ Build
+            run: bun run build
 
     steps:
       - name: 📥 Checkout
@@ -40,26 +61,5 @@ jobs:
       - name: 📦 Install dependencies
         run: bun install --frozen-lockfile
 
-      - name: 💅 Format check
-        run: bun format:check
-
-      - name: 🧠 Typecheck
-        run: bun typecheck
-
-      - name: 🔍 Lint TS
-        run: bun lint:ts
-
-      - name: 🎨 Lint CSS
-        run: bun lint:css
-
-      - name: ⚙️ Lint workflows
-        run: bun lint:actions
-
-      - name: 🔤 Spellcheck
-        run: bun spellcheck
-
-      - name: 🧪 Test
-        run: bun run test
-
-      - name: 🏗️ Build
-        run: bun run build
+      - name: ${{ matrix.name }}
+        run: ${{ matrix.run }}

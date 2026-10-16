@@ -5,19 +5,27 @@
 pre-commit:
   piped: true
   jobs:
-    - name: format staged
+    - name: 💅 format staged
       run: bun run format:staged
-    - name: typecheck
-      run: bun run typecheck
-    - name: test
-      run: bun run test
 
 pre-push:
   piped: true
   jobs:
-    - name: build
+    - name: 🧠 typecheck
+      run: bun run typecheck
+    - name: 🔍 lint ts
+      run: bun run lint:ts
+    - name: 🎨 lint css
+      run: bun run lint:css
+    - name: ⚙️ lint workflows
+      run: bun run lint:actions
+    - name: 🔤 spellcheck
+      run: bun run spellcheck
+    - name: 🧪 test
+      run: bun run test
+    - name: 🏗️ build
       run: bun run build
-    - name: fetch and prune
+    - name: 🧹 fetch and prune
       run: git fetch -p
-    - name: recent commits
+    - name: 📜 recent commits
       run: git --no-pager log --decorate --oneline -n 10
