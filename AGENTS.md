@@ -10,7 +10,7 @@ Package manager is **bun** (see `packageManager` in `package.json`). Use `bun <s
 - `bun run build` — production build (note: `bun build` invokes Bun's bundler, not Vite; always use `bun run build`)
 - `bun preview` — preview the built output
 - `bun lint`: `lint:ts` → `lint:css` → `lint:actions`, in sequence via `bun run --sequential`
-- `bun lint:ts` / `bun lint:ts:fix`: Oxlint (`.oxlintrc.json`); runs without `--type-aware`, so the type-aware rules in the config are dormant
+- `bun lint:ts` / `bun lint:ts:fix`: Oxlint (`.oxlintrc.json`); syntax-only rules, no type-aware linting (types are checked by `tsgo`)
 - `bun lint:css` / `bun lint:css:fix` — Gale (`@codebend3r/gale`, a Stylelint-compatible Rust linter) over `src/**/*.css`; reads `.stylelintrc.json`, which extends `stylelint-config-standard`
 - `bun lint:actions` — actionlint (`github-actionlint`, the official `rhysd/actionlint` binary) over `.github/workflows`; no config file, defaults only
 - `bun spellcheck` / `bun spellcheck:fix` — typos (`@ocular-d/typos-bin`) over the whole repo; it skips binaries and `.gitignore`d paths, and `_typos.toml` holds the exclude list and word allowlist

@@ -70,6 +70,7 @@
     ".vscode",
     ".claude",
     ".superpowers",
+    "docs/superpowers",
     "bun.lock",
     "deno.lock",
     "package-lock.json",
