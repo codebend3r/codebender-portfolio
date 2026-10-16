@@ -250,7 +250,7 @@ The public page needs no configuration. Copy `.env.example` to `.env` to turn on
 | `bun run build`                                         | Production build (note: `bun build` invokes Bun's bundler, so always use `bun run build`)                                         |
 | `bun preview`                                           | Preview the built output                                                                                                          |
 | `bun lint`                                              | `lint:ts` → `lint:css` → `lint:actions`                                                                                           |
-| `bun lint:ts` / `bun lint:ts:fix`                       | Oxlint (`.oxlintrc.json`); type-aware rules are configured but not run (see Toolchain)                                            |
+| `bun lint:ts` / `bun lint:ts:fix`                       | Oxlint (`.oxlintrc.json`); syntax-only rules, types are checked by `tsgo`                                                         |
 | `bun lint:css` / `bun lint:css:fix`                     | Gale (Stylelint-compatible) over `src/**/*.css`                                                                                   |
 | `bun lint:actions`                                      | actionlint over `.github/workflows`                                                                                               |
 | `bun spellcheck` / `bun spellcheck:fix`                 | typos over the whole repo; scope and allowlist in `_typos.toml`                                                                   |
@@ -323,11 +323,3 @@ These are not oversights — each one is wrong for this codebase:
 | `value-keyword-case`             | Stylelint flags font-family names (`Arial`, `Roboto`) as keywords; lowercasing them is wrong.                                                                                                                                                     |
 | `selector-class-pattern`         | CSS Modules class names are camelCase (`styles.sunDusk`), not kebab-case.                                                                                                                                                                         |
 | `keyframes-name-pattern`         | Keyframe names are camelCase (`cloudDrift`) to match the class names that reference them.                                                                                                                                                         |
-
-`lint:ts` runs Oxlint without `--type-aware`, so the type-aware rules in
-`.oxlintrc.json` (`no-floating-promises`, `await-thenable`,
-`prefer-nullish-coalescing`, …) are configured but dormant. `oxlint-tsgolint`
-stays installed for a manual `bunx oxlint --type-aware` run. When it does run,
-`typescript/prefer-nullish-coalescing` uses `ignorePrimitives.string`, because
-`inputError || error` on strings is intentional falsy-checking and `??` would
-change behaviour.
