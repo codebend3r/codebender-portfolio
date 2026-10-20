@@ -105,6 +105,26 @@
     "typescript/prefer-namespace-keyword": "error",
     "typescript/triple-slash-reference": "error",
 
+    "typescript/await-thenable": "error",
+    "typescript/no-array-delete": "error",
+    "typescript/no-base-to-string": "error",
+    "typescript/no-floating-promises": "error",
+    "typescript/no-for-in-array": "error",
+    "typescript/no-implied-eval": "error",
+    "typescript/no-misused-spread": "error",
+    "typescript/no-redundant-type-constituents": "error",
+    "typescript/no-unnecessary-type-assertion": "error",
+    "typescript/no-unnecessary-type-conversion": "error",
+    "typescript/no-unsafe-unary-minus": "error",
+    "typescript/prefer-find": "error",
+    "typescript/prefer-nullish-coalescing": [
+      "error",
+      { "ignorePrimitives": { "string": true } }
+    ],
+    "typescript/prefer-reduce-type-parameter": "error",
+    "typescript/related-getter-setter-pairs": "error",
+    "typescript/restrict-plus-operands": "error",
+
     "react/display-name": "error",
     "react/exhaustive-deps": "warn",
     "react/jsx-key": "error",

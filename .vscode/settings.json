@@ -15,5 +15,5 @@
   "oxc.enable": true,
   "oxc.lint.run": "onType",
   "oxc.fmt.experimental": true,
-  "cSpell.words": ["darkvar", "onclone", "oxfmt", "oxlint", "pagebreak", "tsgo"]
+  "cSpell.words": ["darkvar", "onclone", "oxfmt", "oxlint", "pagebreak"]
 }

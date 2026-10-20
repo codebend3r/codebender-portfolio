@@ -6,7 +6,9 @@ import { defineConfig } from "lint-staged/config"
 //
 // `format:staged` passes `--concurrent false`: globs run top to bottom, one at
 // a time, so the read-only checks at the bottom (whose globs overlap the ones
-// above) never read a file while a fixer is rewriting it.
+// above) never read a file while a fixer is rewriting it. It also passes
+// `--relative`, because typos only matches `_typos.toml` excludes against
+// relative paths.
 
 // oxfmt exits 2 when every file it receives is in its `ignorePatterns`
 // (`.claude/**`, `.vscode/**`, `netlify.toml`, ...), which would block a
@@ -15,7 +17,7 @@ const oxfmt = "oxfmt --no-error-on-unmatched-pattern"
 
 export default defineConfig({
   // Lint fixes run before oxfmt so the formatter has the final say on layout.
-  "*.{ts,tsx,mts,cts,js,jsx,mjs,cjs}": ["oxlint --fix", oxfmt],
+  "*.{ts,tsx,mts,cts,js,jsx,mjs,cjs}": ["oxlint --type-aware --fix", oxfmt],
   "*.css": ["gale --fix", oxfmt],
   // Every other file type `format:check` enforces.
   "*.{json,md,yml,yaml,toml,html}": oxfmt,

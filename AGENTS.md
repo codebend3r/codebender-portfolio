@@ -10,13 +10,13 @@ Package manager is **bun** (see `packageManager` in `package.json`). Use `bun <s
 - `bun run build` — production build (note: `bun build` invokes Bun's bundler, not Vite; always use `bun run build`)
 - `bun preview` — preview the built output
 - `bun lint`: `lint:ts` → `lint:css` → `lint:actions`, in sequence via `bun run --sequential`
-- `bun lint:ts` / `bun lint:ts:fix`: Oxlint (`.oxlintrc.json`); syntax-only rules, no type-aware linting (types are checked by `tsgo`)
+- `bun lint:ts` / `bun lint:ts:fix`: Oxlint (`.oxlintrc.json`) with `--type-aware` (backed by `oxlint-tsgolint`), so the type-aware rules run
 - `bun lint:css` / `bun lint:css:fix` — Gale (`@codebend3r/gale`, a Stylelint-compatible Rust linter) over `src/**/*.css`; reads `.stylelintrc.json`, which extends `stylelint-config-standard`
 - `bun lint:actions` — actionlint (`github-actionlint`, the official `rhysd/actionlint` binary) over `.github/workflows`; no config file, defaults only
 - `bun spellcheck` / `bun spellcheck:fix` — typos (`@ocular-d/typos-bin`) over the whole repo; it skips binaries and `.gitignore`d paths, and `_typos.toml` holds the exclude list and word allowlist
 - `bun format` / `bun format:check` — Oxfmt write / check (`.oxfmtrc.json`)
-- `bun format:staged`: lint-staged (`lint-staged.config.ts`, `--concurrent false`): `oxlint --fix` on staged JS/TS, `gale --fix` on staged CSS, Oxfmt on every type `format:check` covers, actionlint on staged workflows, typos on everything staged
-- `bun typecheck` — `tsgo --noEmit` across all three tsconfig projects (root, `tsconfig.node.json`, `netlify/functions`)
+- `bun format:staged`: lint-staged (`lint-staged.config.ts`, `--concurrent false --relative`): `oxlint --type-aware --fix` on staged JS/TS, `gale --fix` on staged CSS, Oxfmt on every type `format:check` covers, actionlint on staged workflows, typos on everything staged
+- `bun typecheck` — `tsc --noEmit` (TypeScript 7, the native Go compiler) across all three tsconfig projects (root, `tsconfig.node.json`, `netlify/functions`)
 - `bun run test` / `bun test:watch` / `bun test:coverage`: Vitest (bare `bun test` starts Bun's own runner, not Vitest)
 - `bun system-check` — `format:check` → `typecheck` → `lint:ts` → `lint:css` → `lint:actions` → `spellcheck` → `test` → `build`, in sequence via `bun run --sequential`
 
@@ -26,8 +26,8 @@ Script names drift. When this list disagrees with `"scripts"` in `package.json`,
 
 Lefthook (`lefthook.yml`) runs on every commit and push. The `prepare` script runs `lefthook install --reset-hooks-path` on `bun install`, which writes the hooks into `.git/hooks` and unsets any `core.hooksPath` override (Husky pointed it at `.husky/_`). Both hooks are `piped`: jobs run in order and stop at the first failure.
 
-- **pre-commit**: `format:staged` → `typecheck` → `test`. lint-staged fixes, formats, and spellchecks only the staged files and re-stages them; the full-repo `lint:ts` / `lint:css` gate runs in CI and `bun system-check`. The commit will fail if any step fails.
-- **pre-push**: `bun run build` → `git fetch -p` → prints the last 10 commits. The push fails if the build fails.
+- **pre-commit**: `format:staged`. lint-staged fixes, formats, and spellchecks only the staged files and re-stages them. Typecheck, tests, and the full-repo lint gate run on push, not on commit. The commit will fail if any step fails.
+- **pre-push**: `bun run system-check` → `git fetch -p` → prints the last 10 commits. The push fails if any check fails.
 
 ## Architecture
 
