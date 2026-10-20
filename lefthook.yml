@@ -11,20 +11,9 @@ pre-commit:
 pre-push:
   piped: true
   jobs:
-    - name: 🧠 typecheck
-      run: bun run typecheck
-    - name: 🔍 lint ts
-      run: bun run lint:ts
-    - name: 🎨 lint css
-      run: bun run lint:css
-    - name: ⚙️ lint workflows
-      run: bun run lint:actions
-    - name: 🔤 spellcheck
-      run: bun run spellcheck
-    - name: 🧪 test
-      run: bun run test
-    - name: 🏗️ build
-      run: bun run build
+    # The check list lives in the `system-check` script, so it is never repeated here.
+    - name: 🚦 system check
+      run: bun run system-check
     - name: 🧹 fetch and prune
       run: git fetch -p
     - name: 📜 recent commits

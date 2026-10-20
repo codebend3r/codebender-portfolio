@@ -8,6 +8,3 @@ extend-exclude = ["docs/superpowers/"]
 [default.extend-words]
 # Accepted alternate spelling of "unparsable"; used in test descriptions.
 unparseable = "unparseable"
-# Suffix in "240ths" (docs/superpowers plan); typos 1.51 ignores extend-exclude for
-# absolute paths under --force-exclude, so lint-staged still scans frozen docs.
-ths = "ths"

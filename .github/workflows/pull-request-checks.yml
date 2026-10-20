@@ -19,23 +19,16 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        # Fast checks share one job so they pay for setup and install only once.
         include:
-          - name: 💅 Format check
-            run: bun format:check
-          - name: 🧠 Typecheck
-            run: bun typecheck
-          - name: 🔍 Lint TS
-            run: bun lint:ts
-          - name: 🎨 Lint CSS
-            run: bun lint:css
-          - name: ⚙️ Lint workflows
-            run: bun lint:actions
-          - name: 🔤 Spellcheck
-            run: bun spellcheck
-          - name: 🧪 Test
-            run: bun run test
+          - name: 🔍 Format, lint, and spellcheck
+            run: bun run --sequential format:check lint spellcheck
+          - name: 🧠 Typecheck and test
+            run: bun run --sequential typecheck test
           - name: 🏗️ Build
             run: bun run build
+            # The only entry that saves the install cache, so jobs don't race to reserve the same key.
+            save-cache: true
 
     steps:
       - name: 📥 Checkout
@@ -51,8 +44,9 @@ jobs:
         with:
           bun-version-file: package.json
 
-      - name: 💾 Cache Bun install
-        uses: actions/cache@v6
+      - name: 💾 Restore Bun install cache
+        id: bun-cache
+        uses: actions/cache/restore@v6
         with:
           path: ~/.bun/install/cache
           key: ${{ runner.os }}-bun-${{ hashFiles('bun.lock') }}
@@ -60,6 +54,13 @@ jobs:
 
       - name: 📦 Install dependencies
         run: bun install --frozen-lockfile
+
+      - name: 💾 Save Bun install cache
+        if: matrix.save-cache && steps.bun-cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v6
+        with:
+          path: ~/.bun/install/cache
+          key: ${{ steps.bun-cache.outputs.cache-primary-key }}
 
       - name: ${{ matrix.name }}
         run: ${{ matrix.run }}
