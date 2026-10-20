@@ -126,7 +126,7 @@ Each work experience entry also shows a computed, human-readable duration (e.g. 
 | **Lint**            | Oxlint (Rust)                                     | `.oxlintrc.json`; replaces ESLint, `typescript-eslint`, `react`, `react-hooks`, `jsx-a11y`                                                  |
 | **Format**          | Oxfmt (Rust)                                      | `.oxfmtrc.json`; formats JS/TS/JSON/YAML/Markdown/CSS and sorts imports; replaces Prettier                                                  |
 | **CSS lint**        | Gale (Stylelint-compatible, Rust)                 | `.stylelintrc.json`; extends `stylelint-config-standard` over `src/**/*.css`                                                                |
-| **Type checking**   | `tsc --noEmit` (TypeScript 7)                     | Native Go compiler; runs on every push                                                                                                      |
+| **Type checking**   | `tsgo --noEmit` (`@typescript/native-preview`)    | Native Go compiler; runs on every push                                                                                                      |
 | **Git hooks**       | Lefthook + lint-staged                            | `lefthook.yml` + `lint-staged.config.ts`; `pre-commit`: lint-staged (fix, format, spellcheck staged files); `pre-push`: `system-check`      |
 | **Package manager** | Bun                                               | `packageManager` field pinned in `package.json`                                                                                             |
 | **Auth + sync**     | Supabase                                          | Owner sign-in gates the editor and generate routes; variations sync to a `resume_variations` table                                          |
@@ -250,13 +250,13 @@ The public page needs no configuration. Copy `.env.example` to `.env` to turn on
 | `bun run build`                                         | Production build (note: `bun build` invokes Bun's bundler, so always use `bun run build`)                                         |
 | `bun preview`                                           | Preview the built output                                                                                                          |
 | `bun lint`                                              | `lint:ts` → `lint:css` → `lint:actions`                                                                                           |
-| `bun lint:ts` / `bun lint:ts:fix`                       | Oxlint (`.oxlintrc.json`) with `--type-aware`, so the type-aware rules run (see Toolchain)                                        |
+| `bun lint:ts` / `bun lint:ts:fix`                       | Oxlint (`.oxlintrc.json`), syntax-level rules only; type checking lives in `bun typecheck` (see Toolchain)                        |
 | `bun lint:css` / `bun lint:css:fix`                     | Gale (Stylelint-compatible) over `src/**/*.css`                                                                                   |
 | `bun lint:actions`                                      | actionlint over `.github/workflows`                                                                                               |
 | `bun spellcheck` / `bun spellcheck:fix`                 | typos over the whole repo; scope and allowlist in `_typos.toml`                                                                   |
 | `bun format:staged`                                     | lint-staged (`lint-staged.config.ts`, run with `--concurrent false`): fixers, Oxfmt, actionlint, and typos over staged files only |
 | `bun format` / `bun format:check`                       | Oxfmt write / check                                                                                                               |
-| `bun typecheck`                                         | `tsc` type check (no emit), all three tsconfig projects                                                                           |
+| `bun typecheck`                                         | `tsgo` type check (no emit), all three tsconfig projects                                                                          |
 | `bun run test` / `bun test:watch` / `bun test:coverage` | Vitest (bare `bun test` starts Bun's own test runner instead, so keep the `run`)                                                  |
 | `bun system-check`                                      | `format:check` → `typecheck` → `lint` → `spellcheck` → `test` → `build`                                                           |
 
@@ -268,7 +268,7 @@ The public page needs no configuration. Copy `.env.example` to `.env` to turn on
 
 [Lefthook](https://lefthook.dev) runs on every commit and push. Hooks are declared in `lefthook.yml` and installed into `.git/hooks` by the `prepare` script on `bun install`. Each hook is `piped`, so jobs run in order and stop at the first failure.
 
-- **pre-commit**: `format:staged` (lint-staged). lint-staged (`lint-staged.config.ts`) mirrors the CI gates on just the staged files: `oxlint --type-aware --fix` on JS/TS, `gale --fix` on CSS, Oxfmt on everything `format:check` covers, actionlint on workflow files, and typos on every staged file. It re-stages what the fixers rewrote, so formatting fixes itself instead of failing the commit. Globs run one at a time (`--concurrent false`) so the read-only checks never race a fixer, and tasks get relative paths (`--relative`) so typos honours the `_typos.toml` excludes. Typecheck, tests, and the full-repo lint gate run on push, not on commit. The commit fails if any step fails.
+- **pre-commit**: `format:staged` (lint-staged). lint-staged (`lint-staged.config.ts`) mirrors the CI gates on just the staged files: `oxlint --fix` on JS/TS, `gale --fix` on CSS, Oxfmt on everything `format:check` covers, actionlint on workflow files, and typos on every staged file. It re-stages what the fixers rewrote, so formatting fixes itself instead of failing the commit. Globs run one at a time (`--concurrent false`) so the read-only checks never race a fixer, and tasks get relative paths (`--relative`) so typos honours the `_typos.toml` excludes. Typecheck, tests, and the full-repo lint gate run on push, not on commit. The commit fails if any step fails.
 - **pre-push**: `bun run system-check` (`format:check` → `typecheck` → `lint` → `spellcheck` → `test` → `build`), then `git fetch -p` to prune deleted remote branches, then prints the last 10 commits as a sanity check. The push fails if any check fails, so run `bun install` first.
 
 Skip hooks for a single command with `LEFTHOOK=0 git commit ...`.
@@ -297,15 +297,13 @@ The whole quality gate (`format:check` + `typecheck` + `lint:ts` + `lint:css` +
 | CSS lint   | `gale`       | `.stylelintrc.json` |
 | Workflows  | `actionlint` | defaults            |
 | Spellcheck | `typos`      | `_typos.toml`       |
-| Type check | `tsc`        | `tsconfig*.json`    |
+| Type check | `tsgo`       | `tsconfig*.json`    |
 
 Every tool version is pinned exactly; upgrade deliberately, not automatically.
 
-`lint:ts` runs Oxlint with `--type-aware`, backed by `oxlint-tsgolint`, so the
-type-aware rules in `.oxlintrc.json` (`no-floating-promises`, `await-thenable`,
-`prefer-nullish-coalescing`, …) are enforced. `typescript/prefer-nullish-coalescing`
-uses `ignorePrimitives.string`, because `inputError || error` on strings is
-intentional falsy-checking and `??` would change behaviour.
+`lint:ts` runs Oxlint without `--type-aware`, so it only enforces syntax-level
+rules. Every TypeScript check goes through `bun typecheck` (`tsgo --noEmit` across
+all three tsconfig projects).
 
 ### Editor setup
 

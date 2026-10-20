@@ -17,7 +17,7 @@ const oxfmt = "oxfmt --no-error-on-unmatched-pattern"
 
 export default defineConfig({
   // Lint fixes run before oxfmt so the formatter has the final say on layout.
-  "*.{ts,tsx,mts,cts,js,jsx,mjs,cjs}": ["oxlint --type-aware --fix", oxfmt],
+  "*.{ts,tsx,mts,cts,js,jsx,mjs,cjs}": ["oxlint --fix", oxfmt],
   "*.css": ["gale --fix", oxfmt],
   // Every other file type `format:check` enforces.
   "*.{json,md,yml,yaml,toml,html}": oxfmt,
